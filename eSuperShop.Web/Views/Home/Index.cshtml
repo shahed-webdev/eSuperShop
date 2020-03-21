@@ -1,7 +1,627 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Home";
 }
 
-<h1>Index</h1>
+@section Styles{
+    <link href="~/css/home.css" rel="stylesheet" type="text/css" />
+}
 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="category-container z-depth-1">
+                <div class="category-title">
+                    <i class="fas fa-list"></i>
+                    <span>Categories</span>
+                </div>
+                <ul>
+                    <li>Electronic Devices</li>
+                    <li>Electronic Accessories</li>
+                    <li>TV & Home Appliances</li>
+                    <li>Health & Beauty</li>
+                    <li>Babies & Toys</li>
+                    <li>Groceries & Pets</li>
+                    <li>Home & Lifestyle</li>
+                    <li>Women's Fashion</li>
+                    <li>Men's Fashion</li>
+                    <li>Watches & Accessories</li>
+                    <li>Sports & Outdoor</li>
+                    <li>Automotive & Motorbike</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="slider-container z-depth-1">
+                <div id="carousel-home" class="carousel slide carousel-fade" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-home" data-slide-to="1"></li>
+                        <li data-target="#carousel-home" data-slide-to="2"></li>
+                    </ol>
+
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <div class="view">
+                                <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(68).jpg"
+                                     alt="First slide">
+                                <div class="mask rgba-black-light"></div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="view">
+                                <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(6).jpg"
+                                     alt="Second slide">
+                                <div class="mask rgba-black-strong"></div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="view">
+                                <img class="d-block w-100" src="https://mdbootstrap.com/img/Photos/Slides/img%20(9).jpg"
+                                     alt="Third slide">
+                                <div class="mask rgba-black-slight"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a class="carousel-control-prev" href="#carousel-home" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-home" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="product-header">
+        <h3>Flash Deals</h3>
+        <a>View More<i class="far fa-eye ml-1"></i></a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/1.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/2.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/3.jpg" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/4.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="product-header">
+        <h3>Top Rated</h3>
+        <a>View More<i class="far fa-eye ml-1"></i></a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/5.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/6.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/7.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/8.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <div>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="rating-count">10</span>
+                            </div>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="product-header">
+        <h3>Top Stores</h3>
+        <a>View More<i class="far fa-eye ml-1"></i></a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-sm-6">
+            <div class="card hoverable card-body mb-3">
+                <div class="shop-name">DOM Official Store</div>
+                <div class="shop-description">Multi-items goods seller on the internet</div>
+                <div class="shop-rating mb-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>4.5</span>
+                </div>
+
+                <div class="photo-box">
+                    <div class="box">
+                        <img src="~/images/products/9.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/8.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/7.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/6.webp" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+            <div class="card hoverable card-body mb-3">
+                <div class="shop-name">DOM Official Store</div>
+                <div class="shop-description">Multi-items goods seller on the internet</div>
+                <div class="shop-rating mb-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>4.5</span>
+                </div>
+
+                <div class="photo-box">
+                    <div class="box">
+                        <img src="~/images/products/1.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/2.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/4.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/5.webp" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+            <div class="card hoverable card-body mb-3">
+                <div class="shop-name">DOM Official Store</div>
+                <div class="shop-description">Multi-items goods seller on the internet</div>
+                <div class="shop-rating mb-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>4.5</span>
+                </div>
+
+                <div class="photo-box">
+                    <div class="box">
+                        <img src="~/images/products/10.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/12.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/11.webp" alt="" />
+                    </div>
+                    <div class="box">
+                        <img src="~/images/products/6.webp" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h3 class="mb-3">More To Love</h3>
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/1.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/2.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/3.jpg" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/4.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/1.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/2.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/3.jpg" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card hoverable mb-3">
+                <div class="view overlay">
+                    <img class="card-img-top" src="images/products/4.webp" alt="product">
+                    <a><div class="mask rgba-white-slight"></div></a>
+                </div>
+                <div class="card-body">
+                    <p class="product-name">
+                        In Stock Global Amazfit Bip Lite Water...
+                    </p>
+                    <div class="pricing-area">
+                        <div class="p-price">
+                            <span>৳8500</span>
+                            <span class="p-discount d-block">৳500</span>
+                        </div>
+                        <div class="p-rating text-right">
+                            <span class="sold-count">500 sold</span>
+                            <span class="p-discount-percent">10% off</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

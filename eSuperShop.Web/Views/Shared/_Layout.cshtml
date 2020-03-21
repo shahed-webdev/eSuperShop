@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - E-Super Shop</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css" />
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/mdb/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Material Design Bootstrap -->
+    <link href="~/lib/mdb/css/mdb.min.css" rel="stylesheet" />
+    <!-- Custom layout -->
+    <link href="~/css/public-master.css" rel="stylesheet" />
+
+    <!-- others page style -->
+    @RenderSection("Styles", false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm top-bar">
+            <div class="container">
+                <ul class="nav navbar-nav nav-flex-icons ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fal fa-cart-plus mr-1"></i>Sell on e-superShop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fal fa-user-headset mr-1"></i>Help</a>
+                    </li>
+                    <partial name="_LoginPartial" />
+                </ul>
+            </div>
+        </nav>
+        <div class="bottom-header z-depth-1">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3">
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                            <img src="~/images/logo.svg" alt="logo" />
+                        </a>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="serach-container">
+                            <input type="text" placeholder="search products" id="search" class="input-home-search" />
+                            <button id="btn-find">
+                                <i class="fal fa-search"></i>
+                            </button>
+                            <select class="mdb-select category-select">
+                                <option value="" disabled selected>All Categories</option>
+                                <option value="2">category1category1category1category1</option>
+                                <option value="2">category2</option>
+                                <option value="2">category3</option>
+                                <option value="2">category4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="cart-area">
+                            <div>
+                                <i class="fal fa-gift"></i>
+                            </div>
+                            <div>
+                                <i class="fal fa-heart"></i>
+                            </div>
+                            <div>
+                                <i class="fal fa-shopping-bag"></i>
+                                <span class="cart-product-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main role="main" class="my-3">
+        @RenderBody()
+    </main>
+
+    <footer class="page-footer font-small mdb-color lighten-3 pt-4">
+        <div class="container text-center text-md-left">
+            <div class="row">
+                <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">Footer Content</h5>
+                    <p>Here you can use rows and columns to organize your footer content.</p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit amet numquam iure provident voluptate
+                        esse
+                        quasi, veritatis totam voluptas nostrum.
+                    </p>
+                </div>
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <div class="col-md-2 col-lg-2 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">About</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <a href="#!">PROJECTS</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">ABOUT US</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">BLOG</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">AWARDS</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">Address</h5>
+
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <i class="fas fa-home mr-3"></i> New York, NY 10012, US
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-envelope mr-3"></i> info@example.com
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-phone mr-3"></i> + 01 234 567 88
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fas fa-print mr-3"></i> + 01 234 567 89
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <div class="col-md-2 col-lg-2 text-center mx-auto my-4">
+                    <h5 class="font-weight-bold text-uppercase mb-4">Follow Us</h5>
+
+                    <a type="button" class="btn-floating btn-fb">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a type="button" class="btn-floating btn-tw">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a type="button" class="btn-floating btn-gplus">
+                        <i class="fab fa-google-plus-g"></i>
+                    </a>
+                    <a type="button" class="btn-floating btn-dribbble">
+                        <i class="fab fa-dribbble"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright text-center py-3">
+            © 2020 Copyright:
+            <a> esupershop.com</a>
+        </div>
+    </footer>
+
+    <!-- JQuery -->
+    <script src="~/lib/mdb/js/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/lib/mdb/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script src="~/lib/mdb/js/mdb.min.js"></script>
+    <!-- Custom -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        $(document).ready(() => {
+            new WOW().init();
+
+            // Material Select
+            $('.mdb-select').materialSelect();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
