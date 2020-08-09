@@ -16,6 +16,7 @@ namespace eSuperShop.Web
         {
             Configuration = configuration;
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
