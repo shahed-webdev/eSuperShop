@@ -9,6 +9,12 @@ namespace eSuperShop.Data
         {
 
         }
+
+        public virtual DbSet<Catalog> Catalog { get; set; }
+        public virtual DbSet<CatalogShownPlace> CatalogShownPlace { get; set; }
+        public virtual DbSet<Registration> Registration { get; set; }
+        public virtual DbSet<Seo> Seo { get; set; }
+        public virtual DbSet<Slider> Slider { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
