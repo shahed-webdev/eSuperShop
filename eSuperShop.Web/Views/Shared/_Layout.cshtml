@@ -14,7 +14,7 @@
     <!-- Custom layout -->
     <link href="~/css/public-master.css" rel="stylesheet" />
 
-    <!-- others page style -->
+    <!-- Others page style -->
     @RenderSection("Styles", false)
 </head>
 <body>
@@ -182,10 +182,10 @@
     <script src="~/lib/mdb/js/mdb.min.js"></script>
     <!-- Custom -->
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", false)
 
     <script>
-        $(document).ready(() => {
+        $(() => {
             new WOW().init();
 
             // Material Select
