@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSuperShop.Web", "eSuperSho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSuperShop.Data", "eSuperShop.Data\eSuperShop.Data.csproj", "{EC082789-C260-402C-97A2-CD4356086686}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSuperShop.Repository", "eSuperShop.Repository\eSuperShop.Repository.csproj", "{2639D253-9FBD-48D5-A73D-9B76DA286498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSuperShop.Repository", "eSuperShop.Repository\eSuperShop.Repository.csproj", "{2639D253-9FBD-48D5-A73D-9B76DA286498}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

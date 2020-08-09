@@ -6,11 +6,11 @@
     <title>@ViewData["Title"] - E-Super Shop</title>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css" />
+    <link href="https://pro.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
     <!-- Bootstrap core CSS -->
-    <link href="~/lib/mdb/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Material Design Bootstrap -->
-    <link href="~/lib/mdb/css/mdb.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="~/mdb/css/mdb-core.css" rel="stylesheet" />
     <!-- Custom layout -->
     <link href="~/css/public-master.css" rel="stylesheet" />
 
@@ -23,10 +23,10 @@
             <div class="container">
                 <ul class="nav navbar-nav nav-flex-icons ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fal fa-cart-plus mr-1"></i>Sell on e-superShop</a>
+                        <a class="nav-link" asp-page="/Account/Manage/Index" title="Manage"><i class="fal fa-cart-plus mr-1"></i>Sell on e-superShop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fal fa-user-headset mr-1"></i>Help</a>
+                        <a class="nav-link" asp-page="/Account/Manage/Index" title="Manage"><i class="fal fa-user-headset mr-1"></i>Help</a>
                     </li>
                     <partial name="_LoginPartial" />
                 </ul>
@@ -48,7 +48,7 @@
                             </button>
                             <select class="mdb-select category-select">
                                 <option value="" disabled selected>All Categories</option>
-                                <option value="2">category1category1category1category1</option>
+                                <option value="2">category1</option>
                                 <option value="2">category2</option>
                                 <option value="2">category3</option>
                                 <option value="2">category4</option>
@@ -175,13 +175,12 @@
     </footer>
 
     <!-- JQuery -->
-    <script src="~/lib/mdb/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Bootstrap core JavaScript -->
-    <script src="~/lib/mdb/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
-    <script src="~/lib/mdb/js/mdb.min.js"></script>
-    <!-- Custom -->
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/mdb/js/mdb-core.js"></script>
+
     @RenderSection("Scripts", false)
 
     <script>
@@ -194,7 +193,6 @@
     </script>
 </body>
 </html>
-
 
 
 
