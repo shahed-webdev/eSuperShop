@@ -20,9 +20,30 @@ namespace eSuperShop.Web
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddMvc();
+            services.AddIdentity<IdentityUser, IdentityRole>(config =>
+                {
+                    config.Password = new PasswordOptions
+                    {
+                        RequireDigit = false,
+                        RequiredLength = 6,
+                        RequiredUniqueChars = 0,
+                        RequireLowercase = false,
+                        RequireNonAlphanumeric = false,
+                        RequireUppercase = false
+                    };
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "Identity.Cookie";
+                config.LoginPath = "/Account";
+            });
+
+            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
