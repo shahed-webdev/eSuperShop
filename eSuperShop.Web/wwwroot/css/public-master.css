@@ -28,4 +28,4 @@ input[type="checkbox"].input-validation-error { border: 0 none; }
 
 /*footer*/
 .footer-bg { background-color: #3E4551 }
-.footer-top { background-color: #e62e04; padding: 30px; }
+.footer-top { background-color: #e62e04; padding: 12px 0; }

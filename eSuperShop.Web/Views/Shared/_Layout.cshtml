@@ -12,7 +12,7 @@
     <!-- MDB -->
     <link href="~/mdb/css/mdb-core.css" rel="stylesheet" />
     <!-- Custom layout -->
-    <link href="~/css/public-master.css?v=1.1" rel="stylesheet" />
+    <link href="~/css/public-master.css?v=.2" rel="stylesheet" />
 
     <!-- Others page style -->
     @RenderSection("Styles", false)
@@ -74,8 +74,22 @@
 
     <footer class="page-footer font-small mt-4 footer-bg">
         <div class="footer-top">
-            <div class="container">
+            <div class="container d-flex align-items-center justify-content-between">
+                <div>
+                    <form class="input-group">
+                        <input type="email" class="form-control form-control-sm z-depth-1 red lighten-4" placeholder="Enter your email">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm red m-0" type="button">Sign up</button>
+                        </div>
+                    </form>
+                </div>
 
+                <div class="payment-options">
+                    <i class="fab fa-cc-mastercard fa-3x mr-2"></i>
+                    <i class="fab fa-cc-visa fa-3x"></i>
+                    <i class="fab fa-cc-paypal fa-3x mx-2"></i>
+                    <i class="fab fa-cc-amex fa-3x"></i>
+                </div>
             </div>
         </div>
 
