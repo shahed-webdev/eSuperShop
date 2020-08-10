@@ -10,7 +10,7 @@
     </li>
     <li class="nav-item">
         <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
                 <i class="fal fa-sign-out-alt"></i>
                 Logout
             </a>
@@ -20,7 +20,10 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link" href="/Account/Register"><i class="fal fa-user mr-1"></i>Register</a>
+        <a class="nav-link" href="/Account/AdminLogin" title="Manage"><i class="fal fa-cart-plus mr-1"></i>Seller Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/Account/Register"><i class="fal fa-user mr-1"></i>Join</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/Account/Login"><i class="fal fa-sign-in mr-1"></i>Login</a>
