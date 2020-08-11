@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using eSuperShop.Repository;
 
-namespace AhmedTrading.Web.Controllers
+namespace eSuperShop.Web.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -22,20 +22,20 @@ namespace AhmedTrading.Web.Controllers
             _logger = logger;
         }
 
-        //GET: Login
+        //GET: Admin Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult AdminLogin(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
 
-        //POST: Login
+        //POST: Admin Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> AdminLogin(LoginViewModel model, string returnUrl)
         {
             returnUrl ??= Url.Content("~/Dashboard/Index");
 
@@ -104,7 +104,7 @@ namespace AhmedTrading.Web.Controllers
 
             if (returnUrl != null) return LocalRedirect(returnUrl);
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
