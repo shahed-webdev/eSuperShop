@@ -7,7 +7,7 @@ namespace eSuperShop.Data
         public int SliderId { get; set; }
         public string ImageUrl { get; set; }
         public int? DisplayOrder { get; set; }
-        public string ShownPlace { get; set; }
+        public SliderDisplayPlace DisplayPlace { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public int CreatedByRegistrationId { get; set; }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eSuperShop.Data.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,26 @@ namespace eSuperShop.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Registration",
+                columns: table => new
+                {
+                    RegistrationId = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 50, nullable: false),
+                    Validation = table.Column<bool>(nullable: false, defaultValueSql: "((1))"),
+                    Type = table.Column<string>(maxLength: 50, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: true),
+                    DateofBirth = table.Column<string>(maxLength: 50, nullable: true),
+                    Phone = table.Column<string>(maxLength: 50, nullable: true),
+                    Email = table.Column<string>(maxLength: 50, nullable: true),
+                    ImageURL = table.Column<string>(maxLength: 255, nullable: true),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Registration", x => x.RegistrationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,20 +172,131 @@ namespace eSuperShop.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Catalog",
+                columns: table => new
+                {
+                    CatalogId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CatalogName = table.Column<string>(maxLength: 400, nullable: false),
+                    SlugURL = table.Column<string>(maxLength: 128, nullable: false),
+                    ParentCatalogId = table.Column<int>(nullable: false),
+                    ImageURL = table.Column<string>(maxLength: 255, nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
+                    DisplayOrder = table.Column<int>(nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
+                    UpdatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: true),
+                    SeoId = table.Column<int>(nullable: true),
+                    CreatedByRegistrationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Catalog", x => x.CatalogId);
+                    table.ForeignKey(
+                        name: "FK_Catalog_Registration",
+                        column: x => x.CreatedByRegistrationId,
+                        principalTable: "Registration",
+                        principalColumn: "RegistrationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SEO",
+                columns: table => new
+                {
+                    SeoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MetaKeywords = table.Column<string>(maxLength: 400, nullable: true),
+                    MetaDescription = table.Column<string>(maxLength: 4000, nullable: true),
+                    MetaTitle = table.Column<string>(maxLength: 400, nullable: true),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
+                    CreatedByRegistrationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SEO", x => x.SeoId);
+                    table.ForeignKey(
+                        name: "FK_SEO_Registration",
+                        column: x => x.CreatedByRegistrationId,
+                        principalTable: "Registration",
+                        principalColumn: "RegistrationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Slider",
+                columns: table => new
+                {
+                    SliderId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageURL = table.Column<string>(maxLength: 255, nullable: false),
+                    DisplayOrder = table.Column<int>(nullable: true),
+                    DisplayPlace = table.Column<string>(maxLength: 128, nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
+                    CreatedByRegistrationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Slider", x => x.SliderId);
+                    table.ForeignKey(
+                        name: "FK_Slider_Registration",
+                        column: x => x.CreatedByRegistrationId,
+                        principalTable: "Registration",
+                        principalColumn: "RegistrationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CatalogShownPlace",
+                columns: table => new
+                {
+                    CatalogShownPlaceId = table.Column<int>(nullable: false),
+                    CatalogId = table.Column<int>(nullable: false),
+                    ShownPlace = table.Column<string>(maxLength: 128, nullable: false),
+                    DisplayOrder = table.Column<int>(nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
+                    CreatedByRegistrationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CatalogShownPlace", x => x.CatalogShownPlaceId);
+                    table.ForeignKey(
+                        name: "FK_CatalogShownPlace_Catalog",
+                        column: x => x.CatalogId,
+                        principalTable: "Catalog",
+                        principalColumn: "CatalogId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CatalogShownPlace_Registration",
+                        column: x => x.CreatedByRegistrationId,
+                        principalTable: "Registration",
+                        principalColumn: "RegistrationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "596ee313-a6ea-4375-958c-f0cac2a96ed6", "2bd477d1-9668-4807-92b2-5fa82152d505", "admin", "admin" });
+                values: new object[,]
+                {
+                    { "5A71C6C4-9488-4BCC-A680-445A34C6E721", "5A71C6C4-9488-4BCC-A680-445A34C6E721", "admin", "ADMIN" },
+                    { "F73A5277-2535-48A4-A371-300508ADDD2F", "F73A5277-2535-48A4-A371-300508ADDD2F", "sub-admin", "SUB-ADMIN" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "6c9f7283-ee57-4016-8577-ef7ac7efa5bd", 0, "6fe5d22a-b85d-4598-828e-28fca1ab6e8a", "admin@gmail.com", true, false, null, "admin@gmail.com", "admin", "AQAAAAEAACcQAAAAEK/ENfwFuuKQ2mE20Ld0q/VPvxTiGCWV1OwwoIeXpSIU/V3xof/HBOuHeiA+YcbvhQ==", null, false, "", false, "admin" });
+                values: new object[] { "A0456563-F978-4135-B563-97F23EA02FDA", 0, "A0456563-F978-4135-B563-97F23EA02FDA", "admin@gmail.com", true, true, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEDch3arYEB9dCAudNdsYEpVX7ryywa8f3ZIJSVUmEThAI50pLh9RyEu7NjGJccpOog==", null, false, "", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "Registration",
+                columns: new[] { "RegistrationId", "DateofBirth", "Email", "ImageURL", "Name", "Phone", "Type", "UserName" },
+                values: new object[] { 1, null, null, null, "Admin", null, "Admin", "Admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "UserId", "RoleId" },
-                values: new object[] { "6c9f7283-ee57-4016-8577-ef7ac7efa5bd", "596ee313-a6ea-4375-958c-f0cac2a96ed6" });
+                values: new object[] { "A0456563-F978-4135-B563-97F23EA02FDA", "5A71C6C4-9488-4BCC-A680-445A34C6E721" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -205,6 +336,31 @@ namespace eSuperShop.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Catalog_CreatedByRegistrationId",
+                table: "Catalog",
+                column: "CreatedByRegistrationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogShownPlace_CatalogId",
+                table: "CatalogShownPlace",
+                column: "CatalogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogShownPlace_CreatedByRegistrationId",
+                table: "CatalogShownPlace",
+                column: "CreatedByRegistrationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SEO_CreatedByRegistrationId",
+                table: "SEO",
+                column: "CreatedByRegistrationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Slider_CreatedByRegistrationId",
+                table: "Slider",
+                column: "CreatedByRegistrationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -225,10 +381,25 @@ namespace eSuperShop.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CatalogShownPlace");
+
+            migrationBuilder.DropTable(
+                name: "SEO");
+
+            migrationBuilder.DropTable(
+                name: "Slider");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Catalog");
+
+            migrationBuilder.DropTable(
+                name: "Registration");
         }
     }
 }

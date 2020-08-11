@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace eSuperShop.Data
 {
@@ -27,7 +28,8 @@ namespace eSuperShop.Data
 
             builder.Property(e => e.Type)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .HasConversion(c => c.ToString(), c => Enum.Parse<UserType>(c)); ;
 
             builder.Property(e => e.UserName)
                 .IsRequired()

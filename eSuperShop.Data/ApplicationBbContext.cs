@@ -17,8 +17,14 @@ namespace eSuperShop.Data
         public virtual DbSet<Slider> Slider { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new CatalogConfiguration());
+            builder.ApplyConfiguration(new CatalogShownPlaceConfiguration());
+            builder.ApplyConfiguration(new RegistrationConfiguration());
+            builder.ApplyConfiguration(new SeoConfiguration());
+            builder.ApplyConfiguration(new SliderConfiguration());
+
             base.OnModelCreating(builder);
-            builder.Seed();
+            builder.SeedAdminData();
         }
     }
 }

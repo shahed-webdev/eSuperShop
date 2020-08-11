@@ -8,4 +8,10 @@
     <ProjectReference Include="..\eSuperShop.Data\eSuperShop.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\Catalog\" />
+    <Folder Include="Repositories\Registration\" />
+    <Folder Include="Repositories\Seo\" />
+  </ItemGroup>
+
 </Project>

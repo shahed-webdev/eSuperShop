@@ -16,7 +16,7 @@ namespace eSuperShop.Data
         public int RegistrationId { get; set; }
         public string UserName { get; set; }
         public bool? Validation { get; set; }
-        public string Type { get; set; }
+        public UserType Type { get; set; }
         public string Name { get; set; }
         public string DateofBirth { get; set; }
         public string Phone { get; set; }

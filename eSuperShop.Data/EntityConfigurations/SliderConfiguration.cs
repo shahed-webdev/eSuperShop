@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace eSuperShop.Data
 {
@@ -16,15 +17,16 @@ namespace eSuperShop.Data
                 .HasColumnName("ImageURL")
                 .HasMaxLength(255);
 
-            builder.Property(e => e.ShownPlace)
+            builder.Property(e => e.DisplayPlace)
                 .IsRequired()
-                .HasMaxLength(128);
+                .HasMaxLength(128)
+                .HasConversion(c => c.ToString(), c => Enum.Parse<SliderDisplayPlace>(c));
 
             builder.HasOne(d => d.CreatedByRegistration)
                 .WithMany(p => p.Sider)
                 .HasForeignKey(d => d.CreatedByRegistrationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Sider_Registration");
+                .HasConstraintName("FK_Slider_Registration");
         }
     }
 }

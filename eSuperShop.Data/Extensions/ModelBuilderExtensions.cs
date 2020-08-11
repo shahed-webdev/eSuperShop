@@ -1,40 +1,58 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace eSuperShop.Data
 {
     public static class ModelBuilderExtensions
     {
-        public static void Seed(this ModelBuilder builder)
+        public static void SeedAdminData(this ModelBuilder builder)
         {
-            var ADMIN_ID = Guid.NewGuid().ToString();
+            var ADMIN_ID = "A0456563-F978-4135-B563-97F23EA02FDA";
             // any guid, but nothing is against to use the same one
-            var ROLE_ID = Guid.NewGuid().ToString();
-            builder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = ROLE_ID,
-                Name = "admin",
-                NormalizedName = "admin"
-            });
+            var ROLE_ID = "5A71C6C4-9488-4BCC-A680-445A34C6E721";
+            builder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = ROLE_ID,
+                    Name = "admin",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = ROLE_ID
+                },
+                new IdentityRole
+                {
+                    Id = "F73A5277-2535-48A4-A371-300508ADDD2F",
+                    Name = "sub-admin",
+                    NormalizedName = "SUB-ADMIN",
+                    ConcurrencyStamp = "F73A5277-2535-48A4-A371-300508ADDD2F"
+                });
 
-            var hasher = new PasswordHasher<IdentityUser>();
+
             builder.Entity<IdentityUser>().HasData(new IdentityUser
             {
                 Id = ADMIN_ID,
                 UserName = "admin",
-                NormalizedUserName = "admin",
+                NormalizedUserName = "ADMIN",
                 Email = "admin@gmail.com",
-                NormalizedEmail = "admin@gmail.com",
+                NormalizedEmail = "ADMIN@GMAIL.COM",
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Admin_121"),
-                SecurityStamp = string.Empty
+                PasswordHash = "AQAAAAEAACcQAAAAEDch3arYEB9dCAudNdsYEpVX7ryywa8f3ZIJSVUmEThAI50pLh9RyEu7NjGJccpOog==",
+                SecurityStamp = string.Empty,
+                LockoutEnabled = true,
+                ConcurrencyStamp = ADMIN_ID
             });
 
             builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
                 RoleId = ROLE_ID,
                 UserId = ADMIN_ID
+            });
+
+            builder.Entity<Registration>().HasData(new Registration
+            {
+                RegistrationId = 1,
+                UserName = "Admin",
+                Type = UserType.Admin,
+                Name = "Admin"
             });
         }
     }
