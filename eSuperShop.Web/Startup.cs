@@ -1,4 +1,5 @@
 using eSuperShop.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace eSuperShop.Web
 {
@@ -20,7 +22,9 @@ namespace eSuperShop.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                    .EnableSensitiveDataLogging());
 
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
                 {
@@ -45,6 +49,20 @@ namespace eSuperShop.Web
 
             //services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+            //for fire-base auth
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.Authority = "https://securetoken.google.com/e-supershopweb";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://securetoken.google.com/e-supershopweb",
+                    ValidateAudience = true,
+                    ValidAudience = "e-supershopweb",
+                    ValidateLifetime = true
+                };
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
