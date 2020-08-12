@@ -43,7 +43,7 @@ namespace eSuperShop.Repository
             return Db.Slider.ProjectTo<SliderListModel>(_mapper.ConfigurationProvider).ToList();
         }
 
-        public ICollection<DDL> SliderPlaceDdl()
+        public List<DDL> SliderPlaceDdl()
         {
             return Enum.GetNames(typeof(SliderDisplayPlace)).Select(s => new DDL
             {

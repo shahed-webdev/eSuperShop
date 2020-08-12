@@ -11,7 +11,7 @@ namespace eSuperShop.Repository
         bool IsExist(int id);
         List<SliderSlideModel> Display(SliderDisplayPlace place);
         List<SliderListModel> List();
-        ICollection<DDL> SliderPlaceDdl();
+        List<DDL> SliderPlaceDdl();
 
     }
 }

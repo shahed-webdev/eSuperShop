@@ -78,5 +78,10 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<List<SliderListModel>>(false, e.Message);
             }
         }
+
+        public List<DDL> DisplayPlaceDdl()
+        {
+            return _db.Slider.SliderPlaceDdl();
+        }
     }
 }
