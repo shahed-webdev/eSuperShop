@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +8,13 @@ namespace eSuperShop.Web.Controllers
     public class SliderController : Controller
     {
         private readonly SliderCore _slider;
-
-        public SliderController(SliderCore sliderCore)
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _db;
+        public SliderController(IMapper mapper, IUnitOfWork db)
         {
-            this._slider = sliderCore;
+            _mapper = mapper;
+            _db = db;
+            this._slider = new SliderCore(_mapper, _db);
         }
 
         public IActionResult Index()
