@@ -53,6 +53,7 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse(false, e.Message);
             }
         }
+
         public DbResponse<List<SliderSlideModel>> Display(SliderDisplayPlace place)
         {
             try

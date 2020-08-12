@@ -1,0 +1,14 @@
+﻿@using eSuperShop.Repository
+@model IEnumerable<SliderListModel>
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+
+
+@foreach (var item in Model)
+{
+    <img src="@item.ImageUrl" />
+    <label>@item.DisplayOrder</label>
+}
