@@ -47,7 +47,7 @@ namespace eSuperShop.Web
                 config.LoginPath = "/Account";
             });
 
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
         }
 
