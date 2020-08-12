@@ -45,10 +45,14 @@ namespace eSuperShop.Repository
 
         public List<DDL> SliderPlaceDdl()
         {
-            return Enum.GetNames(typeof(SliderDisplayPlace)).Select(s => new DDL
-            {
-                label = s
-            }).ToList();
+            var list = from SliderDisplayPlace a in Enum.GetValues(typeof(SliderDisplayPlace))
+                       select
+                           new DDL
+                           {
+                               label = a.ToString(),
+                               value = (int)a
+                           };
+            return list.ToList();
         }
     }
 }
