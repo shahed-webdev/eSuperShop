@@ -2,13 +2,157 @@
 @model IEnumerable<SliderListModel>
 
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Home Slider";
     Layout = "_AdminLayout";
 }
-
-
-@foreach (var item in Model)
+@section Styles
 {
-    <img src="@item.ImageUrl" />
-    <label>@item.DisplayOrder</label>
+    <style>
+        table #tBody tr td:nth-child(1) { width: 150px; }
+        table #tBody tr img { width: 100%; }
+    </style>  
+}
+
+<div class="m-md-4">
+    <h4 class="page-header">Add Slider Image</h4>
+    
+    <form id="addForm">
+        <div class="row align-items-center">
+            <div class="col-lg-3">
+                <div class="md-form">
+                    <div class="file-field">
+                        <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                            <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                            <input id="fileImage" type="file" multiple>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input id="filePath" class="file-path validate" type="text" placeholder="Upload Image" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="md-form">
+                    <input id="inputRedirectUrl" type="text" class="form-control" placeholder="Redirect Url" />
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="md-form">
+                    <input id="inputDisplayOrder" type="number" class="form-control" placeholder="Display Order"  required/>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="md-form">
+                    <select id="inputDisplayPlace" asp-items="ViewBag.DisplayPlace" class="mdb-select" required>
+                        <option value="">[ DISPLAY PLACE ]</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="md-form">
+                    <input type="submit" value="Add Slider" class="btn btn-danger btn-sm" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-sm mt-4">
+        <thead>
+            <tr>
+                <th><strong>Image</strong></th>
+                <th><strong>Order</strong></th>
+                <th><strong>Place</strong></th>
+            </tr>
+        </thead>
+        <tbody id="tBody">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><img src="@item.ImageUrl" /></td>
+                    <td>@item.DisplayOrder</td>
+                    <td>@item.DisplayPlace</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+
+    <script>
+        $(function() {
+            // Material Select Initialization
+            $('.mdb-select').materialSelect();
+        });
+
+        $('input[type="file"]').change(function(e) {
+            const $this = $(e.target);
+            const $fileField = $this.closest('.file-field');
+            const $pathInput = $fileField.find('input.file-path');
+            const fileNames = [];
+
+            fileNames.push(e.target.files[0].name);
+
+            $pathInput.val(fileNames.join(', '));
+            $pathInput.trigger('change');
+        });
+
+        //upload image
+        const addForm = document.getElementById('addForm');
+
+        addForm.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            const file = document.getElementById("fileImage").files[0];
+
+            const formData = new FormData();
+            formData.append("image", file);
+            formData.append("RedirectUrl", addForm.inputRedirectUrl.value);
+            formData.append("DisplayOrder", addForm.inputDisplayOrder.value);
+            formData.append("DisplayPlace", addForm.inputDisplayPlace.selectedValue);
+
+            $.ajax({
+                type: "POST",
+                url: "/Slider/Add",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log(response);
+                    if(!response.IsSuccess) return;
+
+                    addForm.fileImage.value = "";
+                    addForm.filePath.value = "";
+                    addForm.inputRedirectUrl.value = "";
+                    addForm.inputDisplayOrder.value = "";
+                    addForm.inputDisplayPlace.selectedIndex = 0;
+
+                    appendImage(response.Data);
+                }
+            });
+        });
+
+        function appendImage(data) {
+            const tr = document.createElement("tr");
+
+            const td1 = document.createElement("td");
+            const img = document.createElement("img");
+            img.src = data.ImageUrl;
+            td1.appendChild(img);
+            tr.appendChild(td1);
+
+            const td2 = document.createElement("td");
+            td2.textContent = data.DisplayOrder;
+            tr.appendChild(td2);
+
+            const td3 = document.createElement("td");
+            td3.textContent = data.DisplayPlace;
+            tr.appendChild(td3);
+
+            document.getElementById('tBody').appendChild(tr);
+        }
+    </script>
 }

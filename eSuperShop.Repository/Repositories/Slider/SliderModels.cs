@@ -1,4 +1,6 @@
-﻿using eSuperShop.Data;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using eSuperShop.Data;
+
 
 namespace eSuperShop.Repository
 {
