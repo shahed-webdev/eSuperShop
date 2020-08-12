@@ -1,4 +1,5 @@
 ﻿
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace eSuperShop.Web.Controllers
 
         //GET: Admin Login
         [AllowAnonymous]
-        public ActionResult AdminLogin(string returnUrl)
+        public IActionResult AdminLogin(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
