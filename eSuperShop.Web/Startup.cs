@@ -49,20 +49,6 @@ namespace eSuperShop.Web
 
             //services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-
-            //for fire-base auth
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-            {
-                options.Authority = "https://securetoken.google.com/e-supershopweb";
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = "https://securetoken.google.com/e-supershopweb",
-                    ValidateAudience = true,
-                    ValidAudience = "e-supershopweb",
-                    ValidateLifetime = true
-                };
-            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
