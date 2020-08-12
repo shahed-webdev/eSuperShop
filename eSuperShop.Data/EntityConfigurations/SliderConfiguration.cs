@@ -16,7 +16,10 @@ namespace eSuperShop.Data
                 .IsRequired()
                 .HasColumnName("ImageURL")
                 .HasMaxLength(255);
-
+            builder.Property(e => e.RedirectUrl)
+                .IsRequired()
+                .HasColumnName("RedirectURL")
+                .HasMaxLength(500);
             builder.Property(e => e.DisplayPlace)
                 .IsRequired()
                 .HasMaxLength(128)

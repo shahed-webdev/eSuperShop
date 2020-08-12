@@ -6,6 +6,7 @@ namespace eSuperShop.Repository
     {
         public int SliderId { get; set; }
         public string ImageUrl { get; set; }
+        public string RedirectUrl { get; set; }
         public int? DisplayOrder { get; set; }
         public SliderDisplayPlace DisplayPlace { get; set; }
         public int CreatedByRegistrationId { get; set; }
@@ -14,6 +15,7 @@ namespace eSuperShop.Repository
     {
         public int SliderId { get; set; }
         public string ImageUrl { get; set; }
+        public string RedirectUrl { get; set; }
         public int? DisplayOrder { get; set; }
         public SliderDisplayPlace DisplayPlace { get; set; }
         public string CreatedBy { get; set; }
@@ -22,5 +24,6 @@ namespace eSuperShop.Repository
     {
         public int SliderId { get; set; }
         public string ImageUrl { get; set; }
+        public string RedirectUrl { get; set; }
     }
 }
