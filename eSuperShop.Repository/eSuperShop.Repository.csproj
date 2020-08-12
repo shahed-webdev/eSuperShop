@@ -10,8 +10,11 @@
 
   <ItemGroup>
     <Folder Include="Repositories\Catalog\" />
-    <Folder Include="Repositories\Registration\" />
     <Folder Include="Repositories\Seo\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
   </ItemGroup>
 
 </Project>

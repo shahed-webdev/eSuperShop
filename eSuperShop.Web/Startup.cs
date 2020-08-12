@@ -1,4 +1,6 @@
+using AutoMapper;
 using eSuperShop.Data;
+using eSuperShop.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +22,8 @@ namespace eSuperShop.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(AutoMappingProfile));
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
 
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
