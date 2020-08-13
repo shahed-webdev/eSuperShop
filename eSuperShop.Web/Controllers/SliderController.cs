@@ -1,15 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
-using eSuperShop.Web.CloudStorage;
-using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -18,9 +15,9 @@ namespace eSuperShop.Web.Controllers
         private readonly SliderCore _slider;
         private readonly ICloudStorage _cloudStorage;
 
-        public SliderController(IMapper mapper, IUnitOfWork db, ICloudStorage cloudStorage)
+        public SliderController(ICloudStorage cloudStorage, SliderCore slider)
         {
-            _slider = new SliderCore(mapper, db);
+            _slider = slider;
             _cloudStorage = cloudStorage;
         }
 
@@ -35,7 +32,7 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> Add(SliderAddModel model, IFormFile image)
         {
             model.ImageUrl = await _cloudStorage.UploadFileAsync(image, FormFileName("slider", image.FileName));
-            
+
             var response = _slider.Add(model, User.Identity.Name);
             return Json(response);
         }
@@ -45,7 +42,7 @@ namespace eSuperShop.Web.Controllers
         {
             var fileExtension = Path.GetExtension(fileName);
             var fileNameForStorage = $"{title}-{DateTime.Now:yyyyMMddHHmmss}{fileExtension}";
-           
+
             return fileNameForStorage;
         }
     }

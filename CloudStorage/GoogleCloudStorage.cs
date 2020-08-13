@@ -5,7 +5,7 @@ using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace eSuperShop.Web.CloudStorage
+namespace CloudStorage
 {
     public class GoogleCloudStorage : ICloudStorage
     {
@@ -23,7 +23,7 @@ namespace eSuperShop.Web.CloudStorage
         {
             await using var memoryStream = new MemoryStream();
             await imageFile.CopyToAsync(memoryStream);
-            
+
             var dataObject = await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, null, memoryStream);
             return dataObject.MediaLink;
         }

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSuperShop.Data", "eSuperSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSuperShop.Repository", "eSuperShop.Repository\eSuperShop.Repository.csproj", "{2639D253-9FBD-48D5-A73D-9B76DA286498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSuperShop.BusinessLogic", "eSuperShop.BusinessLogic\eSuperShop.BusinessLogic.csproj", "{6B81B04A-A67E-4C16-B93D-931DA01EF73D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSuperShop.BusinessLogic", "eSuperShop.BusinessLogic\eSuperShop.BusinessLogic.csproj", "{6B81B04A-A67E-4C16-B93D-931DA01EF73D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage", "CloudStorage\CloudStorage.csproj", "{3C6F9B92-B066-41DC-91C6-FFDC0CB33F40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6B81B04A-A67E-4C16-B93D-931DA01EF73D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B81B04A-A67E-4C16-B93D-931DA01EF73D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B81B04A-A67E-4C16-B93D-931DA01EF73D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C6F9B92-B066-41DC-91C6-FFDC0CB33F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C6F9B92-B066-41DC-91C6-FFDC0CB33F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C6F9B92-B066-41DC-91C6-FFDC0CB33F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C6F9B92-B066-41DC-91C6-FFDC0CB33F40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

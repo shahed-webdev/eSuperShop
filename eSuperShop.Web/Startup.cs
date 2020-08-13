@@ -1,7 +1,8 @@
 using AutoMapper;
+using CloudStorage;
+using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
 using eSuperShop.Repository;
-using eSuperShop.Web.CloudStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,8 +24,7 @@ namespace eSuperShop.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //for google storage
-            services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
+
 
             services.AddAutoMapper(typeof(AutoMappingProfile));
 
@@ -51,10 +51,14 @@ namespace eSuperShop.Web
                 config.LoginPath = "/Account";
             });
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
-            
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //for google storage
+            services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
+
+            services.AddTransient<SliderCore>();
+
+            services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -69,7 +73,7 @@ namespace eSuperShop.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
-      
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
