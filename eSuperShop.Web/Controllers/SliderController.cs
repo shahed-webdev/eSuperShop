@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eSuperShop.Web.Controllers
 {
+    [Authorize]
     public class SliderController : Controller
     {
         private readonly SliderCore _slider;
@@ -23,7 +25,7 @@ namespace eSuperShop.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.DisplayPlace = new SelectList(_slider.DisplayPlaceDdl(), "value", "label");
+            ViewBag.DisplayPlace = new SelectList(_slider.DisplayPlaceDdl(), "label", "label");
             var response = _slider.List();
 
             return View(response.Data);
@@ -31,7 +33,9 @@ namespace eSuperShop.Web.Controllers
 
         public async Task<IActionResult> Add(SliderAddModel model, IFormFile image)
         {
-            model.ImageUrl = await _cloudStorage.UploadFileAsync(image, FormFileName("slider", image.FileName));
+            var fileName = FormFileName("slider", image.FileName);
+            model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            model.FileName = fileName;
 
             var response = _slider.Add(model, User.Identity.Name);
             return Json(response);

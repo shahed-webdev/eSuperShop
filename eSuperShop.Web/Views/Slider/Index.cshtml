@@ -111,8 +111,8 @@
             const formData = new FormData();
             formData.append("image", file);
             formData.append("RedirectUrl", addForm.inputRedirectUrl.value);
-            formData.append("DisplayOrder", addForm.inputDisplayOrder.value);
-            formData.append("DisplayPlace", addForm.inputDisplayPlace.selectedValue);
+            formData.append("DisplayOrder", +addForm.inputDisplayOrder.value);
+            formData.append("DisplayPlace", [addForm.inputDisplayPlace.selectedValue]);
 
             $.ajax({
                 type: "POST",
