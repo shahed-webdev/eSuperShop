@@ -1,23 +1,23 @@
 ﻿using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace eSuperShop.Web.Controllers
 {
     [Authorize]
     public class SliderController : Controller
     {
-        private readonly SliderCore _slider;
+        private readonly ISliderCore _slider;
         private readonly ICloudStorage _cloudStorage;
 
-        public SliderController(ICloudStorage cloudStorage, SliderCore slider)
+        public SliderController(ICloudStorage cloudStorage, ISliderCore slider)
         {
             _slider = slider;
             _cloudStorage = cloudStorage;
