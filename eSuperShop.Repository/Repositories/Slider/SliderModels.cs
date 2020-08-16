@@ -10,7 +10,7 @@ namespace eSuperShop.Repository
         public string RedirectUrl { get; set; }
         public string FileName { get; set; }
         public int? DisplayOrder { get; set; }
-        public SliderDisplayPlace DisplayPlace { get; set; }
+        public string DisplayPlace { get; set; }
         public int CreatedByRegistrationId { get; set; }
     }
     public class SliderListModel

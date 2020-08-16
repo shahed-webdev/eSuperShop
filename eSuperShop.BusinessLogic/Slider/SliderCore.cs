@@ -6,8 +6,9 @@ using System.Collections.Generic;
 
 namespace eSuperShop.BusinessLogic
 {
-    public class SliderCore
+    public class SliderCore : ISliderCore
     {
+
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
         public SliderCore(IMapper mapper, IUnitOfWork db)
@@ -78,7 +79,6 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<List<SliderListModel>>(false, e.Message);
             }
         }
-
         public List<DDL> DisplayPlaceDdl()
         {
             return _db.Slider.SliderPlaceDdl();

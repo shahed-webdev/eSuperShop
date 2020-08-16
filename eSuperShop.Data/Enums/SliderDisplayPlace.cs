@@ -1,5 +1,8 @@
-﻿namespace eSuperShop.Data
+﻿using System;
+
+namespace eSuperShop.Data
 {
+    [Flags]
     public enum SliderDisplayPlace
     {
         Main,
