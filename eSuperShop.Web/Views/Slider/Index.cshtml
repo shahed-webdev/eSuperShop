@@ -85,12 +85,12 @@
     <partial name="_ValidationScriptsPartial"/>
 
     <script>
-        $(function() {
+        $(function () {
             // Material Select Initialization
             $('.mdb-select').materialSelect();
         });
 
-        $('input[type="file"]').change(function(e) {
+        $('input[type="file"]').change(function (e) {
             const $this = $(e.target);
             const $fileField = $this.closest('.file-field');
             const $pathInput = $fileField.find('input.file-path');
@@ -106,7 +106,7 @@
         const addForm = document.getElementById('addForm');
         const tBody = document.getElementById('tBody');
 
-        addForm.addEventListener('submit', function(evt) {
+        addForm.addEventListener('submit', function (evt) {
             evt.preventDefault();
 
             const file = document.getElementById("fileImage").files[0];
@@ -123,7 +123,7 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     if (!response.IsSuccess) return;
 
@@ -155,30 +155,42 @@
             td3.textContent = data.DisplayPlace;
             tr.appendChild(td3);
 
-            tBody.appendChild(tr);
-        }
+            const td4 = document.createElement("td");
+            const btnDelete = document.createElement("button");
 
-        //delete
-        tBody.addEventListener('click', function(evt) {
-            const element = evt.target;
+            btnDelete.className = "btnDelete btn btn-sm btn-danger";
+            btnDelete.textContent = "delete";
+            btnDelete.setAttribute("data-filename",data.FileName);
+            btnDelete.setAttribute("data-id", data.SliderId);
+            td4.appendChild(btnDelete);
 
-            const onBtnDelete = element.classList.contains('btnDelete');
-            if (!onBtnDelete) return;
+            tr.appendChild(td4);
 
-            const fileName = element.getAttribute('data-filename');
-            const id = element.getAttribute('data-id');
 
-            $.ajax({
-                type: "POST",
-                url: "/Slider/Delete",
-                data: { fileName, id },
-                success: function(response) {
-                    console.log(response);
-                    if (response.IsSuccess) {
+        tBody.appendChild(tr);
+    }
 
-                    }
+    //delete
+    tBody.addEventListener('click', function (evt) {
+        const element = evt.target;
+
+        const onBtnDelete = element.classList.contains('btnDelete');
+        if (!onBtnDelete) return;
+
+        const fileName = element.getAttribute('data-filename');
+        const id = element.getAttribute('data-id');
+
+        $.ajax({
+            type: "POST",
+            url: "/Slider/Delete",
+            data: { fileName, id },
+            success: function (response) {
+                console.log(response);
+                if (response.IsSuccess) {
+                    element.parentElement.parentElement.remove()
                 }
-            });
+            }
         });
+    });
     </script>
 }
