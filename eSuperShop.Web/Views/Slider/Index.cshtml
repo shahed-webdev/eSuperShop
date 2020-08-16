@@ -62,6 +62,7 @@
                 <th><strong>Image</strong></th>
                 <th><strong>Order</strong></th>
                 <th><strong>Place</strong></th>
+                <th><strong>Delete</strong></th>
             </tr>
         </thead>
         <tbody id="tBody">
@@ -71,6 +72,7 @@
                     <td><img src="@item.ImageUrl" /></td>
                     <td>@item.DisplayOrder</td>
                     <td>@item.DisplayPlace</td>
+                    <td><button data-id="@item.SliderId" data-filename="@item.FileName" class="btnDelete btn btn-sm btn-danger">Delete</button></td>
                 </tr>
             }
 
@@ -102,6 +104,7 @@
 
         //upload image
         const addForm = document.getElementById('addForm');
+        const tBody = document.getElementById('tBody');
 
         addForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
@@ -111,8 +114,8 @@
             const formData = new FormData();
             formData.append("image", file);
             formData.append("RedirectUrl", addForm.inputRedirectUrl.value);
-            formData.append("DisplayOrder", +addForm.inputDisplayOrder.value);
-            formData.append("DisplayPlace", [addForm.inputDisplayPlace.selectedValue]);
+            formData.append("DisplayOrder", addForm.inputDisplayOrder.value);
+            formData.append("DisplayPlace", addForm.inputDisplayPlace.options[addForm.inputDisplayPlace.selectedIndex].text);
 
             $.ajax({
                 type: "POST",
@@ -120,9 +123,9 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
-                    if(!response.IsSuccess) return;
+                    if (!response.IsSuccess) return;
 
                     addForm.fileImage.value = "";
                     addForm.filePath.value = "";
@@ -152,7 +155,30 @@
             td3.textContent = data.DisplayPlace;
             tr.appendChild(td3);
 
-            document.getElementById('tBody').appendChild(tr);
+            tBody.appendChild(tr);
         }
+
+        //delete
+        tBody.addEventListener('click', function(evt) {
+            const element = evt.target;
+
+            const onBtnDelete = element.classList.contains('btnDelete');
+            if (!onBtnDelete) return;
+
+            const fileName = element.getAttribute('data-filename');
+            const id = element.getAttribute('data-id');
+
+            $.ajax({
+                type: "POST",
+                url: "/Slider/Delete",
+                data: { fileName, id },
+                success: function(response) {
+                    console.log(response);
+                    if (response.IsSuccess) {
+
+                    }
+                }
+            });
+        });
     </script>
 }
