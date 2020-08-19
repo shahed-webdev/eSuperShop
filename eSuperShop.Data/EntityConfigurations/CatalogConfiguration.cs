@@ -31,6 +31,8 @@ namespace eSuperShop.Data
                 .HasForeignKey(d => d.CreatedByRegistrationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Catalog_Registration");
+
+            // builder.HasOne(e => e.Seo).WithOne().HasForeignKey<Seo>(e => e.SeoId);
         }
     }
 }

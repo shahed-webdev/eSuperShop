@@ -23,6 +23,7 @@ namespace eSuperShop.Data
         public int CreatedByRegistrationId { get; set; }
 
         public virtual Registration CreatedByRegistration { get; set; }
+        public virtual Seo Seo { get; set; }
         public virtual ICollection<CatalogShownPlace> CatalogShownPlace { get; set; }
     }
 }
