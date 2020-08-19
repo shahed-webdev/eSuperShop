@@ -1,6 +1,6 @@
 ﻿namespace eSuperShop.BusinessLogic
 {
-    public class CatalogCore : ICatalogCore
+    public class CatalogCore //: ICatalogCore
     {
 
     }

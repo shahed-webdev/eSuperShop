@@ -7,6 +7,7 @@ namespace eSuperShop.Data
     {
         public Catalog()
         {
+            SubCatalog = new HashSet<Catalog>();
             CatalogShownPlace = new HashSet<CatalogShownPlace>();
         }
 
@@ -25,5 +26,8 @@ namespace eSuperShop.Data
         public virtual Registration CreatedByRegistration { get; set; }
         public virtual Seo Seo { get; set; }
         public virtual ICollection<CatalogShownPlace> CatalogShownPlace { get; set; }
+
+        public virtual Catalog ParentCatalog { get; set; }
+        public virtual ICollection<Catalog> SubCatalog { get; set; }
     }
 }
