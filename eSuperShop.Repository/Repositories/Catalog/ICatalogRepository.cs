@@ -13,10 +13,13 @@ namespace eSuperShop.Repository
         bool IsExistName(string name);
         bool IsExistName(string name, int updateId);
         bool IsIsNull(int id);
+        bool IsRelatedDataExist(int id);
         List<CatalogDisplayModel> Display(CatalogDisplayPlace place, int numberOfItem);
         List<CatalogDisplayModel> DisplaySubCatalog(int parentCatalogId, int numberOfItem);
 
-        List<SliderListModel> List();
+        List<CatalogModel> List();
         List<DDL> SliderPlaceDdl();
+        List<DDL> ListDdl();
+        string Breadcrumb(int id);
     }
 }

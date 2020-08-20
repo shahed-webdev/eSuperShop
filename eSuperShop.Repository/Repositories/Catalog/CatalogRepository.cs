@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace eSuperShop.Repository
 {
@@ -14,57 +18,114 @@ namespace eSuperShop.Repository
         public Catalog Catalog { get; set; }
         public void Add(CatalogAddModel model)
         {
-            throw new System.NotImplementedException();
+            Catalog = _mapper.Map<Catalog>(model);
+            Db.Catalog.Add(Catalog);
         }
 
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            Catalog = Db.Catalog.Find(id);
+            Db.Catalog.Remove(Catalog);
         }
 
         public bool IsExistSlugUrl(string slugUrl)
         {
-            throw new System.NotImplementedException();
+            return Db.Catalog.Any(c => c.SlugUrl == slugUrl);
         }
 
         public bool IsExistSlugUrl(string slugUrl, int updateId)
         {
-            throw new System.NotImplementedException();
+            return Db.Catalog.Any(c => c.SlugUrl == slugUrl && c.CatalogId != updateId);
         }
 
         public bool IsExistName(string name)
         {
-            throw new System.NotImplementedException();
+            return Db.Catalog.Any(c => c.CatalogName == name);
         }
 
         public bool IsExistName(string name, int updateId)
         {
-            throw new System.NotImplementedException();
+            return Db.Catalog.Any(c => c.CatalogName == name && c.CatalogId != updateId);
         }
 
         public bool IsIsNull(int id)
         {
-            throw new System.NotImplementedException();
+            return Db.Catalog.Any(c => c.CatalogId == id);
+        }
+
+        public bool IsRelatedDataExist(int id)
+        {
+            return Db.Catalog.Any(c => c.ParentCatalogId == id) || Db.CatalogShownPlace.Any(c => c.CatalogId == id);
         }
 
         public List<CatalogDisplayModel> Display(CatalogDisplayPlace place, int numberOfItem)
         {
-            throw new System.NotImplementedException();
+            return Db.CatalogShownPlace.Include(c => c.Catalog)
+                .Where(c => c.ShownPlace == place)
+                .Take(numberOfItem)
+                .Select(c => c.Catalog)
+                .ProjectTo<CatalogDisplayModel>(_mapper.ConfigurationProvider)
+                .ToList();
         }
 
         public List<CatalogDisplayModel> DisplaySubCatalog(int parentCatalogId, int numberOfItem)
         {
-            throw new System.NotImplementedException();
+            return Db.Catalog
+                .Where(c => c.ParentCatalogId == parentCatalogId)
+                .Take(numberOfItem)
+                .ProjectTo<CatalogDisplayModel>(_mapper.ConfigurationProvider)
+                .ToList();
         }
 
-        public List<SliderListModel> List()
+        public List<CatalogModel> List()
         {
-            throw new System.NotImplementedException();
+            return Db.Catalog
+                .ProjectTo<CatalogModel>(_mapper.ConfigurationProvider)
+                .ToList();
         }
 
         public List<DDL> SliderPlaceDdl()
         {
-            throw new System.NotImplementedException();
+            var list = from CatalogDisplayPlace a in Enum.GetValues(typeof(CatalogDisplayPlace))
+                       select
+                           new DDL
+                           {
+                               label = a.ToString(),
+                               value = (int)a
+                           };
+            return list.ToList();
+        }
+
+        public List<DDL> ListDdl()
+        {
+            var ddl = Db.Catalog
+                .AsEnumerable()?
+                .ToList().OrderBy(c => c.ParentCatalogId).ThenBy(c => c.CatalogName)
+                .Select(c => new DDL
+                {
+                    value = c.CatalogId,
+                    label = CatalogDllFunction(c.ParentCatalog, c.CatalogName)
+                });
+
+            return ddl?.ToList() ?? new List<DDL>();
+        }
+
+        public string Breadcrumb(int id)
+        {
+            return Db.Catalog
+                .Where(c => c.CatalogId == id)
+                .AsEnumerable()?
+                .Select(c => CatalogDllFunction(c.ParentCatalog, c.CatalogName))
+                .FirstOrDefault();
+        }
+
+        string CatalogDllFunction(Catalog catalog, string cat)
+        {
+            if (catalog != null)
+            {
+                cat = CatalogDllFunction(catalog.ParentCatalog, catalog.CatalogName) + ">" + cat;
+            }
+            return cat;
         }
     }
 }

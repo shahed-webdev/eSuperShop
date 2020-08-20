@@ -6,7 +6,7 @@ namespace eSuperShop.BusinessLogic
 {
     public interface ICatalogCore
     {
-        DbResponse<SliderListModel> Add(CatalogAddModel model, string userName);
+        DbResponse<CatalogDisplayModel> Add(CatalogAddModel model, string userName);
         DbResponse Delete(int id);
         DbResponse<List<CatalogDisplayModel>> Display(CatalogDisplayPlace place, int numberOfItem);
         DbResponse<List<CatalogModel>> List();

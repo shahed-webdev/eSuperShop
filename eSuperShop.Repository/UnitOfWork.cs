@@ -14,10 +14,13 @@ namespace eSuperShop.Repository
 
             Registration = new RegistrationRepository(_db, _mapper);
             Slider = new SliderRepository(_db, _mapper);
+            Catalog = new CatalogRepository(_db, _mapper);
         }
 
         public IRegistrationRepository Registration { get; }
         public ISliderRepository Slider { get; }
+        public ICatalogRepository Catalog { get; }
+
         public void Dispose()
         {
             _db.Dispose();
