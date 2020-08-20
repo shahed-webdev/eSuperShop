@@ -24,12 +24,8 @@ namespace eSuperShop.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-
             services.AddAutoMapper(typeof(AutoMappingProfile));
-
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
-
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
                 {
                     config.Password = new PasswordOptions
@@ -53,6 +49,7 @@ namespace eSuperShop.Web
 
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            
             //for google storage
             services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
 

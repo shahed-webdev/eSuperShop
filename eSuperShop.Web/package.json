@@ -1,0 +1,27 @@
+{
+  "name": "e-super-shop.vue",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev WATCH=true webpack --env.watch=true --progress --hide-modules",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-cookies": "^1.7.3"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "cross-env": "^7.0.2",
+    "css-loader": "^4.2.1",
+    "file-loader": "^6.0.0",
+    "fs": "^0.0.1-security",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^9.0.3",
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^4.1.0",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
