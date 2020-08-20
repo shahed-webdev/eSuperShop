@@ -11,6 +11,11 @@ namespace eSuperShop.Repository
             CreateMap<Slider, SliderSlideModel>().ReverseMap();
             CreateMap<Slider, SliderListModel>().ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
             CreateMap<SliderListModel, SliderSlideModel>().ReverseMap();
+
+            CreateMap<Catalog, CatalogAddModel>().ReverseMap();
+            CreateMap<Catalog, CatalogModel>().ReverseMap();
+            CreateMap<Catalog, CatalogDisplayModel>().ReverseMap();
+
         }
     }
 }

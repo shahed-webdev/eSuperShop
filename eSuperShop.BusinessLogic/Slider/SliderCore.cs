@@ -42,7 +42,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_db.Slider.IsExist(id)) return new DbResponse(false, "No data Found");
+                if (!_db.Slider.IsNull(id)) return new DbResponse(false, "No data Found");
 
                 _db.Slider.Delete(id);
                 _db.SaveChanges();

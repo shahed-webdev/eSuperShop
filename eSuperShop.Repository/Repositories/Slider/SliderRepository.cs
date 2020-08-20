@@ -28,7 +28,7 @@ namespace eSuperShop.Repository
             Db.Slider.Remove(Slider);
         }
 
-        public bool IsExist(int id)
+        public bool IsNull(int id)
         {
             return Db.Slider.Any(s => s.SliderId == id);
         }

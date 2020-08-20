@@ -5,7 +5,6 @@ namespace eSuperShop.Repository
 {
     public class SliderAddModel
     {
-        public int SliderId { get; set; }
         public string ImageUrl { get; set; }
         public string RedirectUrl { get; set; }
         public string FileName { get; set; }

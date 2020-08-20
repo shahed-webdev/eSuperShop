@@ -6,6 +6,7 @@ namespace eSuperShop.Repository
     {
         IRegistrationRepository Registration { get; }
         ISliderRepository Slider { get; }
+        ICatalogRepository Catalog { get; }
         int SaveChanges();
     }
 }

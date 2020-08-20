@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eSuperShop.Data;
 
 namespace eSuperShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200819051627_RelationWithCatalogSeo")]
+    partial class RelationWithCatalogSeo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -306,8 +308,6 @@ namespace eSuperShop.Data.Migrations
 
                     b.HasIndex("CreatedByRegistrationId");
 
-                    b.HasIndex("ParentCatalogId");
-
                     b.ToTable("Catalog");
                 });
 
@@ -541,12 +541,6 @@ namespace eSuperShop.Data.Migrations
                         .WithMany("Catalog")
                         .HasForeignKey("CreatedByRegistrationId")
                         .HasConstraintName("FK_Catalog_Registration")
-                        .IsRequired();
-
-                    b.HasOne("eSuperShop.Data.Catalog", "ParentCatalog")
-                        .WithMany("SubCatalog")
-                        .HasForeignKey("ParentCatalogId")
-                        .HasConstraintName("FK_Catalog_Catalog")
                         .IsRequired();
                 });
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace eSuperShop.Data
 {
@@ -15,7 +16,8 @@ namespace eSuperShop.Data
 
             builder.Property(e => e.ShownPlace)
                 .IsRequired()
-                .HasMaxLength(128);
+                .HasMaxLength(128)
+                .HasConversion(c => c.ToString(), c => Enum.Parse<CatalogDisplayPlace>(c));
 
             builder.HasOne(d => d.Catalog)
                 .WithMany(p => p.CatalogShownPlace)

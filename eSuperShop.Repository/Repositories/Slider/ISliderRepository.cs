@@ -8,7 +8,7 @@ namespace eSuperShop.Repository
         Slider Slider { get; set; }
         void Add(SliderAddModel model);
         void Delete(int id);
-        bool IsExist(int id);
+        bool IsNull(int id);
         List<SliderSlideModel> Display(SliderDisplayPlace place);
         List<SliderListModel> List();
         List<DDL> SliderPlaceDdl();
