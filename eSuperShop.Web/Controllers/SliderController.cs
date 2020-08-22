@@ -34,7 +34,7 @@ namespace eSuperShop.Web.Controllers
         //add slider
         public async Task<IActionResult> Add(SliderAddModel model, IFormFile image)
         {
-            var fileName = FormFileName("slider", image.FileName);
+            var fileName = FileBuilder.FileNameImage("slider", image.FileName);
             model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
             model.FileName = fileName;
 
@@ -51,13 +51,5 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-        //for file name
-        private static string FormFileName(string title, string fileName)
-        {
-            var fileExtension = Path.GetExtension(fileName);
-            var fileNameForStorage = $"{title}-{DateTime.Now:yyyyMMddHHmmss}{fileExtension}";
-
-            return fileNameForStorage;
-        }
     }
 }

@@ -1,11 +1,13 @@
 ﻿
 import Vue from 'vue';
-import myhome from './home.vue';
+import MainSlider from './mainSlider.vue';
+import SideSlider from './sideSlider.vue';
 
 
 const vue = new Vue({
-    el: "#app",
+    el: "#homeApp",
     components: {
-        myhome
+        MainSlider,
+        SideSlider
     }
 });

@@ -17,7 +17,7 @@
             var self = this; // the vue instance
             $('.datepicker').pickadate({
                 onSet: function (context) {
-                    self.date= context
+                    self.date = context
                 }
             })
         }

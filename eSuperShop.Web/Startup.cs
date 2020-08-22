@@ -54,6 +54,8 @@ namespace eSuperShop.Web
             services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
 
             services.AddTransient<ISliderCore, SliderCore>();
+            services.AddTransient<ICatalogCore, CatalogCore>();
+
 
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
         }
