@@ -49,8 +49,8 @@ namespace eSuperShop.Repository
                        select
                            new DDL
                            {
-                               label = a.ToString(),
-                               value = (int)a
+                               label = a.GetDescription(),
+                               value = a.ToString()
                            };
             return list.ToList();
         }
