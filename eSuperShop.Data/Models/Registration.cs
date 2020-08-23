@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace eSuperShop.Data
 {
-    public partial class Registration
+    public class Registration
     {
         public Registration()
         {

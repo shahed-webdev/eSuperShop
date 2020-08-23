@@ -2,7 +2,7 @@
 
 namespace eSuperShop.Data
 {
-    public partial class Slider
+    public class Slider
     {
         public int SliderId { get; set; }
         public string ImageUrl { get; set; }

@@ -2,7 +2,7 @@
 
 namespace eSuperShop.Data
 {
-    public partial class CatalogShownPlace
+    public class CatalogShownPlace
     {
         public int CatalogShownPlaceId { get; set; }
         public int CatalogId { get; set; }
