@@ -2,7 +2,7 @@
 
 namespace eSuperShop.Data
 {
-    public partial class Seo
+    public class Seo
     {
         public int SeoId { get; set; }
         public string MetaKeywords { get; set; }

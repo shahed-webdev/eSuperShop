@@ -8,7 +8,7 @@ namespace eSuperShop.Repository
     {
         public string CatalogName { get; set; }
         public string SlugUrl { get; set; }
-        public int ParentCatalogId { get; set; }
+        public int? ParentCatalogId { get; set; }
         public string ImageUrl { get; set; }
         public bool IsActive { get; set; }
         public int DisplayOrder { get; set; }

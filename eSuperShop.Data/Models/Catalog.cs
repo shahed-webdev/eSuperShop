@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace eSuperShop.Data
 {
-    public partial class Catalog
+    public class Catalog
     {
         public Catalog()
         {
@@ -14,7 +14,7 @@ namespace eSuperShop.Data
         public int CatalogId { get; set; }
         public string CatalogName { get; set; }
         public string SlugUrl { get; set; }
-        public int ParentCatalogId { get; set; }
+        public int? ParentCatalogId { get; set; }
         public string ImageUrl { get; set; }
         public bool IsActive { get; set; }
         public int DisplayOrder { get; set; }
