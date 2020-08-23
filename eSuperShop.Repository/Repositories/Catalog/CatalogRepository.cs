@@ -16,6 +16,7 @@ namespace eSuperShop.Repository
 
 
         public Catalog Catalog { get; set; }
+        public CatalogShownPlace CatalogShownPlace { get; set; }
         public void Add(CatalogAddModel model)
         {
             Catalog = _mapper.Map<Catalog>(model);
@@ -117,6 +118,32 @@ namespace eSuperShop.Repository
                 .AsEnumerable()?
                 .Select(c => CatalogDllFunction(c.ParentCatalog, c.CatalogName))
                 .FirstOrDefault();
+        }
+
+        public void PlaceAssign(CatalogAssignModel model)
+        {
+            if (this.IsPlaceAssign(model.CatalogId, model.ShownPlace))
+            {
+                CatalogShownPlace.DisplayOrder = model.DisplayOrder;
+                Db.CatalogShownPlace.Update(CatalogShownPlace);
+            }
+            else
+            {
+                CatalogShownPlace = _mapper.Map<CatalogShownPlace>(model);
+                Db.CatalogShownPlace.Add(CatalogShownPlace);
+            }
+
+        }
+
+        public bool IsPlaceAssign(int catalogId, CatalogDisplayPlace shownPlace)
+        {
+            CatalogShownPlace = Db.CatalogShownPlace.FirstOrDefault(c => c.CatalogId == catalogId && c.ShownPlace == shownPlace);
+            return CatalogShownPlace != null;
+        }
+
+        public void PlaceDelete(int catalogId, CatalogDisplayPlace shownPlace)
+        {
+            Db.CatalogShownPlace.Remove(CatalogShownPlace);
         }
 
         string CatalogDllFunction(Catalog catalog, string cat)

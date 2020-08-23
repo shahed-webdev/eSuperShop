@@ -126,5 +126,45 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<List<DDL>>(false, e.Message);
             }
         }
+
+        public DbResponse<CatalogAssignModel> AssignPlace(CatalogAssignModel model, string userName)
+        {
+            try
+            {
+                var registrationId = _db.Registration.GetRegID_ByUserName(userName);
+                if (registrationId == 0) return new DbResponse<CatalogAssignModel>(false, "Invalid User");
+
+                model.CreatedByRegistrationId = registrationId;
+
+                _db.Catalog.PlaceAssign(model);
+                _db.SaveChanges();
+
+                var data = _mapper.Map<CatalogAssignModel>(_db.Catalog.CatalogShownPlace);
+
+                return new DbResponse<CatalogAssignModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<CatalogAssignModel>(false, e.Message);
+            }
+        }
+
+        public DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace)
+        {
+            try
+            {
+                if (!_db.Catalog.IsPlaceAssign(catalogId, shownPlace))
+                    return new DbResponse(false, "Data not found");
+
+                _db.Catalog.PlaceDelete(catalogId, shownPlace);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }

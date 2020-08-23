@@ -16,6 +16,7 @@ namespace eSuperShop.Repository
             CreateMap<Catalog, CatalogModel>().ReverseMap();
             CreateMap<Catalog, CatalogDisplayModel>().ReverseMap();
 
+            CreateMap<CatalogShownPlace, CatalogAssignModel>().ReverseMap();
         }
     }
 }

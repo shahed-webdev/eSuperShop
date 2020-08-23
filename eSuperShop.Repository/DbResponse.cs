@@ -15,7 +15,7 @@
         }
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
-        public string FieldName { get; set; }
+        public string FieldName { get; set; } = "dbCustomError";
     }
     public class DbResponse<TObject>
     {

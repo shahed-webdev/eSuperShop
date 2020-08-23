@@ -43,4 +43,14 @@ namespace eSuperShop.Repository
         public string ImageUrl { get; set; }
         public IEnumerable<CatalogModel> SubCatalog { get; set; }
     }
+
+    public class CatalogAssignModel
+    {
+        public int CatalogShownPlaceId { get; set; }
+        public int CatalogId { get; set; }
+        public CatalogDisplayPlace ShownPlace { get; set; }
+        public int DisplayOrder { get; set; }
+        public int CreatedByRegistrationId { get; set; }
+    }
+
 }
