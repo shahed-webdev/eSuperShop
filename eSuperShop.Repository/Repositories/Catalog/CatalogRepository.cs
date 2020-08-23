@@ -88,13 +88,17 @@ namespace eSuperShop.Repository
         public List<DDL> SliderPlaceDdl()
         {
             var list = from CatalogDisplayPlace a in Enum.GetValues(typeof(CatalogDisplayPlace))
-                select new DDL
-                {
-                    label = a.ToString(),
-                    value = (int) a
-                };
+                       select
+                           new DDL
+                           {
+                               label = a.GetDescription(),
+                               value = a.ToString()
+                           };
             return list.ToList();
         }
+
+
+
 
         public List<DDL> ListDdl()
         {
@@ -103,7 +107,7 @@ namespace eSuperShop.Repository
                 .ToList().OrderBy(c => c.ParentCatalogId).ThenBy(c => c.CatalogName)
                 .Select(c => new DDL
                 {
-                    value = c.CatalogId,
+                    value = c.CatalogId.ToString(),
                     label = CatalogDllFunction(c.ParentCatalog, c.CatalogName)
                 });
 
