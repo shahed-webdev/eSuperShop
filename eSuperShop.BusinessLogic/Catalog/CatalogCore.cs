@@ -31,10 +31,10 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<CatalogDisplayModel>(false, "Invalid Data");
 
                 if (_db.Catalog.IsExistName(model.CatalogName))
-                    return new DbResponse<CatalogDisplayModel>(false, "Catalog Name already Exist");
+                    return new DbResponse<CatalogDisplayModel>(false, "Catalog Name already Exist", null, "CatalogName");
 
                 if (_db.Catalog.IsExistSlugUrl(model.SlugUrl))
-                    return new DbResponse<CatalogDisplayModel>(false, "SlugUrl already Exist");
+                    return new DbResponse<CatalogDisplayModel>(false, "SlugUrl already Exist", null, "SlugUrl");
 
 
                 _db.Catalog.Add(model);

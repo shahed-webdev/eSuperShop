@@ -12,5 +12,11 @@ namespace CloudStorage
 
             return fileNameForStorage;
         }
+
+        public static string FileNameFromUrl(string url)
+        {
+            var uri = new Uri(url);
+            return Path.GetFileName(uri.AbsolutePath);
+        }
     }
 }
