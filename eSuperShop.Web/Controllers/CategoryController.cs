@@ -27,9 +27,11 @@ namespace eSuperShop.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = _catalog.List();
+            return View(model.Data);
         }
 
+        //Add Catalog
         public IActionResult Add()
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
@@ -41,16 +43,45 @@ namespace eSuperShop.Web.Controllers
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
 
-            if (!ModelState.IsValid) return View(model);
-
             if (image != null)
             {
                 var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
                 model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
             }
 
-            _catalog.Add(model, User.Identity.Name);
+            var response = _catalog.Add(model, User.Identity.Name);
+
+            if (!response.IsSuccess)
+                ModelState.AddModelError(response.FieldName, response.Message);
+
+            if (!ModelState.IsValid) return View(model);
+
             return RedirectToAction("Index");
         }
+
+        //Post Show placement
+        public IActionResult Placement()
+        {
+            ViewBag.Catalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
+            ViewBag.ShownPlace = new SelectList(_catalog.DisplayPlaceDdl(), "label", "label");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Placement(CatalogAssignModel model)
+        {
+            var response = _catalog.AssignPlace(model, User.Identity.Name);
+
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+
+            return Json(response);
+        }
+
+        //Get Placement
+        //public IActionResult GetPlacement()
+        //{
+        //    var response = _catalog.Display();
+        //    return Json(response);
+        //}
     }
 }

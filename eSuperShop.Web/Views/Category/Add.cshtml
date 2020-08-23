@@ -13,21 +13,23 @@
                 <h4 class="page-header my-3 text-center">Add Category</h4>
                 <form enctype="multipart/form-data" asp-action="Add">
                     <div class="md-form">
-                        <select id="parentCatalogId" name="ParentCatalogId" asp-items="ViewBag.ParentCatalog" class="mdb-select">
+                        <select id="parentCatalogId" searchable="Find Category" name="ParentCatalogId" asp-items="ViewBag.ParentCatalog" class="mdb-select">
                             <option value="">Parent Category</option>
                         </select>
                     </div>
                     <div class="md-form">
-                        <label for="inputCatalogName">Category Name</label>
-                        <input type="text" name="CatalogName" id="inputCatalogName" class="form-control" required>
+                        <label for="CatalogName">Category Name</label>
+                        <input type="text" asp-for="CatalogName" class="form-control" required>
+                        <span asp-validation-for="CatalogName" class="field-validation-error"></span>
                     </div>
                     <div class="md-form">
-                        <label for="inputSlugUrl">Slug Url (allow: a-z, 0-9, -, %)</label>
-                        <input type="text" name="SlugUrl" id="inputSlugUrl" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" class="form-control" required>
+                        <label for="SlugUrl">Slug Url (allow: a-z, 0-9, -, %)</label>
+                        <input type="text" asp-for="SlugUrl" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" class="form-control" required>
+                        <span asp-validation-for="SlugUrl" class="field-validation-error"></span>
                     </div>
                     <div class="md-form">
                         <label for="inputDisplayOrder">Display Order</label>
-                        <input type="number" name="DisplayOrde" id="inputDisplayOrder" class="form-control">
+                        <input type="number" name="DisplayOrder" id="inputDisplayOrder" class="form-control">
                     </div>
                     <div class="md-form">
                         <div class="file-field">
@@ -42,9 +44,11 @@
                         <span id="imageError" class="field-validation-error"></span>
                     </div>
 
-                    <div class="md-form">
+                    <div class="d-flex justify-content-between align-items-center">
                         <input type="submit" value="Add" class="btn btn-danger" />
+                        <a href="/Category"><i class="far fa-long-arrow-alt-left mr-1"></i>Back to List</a>
                     </div>
+                    @Html.ValidationMessage("dbCustomError")
                 </form>
             </div>
         </div>
@@ -64,9 +68,8 @@
             const $fileField = $this.closest('.file-field');
             const $pathInput = $fileField.find('input.file-path');
             const fileNames = [];
+
             const size = e.target.files[0].size / 1024 / 1024;
-
-
             const regex = new RegExp("(.*?)\.(jpeg|jpg|png)$");
 
             if (!(regex.test(e.target.value.toLowerCase()))) {

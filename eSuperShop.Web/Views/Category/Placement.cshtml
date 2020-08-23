@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Category Placement";
+    Layout = "_AdminLayout";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card card-body">
+                <h4 class="page-header my-3 text-center">Assign Category Placement</h4>
+                <form id="formAdd">
+                    <div class="md-form">
+                        <select searchable="Find Category" id="selectCatalogId" asp-items="ViewBag.Catalog" class="mdb-select" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="md-form">
+                        <select searchable="Find Place" id="selectShownPlace" asp-items="ViewBag.ShownPlace" class="mdb-select" required>
+                            <option value="">Select Place</option>
+                        </select>
+                    </div>
+                    <div class="md-form">
+                        <label for="inputDisplayOrder">Display Order</label>
+                        <input type="number" id="inputDisplayOrder" class="form-control">
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input type="submit" value="Add" class="btn btn-danger" />
+                        <a href="/Category"><i class="far fa-long-arrow-alt-left mr-1"></i>Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+
+@section Scripts{
+    <script>
+        $(function() {
+            $('.mdb-select').materialSelect();
+        });
+
+        const formAdd = document.getElementById('formAdd');
+        formAdd.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            const CatalogId = formAdd.selectCatalogId.value;
+            const ShownPlace = formAdd.selectShownPlace.value;
+            const DisplayOrder = +formAdd.inputDisplayOrder.value;
+
+            const data = { CatalogId, ShownPlace, DisplayOrder}
+
+            $.ajax({
+                type: "POST",
+                url: "/Category/Placement",
+                data,
+                success: function(response) {
+                    console.log(response);
+                    if (!response.IsSuccess) return;
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        function getAssignedData(data) {
+            $.ajax({
+                url: "/Category/GetPlacement",
+                data,
+                success: function(response) {
+                    console.log(response);
+                    if (!response.IsSuccess) return;
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
+}

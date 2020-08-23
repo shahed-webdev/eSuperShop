@@ -88,12 +88,11 @@ namespace eSuperShop.Repository
         public List<DDL> SliderPlaceDdl()
         {
             var list = from CatalogDisplayPlace a in Enum.GetValues(typeof(CatalogDisplayPlace))
-                       select
-                           new DDL
-                           {
-                               label = a.ToString(),
-                               value = (int)a
-                           };
+                select new DDL
+                {
+                    label = a.ToString(),
+                    value = (int) a
+                };
             return list.ToList();
         }
 
