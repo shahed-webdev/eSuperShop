@@ -40,23 +40,17 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> Add(CatalogAddModel model, IFormFile image)
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
-            
-            if(!ModelState.IsValid) return View(model);
 
-            var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
-            model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
-            //model.FileName = fileName;
+            if (!ModelState.IsValid) return View(model);
 
-            var response = _catalog.Add(model, User.Identity.Name);
-            return View(response.Data);
-        }
+            if (image != null)
+            {
+                var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
+                model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            }
 
-        private static string FromFileName(string title, string fileName)
-        {
-            var fileExtension = Path.GetExtension(fileName);
-            var fileNameForStorage = $"{title}-{DateTime.Now:yyyyMMddHHmmss}{fileExtension}";
-
-            return fileNameForStorage;
+            _catalog.Add(model, User.Identity.Name);
+            return RedirectToAction("Index");
         }
     }
 }
