@@ -15,18 +15,18 @@ namespace eSuperShop.Repository
         }
 
 
-        public Catalog Catalog { get; set; }
-        public CatalogShownPlace CatalogShownPlace { get; set; }
+        public Catalog catalog { get; set; }
+        public CatalogShownPlace catalogShownPlace { get; set; }
         public void Add(CatalogAddModel model)
         {
-            Catalog = _mapper.Map<Catalog>(model);
-            Db.Catalog.Add(Catalog);
+            catalog = _mapper.Map<Catalog>(model);
+            Db.Catalog.Add(catalog);
         }
 
         public void Delete(int id)
         {
-            Catalog = Db.Catalog.Find(id);
-            Db.Catalog.Remove(Catalog);
+            catalog = Db.Catalog.Find(id);
+            Db.Catalog.Remove(catalog);
         }
 
         public bool IsExistSlugUrl(string slugUrl)
@@ -132,30 +132,35 @@ namespace eSuperShop.Repository
                 .FirstOrDefault();
         }
 
+        public CatalogDisplayModel Get(int id)
+        {
+            return Db.Catalog.ProjectTo<CatalogDisplayModel>(_mapper.ConfigurationProvider).FirstOrDefault(c => c.CatalogId == id);
+        }
+
         public void PlaceAssign(CatalogAssignModel model)
         {
             if (this.IsPlaceAssign(model.CatalogId, model.ShownPlace))
             {
-                CatalogShownPlace.DisplayOrder = model.DisplayOrder;
-                Db.CatalogShownPlace.Update(CatalogShownPlace);
+                catalogShownPlace.DisplayOrder = model.DisplayOrder;
+                Db.CatalogShownPlace.Update(catalogShownPlace);
             }
             else
             {
-                CatalogShownPlace = _mapper.Map<CatalogShownPlace>(model);
-                Db.CatalogShownPlace.Add(CatalogShownPlace);
+                catalogShownPlace = _mapper.Map<CatalogShownPlace>(model);
+                Db.CatalogShownPlace.Add(catalogShownPlace);
             }
 
         }
 
         public bool IsPlaceAssign(int catalogId, CatalogDisplayPlace shownPlace)
         {
-            CatalogShownPlace = Db.CatalogShownPlace.FirstOrDefault(c => c.CatalogId == catalogId && c.ShownPlace == shownPlace);
-            return CatalogShownPlace != null;
+            catalogShownPlace = Db.CatalogShownPlace.FirstOrDefault(c => c.CatalogId == catalogId && c.ShownPlace == shownPlace);
+            return catalogShownPlace != null;
         }
 
         public void PlaceDelete(int catalogId, CatalogDisplayPlace shownPlace)
         {
-            Db.CatalogShownPlace.Remove(CatalogShownPlace);
+            Db.CatalogShownPlace.Remove(catalogShownPlace);
         }
 
         string CatalogDllFunction(Catalog catalog, string cat)
