@@ -59,7 +59,16 @@ namespace eSuperShop.Repository
             return Db.Catalog.Any(c => c.ParentCatalogId == id) || Db.CatalogShownPlace.Any(c => c.CatalogId == id);
         }
 
-        public List<CatalogDisplayModel> Display(CatalogDisplayPlace place, int numberOfItem)
+        public List<CatalogDisplayModel> DisplayList(CatalogDisplayPlace place)
+        {
+            return Db.CatalogShownPlace.Include(c => c.Catalog)
+                .Where(c => c.ShownPlace == place)
+                .Select(c => c.Catalog)
+                .ProjectTo<CatalogDisplayModel>(_mapper.ConfigurationProvider)
+                .ToList();
+        }
+
+        public List<CatalogDisplayModel> DisplayList(CatalogDisplayPlace place, int numberOfItem)
         {
             return Db.CatalogShownPlace.Include(c => c.Catalog)
                 .Where(c => c.ShownPlace == place)

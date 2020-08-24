@@ -70,11 +70,24 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<List<CatalogDisplayModel>> Display(CatalogDisplayPlace place, int numberOfItem)
+        public DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place, int numberOfItem)
         {
             try
             {
-                var data = _db.Catalog.Display(place, numberOfItem);
+                var data = _db.Catalog.DisplayList(place, numberOfItem);
+                return new DbResponse<List<CatalogDisplayModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<CatalogDisplayModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place)
+        {
+            try
+            {
+                var data = _db.Catalog.DisplayList(place);
                 return new DbResponse<List<CatalogDisplayModel>>(true, "Success", data);
             }
             catch (Exception e)

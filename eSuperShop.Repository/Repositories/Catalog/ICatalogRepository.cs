@@ -15,7 +15,8 @@ namespace eSuperShop.Repository
         bool IsExistName(string name, int updateId);
         bool IsIsNull(int id);
         bool IsRelatedDataExist(int id);
-        List<CatalogDisplayModel> Display(CatalogDisplayPlace place, int numberOfItem);
+        List<CatalogDisplayModel> DisplayList(CatalogDisplayPlace place, int numberOfItem);
+        List<CatalogDisplayModel> DisplayList(CatalogDisplayPlace place);
         List<CatalogDisplayModel> DisplaySubCatalog(int parentCatalogId, int numberOfItem);
 
         List<CatalogModel> List();

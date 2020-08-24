@@ -8,7 +8,8 @@ namespace eSuperShop.BusinessLogic
     {
         DbResponse<CatalogDisplayModel> Add(CatalogAddModel model, string userName);
         DbResponse Delete(int id);
-        DbResponse<List<CatalogDisplayModel>> Display(CatalogDisplayPlace place, int numberOfItem);
+        DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place, int numberOfItem);
+        DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place);
         DbResponse<List<CatalogModel>> List();
         DbResponse<string> Breadcrumb(int id);
         List<DDL> DisplayPlaceDdl();
