@@ -14,7 +14,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<string> Breadcrumb(int id);
         List<DDL> DisplayPlaceDdl();
         DbResponse<List<DDL>> ListDdl();
-        DbResponse<CatalogAssignModel> AssignPlace(CatalogAssignModel model, string userName);
+        DbResponse<CatalogDisplayModel> AssignPlace(CatalogAssignModel model, string userName);
         DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace);
     }
 
