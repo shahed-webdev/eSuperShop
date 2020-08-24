@@ -2,12 +2,18 @@
 import Vue from 'vue';
 import MainSlider from './mainSlider.vue';
 import SideSlider from './sideSlider.vue';
+import HomeCategory from './catalog.vue';
+import QuickDelivery from './quickDelivery.vue';
+import TopCatalog from './topCatalog.vue';
 
 
 const vue = new Vue({
     el: "#homeApp",
     components: {
         MainSlider,
-        SideSlider
+        SideSlider,
+        HomeCategory,
+        QuickDelivery,
+        TopCatalog
     }
 });

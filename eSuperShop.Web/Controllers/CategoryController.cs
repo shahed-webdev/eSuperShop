@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CloudStorage;
 using eSuperShop.BusinessLogic;
+using eSuperShop.Data;
 using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,12 @@ namespace eSuperShop.Web.Controllers
             _cloudStorage = cloudStorage;
         }
 
+        [Route("Products/{slugUrl}")]
+        public IActionResult Products(string slugUrl)
+        {
+            return View();
+        } 
+        
         public IActionResult Index()
         {
             var model = _catalog.List();
@@ -63,7 +70,7 @@ namespace eSuperShop.Web.Controllers
         public IActionResult Placement()
         {
             ViewBag.Catalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
-            ViewBag.ShownPlace = new SelectList(_catalog.DisplayPlaceDdl(), "label", "label");
+            ViewBag.ShownPlace = new SelectList(_catalog.DisplayPlaceDdl(), "value", "label");
             return View();
         }
 
@@ -78,10 +85,17 @@ namespace eSuperShop.Web.Controllers
         }
 
         //Get Placement
-        //public IActionResult GetPlacement()
-        //{
-        //    var response = _catalog.Display();
-        //    return Json(response);
-        //}
+        public IActionResult GetPlacement(CatalogDisplayPlace place)
+        {
+            var response = _catalog.GetDisplayList(place);
+            return Json(response);
+        }
+
+        //Delete Placement
+        public IActionResult DeletePlacement(int categoryId, CatalogDisplayPlace place)
+        {
+            var response = _catalog.DeletePlace(categoryId,place);
+            return Json(response);
+        }
     }
 }

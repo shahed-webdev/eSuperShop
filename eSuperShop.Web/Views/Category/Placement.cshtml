@@ -3,61 +3,80 @@
     Layout = "_AdminLayout";
 }
 
+@section Styles{
+    <style>
+        #assignList img { height: 70px; width: 70px; border-radius: 5px; box-shadow: 1px 1px 10px rgba(0,0,0,.1); margin-right: 5px }
+        #assignList .remove { color: #e53935; cursor: pointer }
+    </style>
+}
+
 <div class="container">
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="card card-body">
-                <h4 class="page-header my-3 text-center">Assign Category Placement</h4>
-                <form id="formAdd">
-                    <div class="md-form">
-                        <select searchable="Find Category" id="selectCatalogId" asp-items="ViewBag.Catalog" class="mdb-select" required>
-                            <option selected disabled value="">Select Category</option>
-                        </select>
-                    </div>
+    <h4 class="page-header mt-3">Assign Category Placement</h4>
+    <a href="/Category"><i class="far fa-long-arrow-alt-left mr-1 mb-3"></i>Back to List</a>
+
+    <div class="card card-body">
+        <form id="formAdd">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
                     <div class="md-form">
                         <select searchable="Find Place" id="selectShownPlace" asp-items="ViewBag.ShownPlace" class="mdb-select" required>
                             <option selected disabled value="">Select Place</option>
                         </select>
                     </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="md-form">
+                        <select searchable="Find Category" id="selectCatalogId" asp-items="ViewBag.Catalog" class="mdb-select" required>
+                            <option selected disabled value="">Select Category</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
                     <div class="md-form">
                         <label for="inputDisplayOrder">Display Order</label>
                         <input type="number" id="inputDisplayOrder" class="form-control">
                     </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <input type="submit" value="Add" class="btn btn-danger" />
-                        <a href="/Category"><i class="far fa-long-arrow-alt-left mr-1"></i>Back to List</a>
-                    </div>
-                </form>
+                </div>
+                <div class="col text-right notify">
+                    <input id="btnAdd" type="submit" value="Add" class="btn btn-danger m-0"/>
+                </div>
             </div>
-        </div>
+        </form>
+
+        <h4 id="showPlaceName" class="mb-2 font-weight-bold"></h4>
+        <div id="assignList" class="list-group-flush"></div>
     </div>
-    
-    
 </div>
 
 @section Scripts{
     <script>
-        $(function() {
-            $('.mdb-select').materialSelect();
+        $(function () {
+           $('.mdb-select').materialSelect();
         });
 
         const formAdd = document.getElementById('formAdd');
-        formAdd.addEventListener('submit', function(evt) {
+        const assignList = document.getElementById('assignList');
+        const selectShownPlace = formAdd.selectShownPlace;
+
+        //on submit data
+        formAdd.addEventListener('submit', function (evt) {
             evt.preventDefault();
 
             const CatalogId = formAdd.selectCatalogId.value;
             const ShownPlace = formAdd.selectShownPlace.value;
             const DisplayOrder = +formAdd.inputDisplayOrder.value;
 
-            const data = { CatalogId, ShownPlace, DisplayOrder}
+            const data = { CatalogId, ShownPlace, DisplayOrder }
 
             $.ajax({
                 type: "POST",
                 url: "/Category/Placement",
                 data,
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
-                    if (!response.IsSuccess) return;
+                    assignList.appendChild(appendData(response.Data));
+                    $(".notify").notify("Assign Success", "success", { position: "right" });
                 },
                 error: function (err) {
                     console.log(err);
@@ -65,18 +84,105 @@
             });
         });
 
-        function getAssignedData(data) {
+        //on change place dropdown
+        selectShownPlace.addEventListener('change', function () {
+            const showPlaceName = document.getElementById('showPlaceName');
+
             $.ajax({
                 url: "/Category/GetPlacement",
-                data,
-                success: function(response) {
-                    console.log(response);
-                    if (!response.IsSuccess) return;
+                data: { place: this.value },
+                success: function (response) {
+                    assignList.innerHTML = "";
+                    showPlaceName.innerHTML = `<span class="text-muted">Place:</span> ${selectShownPlace.options[selectShownPlace.selectedIndex].text}`;
+
+                    if (!response.Data.length) return;
+
+                    response.Data.forEach(item => {
+                        assignList.appendChild(appendData(item));
+                    });
                 },
                 error: function (err) {
                     console.log(err);
                 }
             });
+        });
+
+        //on delete
+        assignList.addEventListener('click', function (evt) {
+            const element = evt.target;
+            const onDeleteClick = element.classList.contains('remove');
+
+            if (!onDeleteClick) return;
+
+            const categoryId = element.getAttribute('data-id');
+            const place = selectShownPlace.value;
+
+            $.ajax({
+                url: "/Category/DeletePlacement",
+                data: { categoryId, place },
+                success: function (response) {
+                    if (!response.IsSuccess) return;
+
+                    element.parentElement.parentElement.remove();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        //append data to DOM
+        function appendData(data) {
+            const item = document.createElement('div');
+            item.className = "list-group-item d-flex justify-content-between align-items-center";
+
+            //item left
+            const leftContain = document.createElement('div');
+            leftContain.className = "d-flex align-items-center";
+
+            const image = document.createElement('img');
+            image.src = data.ImageUrl;
+            leftContain.appendChild(image);
+
+            const info = document.createElement('div');
+            info.className = "ml-1";
+
+            const strong = document.createElement('strong');
+            strong.className = "d-block";
+            strong.textContent = data.CatalogName;
+            info.appendChild(strong);
+
+            const em = document.createElement('em');
+            em.className = "text-muted";
+            em.textContent = data.SlugUrl;
+            info.appendChild(em);
+            leftContain.appendChild(info);
+
+            item.appendChild(leftContain);
+
+            //item right
+            const rightContain = document.createElement('div');
+
+            const remove = document.createElement('i');
+            remove.className = "fas fa-trash remove";
+            remove.setAttribute("data-id", data.CatalogId);
+
+            const SeoLink = document.createElement('a');
+            const seoIco = document.createElement('i');
+
+            seoIco.className = "far fa-search-location";
+            SeoLink.appendChild(seoIco);
+
+            SeoLink.className = "blue-text mr-2";
+            SeoLink.appendChild(document.createTextNode("SEO"));
+            SeoLink.href = "";
+
+            rightContain.appendChild(SeoLink);
+            rightContain.appendChild(remove);
+
+            item.appendChild(rightContain);
+
+            return item;
         }
     </script>
 }
