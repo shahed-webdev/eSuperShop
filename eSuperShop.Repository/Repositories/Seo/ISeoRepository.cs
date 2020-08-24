@@ -1,12 +1,10 @@
-﻿using eSuperShop.Data;
-
-namespace eSuperShop.Repository
+﻿namespace eSuperShop.Repository
 {
     public interface ISeoRepository
     {
-        Seo Seo { get; set; }
-        void add(SeoAddModel model);
-        void Update(SeoAddModel model);
-        SeoModel Get(int id);
+        SeoModel GetSeo(int id);
+        void SeoDelete(int id);
+        bool IsSeoExist(int id);
+        void PostSeo(SeoAddModel model);
     }
 }

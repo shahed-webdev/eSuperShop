@@ -16,6 +16,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<List<DDL>> ListDdl();
         DbResponse<CatalogDisplayModel> AssignPlace(CatalogAssignModel model, string userName);
         DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace);
+        //DbResponse AddSeo();
     }
 
 

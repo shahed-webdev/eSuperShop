@@ -4,8 +4,7 @@ namespace eSuperShop.BusinessLogic
 {
     public interface ISeoCore
     {
-        DbResponse<SeoModel> Add(SeoAddModel model, string userName);
-        DbResponse<SeoModel> Update(SeoAddModel model);
+        DbResponse Post(SeoAddModel model, string userName);
         DbResponse<SeoModel> Get(int id);
         DbResponse Delete(int id);
     }

@@ -49,7 +49,7 @@ namespace eSuperShop.Repository
             return Db.Catalog.Any(c => c.CatalogName == name && c.CatalogId != updateId);
         }
 
-        public bool IsIsNull(int id)
+        public bool IsNull(int id)
         {
             return Db.Catalog.Any(c => c.CatalogId == id);
         }
@@ -161,6 +161,35 @@ namespace eSuperShop.Repository
         public void PlaceDelete(int catalogId, CatalogDisplayPlace shownPlace)
         {
             Db.CatalogShownPlace.Remove(catalogShownPlace);
+        }
+
+        public SeoModel GetSeo(int id)
+        {
+            return Db.Catalog
+                   .Where(c => c.CatalogId == id)
+                   .Select(c => c.Seo)
+                   .ProjectTo<SeoModel>(_mapper.ConfigurationProvider)
+                   .FirstOrDefault();
+        }
+
+        public void SeoDelete(int id)
+        {
+            var seo = Db.Catalog.Find(id).Seo;
+            Db.Seo.Remove(seo);
+        }
+
+        public bool IsSeoExist(int id)
+        {
+            return Db.Catalog.Any(c => c.CatalogId == id && c.SeoId != null);
+        }
+
+        public void PostSeo(SeoAddModel model)
+        {
+            var catalog = Db.Catalog.Include(c => c.Seo).FirstOrDefault(c => c.CatalogId == model.AssignTableId);
+            if (catalog == null) return;
+            var seo = _mapper.Map<Seo>(model);
+            catalog.Seo = seo;
+            Db.Catalog.Update(catalog);
         }
 
         string CatalogDllFunction(Catalog catalog, string cat)

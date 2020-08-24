@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace eSuperShop.Repository
 {
-    public interface ICatalogRepository
+    public interface ICatalogRepository : ISeoRepository
     {
         Catalog catalog { get; set; }
         CatalogShownPlace catalogShownPlace { get; set; }
@@ -13,7 +13,7 @@ namespace eSuperShop.Repository
         bool IsExistSlugUrl(string slugUrl, int updateId);
         bool IsExistName(string name);
         bool IsExistName(string name, int updateId);
-        bool IsIsNull(int id);
+        bool IsNull(int id);
         bool IsRelatedDataExist(int id);
         List<CatalogDisplayModel> DisplayList(CatalogDisplayPlace place, int numberOfItem);
         List<CatalogDisplayModel> DisplayList(CatalogDisplayPlace place);
@@ -27,6 +27,5 @@ namespace eSuperShop.Repository
         void PlaceAssign(CatalogAssignModel model);
         bool IsPlaceAssign(int catalogId, CatalogDisplayPlace shownPlace);
         void PlaceDelete(int catalogId, CatalogDisplayPlace shownPlace);
-
     }
 }

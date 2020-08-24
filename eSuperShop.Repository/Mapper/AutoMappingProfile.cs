@@ -21,6 +21,11 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
                 .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.Catalog.ImageUrl))
                 .ForMember(d => d.SlugUrl, opt => opt.MapFrom(c => c.Catalog.SlugUrl));
+
+
+            CreateMap<Seo, SeoModel>()
+                .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
+            CreateMap<Seo, SeoAddModel>().ReverseMap();
         }
     }
 }

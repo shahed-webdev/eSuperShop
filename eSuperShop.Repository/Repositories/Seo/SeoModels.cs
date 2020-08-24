@@ -3,6 +3,8 @@
 
     public class SeoAddModel
     {
+        public int AssignTableId { get; set; }
+        public int SeoId { get; set; }
         public string MetaKeywords { get; set; }
         public string MetaDescription { get; set; }
         public string MetaTitle { get; set; }

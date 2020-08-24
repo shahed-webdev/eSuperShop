@@ -54,7 +54,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Catalog.IsIsNull(id))
+                if (_db.Catalog.IsNull(id))
                     return new DbResponse(false, "Data not found");
                 if (_db.Catalog.IsRelatedDataExist(id))
                     return new DbResponse(false, "Related data Exist");
