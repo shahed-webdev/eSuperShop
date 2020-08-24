@@ -5,8 +5,8 @@ namespace eSuperShop.Repository
 {
     public interface ICatalogRepository
     {
-        Catalog Catalog { get; set; }
-        CatalogShownPlace CatalogShownPlace { get; set; }
+        Catalog catalog { get; set; }
+        CatalogShownPlace catalogShownPlace { get; set; }
         void Add(CatalogAddModel model);
         void Delete(int id);
         bool IsExistSlugUrl(string slugUrl);
@@ -23,6 +23,7 @@ namespace eSuperShop.Repository
         List<DDL> SliderPlaceDdl();
         List<DDL> ListDdl();
         string Breadcrumb(int id);
+        CatalogDisplayModel Get(int id);
         void PlaceAssign(CatalogAssignModel model);
         bool IsPlaceAssign(int catalogId, CatalogDisplayPlace shownPlace);
         void PlaceDelete(int catalogId, CatalogDisplayPlace shownPlace);

@@ -40,7 +40,7 @@ namespace eSuperShop.BusinessLogic
                 _db.Catalog.Add(model);
                 _db.SaveChanges();
 
-                var data = _mapper.Map<CatalogDisplayModel>(_db.Catalog.Catalog);
+                var data = _mapper.Map<CatalogDisplayModel>(_db.Catalog.catalog);
 
                 return new DbResponse<CatalogDisplayModel>(true, "Success", data);
             }
@@ -152,7 +152,9 @@ namespace eSuperShop.BusinessLogic
                 _db.Catalog.PlaceAssign(model);
                 _db.SaveChanges();
 
-                var data = _mapper.Map<CatalogDisplayModel>(_db.Catalog.CatalogShownPlace);
+
+
+                var data = _db.Catalog.Get(model.CatalogId);
 
                 return new DbResponse<CatalogDisplayModel>(true, "Success", data);
             }
