@@ -24,12 +24,13 @@
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col justify-content-center align-self-center">
+    <div class="row align-items-center">
+        <div class="col">
             <h4 class="page-header">Category List</h4>
+            <a href="/Category/Placement">Assign Category <i class="far fa-long-arrow-alt-right"></i></a>
         </div>
         <div class="col text-right">
-            <a href="/Category/Add" class="btn-floating red darken-2" title="Add New">
+            <a href="/Category/Add" class="btn-floating red lighten-1" title="Add New">
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
         </div>
@@ -45,7 +46,10 @@
                     <li class="list-group-item">
                         <div class="parentCategory d-flex justify-content-between mb-2">
                             <div>
-                                <span class="fas fa-angle-right rotate"></span>
+                                @if (!isNoCategory)
+                                {
+                                    <span class="fas fa-angle-right rotate"></span>
+                                }
                                 <strong><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</strong>
                             </div>
                             <div>
@@ -57,7 +61,7 @@
                         @if (!isNoCategory)
                         {
                             <ul class="nested mb-1">
-                                <partial name="_SubCatalog" model="@catalog.SubCatalog" />
+                                <partial name="_SubCatalog" model="@catalog.SubCatalog"/>
                             </ul>
                         }
                     </li>

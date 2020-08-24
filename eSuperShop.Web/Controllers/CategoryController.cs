@@ -26,6 +26,12 @@ namespace eSuperShop.Web.Controllers
             _cloudStorage = cloudStorage;
         }
 
+        [Route("Products/{slugUrl}")]
+        public IActionResult Products(string slugUrl)
+        {
+            return View();
+        } 
+        
         public IActionResult Index()
         {
             var model = _catalog.List();

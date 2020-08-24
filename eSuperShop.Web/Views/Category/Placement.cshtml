@@ -17,13 +17,6 @@
     <div class="card card-body">
         <form id="formAdd">
             <div class="row align-items-center">
-                <div class="col-lg-4">
-                    <div class="md-form">
-                        <select searchable="Find Category" id="selectCatalogId" asp-items="ViewBag.Catalog" class="mdb-select" required>
-                            <option selected disabled value="">Select Category</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="col-lg-3">
                     <div class="md-form">
                         <select searchable="Find Place" id="selectShownPlace" asp-items="ViewBag.ShownPlace" class="mdb-select" required>
@@ -31,14 +24,22 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-lg-4">
+                    <div class="md-form">
+                        <select searchable="Find Category" id="selectCatalogId" asp-items="ViewBag.Catalog" class="mdb-select" required>
+                            <option selected disabled value="">Select Category</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-lg-3">
                     <div class="md-form">
                         <label for="inputDisplayOrder">Display Order</label>
                         <input type="number" id="inputDisplayOrder" class="form-control">
                     </div>
                 </div>
-                <div class="col text-right">
-                    <input type="submit" value="Add" class="btn btn-danger m-0" />
+                <div class="col text-right notify">
+                    <input id="btnAdd" type="submit" value="Add" class="btn btn-danger m-0"/>
                 </div>
             </div>
         </form>
@@ -51,7 +52,7 @@
 @section Scripts{
     <script>
         $(function () {
-            $('.mdb-select').materialSelect();
+           $('.mdb-select').materialSelect();
         });
 
         const formAdd = document.getElementById('formAdd');
@@ -74,9 +75,8 @@
                 data,
                 success: function (response) {
                     console.log(response);
-                    if (!response.Data.length) return;
-
                     assignList.appendChild(appendData(response.Data));
+                    $(".notify").notify("Assign Success", "success", { position: "right" });
                 },
                 error: function (err) {
                     console.log(err);
@@ -123,13 +123,12 @@
                 success: function (response) {
                     if (!response.IsSuccess) return;
 
-                    element.parentElement.remove();
+                    element.parentElement.parentElement.remove();
                 },
                 error: function (err) {
                     console.log(err);
                 }
             });
-
         });
 
         //append data to DOM

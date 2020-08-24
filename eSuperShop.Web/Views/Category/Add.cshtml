@@ -5,12 +5,11 @@
     Layout = "_AdminLayout";
 }
 
-
 <div class="container">
     <div class="row">
         <div class="col-lg-8 mx-auto">
+            <h4 class="page-header my-3">Add Category</h4>
             <div class="card card-body">
-                <h4 class="page-header my-3 text-center">Add Category</h4>
                 <form enctype="multipart/form-data" asp-action="Add">
                     <div class="md-form">
                         <select id="parentCatalogId" searchable="Find Category" name="ParentCatalogId" asp-items="ViewBag.ParentCatalog" class="mdb-select">
@@ -70,7 +69,7 @@
             const fileNames = [];
 
             const size = e.target.files[0].size / 1024 / 1024;
-            const regex = new RegExp("(.*?)\.(jpeg|jpg|png)$");
+            const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
 
             if (!(regex.test(e.target.value.toLowerCase()))) {
                 e.target.value = "";
