@@ -1,4 +1,6 @@
-﻿namespace eSuperShop.Data
+﻿using System.ComponentModel;
+
+namespace eSuperShop.Data
 {
     public enum CatalogDisplayPlace
     {
