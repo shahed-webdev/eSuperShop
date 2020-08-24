@@ -10,8 +10,8 @@ using eSuperShop.Data;
 namespace eSuperShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200823032158_ParentCatalogId_Null")]
-    partial class ParentCatalogId_Null
+    [Migration("20200824060126_AddTableCatalog_CatalogShow_Reg_Seo_Silder")]
+    partial class AddTableCatalog_CatalogShow_Reg_Seo_Silder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -316,7 +316,9 @@ namespace eSuperShop.Data.Migrations
             modelBuilder.Entity("eSuperShop.Data.CatalogShownPlace", b =>
                 {
                     b.Property<int>("CatalogShownPlaceId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CatalogId")
                         .HasColumnType("int");

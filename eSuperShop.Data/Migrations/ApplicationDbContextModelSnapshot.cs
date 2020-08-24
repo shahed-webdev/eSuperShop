@@ -314,7 +314,9 @@ namespace eSuperShop.Data.Migrations
             modelBuilder.Entity("eSuperShop.Data.CatalogShownPlace", b =>
                 {
                     b.Property<int>("CatalogShownPlaceId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CatalogId")
                         .HasColumnType("int");

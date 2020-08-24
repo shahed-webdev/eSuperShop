@@ -8,7 +8,7 @@ namespace eSuperShop.Data
     {
         public void Configure(EntityTypeBuilder<CatalogShownPlace> builder)
         {
-            builder.Property(e => e.CatalogShownPlaceId).ValueGeneratedNever();
+            builder.Property(e => e.CatalogShownPlaceId);
 
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")
