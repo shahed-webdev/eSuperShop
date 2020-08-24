@@ -15,6 +15,8 @@
         .parentCategory:hover, .childCategory:hover { background-color: #eee; border-radius: 3px }
 
         .childCategory i { font-size: 15px }
+        .childCategory a{ font-size: 15px }
+
         .nested { display: none }
         .nested.show { display: block }
         .down { content: "\f107"; font-family: 'Font Awesome 5 Pro' }
@@ -47,6 +49,7 @@
                                 <strong><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</strong>
                             </div>
                             <div>
+                                <a class="blue-text mr-2"><i class="far fa-search-location"></i> SEO</a>
                                 <i data-id="@(isNoCategory ? catalog.CatalogId : 0)" class="@(isNoCategory ? "delete" : "muted") fal fa-trash-alt mr-3"></i>
                                 <i data-id="@catalog.CatalogId" class="edit fal fa-edit"></i>
                             </div>
