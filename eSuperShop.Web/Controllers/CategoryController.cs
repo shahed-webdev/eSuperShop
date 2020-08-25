@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace eSuperShop.Web.Controllers
 {
     [Authorize]
+    //[Route("[controller]")]
     public class CategoryController : Controller
     {
         private readonly ICatalogCore _catalog;
@@ -29,12 +30,15 @@ namespace eSuperShop.Web.Controllers
             _seo = new SeoCoreCatalog(mapper,db);
         }
 
-        [Route("Products/{slugUrl}")]
+        //Products
+        [AllowAnonymous]
+       // [Route("/Products/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
             return View();
         } 
         
+        //Category list
         public IActionResult Index()
         {
             var model = _catalog.List();

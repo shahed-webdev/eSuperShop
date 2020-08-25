@@ -6,10 +6,15 @@
         </div>
 
         <div class="row">
-            <div v-for="(item,i) in data" :key="i" class="col-lg-2 col-sm-6 col-6">
-                <div class="box">
-                    <img :src="item.ImageUrl" alt="" />
-                    <div class="box-title">{{item.CatalogName}}</div>
+            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 col-6 mb-4">
+                <div class="card h-100">
+                    <div class="view overlay h-100">
+                        <img class="card-img-top" :src="item.ImageUrl" alt="">
+                        <a href="#!">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+                    <div class="card-title text-center">{{item.CatalogName}}</div>
                 </div>
             </div>
         </div>

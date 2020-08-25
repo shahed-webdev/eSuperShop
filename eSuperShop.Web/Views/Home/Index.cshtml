@@ -3,11 +3,11 @@
 }
 
 @section Styles{
-    <link href="~/css/home.css?v=.5" rel="stylesheet" type="text/css" />
+    <link href="~/css-page/home.css?v=1.2" rel="stylesheet" type="text/css" />
 }
 
-<div id="homeApp">
-<section class="container">
+<section id="homeApp" class="container">
+<section id="slider-category">
     <div class="row">
         <div class="col-lg-3 mb-3">
             <home-category></home-category>
@@ -23,15 +23,15 @@
     </div>
 </section>
 
-<section id="offer-category" class="container mt-5">
+<section id="quick-delivery" class="mt-5">
     <quick-delivery></quick-delivery>
 </section>
 
-<section id="topCategory" class="container mt-5">
+<section id="topCategory" class="mt-5">
     <top-catalog></top-catalog>
 </section>
 
-<section class="container mt-5">
+<section class="mt-5">
     <div class="product-header">
         <h3>Flash Deals</h3>
         <a>View More<i class="far fa-eye ml-1"></i></a>
@@ -169,7 +169,7 @@
     </div>
 </section>
 
-<section class="container mt-5">
+<section class="mt-5">
     <div class="product-header">
         <h3>Top Rated</h3>
         <a>View More<i class="far fa-eye ml-1"></i></a>
@@ -307,7 +307,7 @@
     </div>
 </section>
 
-<section class="container mt-5">
+<section class="mt-5">
     <div class="product-header">
         <h3>Top Stores</h3>
         <a>View More<i class="far fa-eye ml-1"></i></a>
@@ -404,7 +404,7 @@
     </div>
 </section>
 
-<section class="container mt-5">
+<section class="mt-5">
 <h3 class="mb-3">More To Love</h3>
 
 <div class="row">
@@ -611,7 +611,7 @@
 </div>
 </div>
 </section>
-</div>
+</section>
 
 @section Scripts{
     <script src="@Url.Content("~/bundle/home.js")"></script>
