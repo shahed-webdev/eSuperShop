@@ -51,7 +51,7 @@ namespace eSuperShop.Repository
 
         public bool IsNull(int id)
         {
-            return Db.Catalog.Any(c => c.CatalogId == id);
+            return !Db.Catalog.Any(c => c.CatalogId == id);
         }
 
         public bool IsRelatedDataExist(int id)

@@ -34,7 +34,7 @@ namespace eSuperShop.Data
 
             builder.HasOne(e => e.Seo)
                 .WithOne(s => s.Catalog)
-                .HasForeignKey<Seo>(e => e.SeoId)
+                .HasForeignKey<Catalog>(e => e.SeoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Catalog_Seo");
 

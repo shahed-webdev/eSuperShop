@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
@@ -19,11 +20,13 @@ namespace eSuperShop.Web.Controllers
     {
         private readonly ICatalogCore _catalog;
         private readonly ICloudStorage _cloudStorage;
+        private readonly ISeoCore _seo;
 
-        public CategoryController(ICloudStorage cloudStorage, ICatalogCore catalog)
+        public CategoryController(ICloudStorage cloudStorage, ICatalogCore catalog,IMapper mapper,IUnitOfWork db)
         {
             _catalog = catalog;
             _cloudStorage = cloudStorage;
+            _seo = new SeoCoreCatalog(mapper,db);
         }
 
         [Route("Products/{slugUrl}")]
@@ -95,6 +98,33 @@ namespace eSuperShop.Web.Controllers
         public IActionResult DeletePlacement(int categoryId, CatalogDisplayPlace place)
         {
             var response = _catalog.DeletePlace(categoryId,place);
+            return Json(response);
+        }
+
+        //SEO
+        public IActionResult GetSeo(int id)
+        {
+            var response = _seo.Get(id);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        public IActionResult AddSeo(SeoAddModel model)
+        {
+            var response = _seo.Post(model, User.Identity.Name);
+
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+
+            return Json(response);
+        }
+
+        public IActionResult DeleteSeo(int id)
+        {
+            var response = _seo.Delete(id);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+
             return Json(response);
         }
     }

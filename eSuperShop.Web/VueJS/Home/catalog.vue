@@ -6,7 +6,10 @@
         </div>
         <ul>
             <li v-for="(item,i) in data" :key="i">
-                <a href="/Category/Products">{{item.CatalogName}}</a>
+                <a :href="'/Category/Products/'+item.SlugUrl">
+                    <i class="fas fa-caret-right"></i>
+                    {{item.CatalogName}}
+                </a>
             </li>
         </ul>
     </div>

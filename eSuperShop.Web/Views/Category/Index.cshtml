@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Category";
-    Layout ="_AdminLayout";
+    Layout = "_AdminLayout";
 }
 @section Styles{
     <style>
@@ -15,7 +15,7 @@
         .parentCategory:hover, .childCategory:hover { background-color: #eee; border-radius: 3px }
 
         .childCategory i { font-size: 15px }
-        .childCategory a{ font-size: 15px }
+        .childCategory a { font-size: 15px }
 
         .nested { display: none }
         .nested.show { display: block }
@@ -53,7 +53,7 @@
                                 <strong><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</strong>
                             </div>
                             <div>
-                                <a class="blue-text mr-2"><i class="far fa-search-location"></i> SEO</a>
+                                <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2"><i class="far fa-search-location"></i> SEO</a>
                                 <i data-id="@(isNoCategory ? catalog.CatalogId : 0)" class="@(isNoCategory ? "delete" : "muted") fal fa-trash-alt mr-3"></i>
                                 <i data-id="@catalog.CatalogId" class="edit fal fa-edit"></i>
                             </div>
@@ -61,7 +61,7 @@
                         @if (!isNoCategory)
                         {
                             <ul class="nested mb-1">
-                                <partial name="_SubCatalog" model="@catalog.SubCatalog"/>
+                                <partial name="_SubCatalog" model="@catalog.SubCatalog" />
                             </ul>
                         }
                     </li>
@@ -71,16 +71,65 @@
     </div>
 </div>
 
+<!-- seo Modal -->
+<div class="modal fade" id="seoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content form-elegant">
+            <div class="modal-header text-center">
+                <div class="modal-title w-100">
+                    <h3 class="dark-grey-text font-weight-bold m-0">
+                        <strong>SEO</strong>
+                    </h3>
+                    <p id="showCategoryName" class="mb-0"></p>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+       
+            <div class="modal-body mx-4">
+                <form id="seoForm">
+                    <input id="hiddenAssignTableId" type="hidden"/>
+                    <div class="md-form mb-5">
+                        <input type="text" id="inputMetaTitle" class="form-control" required>
+                        <label for="inputMetaTitle">Meta Title</label>
+                    </div>
+                    <div class="md-form pb-3">
+                        <input type="text" id="inputMetaDescription" class="form-control" required>
+                        <label for="inputMetaDescription">Meta Description</label>
+                    </div>
+                    <div class="md-form pb-3">
+                        <input type="text" id="inputMetaKeywords" class="form-control" required>
+                        <label for="inputMetaKeywords">Meta Keywords</label>
+                    </div>
+                    <div class="text-center mb-3">
+                        <button type="submit" class="btn btn-danger btn-block btn-rounded z-depth-1a">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts{
     <script>
         const list = document.querySelector('.list-group');
+        const seoForm = document.getElementById('seoForm');
 
-        list.addEventListener('click', function (evt) {
+        //event listener
+        list.addEventListener('click', function(evt) {
             const element = evt.target;
+
+            if (element.classList.contains('addSeo')) {
+                const id = element.getAttribute('data-id');
+                const category = element.getAttribute('data-name');
+                showSeoModal(id, category);
+            }
 
             if (element.classList.contains('delete')) {
                 const id = +element.getAttribute('data-id');
-                deleteCategory(id, element)
+                deleteCategory(id, element);
             }
 
             if (element.classList.contains('edit')) {
@@ -88,22 +137,22 @@
             }
 
             if (element.classList.contains('rotate')) {
-                toggleCategory(element)
+                toggleCategory(element);
             }
         });
 
-
+        //on delete category
         function deleteCategory(id, element) {
             const url = '/Category/Delete';
-            axios.post(url, null, { params: { id: id } })
-                .then(function (response) {
-                    if (response)
-                        element.parentElement.parentElement.remove();
-                    else
-                        alert('Category already in used');
-                })
+            axios.post(url, null, { params: { id: id } }).then(function(response) {
+                if (response)
+                    element.parentElement.parentElement.remove();
+                else
+                    alert('Category already in used');
+            })
         }
 
+        //show/hide sub-category
         function toggleCategory(element) {
             const isElement = element.parentElement.parentElement.nextElementSibling;
 
@@ -112,5 +161,50 @@
                 element.classList.toggle('down');
             }
         }
+
+        //SEO
+        const inputMetaTitle = seoForm.inputMetaTitle;
+        const inputMetaDescription = seoForm.inputMetaDescription;
+        const inputMetaKeywords = seoForm.inputMetaKeywords;
+        const hiddenAssignTableId = +seoForm.hiddenAssignTableId;
+
+        //get
+        function showSeoModal(id, category) {
+            $.ajax({
+                type: "POST",
+                url: "/Category/GetSeo",
+                data: { id },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function (err) { console.log(err.responseText); }
+            });
+
+            $("#seoModal").modal("show");
+            $("#showCategoryName").text(category);
+            $("#hiddenAssignTableId").val(id);
+        }
+
+        //post
+        seoForm.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            const body = {
+                AssignTableId: hiddenAssignTableId.value,
+                MetaTitle: inputMetaTitle.value,
+                MetaDescription: inputMetaDescription.value,
+                MetaKeywords: inputMetaKeywords.value
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Category/AddSeo",
+                data: body,
+                success: function(response) {
+                    console.log(response.IsSuccess);
+                },
+                error: function(err) {console.log(err)}
+            });
+        });
     </script>
 }
