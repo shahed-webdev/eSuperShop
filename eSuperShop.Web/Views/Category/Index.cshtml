@@ -103,7 +103,8 @@
                         <label for="inputMetaKeywords">Meta Keywords</label>
                     </div>
                     <div class="text-center mb-3">
-                        <button type="submit" class="btn btn-danger btn-block btn-rounded z-depth-1a">Save</button>
+                        <button type="submit" class="btn btn-success btn-rounded z-depth-1a"><i class="far fa-check"></i> Save</button>
+                        <button id="btnSeoDelete" type="button" class="btn btn-danger btn-rounded z-depth-1a"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
                 </form>
             </div>
@@ -116,6 +117,7 @@
     <script>
         const list = document.querySelector('.list-group');
         const seoForm = document.getElementById('seoForm');
+        const btnSeoDelete = document.getElementById('btnSeoDelete');
 
         //event listener
         list.addEventListener('click', function(evt) {
@@ -166,18 +168,23 @@
         const inputMetaTitle = seoForm.inputMetaTitle;
         const inputMetaDescription = seoForm.inputMetaDescription;
         const inputMetaKeywords = seoForm.inputMetaKeywords;
-        const hiddenAssignTableId = +seoForm.hiddenAssignTableId;
+        const hiddenAssignTableId = seoForm.hiddenAssignTableId;
 
         //get
         function showSeoModal(id, category) {
+            btnSeoDelete.style.display = "none";
+            clearInput();
+
             $.ajax({
                 type: "POST",
                 url: "/Category/GetSeo",
                 data: { id },
                 success: function(response) {
-                    console.log(response);
+                    btnSeoDelete.style.display = "inline-block";
+                    btnSeoDelete.setAttribute("data-id", id);
+                    setValueInput(response.Data);
                 },
-                error: function (err) { console.log(err.responseText); }
+                error: function(err) { console.log(err.responseText); }
             });
 
             $("#seoModal").modal("show");
@@ -185,12 +192,36 @@
             $("#hiddenAssignTableId").val(id);
         }
 
+        //set inserted value
+        function setValueInput(data) {
+            inputMetaTitle.value = data.MetaTitle;
+            inputMetaTitle.nextElementSibling.classList.add('active');
+
+            inputMetaDescription.value = data.MetaDescription;
+            inputMetaDescription.nextElementSibling.classList.add('active');
+
+            inputMetaKeywords.value = data.MetaKeywords;
+            inputMetaKeywords.nextElementSibling.classList.add('active');
+        }
+
+        //clear inserted value
+        function clearInput() {
+            inputMetaTitle.value = "";
+            inputMetaTitle.nextElementSibling.classList.remove('active');
+
+            inputMetaDescription.value = "";
+            inputMetaDescription.nextElementSibling.classList.remove('active');
+
+            inputMetaKeywords.value = "";
+            inputMetaKeywords.nextElementSibling.classList.remove('active');
+        }
+
         //post
         seoForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
             const body = {
-                AssignTableId: hiddenAssignTableId.value,
+                AssignTableId: +hiddenAssignTableId.value,
                 MetaTitle: inputMetaTitle.value,
                 MetaDescription: inputMetaDescription.value,
                 MetaKeywords: inputMetaKeywords.value
@@ -201,9 +232,26 @@
                 url: "/Category/AddSeo",
                 data: body,
                 success: function(response) {
-                    console.log(response.IsSuccess);
+                    if (response.IsSuccess)
+                        $("#seoModal").modal("hide");
                 },
-                error: function(err) {console.log(err)}
+                error: function(err) { console.log(err.responseText) }
+            });
+        });
+
+        //delete
+        btnSeoDelete.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            if (!id) return;
+
+            $.ajax({
+                type: "POST",
+                url: "/Category/DeleteSeo",
+                data: { id },
+                success: function(response) {
+                    $("#seoModal").modal("hide");
+                },
+                error: function(err) { console.log(err.responseText); }
             });
         });
     </script>

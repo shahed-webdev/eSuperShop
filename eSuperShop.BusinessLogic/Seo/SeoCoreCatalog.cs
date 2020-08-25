@@ -22,7 +22,10 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<SeoModel>(false, "Data not found");
 
                 var data = _db.Catalog.GetSeo(id);
-
+                
+                if (data.SeoId == 0) 
+                    return new DbResponse<SeoModel>(false, "Seo not found");
+               
                 return new DbResponse<SeoModel>(true, "Success", data);
             }
             catch (Exception e)
