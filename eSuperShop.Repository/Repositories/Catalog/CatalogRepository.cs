@@ -174,7 +174,7 @@ namespace eSuperShop.Repository
 
         public void SeoDelete(int id)
         {
-            var seo = Db.Catalog.Find(id).Seo;
+            var seo = Db.Catalog.Include(c => c.Seo).FirstOrDefault(c => c.CatalogId == id).Seo;
             Db.Seo.Remove(seo);
         }
 
@@ -186,9 +186,21 @@ namespace eSuperShop.Repository
         public void PostSeo(SeoAddModel model)
         {
             var catalog = Db.Catalog.Include(c => c.Seo).FirstOrDefault(c => c.CatalogId == model.AssignTableId);
+           
             if (catalog == null) return;
-            var seo = _mapper.Map<Seo>(model);
-            catalog.Seo = seo;
+           
+            if (catalog.Seo == null)
+            {
+                var seo = _mapper.Map<Seo>(model);
+                catalog.Seo = seo;
+            }
+            else
+            {
+                catalog.Seo.MetaTitle = model.MetaTitle;
+                catalog.Seo.MetaDescription = model.MetaDescription;
+                catalog.Seo.MetaKeywords = model.MetaKeywords;
+            }
+
             Db.Catalog.Update(catalog);
         }
 
