@@ -10,7 +10,7 @@ using eSuperShop.Data;
 namespace eSuperShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200824060126_AddTableCatalog_CatalogShow_Reg_Seo_Silder")]
+    [Migration("20200825112204_AddTableCatalog_CatalogShow_Reg_Seo_Silder")]
     partial class AddTableCatalog_CatalogShow_Reg_Seo_Silder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,6 +310,10 @@ namespace eSuperShop.Data.Migrations
 
                     b.HasIndex("ParentCatalogId");
 
+                    b.HasIndex("SeoId")
+                        .IsUnique()
+                        .HasFilter("[SeoId] IS NOT NULL");
+
                     b.ToTable("Catalog");
                 });
 
@@ -413,7 +417,9 @@ namespace eSuperShop.Data.Migrations
             modelBuilder.Entity("eSuperShop.Data.Seo", b =>
                 {
                     b.Property<int>("SeoId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CreatedByRegistrationId")
                         .HasColumnType("int");
@@ -551,6 +557,11 @@ namespace eSuperShop.Data.Migrations
                         .WithMany("SubCatalog")
                         .HasForeignKey("ParentCatalogId")
                         .HasConstraintName("FK_Catalog_Catalog");
+
+                    b.HasOne("eSuperShop.Data.Seo", "Seo")
+                        .WithOne("Catalog")
+                        .HasForeignKey("eSuperShop.Data.Catalog", "SeoId")
+                        .HasConstraintName("FK_Catalog_Seo");
                 });
 
             modelBuilder.Entity("eSuperShop.Data.CatalogShownPlace", b =>
@@ -575,12 +586,6 @@ namespace eSuperShop.Data.Migrations
                         .WithMany("Seo")
                         .HasForeignKey("CreatedByRegistrationId")
                         .HasConstraintName("FK_SEO_Registration")
-                        .IsRequired();
-
-                    b.HasOne("eSuperShop.Data.Catalog", "Catalog")
-                        .WithOne("Seo")
-                        .HasForeignKey("eSuperShop.Data.Seo", "SeoId")
-                        .HasConstraintName("FK_Catalog_Seo")
                         .IsRequired();
                 });
 

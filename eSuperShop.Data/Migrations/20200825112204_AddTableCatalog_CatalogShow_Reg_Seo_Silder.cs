@@ -173,6 +173,54 @@ namespace eSuperShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SEO",
+                columns: table => new
+                {
+                    SeoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MetaKeywords = table.Column<string>(maxLength: 400, nullable: true),
+                    MetaDescription = table.Column<string>(maxLength: 4000, nullable: true),
+                    MetaTitle = table.Column<string>(maxLength: 400, nullable: true),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
+                    CreatedByRegistrationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SEO", x => x.SeoId);
+                    table.ForeignKey(
+                        name: "FK_SEO_Registration",
+                        column: x => x.CreatedByRegistrationId,
+                        principalTable: "Registration",
+                        principalColumn: "RegistrationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Slider",
+                columns: table => new
+                {
+                    SliderId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageURL = table.Column<string>(maxLength: 255, nullable: false),
+                    FileName = table.Column<string>(maxLength: 255, nullable: false),
+                    RedirectURL = table.Column<string>(maxLength: 500, nullable: true),
+                    DisplayOrder = table.Column<int>(nullable: true),
+                    DisplayPlace = table.Column<string>(maxLength: 128, nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
+                    CreatedByRegistrationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Slider", x => x.SliderId);
+                    table.ForeignKey(
+                        name: "FK_Slider_Registration",
+                        column: x => x.CreatedByRegistrationId,
+                        principalTable: "Registration",
+                        principalColumn: "RegistrationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Catalog",
                 columns: table => new
                 {
@@ -204,30 +252,11 @@ namespace eSuperShop.Data.Migrations
                         principalTable: "Catalog",
                         principalColumn: "CatalogId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Slider",
-                columns: table => new
-                {
-                    SliderId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageURL = table.Column<string>(maxLength: 255, nullable: false),
-                    FileName = table.Column<string>(maxLength: 255, nullable: false),
-                    RedirectURL = table.Column<string>(maxLength: 500, nullable: true),
-                    DisplayOrder = table.Column<int>(nullable: true),
-                    DisplayPlace = table.Column<string>(maxLength: 128, nullable: false),
-                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
-                    CreatedByRegistrationId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Slider", x => x.SliderId);
                     table.ForeignKey(
-                        name: "FK_Slider_Registration",
-                        column: x => x.CreatedByRegistrationId,
-                        principalTable: "Registration",
-                        principalColumn: "RegistrationId",
+                        name: "FK_Catalog_Seo",
+                        column: x => x.SeoId,
+                        principalTable: "SEO",
+                        principalColumn: "SeoId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -257,34 +286,6 @@ namespace eSuperShop.Data.Migrations
                         column: x => x.CreatedByRegistrationId,
                         principalTable: "Registration",
                         principalColumn: "RegistrationId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SEO",
-                columns: table => new
-                {
-                    SeoId = table.Column<int>(nullable: false),
-                    MetaKeywords = table.Column<string>(maxLength: 400, nullable: true),
-                    MetaDescription = table.Column<string>(maxLength: 4000, nullable: true),
-                    MetaTitle = table.Column<string>(maxLength: 400, nullable: true),
-                    CreatedOnUtc = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getutcdate())"),
-                    CreatedByRegistrationId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SEO", x => x.SeoId);
-                    table.ForeignKey(
-                        name: "FK_SEO_Registration",
-                        column: x => x.CreatedByRegistrationId,
-                        principalTable: "Registration",
-                        principalColumn: "RegistrationId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Catalog_Seo",
-                        column: x => x.SeoId,
-                        principalTable: "Catalog",
-                        principalColumn: "CatalogId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -362,6 +363,13 @@ namespace eSuperShop.Data.Migrations
                 column: "ParentCatalogId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Catalog_SeoId",
+                table: "Catalog",
+                column: "SeoId",
+                unique: true,
+                filter: "[SeoId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CatalogShownPlace_CatalogId",
                 table: "CatalogShownPlace",
                 column: "CatalogId");
@@ -403,9 +411,6 @@ namespace eSuperShop.Data.Migrations
                 name: "CatalogShownPlace");
 
             migrationBuilder.DropTable(
-                name: "SEO");
-
-            migrationBuilder.DropTable(
                 name: "Slider");
 
             migrationBuilder.DropTable(
@@ -416,6 +421,9 @@ namespace eSuperShop.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Catalog");
+
+            migrationBuilder.DropTable(
+                name: "SEO");
 
             migrationBuilder.DropTable(
                 name: "Registration");
