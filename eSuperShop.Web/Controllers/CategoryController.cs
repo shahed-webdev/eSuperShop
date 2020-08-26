@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace eSuperShop.Web.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
     public class CategoryController : Controller
     {
         private readonly ICatalogCore _catalog;
