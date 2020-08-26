@@ -16,14 +16,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace eSuperShop.Web.Controllers
 {
     [Authorize]
-    //[Route("[controller]")]
     public class CategoryController : Controller
     {
         private readonly ICatalogCore _catalog;
         private readonly ICloudStorage _cloudStorage;
         private readonly ISeoCore _seo;
 
-        public CategoryController(ICloudStorage cloudStorage, ICatalogCore catalog,IMapper mapper,IUnitOfWork db)
+        public CategoryController(ICloudStorage cloudStorage, ICatalogCore catalog, IMapper mapper, IUnitOfWork db)
         {
             _catalog = catalog;
             _cloudStorage = cloudStorage;
@@ -32,9 +31,10 @@ namespace eSuperShop.Web.Controllers
 
         //Products
         [AllowAnonymous]
-       // [Route("/Products/{slugUrl}")]
+        [Route("Products/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
+            ViewBag.data = slugUrl;
             return View();
         } 
         
