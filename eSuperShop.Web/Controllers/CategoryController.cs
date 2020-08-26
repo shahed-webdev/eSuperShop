@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
@@ -12,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -26,18 +22,18 @@ namespace eSuperShop.Web.Controllers
         {
             _catalog = catalog;
             _cloudStorage = cloudStorage;
-            _seo = new SeoCoreCatalog(mapper,db);
+            _seo = new SeoCoreCatalog(mapper, db);
         }
 
         //Products
         [AllowAnonymous]
-        [Route("Products/{slugUrl}")]
+        [Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
             ViewBag.data = slugUrl;
             return View();
-        } 
-        
+        }
+
         //Category list
         public IActionResult Index()
         {
@@ -101,7 +97,7 @@ namespace eSuperShop.Web.Controllers
         //Delete Placement
         public IActionResult DeletePlacement(int categoryId, CatalogDisplayPlace place)
         {
-            var response = _catalog.DeletePlace(categoryId,place);
+            var response = _catalog.DeletePlace(categoryId, place);
             return Json(response);
         }
 

@@ -15,7 +15,6 @@ namespace eSuperShop.Web.Controllers
             _slider = slider;
             _catalog = catalog;
         }
-
         public IActionResult Index()
         {
             return View();
