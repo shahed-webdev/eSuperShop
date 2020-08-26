@@ -49,7 +49,7 @@ namespace eSuperShop.Web
 
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            
+
             //for google storage
             services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
 
@@ -77,7 +77,7 @@ namespace eSuperShop.Web
             {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                //endpoints.MapRazorPages();
             });
         }
     }
