@@ -12,7 +12,7 @@
     <!-- MDB -->
     <link href="~/mdb/css/mdb-core.css" rel="stylesheet" />
     <!-- Custom layout -->
-    <link href="~/css/public-master.css?v=.2" rel="stylesheet" />
+    <link href="~/css/public-master.css?v=.3" rel="stylesheet" />
 
     <!-- Others page style -->
     @RenderSection("Styles", false)
@@ -22,9 +22,9 @@
         <nav class="navbar navbar-expand-sm top-bar">
             <div class="container">
                 <ul class="nav navbar-nav nav-flex-icons ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Account/Manage/Index" title="Manage"><i class="fal fa-user-headset mr-1"></i>Help</a>
-                    </li>
+                    @*<li class="nav-item">
+                        <a class="nav-link" href=""><i class="fal fa-user-headset mr-1"></i>Help</a>
+                    </li>*@
                     <partial name="_LoginPartial" />
                 </ul>
             </div>

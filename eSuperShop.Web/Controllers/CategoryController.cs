@@ -27,6 +27,7 @@ namespace eSuperShop.Web.Controllers
 
         //Products
         [AllowAnonymous]
+        [Route("[controller]/[action]")]
         [Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {

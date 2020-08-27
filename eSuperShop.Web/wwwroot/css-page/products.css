@@ -21,7 +21,8 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 #filter-side ul li a:hover { color: #ff0000;}
 
 /*reset container size*/
-@media (min-width: 1405px) { .container { max-width: 1400px; }
+@media (min-width: 1405px) {
+     .container { max-width: 1400px; }
 }
 
 @media (max-width: 767.98px) {
