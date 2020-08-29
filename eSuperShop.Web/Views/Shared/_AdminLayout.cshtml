@@ -18,14 +18,14 @@
     <!-- sidebar -->
     <link href="~/css/side-navbar.css?v=1" rel="stylesheet" />
     <!-- image crop-er -->
-    <link href="~/css/croper.css" rel="stylesheet" />
+    <link href="~/css/croper.css?v=1" rel="stylesheet" />
     <!--bootstrap-datepicker-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
 
     <!-- custom -->
     <link href="~/css/admin-master.css?v=1" rel="stylesheet" />
 
-    @RenderSection("Styles", false)
+    @await RenderSectionAsync("Styles", false)
 </head>
 <body>
     <div id="header">
@@ -71,7 +71,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
     <!-- image crop-er -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <!--scroll-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
     <!-- axios -->
@@ -79,7 +79,7 @@
     <!-- autocomplete -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
     <!-- MDB core JavaScript -->
-    <script src="~/mdb/js/mdb-admin.min.js"></script>
+    <script src="~/mdb/js/mdb-admin.min.js?v=1"></script>
     <!--notify js-->
     <script src="~/js/notify.min.js"></script>
     <!--moment js-->
@@ -93,9 +93,9 @@
     @*<script src="~/js/menu-links.js"></script>*@
     <script src="~/js/sidedrawer-show-hide.js"></script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $(function () {
             //User login Info
             @*const url = "@Url.Action($"GetUserLoggedInInfo", $"Dashboard")";
