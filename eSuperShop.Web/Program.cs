@@ -15,7 +15,7 @@ namespace eSuperShop.Web
             using (var scope = host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
-                db.Database.Migrate();
+                //db.Database.Migrate();
             }
 
             host.Run();

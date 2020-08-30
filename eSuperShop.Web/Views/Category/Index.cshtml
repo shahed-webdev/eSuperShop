@@ -15,13 +15,16 @@
         .parentCategory i.muted { color: #bfbfbf; pointer-events: none }
         .parentCategory:hover, .childCategory:hover { background-color: #eee; border-radius: 3px }
 
-        .childCategory i { font-size: 15px }
-        .childCategory a { font-size: 15px }
+        .childCategory i.muted { color: #bfbfbf; pointer-events: none }
+        .last-child, .childCategory i,a { font-size: 15px }
 
-        .nested { display: none }
+        .last-child { font-size: 15px; color: #f95151; }
+
+        .nested { display: none; padding-left: 15px }
         .nested.show { display: block }
+
         .down { content: "\f107"; font-family: 'Font Awesome 5 Pro' }
-    </style>
+    </style>  
 }
 
 <div class="container">
@@ -45,7 +48,7 @@
                     var isNoCategory = !catalog.SubCatalog.Any();
 
                     <li class="list-group-item">
-                        <div class="parentCategory d-flex justify-content-between mb-2">
+                        <div class="parentCategory d-flex justify-content-between">
                             <div>
                                 @if (!isNoCategory)
                                 {

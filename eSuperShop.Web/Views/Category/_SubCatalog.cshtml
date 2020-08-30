@@ -8,14 +8,14 @@
 @foreach (var catalog in Model)
 {
     var isNoCategory = !catalog.SubCatalog.Any();
-    <li class="list-group-item childCategory">
-        <div class="d-flex justify-content-between mb-2">
+    <li class="list-group-item childCategory p-1">
+        <div class="d-flex justify-content-between">
             <div>
                 @if (!isNoCategory)
                 {
                     <span class="fas fa-angle-right rotate"></span>
                 }
-                <strong><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</strong>
+                <span class="@(isNoCategory?"last-child":"")"><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</span>
             </div>
             <div>
                 <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2"><i class="far fa-search-location"></i> SEO</a>
