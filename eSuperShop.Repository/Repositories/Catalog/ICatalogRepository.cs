@@ -19,7 +19,7 @@ namespace eSuperShop.Repository
         List<CatalogDisplayModel> DisplayList(CatalogDisplayPlace place);
         List<CatalogDisplayModel> DisplaySubCatalog(int parentCatalogId, int numberOfItem);
 
-        List<CatalogModel> List();
+        IEnumerable<CatalogModel> List();
         List<DDL> SliderPlaceDdl();
         List<DDL> ListDdl();
         string Breadcrumb(int id);

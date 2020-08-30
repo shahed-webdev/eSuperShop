@@ -87,11 +87,16 @@ namespace eSuperShop.Repository
                 .ToList();
         }
 
-        public List<CatalogModel> List()
+        public IEnumerable<CatalogModel> List()
         {
-            return Db.Catalog
-                .ProjectTo<CatalogModel>(_mapper.ConfigurationProvider)
-                .ToList();
+            var catalogs = Db.Catalog
+                .AsEnumerable()?
+                .Where(c => c.ParentCatalog == null)
+                .ToList()
+                .Select(c => new CatalogModel(c));
+
+            return catalogs;
+
         }
 
         public List<DDL> SliderPlaceDdl()
@@ -186,9 +191,9 @@ namespace eSuperShop.Repository
         public void PostSeo(SeoAddModel model)
         {
             var catalog = Db.Catalog.Include(c => c.Seo).FirstOrDefault(c => c.CatalogId == model.AssignTableId);
-           
+
             if (catalog == null) return;
-           
+
             if (catalog.Seo == null)
             {
                 var seo = _mapper.Map<Seo>(model);

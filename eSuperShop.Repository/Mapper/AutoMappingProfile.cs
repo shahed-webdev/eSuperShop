@@ -13,7 +13,7 @@ namespace eSuperShop.Repository
             CreateMap<SliderListModel, SliderSlideModel>().ReverseMap();
 
             CreateMap<Catalog, CatalogAddModel>().ReverseMap();
-            CreateMap<Catalog, CatalogModel>().ReverseMap();
+            CreateMap<Catalog, CatalogModel>().MaxDepth(10).ReverseMap();
             CreateMap<Catalog, CatalogDisplayModel>().ReverseMap();
 
             CreateMap<CatalogShownPlace, CatalogAssignModel>().ReverseMap();

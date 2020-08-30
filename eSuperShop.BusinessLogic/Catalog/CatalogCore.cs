@@ -3,6 +3,7 @@ using eSuperShop.Data;
 using eSuperShop.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -101,7 +102,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 var data = _db.Catalog.List();
-                return new DbResponse<List<CatalogModel>>(true, "Success", data);
+                return new DbResponse<List<CatalogModel>>(true, "Success", data.ToList());
             }
             catch (Exception e)
             {
