@@ -5,24 +5,37 @@
 }
 
 
-@foreach (var sub in Model)
+@foreach (var catalog in Model)
 {
-    <li class="childCategory d-flex justify-content-between">
-        <div>
-            <span class="far fa-folder-open ic-w mr-1"></span>@sub.CatalogName
+    var isNoCategory = !catalog.SubCatalog.Any();
+    <li class="list-group-item childCategory">
+        <div class="d-flex justify-content-between mb-2">
+            <div>
+                @if (!isNoCategory)
+                {
+                    <span class="fas fa-angle-right rotate"></span>
+                }
+                <strong><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</strong>
+            </div>
+            <div>
+                <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2"><i class="far fa-search-location"></i> SEO</a>
+                @if (isNoCategory)
+                {
+                    <i data-id="@catalog.CatalogId" class="delete fal fa-trash-alt mr-3"></i>
+                }
+                else
+                {
+                    <i data-id="0" class="muted fal fa-trash-alt mr-3"></i>
+                }
+                <i data-id="@catalog.CatalogId" class="edit fal fa-edit"></i>
+            </div>
         </div>
-        <div>
-            <a data-name="@sub.CatalogName" data-id="@sub.CatalogId" class="addSeo red-text mr-2"><i class="far fa-search-location"></i> SEO</a>
-            <i data-id="@sub.CatalogId" class="delete fal fa-trash-alt mr-2"></i>
-            <i data-id="@sub.CatalogId" class="edit fal fa-edit"></i>
-        </div>
+
+        @if (!isNoCategory)
+        {
+            <ul class="nested mb-1">
+                <partial name="_SubCatalog" model="@catalog.SubCatalog"/>
+            </ul>
+        }
     </li>
-
-    @if (sub.SubCatalog.Any())
-    {
-        <ul class="nested mb-1">
-            <partial name="_SubCatalog" model="@sub.SubCatalog" />
-        </ul>
-    }
-
 }

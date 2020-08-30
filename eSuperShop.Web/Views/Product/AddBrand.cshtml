@@ -70,8 +70,8 @@
         const cropImageModal = $('#cropImageModal');
         const btnCrop = $('#btnCrop');
         const cropImage = $('#upload-demo').croppie({
-            viewport: { width: 150, height: 150 },
-            boundary: { width: 180, height: 180 },
+            viewport: { width:500, height: 200 },
+            boundary: { width: 555, height: 225 },
             showZoomer: true,
             enableResize: true,
             enableOrientation: true
@@ -109,11 +109,11 @@
 
         //crop done
         btnCrop.on('click', function() {
-            cropImage.croppie('result', { type: 'blob', size: { width: 100, height: 100 } }).then(function(res) {
+            cropImage.croppie('result', { type: 'blob' }).then(function(res) {
                 previewImage.attr('src', URL.createObjectURL(res)).addClass('img-thumbnail');
                 console.log(res)
 
-                cropImage.croppie('result', { type: 'blob', size: { width: 20, height: 20 } }).then(function(res2) {
+                cropImage.croppie('result', { type: 'blob', size: { width: 20} }).then(function(res2) {
                     console.log(res2)
                 });
 
