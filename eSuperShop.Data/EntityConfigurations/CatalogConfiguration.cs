@@ -11,20 +11,22 @@ namespace eSuperShop.Data
                 .IsRequired()
                 .HasMaxLength(400);
 
-            builder.Property(e => e.CreatedOnUtc)
-                .HasColumnType("datetime")
-                .HasDefaultValueSql("(getutcdate())");
-
             builder.Property(e => e.ImageUrl)
-                .HasColumnName("ImageURL")
                 .HasMaxLength(255);
 
             builder.Property(e => e.SlugUrl)
                 .IsRequired()
-                .HasColumnName("SlugURL")
                 .HasMaxLength(128);
 
-            builder.Property(e => e.UpdatedOnUtc).HasColumnType("datetime");
+            builder.Property(e => e.IsActive)
+                .HasDefaultValueSql("((1))");
+
+            builder.Property(e => e.CreatedOnUtc)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getutcdate())");
+
+            builder.Property(e => e.UpdatedOnUtc)
+                .HasColumnType("datetime");
 
             builder.HasOne(d => d.CreatedByRegistration)
                 .WithMany(p => p.Catalog)
@@ -41,7 +43,7 @@ namespace eSuperShop.Data
             builder.HasOne(d => d.ParentCatalog)
                 .WithMany(p => p.SubCatalog)
                 .HasForeignKey(d => d.ParentCatalogId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK_Catalog_Catalog");
         }
     }

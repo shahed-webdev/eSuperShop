@@ -13,5 +13,6 @@ namespace eSuperShop.Data
 
         public virtual Registration CreatedByRegistration { get; set; }
         public virtual Catalog Catalog { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

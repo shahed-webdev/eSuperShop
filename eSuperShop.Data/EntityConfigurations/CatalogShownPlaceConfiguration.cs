@@ -8,20 +8,19 @@ namespace eSuperShop.Data
     {
         public void Configure(EntityTypeBuilder<CatalogShownPlace> builder)
         {
-            builder.Property(e => e.CatalogShownPlaceId);
-
-            builder.Property(e => e.CreatedOnUtc)
-                .HasColumnType("datetime")
-                .HasDefaultValueSql("(getutcdate())");
-
             builder.Property(e => e.ShownPlace)
                 .IsRequired()
                 .HasMaxLength(128)
                 .HasConversion(c => c.ToString(), c => Enum.Parse<CatalogDisplayPlace>(c));
 
+            builder.Property(e => e.CreatedOnUtc)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getutcdate())");
+
             builder.HasOne(d => d.Catalog)
                 .WithMany(p => p.CatalogShownPlace)
                 .HasForeignKey(d => d.CatalogId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_CatalogShownPlace_Catalog");
 
             builder.HasOne(d => d.CreatedByRegistration)

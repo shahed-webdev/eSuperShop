@@ -13,11 +13,14 @@ namespace eSuperShop.Data
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getutcdate())");
 
-            builder.Property(e => e.MetaDescription).HasMaxLength(4000);
+            builder.Property(e => e.MetaDescription)
+                .HasMaxLength(4000);
 
-            builder.Property(e => e.MetaKeywords).HasMaxLength(400);
+            builder.Property(e => e.MetaKeywords)
+                .HasMaxLength(400);
 
-            builder.Property(e => e.MetaTitle).HasMaxLength(400);
+            builder.Property(e => e.MetaTitle)
+                .HasMaxLength(400);
 
             builder.HasOne(d => d.CreatedByRegistration)
                 .WithMany(p => p.Seo)
