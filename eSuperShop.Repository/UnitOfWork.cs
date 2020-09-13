@@ -12,11 +12,13 @@ namespace eSuperShop.Repository
             _db = db;
             _mapper = mapper;
 
+            Brand = new BrandRepository(_db, _mapper);
             Registration = new RegistrationRepository(_db, _mapper);
             Slider = new SliderRepository(_db, _mapper);
             Catalog = new CatalogRepository(_db, _mapper);
         }
 
+        public IBrandRepository Brand { get; }
         public IRegistrationRepository Registration { get; }
         public ISliderRepository Slider { get; }
         public ICatalogRepository Catalog { get; }

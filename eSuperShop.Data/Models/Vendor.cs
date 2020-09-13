@@ -8,6 +8,7 @@ namespace eSuperShop.Data
         public Vendor()
         {
             Product = new HashSet<Product>();
+            VendorCatalog = new HashSet<VendorCatalog>();
             VendorFollower = new HashSet<VendorFollower>();
             VendorReview = new HashSet<VendorReview>();
             VendorWarehouse = new HashSet<VendorWarehouse>();
@@ -34,6 +35,7 @@ namespace eSuperShop.Data
 
         public virtual Registration Registration { get; set; }
         public virtual ICollection<Product> Product { get; set; }
+        public virtual ICollection<VendorCatalog> VendorCatalog { get; set; }
         public virtual ICollection<VendorFollower> VendorFollower { get; set; }
         public virtual ICollection<VendorReview> VendorReview { get; set; }
         public virtual ICollection<VendorWarehouse> VendorWarehouse { get; set; }

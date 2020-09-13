@@ -30,6 +30,7 @@ namespace eSuperShop.Data
         public virtual DbSet<Seo> Seo { get; set; }
         public virtual DbSet<Slider> Slider { get; set; }
         public virtual DbSet<Vendor> Vendor { get; set; }
+        public virtual DbSet<VendorCatalog> VendorCatalog { get; set; }
         public virtual DbSet<VendorFollower> VendorFollower { get; set; }
         public virtual DbSet<VendorReview> VendorReview { get; set; }
         public virtual DbSet<VendorWarehouse> VendorWarehouse { get; set; }
@@ -57,6 +58,7 @@ namespace eSuperShop.Data
             builder.ApplyConfiguration(new SeoConfiguration());
             builder.ApplyConfiguration(new SliderConfiguration());
             builder.ApplyConfiguration(new VendorConfiguration());
+            builder.ApplyConfiguration(new VendorCatalogConfiguration());
             builder.ApplyConfiguration(new VendorFollowerConfiguration());
             builder.ApplyConfiguration(new VendorReviewConfiguration());
             builder.ApplyConfiguration(new VendorWarehouseConfiguration());

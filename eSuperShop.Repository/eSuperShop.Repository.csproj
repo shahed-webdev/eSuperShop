@@ -6,10 +6,32 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eSuperShop.Data\eSuperShop.Data.csproj" />
+    <ProjectReference Include="..\JqueryDataTables.LoopsIT\JqueryDataTables.LoopsIT.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\AllSpecification\" />
+    <Folder Include="Repositories\CatalogAttribute\" />
+    <Folder Include="Repositories\CatalogBrand\" />
+    <Folder Include="Repositories\CatalogShownPlace\" />
+    <Folder Include="Repositories\CatalogSpecification\" />
+    <Folder Include="Repositories\Customer\" />
+    <Folder Include="Repositories\Warehouse\" />
+    <Folder Include="Repositories\VendorWarehouse\" />
+    <Folder Include="Repositories\VendorReview\" />
+    <Folder Include="Repositories\VendorFollower\" />
+    <Folder Include="Repositories\Vendor\" />
+    <Folder Include="Repositories\ProductSpecification\" />
+    <Folder Include="Repositories\ProductReview\" />
+    <Folder Include="Repositories\ProductBlob\" />
+    <Folder Include="Repositories\ProductAttributeSetList\" />
+    <Folder Include="Repositories\ProductAttributeSet\" />
+    <Folder Include="Repositories\ProductAttribute\" />
+    <Folder Include="Repositories\Product\" />
   </ItemGroup>
 
 </Project>

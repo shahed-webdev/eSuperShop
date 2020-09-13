@@ -19,6 +19,7 @@ namespace eSuperShop.Data
             Seo = new HashSet<Seo>();
             Slider = new HashSet<Slider>();
             Vendor = new HashSet<Vendor>();
+            VendorCatalog = new HashSet<VendorCatalog>();
             VendorWarehouse = new HashSet<VendorWarehouse>();
             Warehouse = new HashSet<Warehouse>();
         }
@@ -46,6 +47,7 @@ namespace eSuperShop.Data
         public virtual ICollection<Seo> Seo { get; set; }
         public virtual ICollection<Slider> Slider { get; set; }
         public virtual ICollection<Vendor> Vendor { get; set; }
+        public virtual ICollection<VendorCatalog> VendorCatalog { get; set; }
         public virtual ICollection<VendorWarehouse> VendorWarehouse { get; set; }
         public virtual ICollection<Warehouse> Warehouse { get; set; }
     }

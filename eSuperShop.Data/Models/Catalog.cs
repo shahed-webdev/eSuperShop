@@ -13,6 +13,7 @@ namespace eSuperShop.Data
             CatalogSpecification = new HashSet<CatalogSpecification>();
             SubCatalog = new HashSet<Catalog>();
             Product = new HashSet<Product>();
+            VendorCatalog = new HashSet<VendorCatalog>();
         }
 
         public int CatalogId { get; set; }
@@ -36,5 +37,6 @@ namespace eSuperShop.Data
         public virtual ICollection<CatalogSpecification> CatalogSpecification { get; set; }
         public virtual ICollection<Catalog> SubCatalog { get; set; }
         public virtual ICollection<Product> Product { get; set; }
+        public virtual ICollection<VendorCatalog> VendorCatalog { get; set; }
     }
 }
