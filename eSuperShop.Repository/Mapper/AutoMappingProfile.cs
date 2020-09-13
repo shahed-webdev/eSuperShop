@@ -45,6 +45,12 @@ namespace eSuperShop.Repository
             CreateMap<AllSpecification, SpecificationModel>()
                 .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
             CreateMap<CatalogSpecification, SpecificationAssignModel>().ReverseMap();
+
+            //Warehouse Mapping
+            CreateMap<Warehouse, WarehouseAddModel>().ReverseMap();
+            CreateMap<Warehouse, WarehouseModel>()
+                .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
+            CreateMap<VendorWarehouse, WarehouseAssignModel>().ReverseMap();
         }
     }
 }

@@ -8,4 +8,8 @@
     <ProjectReference Include="..\eSuperShop.Repository\eSuperShop.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Vendor\" />
+  </ItemGroup>
+
 </Project>

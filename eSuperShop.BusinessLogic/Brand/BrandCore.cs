@@ -77,8 +77,6 @@ namespace eSuperShop.BusinessLogic
                 _db.Brand.AssignCatalog(model);
                 _db.SaveChanges();
 
-                var data = _db.Catalog.Get(model.CatalogId);
-
                 return new DbResponse(true, "Success");
             }
             catch (Exception e)

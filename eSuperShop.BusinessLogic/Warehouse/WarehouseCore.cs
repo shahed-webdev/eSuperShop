@@ -6,41 +6,41 @@ using System.Collections.Generic;
 
 namespace eSuperShop.BusinessLogic
 {
-    public class AttributeCore : IAttributeCore
+    public class WarehouseCore : IWarehouseCore
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
 
-        public AttributeCore(IMapper mapper, IUnitOfWork db)
+        public WarehouseCore(IMapper mapper, IUnitOfWork db)
         {
             _mapper = mapper;
             _db = db;
         }
-        public DbResponse<AttributeModel> Add(AttributeAddModel model, string userName)
+        public DbResponse<WarehouseModel> Add(WarehouseAddModel model, string userName)
         {
             try
             {
                 var registrationId = _db.Registration.GetRegID_ByUserName(userName);
-                if (registrationId == 0) return new DbResponse<AttributeModel>(false, "Invalid User");
+                if (registrationId == 0) return new DbResponse<WarehouseModel>(false, "Invalid User");
 
                 model.CreatedByRegistrationId = registrationId;
 
-                if (string.IsNullOrEmpty(model.KeyName))
-                    return new DbResponse<AttributeModel>(false, "Invalid Data");
+                if (string.IsNullOrEmpty(model.Name))
+                    return new DbResponse<WarehouseModel>(false, "Invalid Data");
 
-                if (_db.Attribute.IsExistName(model.KeyName))
-                    return new DbResponse<AttributeModel>(false, "Attribute Name already Exist", null, "Name");
+                if (_db.Warehouse.IsExistName(model.Name))
+                    return new DbResponse<WarehouseModel>(false, "Warehouse Name already Exist", null, "Name");
 
-                _db.Attribute.Add(model);
+                _db.Warehouse.Add(model);
                 _db.SaveChanges();
 
-                var data = _mapper.Map<AttributeModel>(_db.Attribute.Attribute);
+                var data = _mapper.Map<WarehouseModel>(_db.Warehouse.Warehouse);
 
-                return new DbResponse<AttributeModel>(true, "Success", data);
+                return new DbResponse<WarehouseModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<AttributeModel>(false, e.Message);
+                return new DbResponse<WarehouseModel>(false, e.Message);
             }
         }
 
@@ -48,12 +48,12 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Attribute.IsNull(id))
+                if (_db.Warehouse.IsNull(id))
                     return new DbResponse(false, "Data not found");
-                if (_db.Attribute.IsRelatedDataExist(id))
+                if (_db.Warehouse.IsRelatedDataExist(id))
                     return new DbResponse(false, "Related data Exist");
 
-                _db.Attribute.Delete(id);
+                _db.Warehouse.Delete(id);
                 _db.SaveChanges();
 
                 return new DbResponse(true, "Success");
@@ -64,7 +64,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse AssignCatalog(AttributeAssignModel model, string userName)
+        public DbResponse AssignCatalog(WarehouseAssignModel model, string userName)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace eSuperShop.BusinessLogic
 
                 model.AssignedByRegistrationId = registrationId;
 
-                _db.Attribute.AssignCatalog(model);
+                _db.Warehouse.AssignCatalog(model);
                 _db.SaveChanges();
 
                 return new DbResponse(true, "Success");
@@ -84,16 +84,16 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DataResult<AttributeModel> List(DataRequest request)
+        public DataResult<WarehouseModel> List(DataRequest request)
         {
-            return _db.Attribute.List(request);
+            return _db.Warehouse.List(request);
         }
 
         public DbResponse<List<DDL>> Ddl()
         {
             try
             {
-                var data = _db.Attribute.ListDdl();
+                var data = _db.Warehouse.ListDdl();
                 return new DbResponse<List<DDL>>(true, "Success", data);
             }
             catch (Exception e)

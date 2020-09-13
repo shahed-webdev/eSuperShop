@@ -18,6 +18,7 @@ namespace eSuperShop.Repository
             Slider = new SliderRepository(_db, _mapper);
             Specification = new SpecificationRepository(_db, _mapper);
             Catalog = new CatalogRepository(_db, _mapper);
+            Warehouse = new WarehouseRepository(_db, _mapper);
         }
 
         public IAttributeRepository Attribute { get; }
@@ -26,6 +27,7 @@ namespace eSuperShop.Repository
         public ISliderRepository Slider { get; }
         public ISpecificationRepository Specification { get; }
         public ICatalogRepository Catalog { get; }
+        public IWarehouseRepository Warehouse { get; }
 
         public void Dispose()
         {

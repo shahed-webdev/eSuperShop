@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -19,11 +19,9 @@
     <Folder Include="Repositories\CatalogShownPlace\" />
     <Folder Include="Repositories\CatalogSpecification\" />
     <Folder Include="Repositories\Customer\" />
-    <Folder Include="Repositories\Warehouse\" />
     <Folder Include="Repositories\VendorWarehouse\" />
     <Folder Include="Repositories\VendorReview\" />
     <Folder Include="Repositories\VendorFollower\" />
-    <Folder Include="Repositories\Vendor\" />
     <Folder Include="Repositories\ProductSpecification\" />
     <Folder Include="Repositories\ProductReview\" />
     <Folder Include="Repositories\ProductBlob\" />
