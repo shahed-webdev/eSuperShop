@@ -14,7 +14,7 @@ namespace eSuperShop.Data
                 .HasMaxLength(128);
 
             builder.Property(e => e.LogoUrl)
-                .HasMaxLength(128);
+                .HasMaxLength(1024);
 
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")
