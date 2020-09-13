@@ -56,11 +56,11 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> DeleteBrand(int? id, string imageUrl)
         {
             var response = _brand.Delete(id.GetValueOrDefault());
-            var fileName = Path.GetFileName(imageUrl);
+            var fileName = Path.GetFileName(imageUrl.Substring(0, imageUrl.IndexOf("?", StringComparison.Ordinal)));
 
             if (response.IsSuccess)
             {
-                //await _cloudStorage.DeleteFileAsync(fileName);
+                await _cloudStorage.DeleteFileAsync(fileName);
             }
 
             return Json(response.IsSuccess);

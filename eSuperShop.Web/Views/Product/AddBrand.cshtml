@@ -150,7 +150,6 @@
             imageError.text("");
 
             const pathInput = $('#filePath');
-
             const size = e.target.files[0].size / 1024 / 1024;
             const allowSize = 1;
             const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
@@ -180,7 +179,7 @@
             cropImage.croppie('result', { type: 'blob' }).then(function(res) {
                 previewImage.attr('src', URL.createObjectURL(res));
 
-                formData.append("logo", res);
+                formData.append("logo", res, $('#filePath').val());
                 cropImageModal.modal('hide');
             });
         });
