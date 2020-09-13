@@ -116,7 +116,6 @@
                 url: "/Category/Placement",
                 data,
                 success: function (response) {
-                    console.log(response);
                     assignList.appendChild(appendData(response.Data));
                     $(".notify").notify("Assign Success", "success", { position: "right" });
                 },

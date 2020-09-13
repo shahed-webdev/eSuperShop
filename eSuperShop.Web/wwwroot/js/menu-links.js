@@ -1,140 +1,57 @@
 ﻿
-//let linkData = [{
-//    "LinkCategoryID": 1,
-//    "SN": 1,
-//    "Category": "Sub-Admin",
-//    "IconClass": "fas fa-user-tie",
-//    "links": [{
-//        "LinkID": 3,
-//        "SN": 0,
-//        "Controller": "SubAdmin",
-//        "Action": "SignUp",
-//        "Title": "Sign Up",
-//        "IconClass": null
-//    },
-//    {
-//        "LinkID": 1,
-//        "SN": 7,
-//        "Controller": "SubAdmin",
-//        "Action": "List",
-//        "Title": "Sub-admins",
-//        "IconClass": null
-//    },
-//    {
-//        "LinkID": 2,
-//        "SN": 2,
-//        "Controller": "SubAdmin",
-//        "Action": "PageAccess",
-//        "Title": "Page Access",
-//        "IconClass": null
-//    }]
-//},
-//{
-//    "LinkCategoryID": 2,
-//    "SN": 7,
-//    "Category": "Customer",
-//    "IconClass": "fas fa-user",
-//    "links": [
-//    {
-//        "LinkID": 6,
-//        "SN": 2,
-//        "Controller": "Customer",
-//        "Action": "List",
-//        "Title": "Customers",
-//        "IconClass": null
-//    }]
-//},
-//{
-//    "LinkCategoryID": 3,
-//    "SN": 3,
-//    "Category": "Expense",
-//    "IconClass": "fas fa-chart-pie",
-//    "links": [{
-//        "LinkID": 5,
-//        "SN": 1,
-//        "Controller": "ExpenseCategories",
-//        "Action": "Index",
-//        "Title": "Categories",
-//        "IconClass": null
-//    },
-//    {
-//        "LinkID": 7,
-//        "SN": 2,
-//        "Controller": "Expenses",
-//        "Action": "Index",
-//        "Title": "Expenses",
-//        "IconClass": null
-//    }]
-//},
-//{
-//    "LinkCategoryID": 6,
-//    "SN": 4,
-//    "Category": "Vendor",
-//    "IconClass": "fas fa-user-tie",
-//    "links": [{
-//        "LinkID": 8,
-//        "SN": 1,
-//        "Controller": "Vendor",
-//        "Action": "List",
-//        "Title": "Vendors",
-//        "IconClass": null
-//    }]
-//},
-//    {
-//        "LinkCategoryID": 2,
-//        "SN": 7,
-//        "Category": "Product",
-//        "IconClass": "fas fa-shopping-cart",
-//        "links": [{
-//            "LinkID": 11,
-//            "SN": 3,
-//            "Controller": "Product",
-//            "Action": "Cataloglist",
-//            "Title": "Category",
-//            "IconClass": null
-//        },
-//        {
-//            "LinkID": 9,
-//            "SN": 1,
-//            "Controller": "Product",
-//            "Action": "Barcode",
-//            "Title": "Barcode",
-//            "IconClass": null
-//        },
-//        {
-//            "LinkID": 9,
-//            "SN": 1,
-//            "Controller": "Product",
-//            "Action": "Selling",
-//            "Title": "Selling",
-//            "IconClass": null
-//        },
-//            ,
-//        {
-//            "LinkID": 6,
-//            "SN": 1,
-//            "Controller": "Product",
-//            "Action": "SellingRecords",
-//            "Title": "Selling Invoice",
-//            "IconClass": null
-//        },
-//        {
-//            "LinkID": 6,
-//            "SN": 1,
-//            "Controller": "Product",
-//            "Action": "Purchase",
-//            "Title": "Purchase",
-//            "IconClass": null
-//        },
-//        {
-//            "LinkID": 6,
-//            "SN": 1,
-//            "Controller": "Product",
-//            "Action": "PurchaseRecords",
-//            "Title": "Purchase Invoice",
-//            "IconClass": null
-//        }]
-//    }];
+let linkData = [{
+        "LinkCategoryID": 1,
+        "SN": 1,
+        "Category": "Category",
+        "IconClass": "fas fa-user-tie",
+        "links": [{
+                "LinkID": 3,
+                "SN": 0,
+                "Controller": "Category",
+                "Action": "Index",
+                "Title": "Category",
+                "IconClass": null
+            },
+            {
+                "LinkID": 1,
+                "SN": 7,
+                "Controller": "Category",
+                "Action": "Placement",
+                "Title": "Placement",
+                "IconClass": null
+            }]
+    },
+    {
+        "LinkCategoryID": 2,
+        "SN": 7,
+        "Category": "Slider",
+        "IconClass": "fas fa-user",
+        "links": [
+            {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Slider",
+                "Action": "Index",
+                "Title": "Home Slider",
+                "IconClass": null
+            }]
+    },
+    {
+        "LinkCategoryID": 2,
+        "SN": 7,
+        "Category": "Product",
+        "IconClass": "fas fa-user",
+        "links": [
+            {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Product",
+                "Action": "AddBrand",
+                "Title": "Add Brand",
+                "IconClass": null
+            }]
+    }
+];
 
 //selectors
 const menuItem = document.getElementById("menuItem")
@@ -143,13 +60,15 @@ const menuItem = document.getElementById("menuItem")
 
 //get data from server
 const getMenuData = function () {
-    const url = '/Basic/GetSideMenu'
-    axios.get(url)
-        .then(response => {
-            appendMenuDOM(response.data)
-            setNavigation()
-        })
-        .catch(err => console.log(err))
+    appendMenuDOM()
+    setNavigation()
+    //const url = '/Basic/GetSideMenu'
+    //axios.get(url)
+    //    .then(response => {
+    //        appendMenuDOM(response.data)
+    //        setNavigation()
+    //    })
+    //    .catch(err => console.log(err))
 }
 
 //create links
@@ -195,7 +114,7 @@ const linkCategory = function (category, iconCss, links) {
 }
 
 //append link to DOM
-const appendMenuDOM = function (linkData) { 
+const appendMenuDOM = function (/*linkData*/) { 
     const fragment = document.createDocumentFragment();
 
     const span = document.createElement('span');
