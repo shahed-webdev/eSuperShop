@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
+using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +29,7 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
-        //Brand
+        //Add Brand
         public IActionResult AddBrand()
         {
             return View();
@@ -41,6 +43,27 @@ namespace eSuperShop.Web.Controllers
 
             var response = _brand.Add(model,User.Identity.Name);
             return Json(response);
+        }
+
+        //Get Brand
+        public IActionResult GetBrand(DataRequest request)
+        {
+            var response = _brand.List(request);
+            return Json(response);
+        }
+
+        //Delete Brand
+        public async Task<IActionResult> DeleteBrand(int? id, string imageUrl)
+        {
+            var response = _brand.Delete(id.GetValueOrDefault());
+            var fileName = Path.GetFileName(imageUrl);
+
+            if (response.IsSuccess)
+            {
+                //await _cloudStorage.DeleteFileAsync(fileName);
+            }
+
+            return Json(response.IsSuccess);
         }
     }
 }

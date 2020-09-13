@@ -3,19 +3,26 @@
     Layout = "_AdminLayout";
 }
 
+@section Styles{
+    <style>
+        .logo { width: 50px; }
+    </style>    
+}
+
+
 <div class="container">
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <h4 class="page-header mb-3">Product Brand</h4>
-            <div class="card card-body notify">
-                <form id="formAdd">
-                    <div class="text-center">
-                        <img id="prevImage" alt="" />
-                    </div>
+    <h4 class="page-header mb-3">Product Brand</h4>
+    
+    <div class="card card-body">
+        <form id="formAdd">
+            <div class="row align-items-center mb-3">
+                <div class="col-lg-4">
                     <div class="md-form">
                         <label for="inputBrandName">Brand Name</label>
                         <input id="inputBrandName" type="text" class="form-control" required>
                     </div>
+                </div>
+                <div class="col-lg-5">
                     <div class="md-form">
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
@@ -28,15 +35,27 @@
                         </div>
                         <span id="imageError" class="field-validation-error"></span>
                     </div>
-
-                    <input type="submit" value="Add" class="btn btn-danger"/>
-
+                </div>
+                <div class="col-lg-3 text-right">
+                    <img id="prevImage" alt="" style="width: 40px">
+                    <input id="btnSubmit" type="submit" value="Add" class="btn btn-danger" />
                     @Html.ValidationMessage("dbCustomError")
-                </form>
+                </div>
             </div>
-        </div>
+        </form>
+      
+        <table id="brand-table" class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th><strong>Brand Name</strong></th>
+                    <th style="width: 50px"><strong>Logo</strong></th>
+                    <th style="width: 30px"><strong>Delete</strong></th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
+
 
 
 <!-- image crop modal -->
@@ -60,10 +79,60 @@
 
 @section Scripts{
     <script>
-        // Material Select Initialization
         $(function() {
             $('.mdb-select').materialSelect();
+            dataTable.getData();
         });
+
+        //get data
+        var dataTable = {
+            table: null,
+            init: function() {
+                dataTable.table = $("#brand-table").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/Product/GetBrand",
+                        type: "POST"
+                    },
+                    columns:
+                    [
+                        { data: "Name" },
+                        {
+                            data: "LogoUrl", "render": function(data, type, row, meta) {
+                                return `<img src="${data}" class="logo">`;
+                            }
+                        },
+                        {
+                            data: "BrandId", "render": function(data, type, row, meta) {
+                                return `<a class="delete far fa-trash-alt" data-image="${row.LogoUrl}" data-id="${data}"></a>`
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        { 'searchable': false, 'targets': [1, 2] },
+                        { 'sortable': false, 'targets': [1, 2] },
+                        { 'className': "text-center", "targets": [1, 2] }
+                    ]
+                });
+            },
+            operand: {
+                Equal: 0,
+                NotEqual: 1,
+                GreaterThan: 2,
+                LessThan: 3,
+                GreaterThanOrEqual: 4,
+                LessThanOrEqual: 5,
+                Contains: 6,
+                StartsWith: 7,
+                EndsWith: 8
+            },
+            getData: function() {
+                dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
+            },
+            addSign: function(data) { return `${data}/-` }
+        }
+
 
         //global variable
         const formData = new FormData();
@@ -109,9 +178,8 @@
         //crop done
         btnCrop.on('click', function() {
             cropImage.croppie('result', { type: 'blob' }).then(function(res) {
+                previewImage.attr('src', URL.createObjectURL(res));
 
-                previewImage.attr('src', URL.createObjectURL(res)).addClass('img-thumbnail');
-                console.log(res);
                 formData.append("logo", res);
                 cropImageModal.modal('hide');
             });
@@ -137,10 +205,10 @@
         const formAdd = document.getElementById("formAdd");
         formAdd.addEventListener('submit', function(evt) {
             evt.preventDefault()
-
             formData.append("Name", formAdd.inputBrandName.value);
-            
-            console.log(formData)
+
+            this.btnSubmit.disabled = true;
+            this.btnSubmit.value = "submitting...";
 
             $.ajax({
                 type: "POST",
@@ -148,12 +216,50 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    console.log(response);
-                    formAdd.inputBrandName.value = "";
-                    $('#filePath').val("");
+                success: function(response) {
+                    formAdd.btnSubmit.disabled = false;
+                    formAdd.btnSubmit.value = "Add";
 
-                    $(".notify").notify("Brand added Successfully", "success", { position: "right" });
+                    if (response.IsSuccess) {
+                        $.notify("Brand added Successfully", "success", { position: "right" });
+
+                        formAdd.inputBrandName.value = "";
+                        $('#filePath').val("");
+
+                        dataTable.getData();
+                    } else
+                        $.notify(response.Message, "error", { position: "right" });
+                },
+                error: function(err) {
+                    console.log(err);
+                    formAdd.btnSubmit.disabled = false;
+                    formAdd.btnSubmit.value = "Add";
+                }
+            });
+        });
+
+        //on delete
+        const table = document.getElementById("brand-table");
+        table.addEventListener('click', function(evt) {
+            const onDelete = evt.target.classList.contains("delete");
+            if (!onDelete) return;
+
+            const element = evt.target.parentElement.parentElement;
+            const id = evt.target.getAttribute("data-id");
+            const imageUrl = evt.target.getAttribute("data-image");
+            const isConfirm = confirm("Are you sure you want to delete?");
+
+            if (!isConfirm) return;
+
+            $.ajax({
+                url: "/Product/DeleteBrand",
+                data: { id, imageUrl },
+                success: function(response) {
+                    if (response)
+                        element.remove();
+                },
+                error: function(err) {
+                    console.log(err);
                 }
             });
         });
