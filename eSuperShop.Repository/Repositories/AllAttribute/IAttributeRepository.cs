@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 namespace eSuperShop.Repository
 {
-    public interface IBrandRepository
+    public interface IAttributeRepository
     {
-        AllBrand brand { get; set; }
-        CatalogBrand catalogBrand { get; set; }
-        void Add(BrandAddModel model);
+        AllAttribute Attribute { get; set; }
+        CatalogAttribute CatalogAttribute { get; set; }
+        void Add(AttributeAddModel model);
         void Delete(int id);
-        BrandModel Get(int id);
+        AttributeModel Get(int id);
         bool IsExistName(string name);
         bool IsExistName(string name, int updateId);
         bool IsNull(int id);
         bool IsRelatedDataExist(int id);
-        DataResult<BrandModel> List(DataRequest request);
+        DataResult<AttributeModel> List(DataRequest request);
         List<DDL> ListDdl();
-        void AssignCatalog(BrandAssignModel model);
+        void AssignCatalog(AttributeAssignModel model);
     }
 }

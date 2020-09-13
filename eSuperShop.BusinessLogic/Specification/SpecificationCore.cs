@@ -6,41 +6,41 @@ using System.Collections.Generic;
 
 namespace eSuperShop.BusinessLogic
 {
-    public class AttributeCore : IAttributeCore
+    public class SpecificationCore : ISpecificationCore
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
 
-        public AttributeCore(IMapper mapper, IUnitOfWork db)
+        public SpecificationCore(IMapper mapper, IUnitOfWork db)
         {
             _mapper = mapper;
             _db = db;
         }
-        public DbResponse<AttributeModel> Add(AttributeAddModel model, string userName)
+        public DbResponse<SpecificationModel> Add(SpecificationAddModel model, string userName)
         {
             try
             {
                 var registrationId = _db.Registration.GetRegID_ByUserName(userName);
-                if (registrationId == 0) return new DbResponse<AttributeModel>(false, "Invalid User");
+                if (registrationId == 0) return new DbResponse<SpecificationModel>(false, "Invalid User");
 
                 model.CreatedByRegistrationId = registrationId;
 
                 if (string.IsNullOrEmpty(model.KeyName))
-                    return new DbResponse<AttributeModel>(false, "Invalid Data");
+                    return new DbResponse<SpecificationModel>(false, "Invalid Data");
 
-                if (_db.Attribute.IsExistName(model.KeyName))
-                    return new DbResponse<AttributeModel>(false, "Attribute Name already Exist", null, "Name");
+                if (_db.Specification.IsExistName(model.KeyName))
+                    return new DbResponse<SpecificationModel>(false, "Specification Name already Exist", null, "Name");
 
-                _db.Attribute.Add(model);
+                _db.Specification.Add(model);
                 _db.SaveChanges();
 
-                var data = _mapper.Map<AttributeModel>(_db.Attribute.Attribute);
+                var data = _mapper.Map<SpecificationModel>(_db.Specification.Specification);
 
-                return new DbResponse<AttributeModel>(true, "Success", data);
+                return new DbResponse<SpecificationModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<AttributeModel>(false, e.Message);
+                return new DbResponse<SpecificationModel>(false, e.Message);
             }
         }
 
@@ -48,12 +48,12 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Attribute.IsNull(id))
+                if (_db.Specification.IsNull(id))
                     return new DbResponse(false, "Data not found");
-                if (_db.Attribute.IsRelatedDataExist(id))
+                if (_db.Specification.IsRelatedDataExist(id))
                     return new DbResponse(false, "Related data Exist");
 
-                _db.Attribute.Delete(id);
+                _db.Specification.Delete(id);
                 _db.SaveChanges();
 
                 return new DbResponse(true, "Success");
@@ -64,7 +64,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse AssignCatalog(AttributeAssignModel model, string userName)
+        public DbResponse AssignCatalog(SpecificationAssignModel model, string userName)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace eSuperShop.BusinessLogic
 
                 model.AssignedByRegistrationId = registrationId;
 
-                _db.Attribute.AssignCatalog(model);
+                _db.Specification.AssignCatalog(model);
                 _db.SaveChanges();
 
                 var data = _db.Catalog.Get(model.CatalogId);
@@ -86,16 +86,16 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DataResult<AttributeModel> List(DataRequest request)
+        public DataResult<SpecificationModel> List(DataRequest request)
         {
-            return _db.Attribute.List(request);
+            return _db.Specification.List(request);
         }
 
         public DbResponse<List<DDL>> Ddl()
         {
             try
             {
-                var data = _db.Attribute.ListDdl();
+                var data = _db.Specification.ListDdl();
                 return new DbResponse<List<DDL>>(true, "Success", data);
             }
             catch (Exception e)

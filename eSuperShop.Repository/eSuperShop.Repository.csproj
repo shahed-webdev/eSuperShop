@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\AllSpecification\" />
     <Folder Include="Repositories\CatalogAttribute\" />
     <Folder Include="Repositories\CatalogBrand\" />
     <Folder Include="Repositories\CatalogShownPlace\" />

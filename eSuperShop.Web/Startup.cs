@@ -53,6 +53,9 @@ namespace eSuperShop.Web
             //for google storage
             services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
 
+            services.AddTransient<IAttributeCore, AttributeCore>();
+            services.AddTransient<IBrandCore, BrandCore>();
+            services.AddTransient<ISpecificationCore, SpecificationCore>();
             services.AddTransient<ISliderCore, SliderCore>();
             services.AddTransient<ICatalogCore, CatalogCore>();
 

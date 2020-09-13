@@ -28,7 +28,7 @@ namespace eSuperShop.Repository
 
         public BrandModel Get(int id)
         {
-            return Db.Catalog
+            return Db.AllBrand
                 .ProjectTo<BrandModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefault(c => c.BrandId == id);
         }

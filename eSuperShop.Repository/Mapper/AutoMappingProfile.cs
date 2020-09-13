@@ -28,11 +28,23 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
             CreateMap<Seo, SeoAddModel>().ReverseMap();
 
+            //Attribute Mapping
+            CreateMap<AllAttribute, AttributeAddModel>().ReverseMap();
+            CreateMap<AllAttribute, AttributeModel>()
+                .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
+            CreateMap<CatalogAttribute, AttributeAssignModel>().ReverseMap();
+
             //Brand Mapping
             CreateMap<AllBrand, BrandAddModel>().ReverseMap();
             CreateMap<AllBrand, BrandModel>()
                 .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
             CreateMap<CatalogBrand, BrandAssignModel>().ReverseMap();
+
+            //Specification Mapping
+            CreateMap<AllSpecification, SpecificationAddModel>().ReverseMap();
+            CreateMap<AllSpecification, SpecificationModel>()
+                .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
+            CreateMap<CatalogSpecification, SpecificationAssignModel>().ReverseMap();
         }
     }
 }
