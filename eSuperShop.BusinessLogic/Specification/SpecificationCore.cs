@@ -3,6 +3,7 @@ using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -70,9 +71,9 @@ namespace eSuperShop.BusinessLogic
             {
                 var registrationId = _db.Registration.GetRegID_ByUserName(userName);
                 if (registrationId == 0) return new DbResponse(false, "Invalid User");
-
                 model.AssignedByRegistrationId = registrationId;
 
+                if (_db.Specification.IsExistSpecificationInCatalog(model.SpecificationId, model.CatalogId)) return new DbResponse(false, "Already Assigned");
                 _db.Specification.AssignCatalog(model);
                 _db.SaveChanges();
 
@@ -82,6 +83,46 @@ namespace eSuperShop.BusinessLogic
             {
                 return new DbResponse(false, e.Message);
             }
+        }
+
+        public DbResponse AssignCatalogMultiple(SpecificationAssignMultipleModel model, string userName)
+        {
+            try
+            {
+                var registrationId = _db.Registration.GetRegID_ByUserName(userName);
+                if (registrationId == 0) return new DbResponse(false, "Invalid User");
+                model.AssignedByRegistrationId = registrationId;
+
+                _db.Specification.AssignCatalogMultiple(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse UnAssignCatalog(int specificationId, int catalogId)
+        {
+            try
+            {
+                if (!_db.Specification.IsExistSpecificationInCatalog(specificationId, catalogId)) return new DbResponse(false, "Data Not Found");
+                _db.Specification.UnAssignCatalog(specificationId, catalogId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public Task<ICollection<SpecificationModel>> SearchAsync(string key)
+        {
+            return _db.Specification.SearchAsync(key);
         }
 
         public DataResult<SpecificationModel> List(DataRequest request)

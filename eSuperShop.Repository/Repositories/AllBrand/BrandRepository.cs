@@ -2,8 +2,10 @@
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Repository
 {
@@ -12,18 +14,18 @@ namespace eSuperShop.Repository
         public BrandRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
         {
         }
-        public AllBrand brand { get; set; }
-        public CatalogBrand catalogBrand { get; set; }
+        public AllBrand Brand { get; set; }
+        public CatalogBrand CatalogBrand { get; set; }
         public void Add(BrandAddModel model)
         {
-            brand = _mapper.Map<AllBrand>(model);
-            Db.AllBrand.Add(brand);
+            Brand = _mapper.Map<AllBrand>(model);
+            Db.AllBrand.Add(Brand);
         }
 
         public void Delete(int id)
         {
-            brand = Db.AllBrand.Find(id);
-            Db.AllBrand.Remove(brand);
+            Brand = Db.AllBrand.Find(id);
+            Db.AllBrand.Remove(Brand);
         }
 
         public BrandModel Get(int id)
@@ -74,10 +76,57 @@ namespace eSuperShop.Repository
             return ddl?.ToList() ?? new List<DDL>();
         }
 
+        public async Task<ICollection<BrandModel>> SearchAsync(string key)
+        {
+            return await Db.AllBrand
+                .Where(c => c.Name.Contains(key))
+                .ProjectTo<BrandModel>(_mapper.ConfigurationProvider)
+                .Take(5)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
         public void AssignCatalog(BrandAssignModel model)
         {
-            catalogBrand = _mapper.Map<CatalogBrand>(model);
-            Db.CatalogBrand.Add(catalogBrand);
+            CatalogBrand = _mapper.Map<CatalogBrand>(model);
+            Db.CatalogBrand.Add(CatalogBrand);
+        }
+
+        public void AssignCatalogMultiple(BrandAssignMultipleModel model)
+        {
+            var assignList = new List<CatalogBrand>();
+
+            foreach (var brandId in model.BrandIds)
+            {
+                foreach (var catalogId in model.CatalogIds)
+                {
+                    if (!IsExistBrandInCatalog(brandId, catalogId))
+                    {
+                        assignList.Add(new CatalogBrand
+                        {
+                            CatalogId = catalogId,
+                            BrandId = brandId,
+                            AssignedByRegistrationId = model.AssignedByRegistrationId
+                        });
+                    }
+                }
+            }
+
+            if (assignList.Any())
+            {
+                Db.CatalogBrand.AddRange(assignList);
+            }
+        }
+
+        public void UnAssignCatalog(int brandId, int catalogId)
+        {
+            CatalogBrand = Db.CatalogBrand.FirstOrDefault(c => c.BrandId == brandId && c.CatalogId == catalogId);
+            Db.CatalogBrand.Remove(CatalogBrand);
+        }
+
+        public bool IsExistBrandInCatalog(int brandId, int catalogId)
+        {
+            return Db.CatalogBrand.Any(c => c.BrandId == brandId && c.CatalogId == catalogId);
         }
     }
 }

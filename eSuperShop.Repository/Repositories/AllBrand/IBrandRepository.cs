@@ -1,13 +1,15 @@
 ﻿using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Repository
 {
     public interface IBrandRepository
     {
-        AllBrand brand { get; set; }
-        CatalogBrand catalogBrand { get; set; }
+        AllBrand Brand { get; set; }
+        CatalogBrand CatalogBrand { get; set; }
+
         void Add(BrandAddModel model);
         void Delete(int id);
         BrandModel Get(int id);
@@ -17,6 +19,11 @@ namespace eSuperShop.Repository
         bool IsRelatedDataExist(int id);
         DataResult<BrandModel> List(DataRequest request);
         List<DDL> ListDdl();
+        Task<ICollection<BrandModel>> SearchAsync(string key);
+
         void AssignCatalog(BrandAssignModel model);
+        void AssignCatalogMultiple(BrandAssignMultipleModel model);
+        void UnAssignCatalog(int brandId, int catalogId);
+        bool IsExistBrandInCatalog(int brandId, int catalogId);
     }
 }

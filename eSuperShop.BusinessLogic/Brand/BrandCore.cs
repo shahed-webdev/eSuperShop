@@ -3,6 +3,7 @@ using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -35,7 +36,7 @@ namespace eSuperShop.BusinessLogic
                 _db.Brand.Add(model);
                 _db.SaveChanges();
 
-                var data = _mapper.Map<BrandModel>(_db.Brand.brand);
+                var data = _mapper.Map<BrandModel>(_db.Brand.Brand);
 
                 return new DbResponse<BrandModel>(true, "Success", data);
             }
@@ -71,9 +72,9 @@ namespace eSuperShop.BusinessLogic
             {
                 var registrationId = _db.Registration.GetRegID_ByUserName(userName);
                 if (registrationId == 0) return new DbResponse(false, "Invalid User");
-
                 model.AssignedByRegistrationId = registrationId;
 
+                if (_db.Brand.IsExistBrandInCatalog(model.BrandId, model.CatalogId)) return new DbResponse(false, "Already Assigned");
                 _db.Brand.AssignCatalog(model);
                 _db.SaveChanges();
 
@@ -83,6 +84,46 @@ namespace eSuperShop.BusinessLogic
             {
                 return new DbResponse(false, e.Message);
             }
+        }
+
+        public DbResponse AssignCatalogMultiple(BrandAssignMultipleModel model, string userName)
+        {
+            try
+            {
+                var registrationId = _db.Registration.GetRegID_ByUserName(userName);
+                if (registrationId == 0) return new DbResponse(false, "Invalid User");
+                model.AssignedByRegistrationId = registrationId;
+
+                _db.Brand.AssignCatalogMultiple(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse UnAssignCatalog(int brandId, int catalogId)
+        {
+            try
+            {
+                if (!_db.Brand.IsExistBrandInCatalog(brandId, catalogId)) return new DbResponse(false, "Data Not Found");
+                _db.Brand.UnAssignCatalog(brandId, catalogId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public Task<ICollection<BrandModel>> SearchAsync(string key)
+        {
+            return _db.Brand.SearchAsync(key);
         }
 
         public DataResult<BrandModel> List(DataRequest request)

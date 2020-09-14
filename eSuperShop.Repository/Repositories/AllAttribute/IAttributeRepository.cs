@@ -1,6 +1,7 @@
 ﻿using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Repository
 {
@@ -17,6 +18,13 @@ namespace eSuperShop.Repository
         bool IsRelatedDataExist(int id);
         DataResult<AttributeModel> List(DataRequest request);
         List<DDL> ListDdl();
+        Task<ICollection<AttributeModel>> SearchAsync(string key);
+
         void AssignCatalog(AttributeAssignModel model);
+        void AssignCatalogMultiple(AttributeAssignMultipleModel model);
+        void UnAssignCatalog(int attributeId, int catalogId);
+        bool IsExistAttributeInCatalog(int attributeId, int catalogId);
     }
+
+
 }

@@ -21,4 +21,11 @@
         public int CatalogId { get; set; }
         public int AssignedByRegistrationId { get; set; }
     }
+
+    public class BrandAssignMultipleModel
+    {
+        public int AssignedByRegistrationId { get; set; }
+        public int[] BrandIds { get; set; }
+        public int[] CatalogIds { get; set; }
+    }
 }

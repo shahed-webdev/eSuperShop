@@ -3,6 +3,7 @@ using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -72,7 +73,7 @@ namespace eSuperShop.BusinessLogic
                 if (registrationId == 0) return new DbResponse(false, "Invalid User");
 
                 model.AssignedByRegistrationId = registrationId;
-
+                if (_db.Brand.IsExistBrandInCatalog(model.AttributeId, model.CatalogId)) return new DbResponse(false, "Already Assigned");
                 _db.Attribute.AssignCatalog(model);
                 _db.SaveChanges();
 
@@ -84,6 +85,45 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse AssignCatalogMultiple(AttributeAssignMultipleModel model, string userName)
+        {
+            try
+            {
+                var registrationId = _db.Registration.GetRegID_ByUserName(userName);
+                if (registrationId == 0) return new DbResponse(false, "Invalid User");
+                model.AssignedByRegistrationId = registrationId;
+
+                _db.Attribute.AssignCatalogMultiple(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse UnAssignCatalog(int attributeId, int catalogId)
+        {
+            try
+            {
+                if (!_db.Attribute.IsExistAttributeInCatalog(attributeId, catalogId)) return new DbResponse(false, "Data Not Found");
+                _db.Attribute.UnAssignCatalog(attributeId, catalogId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public Task<ICollection<AttributeModel>> SearchAsync(string key)
+        {
+            return _db.Attribute.SearchAsync(key);
+        }
         public DataResult<AttributeModel> List(DataRequest request)
         {
             return _db.Attribute.List(request);

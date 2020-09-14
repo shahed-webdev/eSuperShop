@@ -1,7 +1,18 @@
-﻿namespace eSuperShop.Repository.Repositories.Vendor
+﻿namespace eSuperShop.Repository
 {
-    public class VendorModels
+    public class VendorDetailsModel
     {
-        
+    }
+
+    public class VendorAssignCatalogModel
+    {
+    }
+
+    public class VendorAddModel
+    {
+    }
+
+    public class VendorModel
+    {
     }
 }
