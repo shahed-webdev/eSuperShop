@@ -101,7 +101,46 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                var data = _db.Catalog.BrandWiseList(1);
+                var data = _db.Catalog.List();
+                return new DbResponse<List<ICatalogModel>>(true, "Success", data.ToList());
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<ICatalogModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<List<ICatalogModel>> BrandWiseList(int brandId)
+        {
+            try
+            {
+                var data = _db.Catalog.BrandWiseList(brandId);
+                return new DbResponse<List<ICatalogModel>>(true, "Success", data.ToList());
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<ICatalogModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<List<ICatalogModel>> AttributeWiseList(int attributeId)
+        {
+            try
+            {
+                var data = _db.Catalog.AttributeWiseList(attributeId);
+                return new DbResponse<List<ICatalogModel>>(true, "Success", data.ToList());
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<ICatalogModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<List<ICatalogModel>> SpecificationWiseList(int specificationId)
+        {
+            try
+            {
+                var data = _db.Catalog.SpecificationWiseList(specificationId);
                 return new DbResponse<List<ICatalogModel>>(true, "Success", data.ToList());
             }
             catch (Exception e)
