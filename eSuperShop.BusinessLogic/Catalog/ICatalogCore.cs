@@ -10,7 +10,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse Delete(int id);
         DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place, int numberOfItem);
         DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place);
-        DbResponse<List<CatalogModel>> List();
+        DbResponse<List<ICatalogModel>> List();
         DbResponse<string> Breadcrumb(int id);
         List<DDL> DisplayPlaceDdl();
         DbResponse<List<DDL>> ListDdl();

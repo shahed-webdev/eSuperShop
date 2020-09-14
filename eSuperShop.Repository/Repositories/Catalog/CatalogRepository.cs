@@ -87,7 +87,7 @@ namespace eSuperShop.Repository
                 .ToList();
         }
 
-        public IEnumerable<CatalogModel> List()
+        public IEnumerable<ICatalogModel> List()
         {
             var catalogs = Db.Catalog
                 .AsEnumerable()?
@@ -97,6 +97,40 @@ namespace eSuperShop.Repository
 
             return catalogs;
 
+        }
+
+        public IEnumerable<ICatalogModel> BrandWiseList(int brandId)
+        {
+            var catalogs = Db.Catalog
+                .Include(c=> c.CatalogBrand)
+                .AsEnumerable()?
+                .Where(c => c.ParentCatalog == null)
+                .ToList()
+                .Select(c => new CatalogBrandModel(c, brandId));
+
+            return catalogs;
+        }
+
+        public IEnumerable<ICatalogModel> AttributeWiseList(int attributeId)
+        {
+            var catalogs = Db.Catalog
+                .AsEnumerable()?
+                .Where(c => c.ParentCatalog == null)
+                .ToList()
+                .Select(c => new CatalogAttributeModel(c, attributeId));
+
+            return catalogs;
+        }
+
+        public IEnumerable<ICatalogModel> SpecificationWiseList(int specificationId)
+        {
+            var catalogs = Db.Catalog
+                .AsEnumerable()?
+                .Where(c => c.ParentCatalog == null)
+                .ToList()
+                .Select(c => new CatalogSpecificationModel(c, specificationId));
+
+            return catalogs;
         }
 
         public List<DDL> SliderPlaceDdl()

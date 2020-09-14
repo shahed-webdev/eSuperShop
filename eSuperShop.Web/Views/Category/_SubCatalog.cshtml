@@ -1,5 +1,5 @@
 ﻿@using eSuperShop.Repository
-@model IEnumerable<CatalogModel>
+@model IEnumerable<ICatalogModel>
 @{
     Layout = null;
 }
@@ -34,7 +34,7 @@
         @if (!isNoCategory)
         {
             <ul class="nested mb-1">
-                <partial name="_SubCatalog" model="@catalog.SubCatalog"/>
+                <partial name="_SubCatalog" model="@catalog.SubCatalog" />
             </ul>
         }
     </li>

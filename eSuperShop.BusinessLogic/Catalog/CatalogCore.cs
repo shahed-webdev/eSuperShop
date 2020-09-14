@@ -97,16 +97,16 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<List<CatalogModel>> List()
+        public DbResponse<List<ICatalogModel>> List()
         {
             try
             {
-                var data = _db.Catalog.List();
-                return new DbResponse<List<CatalogModel>>(true, "Success", data.ToList());
+                var data = _db.Catalog.BrandWiseList(1);
+                return new DbResponse<List<ICatalogModel>>(true, "Success", data.ToList());
             }
             catch (Exception e)
             {
-                return new DbResponse<List<CatalogModel>>(false, e.Message);
+                return new DbResponse<List<ICatalogModel>>(false, e.Message);
             }
         }
 
