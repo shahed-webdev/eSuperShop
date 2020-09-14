@@ -8,56 +8,21 @@
 
 @section Styles{
     <style>
-        .treeview i {
-            cursor: pointer
-        }
+        .treeview i { cursor: pointer }
+        .treeview i.delete { color: #fb5959 }
 
-            .treeview i.delete {
-                color: #fb5959
-            }
+        .parentCategory, .childCategory { transition: all .3s ease-in-out }
+        .parentCategory i.muted { color: #bfbfbf; pointer-events: none }
+        .parentCategory:hover, .childCategory:hover { background-color: #eee; border-radius: 3px }
+        .childCategory i.muted { color: #bfbfbf; pointer-events: none }
+        
+        .last-child, .childCategory i, a { font-size: 15px }
+        .last-child { font-size: 15px; color: #f95151; }
 
-        .parentCategory, .childCategory {
-            transition: all .3s ease-in-out
-        }
-
-            .parentCategory i.muted {
-                color: #bfbfbf;
-                pointer-events: none
-            }
-
-            .parentCategory:hover, .childCategory:hover {
-                background-color: #eee;
-                border-radius: 3px
-            }
-
-            .childCategory i.muted {
-                color: #bfbfbf;
-                pointer-events: none
-            }
-
-            .last-child, .childCategory i, a {
-                font-size: 15px
-            }
-
-        .last-child {
-            font-size: 15px;
-            color: #f95151;
-        }
-
-        .nested {
-            display: none;
-            padding-left: 15px
-        }
-
-            .nested.show {
-                display: block
-            }
-
-        .down {
-            content: "\f107";
-            font-family: 'Font Awesome 5 Pro'
-        }
-    </style>
+        .nested { display: none; padding-left: 15px }
+        .nested.show { display: block }
+        .down { content: "\f107"; font-family: 'Font Awesome 5 Pro' }
+    </style>  
 }
 
 <div class="container">

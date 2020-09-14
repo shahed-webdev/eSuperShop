@@ -57,7 +57,6 @@
 </div>
 
 
-
 <!-- image crop modal -->
 <div class="modal fade" id="cropImageModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-notify modal-danger" role="document">
@@ -92,12 +91,15 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "/Product/GetBrand",
+                        url: "/Brand/GetBrand",
                         type: "POST"
                     },
                     columns:
                     [
-                        { data: "Name" },
+                        { data: "Name", "render": function(data, type, row, meta) {
+                            return `<a class="blue-text" href="/Brand/AssignedCatalog/${row.BrandId}">${data}</a>`;
+                            }
+                        },
                         {
                             data: "LogoUrl", "render": function(data, type, row, meta) {
                                 return `<img src="${data}" class="logo">`;
@@ -118,14 +120,22 @@
             },
             operand: {
                 Equal: 0,
-                NotEqual: 1,
-                GreaterThan: 2,
-                LessThan: 3,
-                GreaterThanOrEqual: 4,
-                LessThanOrEqual: 5,
-                Contains: 6,
-                StartsWith: 7,
-                EndsWith: 8
+                NotEqual:
+                    1,
+                GreaterThan:
+                    2,
+                LessThan:
+                    3,
+                GreaterThanOrEqual:
+                    4,
+                LessThanOrEqual:
+                    5,
+                Contains:
+                    6,
+                StartsWith:
+                    7,
+                EndsWith:
+                    8
             },
             getData: function() {
                 dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
@@ -211,7 +221,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Product/AddBrand",
+                url: "/Brand/AddBrand",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -225,9 +235,13 @@
                         formAdd.inputBrandName.value = "";
                         $('#filePath').val("");
 
+                        formData.delete('Name');
+                        formData.delete('logo');
+
                         dataTable.getData();
-                    } else
+                    } else {
                         $.notify(response.Message, "error", { position: "right" });
+                    }
                 },
                 error: function(err) {
                     console.log(err);
@@ -251,7 +265,7 @@
             if (!isConfirm) return;
 
             $.ajax({
-                url: "/Product/DeleteBrand",
+                url: "/Brand/DeleteBrand",
                 data: { id, imageUrl },
                 success: function(response) {
                     if (response)

@@ -1,0 +1,178 @@
+﻿@using eSuperShop.Repository
+@model IEnumerable<ICatalogModel>
+@{
+    ViewData["Title"] = "Assign Brand";
+    Layout = "_AdminLayout";
+}
+
+@section Styles{
+    <style>
+        .brand-badge { background-color: #373434; padding: 2px 10px; border-radius: 5px; color: #e8e8e8; }
+        .brand-badge i { cursor: pointer }
+        .brand-badge i:hover { color: #f95151 }
+
+        .parentCategory, .childCategory { transition: all .3s ease-in-out }
+
+        .nested { padding-left: 15px; display: block !important }
+        .down { content: "\f107"; font-family: 'Font Awesome 5 Pro' }
+    </style>   
+}
+
+<div class="container">
+    <h4 class="page-header mb-3">Assign Brand</h4>
+
+    <div class="card card-body">
+        <div class="md-form m-0">
+            <input id="inputBrand" placeholder="Find brand to assign" class="form-control" type="text"/>
+            <span id="existError" class="field-validation-error"></span>
+        </div>
+        <div id="brandContainer" class="d-flex flex-wrap align-items-center mb-3"></div>
+
+        <div class="treeview">
+            <ul class="list-group list-group-flush">
+                @foreach (var catalog in Model)
+                {
+                    var isNoCategory = !catalog.SubCatalog.Any();
+
+                    <li class="list-group-item parentCategory">
+                        <input type="checkbox" class="form-check-input" value="@catalog.CatalogId" id="@catalog.CatalogId" name="check-category">
+                        <label class="form-check-label" for="@catalog.CatalogId"><strong>@catalog.CatalogName</strong></label>
+
+                        @if (!isNoCategory)
+                        {
+                            <partial name="_SubCatalog" model="@catalog.SubCatalog"/>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="mt-3">
+            <button id="btnAssign" class="btn btn-danger"><i class="far fa-check"></i> Assign</button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        //brand autocomplete
+        $('#inputBrand').typeahead({
+            minLength: 1,
+            displayText: function(item) {
+                return item.Name;
+            },
+            afterSelect: function(item) {
+                this.$element[0].value = ''
+            },
+            source: function(request, result) {
+                $.ajax({
+                    url: "/Brand/FindBrand",
+                    data: { name: request },
+                    success: function(response) { result(response); },
+                    error: function(err) { console.log(err) }
+                });
+            },
+            updater: function(item) {
+                appendBrand(item);
+                return item;
+            }
+        });
+
+        //append brand
+        const brandContainer = document.getElementById("brandContainer");
+        const brandIds = [];
+
+        function appendBrand(brand) {
+            const existError = document.getElementById('existError');
+            existError.textContent = "";
+            const index = brandIds.indexOf(brand.BrandId);
+
+            if (index !== -1) {
+                existError.textContent = "Brand Already selected!";
+                return;
+            }
+
+            brandIds.push(+brand.BrandId);
+
+
+            const badge = `<div class="brand-badge d-flex justify-content-between align-items-center mr-2 mb-2">
+                <span class="mr-1">${brand.Name}</span>
+                <i id="${brand.BrandId}" class="remove far fa-times-circle"></i>
+            </div>`;
+
+            brandContainer.innerHTML += badge;
+        }
+
+        //remove brand
+        brandContainer.addEventListener('click', function(evt) {
+            const element = evt.target;
+            const onRemove = element.classList.contains('remove');
+
+            if (!onRemove) return;
+            const id = +element.id;
+
+            const index = brandIds.indexOf(id);
+            if (index > -1) {
+                brandIds.splice(index, 1);
+                element.parentElement.remove();
+            }
+        });
+
+        //selectors
+        const btnAssign = document.getElementById("btnAssign");
+        const listGroup = document.querySelector(".list-group");
+
+        //checked previous checkbox
+        const getPreviousSiblings = (element, action) => {
+            while ((element = element.previousElementSibling)) {
+                if (element.type === "checkbox") {
+                    element.checked = action;
+                    element.disabled = action;
+                }
+            }
+        }
+
+        //on checkbox click
+        listGroup.addEventListener('click', function(evt) {
+            const element = evt.target;
+            const onCheck = element.classList.contains("form-check-input");
+
+            if (!onCheck) return;
+            getPreviousSiblings(element, element.checked);
+        });
+
+        //assign button click
+        btnAssign.addEventListener("click", function() {
+            const checkboxes = document.getElementsByName('check-category');
+            const catalogIds = [];
+
+            for (let checkbox of checkboxes) {
+                if (checkbox.checked) catalogIds.push(+checkbox.value);
+            }
+
+            if (!brandIds.length) return;
+            if (!catalogIds.length) return;
+
+            const model = { BrandIds: brandIds, CatalogIds: catalogIds }
+
+            this.disabled = true;
+
+            $.ajax({
+                type: "POST",
+                url: "/Brand/Assign",
+                data: model,
+                success: function (response) {
+                    btnAssign.disabled = false;
+
+                    if (response.IsSuccess) 
+                        location.href = "/Brand/Add";
+                },
+                error: function(err) {
+                    console.log(err);
+                    btnAssign.disabled = false;
+                }
+            });
+        });
+    </script>
+}

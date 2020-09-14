@@ -19,4 +19,8 @@
     <ProjectReference Include="..\eSuperShop.BusinessLogic\eSuperShop.BusinessLogic.csproj" />
     <ProjectReference Include="..\eSuperShop.Repository\eSuperShop.Repository.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Product\" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,21 @@
+﻿@using eSuperShop.Repository
+@model IEnumerable<ICatalogModel>
+@{
+    Layout = null;
+}
+
+
+@foreach (var catalog in Model)
+{
+    var isNoCategory = !catalog.SubCatalog.Any();
+
+    <i class="fas fa-angle-double-right mx-2"></i>
+    <input type="checkbox" value="@catalog.CatalogId" class="form-check-input" id="@catalog.CatalogId" name="check-category">
+    <label class="form-check-label" for="@catalog.CatalogId">@catalog.CatalogName</label>
+
+    @if (!isNoCategory)
+    {
+        <partial name="_SubCatalog" model="@catalog.SubCatalog" />
+    }
+
+}

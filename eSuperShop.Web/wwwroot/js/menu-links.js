@@ -39,15 +39,22 @@ let linkData = [{
     {
         "LinkCategoryID": 2,
         "SN": 7,
-        "Category": "Product",
+        "Category": "Brand",
         "IconClass": "fas fa-user",
         "links": [
             {
                 "LinkID": 6,
                 "SN": 2,
-                "Controller": "Product",
-                "Action": "AddBrand",
-                "Title": "Add Brand",
+                "Controller": "Brand",
+                "Action": "Add",
+                "Title": "Add",
+                "IconClass": null
+            },{
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Brand",
+                "Action": "Assign",
+                "Title": "Assign",
                 "IconClass": null
             }]
     }
