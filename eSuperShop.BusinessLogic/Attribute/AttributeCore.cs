@@ -73,7 +73,7 @@ namespace eSuperShop.BusinessLogic
                 if (registrationId == 0) return new DbResponse(false, "Invalid User");
 
                 model.AssignedByRegistrationId = registrationId;
-                if (_db.Brand.IsExistBrandInCatalog(model.AttributeId, model.CatalogId)) return new DbResponse(false, "Already Assigned");
+                if (_db.Attribute.IsExistAttributeInCatalog(model.AttributeId, model.CatalogId)) return new DbResponse(false, "Already Assigned");
                 _db.Attribute.AssignCatalog(model);
                 _db.SaveChanges();
 
@@ -139,6 +139,18 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse<List<DDL>>(false, e.Message);
+            }
+        }
+        public DbResponse<List<AttributeModel>> CatalogWiseList(int catalogId)
+        {
+            try
+            {
+                var data = _db.Attribute.CatalogWiseList(catalogId);
+                return new DbResponse<List<AttributeModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<AttributeModel>>(false, e.Message);
             }
         }
     }

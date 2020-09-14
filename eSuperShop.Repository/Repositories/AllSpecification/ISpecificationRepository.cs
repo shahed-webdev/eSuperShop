@@ -24,5 +24,6 @@ namespace eSuperShop.Repository
         void AssignCatalogMultiple(SpecificationAssignMultipleModel model);
         void UnAssignCatalog(int specificationId, int catalogId);
         bool IsExistSpecificationInCatalog(int specificationId, int catalogId);
+        List<SpecificationModel> CatalogWiseList(int catalogId);
     }
 }

@@ -128,5 +128,15 @@ namespace eSuperShop.Repository
         {
             return Db.CatalogBrand.Any(c => c.BrandId == brandId && c.CatalogId == catalogId);
         }
+
+        public List<BrandModel> CatalogWiseList(int catalogId)
+        {
+            var list = Db.CatalogBrand
+                  .Include(c => c.Brand)
+                  .Where(c => c.CatalogId == catalogId)
+                  .Select(c => c.Brand)
+                  .ProjectTo<BrandModel>(_mapper.ConfigurationProvider);
+            return list.ToList();
+        }
     }
 }

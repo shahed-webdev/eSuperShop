@@ -24,6 +24,7 @@ namespace eSuperShop.Repository
         void AssignCatalogMultiple(AttributeAssignMultipleModel model);
         void UnAssignCatalog(int attributeId, int catalogId);
         bool IsExistAttributeInCatalog(int attributeId, int catalogId);
+        List<AttributeModel> CatalogWiseList(int catalogId);
     }
 
 

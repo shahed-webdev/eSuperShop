@@ -143,5 +143,18 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<List<DDL>>(false, e.Message);
             }
         }
+
+        public DbResponse<List<BrandModel>> CatalogWiseList(int catalogId)
+        {
+            try
+            {
+                var data = _db.Brand.CatalogWiseList(catalogId);
+                return new DbResponse<List<BrandModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<BrandModel>>(false, e.Message);
+            }
+        }
     }
 }

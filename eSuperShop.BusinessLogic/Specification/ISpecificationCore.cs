@@ -15,6 +15,7 @@ namespace eSuperShop.BusinessLogic
         Task<ICollection<SpecificationModel>> SearchAsync(string key);
         DataResult<SpecificationModel> List(DataRequest request);
         DbResponse<List<DDL>> Ddl();
+        DbResponse<List<SpecificationModel>> CatalogWiseList(int catalogId);
     }
 
 
