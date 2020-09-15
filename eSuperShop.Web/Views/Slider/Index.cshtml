@@ -14,70 +14,72 @@
 }
 
 <div class="m-md-4">
-    <h4 class="page-header">Add Slider Image</h4>
-    
-    <form id="addForm">
-        <div class="row align-items-center">
-            <div class="col-lg-3">
-                <div class="md-form">
-                    <div class="file-field">
-                        <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
-                            <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                            <input id="fileImage" type="file" accept="image/*">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input id="filePath" class="file-path validate" type="text" placeholder="Upload Image" required>
+    <h4 class="page-header mb-3">Add Slider Image</h4>
+
+    <div class="card card-body">
+        <form id="addForm">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="md-form">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input id="fileImage" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Image" required>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="md-form">
-                    <input id="inputRedirectUrl" type="text" class="form-control" placeholder="Redirect Url" />
+                <div class="col-lg-3">
+                    <div class="md-form">
+                        <input id="inputRedirectUrl" type="text" class="form-control" placeholder="Redirect Url" />
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="md-form">
+                        <input id="inputDisplayOrder" type="number" class="form-control" placeholder="Display Order" required />
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="md-form">
+                        <select id="inputDisplayPlace" asp-items="ViewBag.DisplayPlace" class="mdb-select" required>
+                            <option value="">[ DISPLAY PLACE ]</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="md-form">
+                        <input type="submit" value="Add Slider" class="btn btn-danger btn-sm" />
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-2">
-                <div class="md-form">
-                    <input id="inputDisplayOrder" type="number" class="form-control" placeholder="Display Order"  required/>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="md-form">
-                    <select id="inputDisplayPlace" asp-items="ViewBag.DisplayPlace" class="mdb-select" required>
-                        <option value="">[ DISPLAY PLACE ]</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="md-form">
-                    <input type="submit" value="Add Slider" class="btn btn-danger btn-sm" />
-                </div>
-            </div>
-        </div>
-    </form>
+        </form>
 
-    <table class="table table-bordered table-sm mt-4">
-        <thead>
-            <tr>
-                <th><strong>Image</strong></th>
-                <th><strong>Order</strong></th>
-                <th><strong>Place</strong></th>
-                <th><strong>Delete</strong></th>
-            </tr>
-        </thead>
-        <tbody id="tBody">
-            @foreach (var item in Model)
-            {
+        <table class="table table-bordered table-sm mt-4">
+            <thead>
                 <tr>
-                    <td><img src="@item.ImageUrl" /></td>
-                    <td>@item.DisplayOrder</td>
-                    <td>@item.DisplayPlace</td>
-                    <td><button data-id="@item.SliderId" data-filename="@item.FileName" class="btnDelete btn btn-sm btn-danger">Delete</button></td>
+                    <th><strong>Image</strong></th>
+                    <th><strong>Order</strong></th>
+                    <th><strong>Place</strong></th>
+                    <th><strong>Delete</strong></th>
                 </tr>
-            }
+            </thead>
+            <tbody id="tBody">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><img src="@item.ImageUrl" /></td>
+                        <td>@item.DisplayOrder</td>
+                        <td>@item.DisplayPlace</td>
+                        <td><button data-id="@item.SliderId" data-filename="@item.FileName" class="btnDelete btn btn-sm btn-danger">Delete</button></td>
+                    </tr>
+                }
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

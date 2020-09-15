@@ -29,7 +29,7 @@
             }
         },
         mounted() {
-            axios.get('/home/GetCategory', { params: { place: "HomePageQuickDelivery", numberOfData:6} }).then(response => {
+            axios.get('/home/GetCategory', { params: { place: "HomePageQuickDelivery", numberOfData: 8} }).then(response => {
                 this.data = response.data.Data;
             });
         }

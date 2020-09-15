@@ -5,8 +5,9 @@
 
 @section Styles{
     <style>
-        #assignList img { height: 70px; width: 70px; border-radius: 5px; box-shadow: 1px 1px 10px rgba(0,0,0,.1); margin-right: 5px }
+        #assignList img { height: 70px; width: 70px; border-radius: 5px; box-shadow: 1px 1px 10px rgba(0, 0, 0, .1); margin-right: 5px }
         #assignList .remove { color: #e53935; cursor: pointer }
+        .fa-spin { pointer-events: none}
     </style>
 }
 
@@ -93,7 +94,7 @@
 
 @section Scripts{
     <script>
-        $(function () {
+        $(function() {
             $('.mdb-select').materialSelect();
         });
 
@@ -102,7 +103,7 @@
         const selectShownPlace = formAdd.selectShownPlace;
 
         //on submit data
-        formAdd.addEventListener('submit', function (evt) {
+        formAdd.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
             const CatalogId = formAdd.selectCatalogId.value;
@@ -111,63 +112,30 @@
 
             const data = { CatalogId, ShownPlace, DisplayOrder }
 
+            formAdd.btnAdd.disabled = true;
+            formAdd.btnAdd.value = "submitting..";
+
             $.ajax({
                 type: "POST",
                 url: "/Category/Placement",
                 data,
-                success: function (response) {
-                    assignList.appendChild(appendData(response.Data));
-                    $(".notify").notify("Assign Success", "success", { position: "right" });
+                success: function(response) {
+                    if (response.IsSuccess) {
+                        assignList.appendChild(appendData(response.Data));
+                        $(".notify").notify("Assign Success", "success", { position: "right" });
+                    }
+                    else {
+                        $(".notify").notify(response.Message, "error", { position: "right" });
+                    }
+
+                    formAdd.btnAdd.disabled = false;
+                    formAdd.btnAdd.value = "Add";
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
-                }
-            });
-        });
 
-        //on change place dropdown
-        selectShownPlace.addEventListener('change', function () {
-            const showPlaceName = document.getElementById('showPlaceName');
-
-            $.ajax({
-                url: "/Category/GetPlacement",
-                data: { place: this.value },
-                success: function (response) {
-                    assignList.innerHTML = "";
-                    showPlaceName.innerHTML = `<span class="text-muted">Place:</span> ${selectShownPlace.options[selectShownPlace.selectedIndex].text}`;
-
-                    if (!response.Data.length) return;
-
-                    response.Data.forEach(item => {
-                        assignList.appendChild(appendData(item));
-                    });
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        });
-
-        //on delete
-        assignList.addEventListener('click', function (evt) {
-            const element = evt.target;
-            const onDeleteClick = element.classList.contains('remove');
-
-            if (!onDeleteClick) return;
-
-            const categoryId = element.getAttribute('data-id');
-            const place = selectShownPlace.value;
-
-            $.ajax({
-                url: "/Category/DeletePlacement",
-                data: { categoryId, place },
-                success: function (response) {
-                    if (!response.IsSuccess) return;
-
-                    element.parentElement.parentElement.remove();
-                },
-                error: function (err) {
-                    console.log(err);
+                    formAdd.btnAdd.disabled = false;
+                    formAdd.btnAdd.value = "Add";
                 }
             });
         });
@@ -227,7 +195,67 @@
             return item;
         }
 
+        //on change place dropdown
+        selectShownPlace.addEventListener('change', function() {
+            const showPlaceName = document.getElementById('showPlaceName');
 
+            $.ajax({
+                url: "/Category/GetPlacement",
+                data: { place: this.value },
+                success: function(response) {
+                    assignList.innerHTML = "";
+                    showPlaceName.innerHTML = `<span class="text-muted">Place:</span> ${selectShownPlace.options[selectShownPlace.selectedIndex].text}`;
+
+                    if (!response.Data.length) return;
+
+                    response.Data.forEach(item => {
+                        assignList.appendChild(appendData(item));
+                    });
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        //on delete
+        assignList.addEventListener('click', function(evt) {
+            const element = evt.target;
+            const onDeleteClick = element.classList.contains('remove');
+
+            if (!onDeleteClick) return;
+
+            const categoryId = element.getAttribute('data-id');
+            const place = selectShownPlace.value;
+
+            showSpinner(element, true);
+
+            $.ajax({
+                url: "/Category/DeletePlacement",
+                data: { categoryId, place },
+                success: function(response) {
+                    showSpinner(element, false);
+
+                    if (!response.IsSuccess) return;
+                    element.parentElement.parentElement.remove();
+                },
+                error: function(err) {
+                    console.log(err);
+                    showSpinner(element, false);
+                }
+            });
+        });
+
+        //show spinner
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
 
         //**SEO***
         const list = document.querySelector('.list-group');
@@ -261,12 +289,12 @@
                 type: "POST",
                 url: "/Category/GetSeo",
                 data: { id },
-                success: function (response) {
+                success: function(response) {
                     btnSeoDelete.style.display = "inline-block";
                     btnSeoDelete.setAttribute("data-id", id);
                     setValueInput(response.Data);
                 },
-                error: function (err) { console.log(err.responseText); }
+                error: function(err) { console.log(err.responseText); }
             });
 
             $("#seoModal").modal("show");
@@ -298,8 +326,8 @@
             inputMetaKeywords.nextElementSibling.classList.remove('active');
         }
 
-        //post
-        seoForm.addEventListener('submit', function (evt) {
+        //post seo
+        seoForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
             const body = {
@@ -313,16 +341,16 @@
                 type: "POST",
                 url: "/Category/AddSeo",
                 data: body,
-                success: function (response) {
+                success: function(response) {
                     if (response.IsSuccess)
                         $("#seoModal").modal("hide");
                 },
-                error: function (err) { console.log(err.responseText) }
+                error: function(err) { console.log(err.responseText) }
             });
         });
 
         //delete
-        btnSeoDelete.addEventListener('click', function () {
+        btnSeoDelete.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
             if (!id) return;
 
@@ -330,10 +358,10 @@
                 type: "POST",
                 url: "/Category/DeleteSeo",
                 data: { id },
-                success: function (response) {
+                success: function(response) {
                     $("#seoModal").modal("hide");
                 },
-                error: function (err) { console.log(err.responseText); }
+                error: function(err) { console.log(err.responseText); }
             });
         });
     </script>

@@ -82,9 +82,6 @@ namespace eSuperShop.Web.Controllers
         public IActionResult Placement(CatalogAssignModel model)
         {
             var response = _catalog.AssignPlace(model, User.Identity.Name);
-
-            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
-
             return Json(response);
         }
 

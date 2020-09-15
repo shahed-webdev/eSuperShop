@@ -9,13 +9,13 @@
 {
     var isNoCategory = !catalog.SubCatalog.Any();
 
-    <i class="fas fa-angle-double-right mx-2"></i>
-    <input disabled type="checkbox" value="@catalog.CatalogId" @(catalog.IsExist?"checked" : "") class="form-check-input" id="@catalog.CatalogId" name="check-category">
-    <label class="form-check-label" for="@catalog.CatalogId">@catalog.CatalogName</label>
+    <div class="nested">
+        <input type="checkbox" value="@catalog.CatalogId" @(catalog.IsExist?"checked":"") class="form-check-input" disabled id="c-@catalog.CatalogId" name="check-category">
+        <label class="form-check-label" for="c-@catalog.CatalogId">@catalog.CatalogName</label>
 
-    @if (!isNoCategory)
-    {
-        <partial name="_SubCatalogAssigned" model="@catalog.SubCatalog" />
-    }
-
+        @if (!isNoCategory)
+        {
+            <partial name="_SubCatalog" model="@catalog.SubCatalog" />
+        }
+    </div>
 }

@@ -13,7 +13,7 @@
 
         .parentCategory, .childCategory { transition: all .3s ease-in-out }
 
-        .nested { padding-left: 15px; display: block !important }
+        .nested { padding-left: 35px; display: block !important }
         .down { content: "\f107"; font-family: 'Font Awesome 5 Pro' }
     </style>   
 }
@@ -46,60 +46,5 @@
 
 @section Scripts{
     <script>
-        //selectors
-        const btnAssign = document.getElementById("btnAssign");
-        const listGroup = document.querySelector(".list-group");
-
-        //checked previous checkbox
-        const getPreviousSiblings = (element, action) => {
-            while ((element = element.nextElementSibling)) {
-                if (element.type === "checkbox") {
-                    element.checked = action;
-                    element.disabled = action;
-                }
-            }
-        }
-
-        //on checkbox click
-        listGroup.addEventListener('click', function(evt) {
-            const element = evt.target;
-            const onCheck = element.classList.contains("form-check-input");
-
-            if (!onCheck) return;
-            getPreviousSiblings(element, element.checked);
-        });
-
-        //assign button click
-        btnAssign.addEventListener("click", function() {
-            const checkboxes = document.getElementsByName('check-category');
-            const catalogIds = [];
-
-            for (let checkbox of checkboxes) {
-                if (checkbox.checked) catalogIds.push(+checkbox.value);
-            }
-
-            if (!brandIds.length) return;
-            if (!catalogIds.length) return;
-
-            const model = { BrandIds: brandIds, CatalogIds: catalogIds }
-
-            this.disabled = true;
-
-            $.ajax({
-                type: "POST",
-                url: "/Brand/Assign",
-                data: model,
-                success: function (response) {
-                    btnAssign.disabled = false;
-
-                    if (response.IsSuccess) 
-                        location.href = "/Brand/Add";
-                },
-                error: function(err) {
-                    console.log(err);
-                    btnAssign.disabled = false;
-                }
-            });
-        });
     </script>
 }

@@ -8,8 +8,8 @@
 @foreach (var catalog in Model)
 {
     var isNoCategory = !catalog.SubCatalog.Any();
-    <li class="list-group-item childCategory p-1">
-        <div class="d-flex justify-content-between">
+    <li class="list-group-item p-1">
+        <div class="childCategory d-flex justify-content-between">
             <div>
                 @if (!isNoCategory)
                 {

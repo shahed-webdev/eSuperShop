@@ -8,14 +8,14 @@
 @foreach (var catalog in Model)
 {
     var isNoCategory = !catalog.SubCatalog.Any();
+   
+    <div class="nested">
+        <input type="checkbox" value="@catalog.CatalogId" class="form-check-input" id="c-@catalog.CatalogId" name="check-category">
+        <label class="form-check-label" for="c-@catalog.CatalogId">@catalog.CatalogName</label>
 
-    <i class="fas fa-angle-double-right mx-2"></i>
-    <input type="checkbox" value="@catalog.CatalogId" class="form-check-input" id="c-@catalog.CatalogId" name="check-category">
-    <label class="form-check-label" for="c-@catalog.CatalogId">@catalog.CatalogName</label>
-
-    @if (!isNoCategory)
-    {
-        <partial name="_SubCatalog" model="@catalog.SubCatalog" />
-    }
-
+        @if (!isNoCategory)
+        {
+            <partial name="_SubCatalog" model="@catalog.SubCatalog"/>
+        }
+    </div>
 }

@@ -13,7 +13,7 @@
 
         .parentCategory, .childCategory { transition: all .3s ease-in-out }
 
-        .nested { padding-left: 15px; display: block !important }
+        .nested { padding-left:35px; display: block !important }
         .down { content: "\f107"; font-family: 'Font Awesome 5 Pro' }
     </style>   
 }
@@ -133,13 +133,27 @@
             }
         }
 
+        //find parent element
+        function findAncestor(element) {
+            const parents = [];
+            while ((element = element.parentElement) && (element.classList.contains('nested'))) {
+                parents.push(element);
+                console.log(element)
+            }
+            return parents;
+        }
+
         //on checkbox click
         listGroup.addEventListener('click', function(evt) {
             const element = evt.target;
             const onCheck = element.classList.contains("form-check-input");
 
             if (!onCheck) return;
-            getPreviousSiblings(element, element.checked);
+
+            const parents = findAncestor(element);
+            parents.forEach(ele => {
+                getPreviousSiblings(ele, element.checked);
+            });
         });
 
         //assign button click
@@ -162,10 +176,10 @@
                 type: "POST",
                 url: "/Brand/Assign",
                 data: model,
-                success: function (response) {
+                success: function(response) {
                     btnAssign.disabled = false;
 
-                    if (response.IsSuccess) 
+                    if (response.IsSuccess)
                         location.href = "/Brand/Add";
                 },
                 error: function(err) {
