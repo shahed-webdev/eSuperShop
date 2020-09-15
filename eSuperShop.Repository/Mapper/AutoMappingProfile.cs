@@ -51,6 +51,11 @@ namespace eSuperShop.Repository
             CreateMap<Warehouse, WarehouseModel>()
                 .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
             CreateMap<VendorWarehouse, WarehouseAssignModel>().ReverseMap();
+
+            //Vendor Mapping
+            CreateMap<Vendor, VendorAddModel>().ReverseMap();
+            CreateMap<Vendor, VendorModel>().ReverseMap();
+
         }
     }
 }

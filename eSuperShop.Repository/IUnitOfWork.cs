@@ -10,6 +10,7 @@ namespace eSuperShop.Repository
         ISliderRepository Slider { get; }
         ISpecificationRepository Specification { get; }
         ICatalogRepository Catalog { get; }
+        IVendorRepository Vendor { get; }
         IWarehouseRepository Warehouse { get; }
         int SaveChanges();
     }
