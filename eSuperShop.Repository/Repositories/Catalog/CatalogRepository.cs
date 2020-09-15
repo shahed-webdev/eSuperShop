@@ -114,6 +114,7 @@ namespace eSuperShop.Repository
         public IEnumerable<ICatalogModel> AttributeWiseList(int attributeId)
         {
             var catalogs = Db.Catalog
+                .Include(c => c.CatalogAttribute)
                 .AsEnumerable()?
                 .Where(c => c.ParentCatalog == null)
                 .ToList()
@@ -125,6 +126,7 @@ namespace eSuperShop.Repository
         public IEnumerable<ICatalogModel> SpecificationWiseList(int specificationId)
         {
             var catalogs = Db.Catalog
+                .Include(c => c.CatalogSpecification)
                 .AsEnumerable()?
                 .Where(c => c.ParentCatalog == null)
                 .ToList()

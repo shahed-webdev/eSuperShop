@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Add Attribute";
+    Layout = "_AdminLayout";
+}
+
+@section Styles{
+    <style>
+        .logo { width: 50px; }
+    </style>    
+}
+
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col">
+            <h4 class="page-header">Product Attribute</h4>
+        </div>
+        <div class="col text-right">
+            <a class="btn-floating red lighten-1" title="Add New" data-toggle="modal" data-target="#addModal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="card card-body">
+        <table id="attribute-table" class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th><strong>Attribute Name</strong></th>
+                    <th style="width: 100px"><strong>Allow Filtering</strong></th>
+                    <th style="width: 30px"><strong>Delete</strong></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-notify modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="heading lead">Add Attribute</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formAdd">
+                    <div class="md-form">
+                        <label for="inputKeyName">Key Name</label>
+                        <input id="inputKeyName" type="text" class="form-control" required>
+                    </div>
+
+                    <label>Allow Filtering</label>
+                    <div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" value="true" class="custom-control-input" id="1" name="allowFiltering" required>
+                            <label class="custom-control-label" for="1">Yes</label>
+                        </div>
+
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" value="false" class="custom-control-input" id="2" name="allowFiltering" required>
+                            <label class="custom-control-label" for="2">No</label>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button id="btnSubmit" type="submit" class="btn btn-danger btn-rounded z-depth-1a"><i class="far fa-check"></i> Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+@section Scripts{
+    <script>
+        $(function() {
+            dataTable.getData();
+        });
+
+        //get data
+        var dataTable = {
+            table: null,
+            init: function() {
+                dataTable.table = $("#attribute-table").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/Attribute/GetAttribute",
+                        type: "POST"
+                    },
+                    columns:
+                    [
+                        { data: "KeyName", "render": function(data, type, row, meta) {
+                                return `<a class="blue-text" href="/Attribute/AssignedCatalog/${row.AttributeId}">${data}</a>`;
+                            }
+                        },
+                        {
+                            data: "AllowFiltering", "render": function(data, type, row, meta) {
+                                return data ? `<input type="checkbox" class="form-check-input" checked><label class="form-check-label"></label>` : `<input disabled type="checkbox" class="form-check-input"><label class="form-check-label"></label>`;
+                            }
+                        },
+                        {
+                            data: "AttributeId", "render": function(data, type, row, meta) {
+                                return `<a class="delete far fa-trash-alt" data-url="/Attribute/DeleteAttribute" data-id="${data}"></a>`
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        { 'searchable': false, 'targets': [1, 2] },
+                        { 'sortable': false, 'targets': [1, 2] },
+                        { 'className': "text-center", "targets": [1, 2] }
+                    ]
+                });
+            },
+            getData: function() {
+                dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
+            },
+            addSign: function(data) { return `${data}/-` }
+        }
+
+
+        //post data
+        const formAdd = document.getElementById("formAdd");
+        formAdd.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            this.btnSubmit.disabled = true;
+
+            const AllowFiltering = document.querySelector('input[name="allowFiltering"]:checked').value;
+            const data = { KeyName: formAdd.inputKeyName.value, AllowFiltering }
+
+            $.ajax({
+                type: "POST",
+                url: "/Attribute/Add",
+                data,
+                success: function(response) {
+                    formAdd.btnSubmit.disabled = false;
+
+                    if (response.IsSuccess) {
+                        $.notify("Attribute added Successfully", "success", { position: "right" });
+                        dataTable.getData();
+
+                        $("#addModal").modal("hide");
+                    } else {
+                        $.notify(response.Message, "error", { position: "right" });
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                    formAdd.btnSubmit.disabled = false;
+                }
+            });
+        });
+
+        //on delete
+        const table = document.getElementById("attribute-table");
+        table.addEventListener('click', function(evt) {
+            const onDelete = evt.target.classList.contains("delete");
+            if (!onDelete) return;
+
+            const element = evt.target.parentElement.parentElement;
+            const id = evt.target.getAttribute("data-id");
+            const url = evt.target.getAttribute("data-url");
+            const isConfirm = confirm("Are you sure you want to delete?");
+
+            if (!isConfirm) return;
+
+            $.ajax({
+                url,
+                data: { id },
+                success: function(response) {
+                    if (response)
+                        element.remove();
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+    </script>
+}

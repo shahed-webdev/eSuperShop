@@ -1,15 +1,15 @@
 ﻿@using eSuperShop.Repository
 @model IEnumerable<ICatalogModel>
 @{
-    ViewData["Title"] = "Assign Brand";
+    ViewData["Title"] = "Assign Attribute";
     Layout = "_AdminLayout";
 }
 
 @section Styles{
     <style>
-        .brand-badge { background-color: #373434; padding: 2px 10px; border-radius: 5px; color: #e8e8e8; }
-        .brand-badge i { cursor: pointer }
-        .brand-badge i:hover { color: #f95151 }
+        .Attribute-badge { background-color: #373434; padding: 2px 10px; border-radius: 5px; color: #e8e8e8; }
+        .Attribute-badge i { cursor: pointer }
+        .Attribute-badge i:hover { color: #f95151 }
 
         .parentCategory, .childCategory { transition: all .3s ease-in-out }
 
@@ -19,14 +19,14 @@
 }
 
 <div class="container">
-    <h4 class="page-header mb-3">Assign Brand</h4>
+    <h4 class="page-header mb-3">Assign Attribute</h4>
 
     <div class="card card-body">
         <div class="md-form m-0">
-            <input id="inputBrand" placeholder="Find brand to assign" class="form-control" type="text"/>
+            <input id="inputAttribute" placeholder="Find Attribute to assign" class="form-control" type="text"/>
             <span id="existError" class="field-validation-error"></span>
         </div>
-        <div id="brandContainer" class="d-flex flex-wrap align-items-center mb-3"></div>
+        <div id="AttributeContainer" class="d-flex flex-wrap align-items-center mb-3"></div>
 
         <div class="treeview">
             <ul class="list-group list-group-flush">
@@ -56,65 +56,65 @@
 
 @section Scripts{
     <script>
-        //brand autocomplete
-        $('#inputBrand').typeahead({
+        //Attribute autocomplete
+        $('#inputAttribute').typeahead({
             minLength: 1,
             displayText: function(item) {
-                return item.Name;
+                return item.KeyName;
             },
             afterSelect: function(item) {
                 this.$element[0].value = ''
             },
             source: function(request, result) {
                 $.ajax({
-                    url: "/Brand/FindBrand",
+                    url: "/Attribute/FindAttribute",
                     data: { name: request },
                     success: function(response) { result(response); },
                     error: function(err) { console.log(err) }
                 });
             },
             updater: function(item) {
-                appendBrand(item);
+                appendAttribute(item);
                 return item;
             }
         });
 
-        //append brand
-        const brandContainer = document.getElementById("brandContainer");
-        const brandIds = [];
+        //append Attribute
+        const AttributeContainer = document.getElementById("AttributeContainer");
+        const AttributeIds = [];
 
-        function appendBrand(brand) {
+        function appendAttribute(item) {
             const existError = document.getElementById('existError');
             existError.textContent = "";
-            const index = brandIds.indexOf(brand.BrandId);
+            const index = AttributeIds.indexOf(item.AttributeId);
 
             if (index !== -1) {
-                existError.textContent = "Brand Already selected!";
+                existError.textContent = "Attribute Already selected!";
                 return;
             }
 
-            brandIds.push(+brand.BrandId);
+            AttributeIds.push(+item.AttributeId);
 
 
-            const badge = `<div class="brand-badge d-flex justify-content-between align-items-center mr-2 mb-2">
-                <span class="mr-1">${brand.Name}</span>
-                <i id="${brand.BrandId}" class="remove far fa-times-circle"></i>
+            const badge = `<div class="Attribute-badge d-flex justify-content-between align-items-center mr-2 mb-2">
+                <span class="mr-1">${item.KeyName}</span>
+                <i id="${item.AttributeId}" class="remove far fa-times-circle"></i>
             </div>`;
 
-            brandContainer.innerHTML += badge;
+            AttributeContainer.innerHTML += badge;
         }
 
-        //remove brand
-        brandContainer.addEventListener('click', function(evt) {
+        //remove Attribute
+        AttributeContainer.addEventListener('click', function(evt) {
             const element = evt.target;
             const onRemove = element.classList.contains('remove');
 
             if (!onRemove) return;
             const id = +element.id;
 
-            const index = brandIds.indexOf(id);
+            const index = AttributeIds.indexOf(id);
             if (index > -1) {
-                brandIds.splice(index, 1);
+                AttributeIds.splice(index, 1);
                 element.parentElement.remove();
             }
         });
@@ -151,22 +151,22 @@
                 if (checkbox.checked) catalogIds.push(+checkbox.value);
             }
 
-            if (!brandIds.length) return;
+            if (!AttributeIds.length) return;
             if (!catalogIds.length) return;
 
-            const model = { BrandIds: brandIds, CatalogIds: catalogIds }
+            const model = { AttributeIds: AttributeIds, CatalogIds: catalogIds }
 
             this.disabled = true;
 
             $.ajax({
                 type: "POST",
-                url: "/Brand/Assign",
+                url: "/Attribute/Assign",
                 data: model,
                 success: function (response) {
                     btnAssign.disabled = false;
 
                     if (response.IsSuccess) 
-                        location.href = "/Brand/Add";
+                        location.href = "/Attribute/Add";
                 },
                 error: function(err) {
                     console.log(err);
