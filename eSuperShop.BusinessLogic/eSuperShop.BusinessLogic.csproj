@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Otp.NET" Version="1.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eSuperShop.Repository\eSuperShop.Repository.csproj" />
+    <ProjectReference Include="..\Service.SMS\Service.SMS.csproj" />
   </ItemGroup>
 
 </Project>

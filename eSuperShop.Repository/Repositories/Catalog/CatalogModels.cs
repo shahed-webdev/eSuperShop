@@ -11,7 +11,7 @@ namespace eSuperShop.Repository
         public int? ParentCatalogId { get; set; }
         public string ImageUrl { get; set; }
         public bool IsActive { get; set; }
-        public int DisplayOrder { get; set; }
+        public int? DisplayOrder { get; set; }
         public int CreatedByRegistrationId { get; set; }
     }
 
