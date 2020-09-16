@@ -43,10 +43,17 @@ namespace eSuperShop.Web.Controllers
         }
 
         //delete slider
-        public async Task<IActionResult> Delete(string fileName, int id)
+        public async Task<IActionResult> Delete(string imageUrl, int id)
         {
-            await _cloudStorage.DeleteFileAsync(fileName);
             var response = _slider.Delete(id);
+
+            var uri = new Uri(imageUrl);
+            var fileName = Path.GetFileName(uri.AbsolutePath);
+
+            if (response.IsSuccess)
+            {
+                await _cloudStorage.DeleteFileAsync(fileName);
+            }
 
             return Json(response);
         }

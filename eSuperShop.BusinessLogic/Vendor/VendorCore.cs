@@ -67,7 +67,7 @@ namespace eSuperShop.BusinessLogic
             {
                 long timeStepMatched;
                 var verify = _totp.VerifyTotp(code, out timeStepMatched, window: null);
-                if (mobileNumber != _mobileNumber) return new DbResponse(false, "Mobile Number not match");
+                if (mobileNumber != _mobileNumber) return new DbResponse(false, "Mobile number not match");
                 if (!verify) return new DbResponse(false, "Invalid Code");
 
                 return new DbResponse(true, "Success");
@@ -85,7 +85,7 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<VendorModel>(false, "Invalid Data");
 
                 if (_db.Vendor.IsExistPhone(model.VerifiedPhone))
-                    return new DbResponse<VendorModel>(false, "Phone Name already Exist", null, "Name");
+                    return new DbResponse<VendorModel>(false, "Mobile Number already Exist", null, "Name");
 
                 _db.Vendor.Add(model);
                 _db.SaveChanges();

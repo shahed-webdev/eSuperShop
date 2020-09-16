@@ -12,10 +12,10 @@
     <!-- MDB -->
     <link href="~/mdb/css/mdb-core.css" rel="stylesheet" />
     <!-- Custom layout -->
-    <link href="~/css/public-master.css?v=.3" rel="stylesheet" />
+    <link href="~/css/public-master.css?v=1" rel="stylesheet" />
 
     <!-- Others page style -->
-    @RenderSection("Styles", false)
+    @await RenderSectionAsync("Styles", false)
 </head>
 <body>
     <header>
@@ -210,12 +210,18 @@
     <!-- VUE JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
-    @RenderSection("Scripts", false)
+@await RenderSectionAsync("Scripts", false)
 
-    <script>
+<script>
         $(() => {
             new WOW().init();
             $('.mdb-select').materialSelect();
+        });
+
+        //disable wheel in number type input
+        document.addEventListener("wheel", () => {
+            if (document.activeElement.type === "number")
+                document.activeElement.blur();
         });
     </script>
 </body>

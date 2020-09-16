@@ -1,88 +1,263 @@
 ﻿@using eSuperShop.Repository
 @model LoginViewModel
 @{
-    ViewBag.Title = "Seller Login";
+    ViewBag.Title = "Seller Registration";
 }
 
 @section Styles {
-    <link href="~/css-page/Login.css" rel="stylesheet" />
+    <link href="~/css-page/Login.css" rel="stylesheet"/>
     <style>
-        .serach-container { display: none; }
-    </style>   
+        .serach-container, #othersInfo { display: none; }
+        #btnResend { color: #1e90ff}
+        .timerCount { pointer-events: none; cursor: none; color: #000 !important }
+    </style>
 }
 
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-lg-8 mx-auto">
+        <div class="col-md-8 col-lg-7 mx-auto">
             <div class="card card-signin my-5">
                 <div class="card-body">
                     <h5 class="card-title text-center">
                         <strong class="dark-grey-text">Create account</strong>
                     </h5>
-                    <form class="form-signin" asp-controller="Account" asp-action="AdminLogin" method="post">
-                        <div class="form-row">
-                            <div class="col-lg-7">
-                                <div class="md-form mb-5">
-                                    <input type="text" class="form-control">
-                                    <label for="">Store Name</label>
-                                    <span asp-validation-for="UserName"></span>
-                                </div>
+
+                    <form id="formRegistration">
+                        <div class="md-form input-group mb-5">
+                            <input id="inputMobile" type="text" class="form-control" placeholder="Mobile Number">
+                            <div class="input-group-append">
+                                <button id="btnSendCode" class="btn btn-danger btn-md m-0 px-3"><i class="fas fa-check mr-1"></i>Verify</button>
                             </div>
-                            <div class="col-lg-5">
-                                <div class="md-form mb-0 pb-3">
-                                    <input class="form-control" type="text">
-                                    <label for="">Authorized Person</label>
-                                    <span asp-validation-for="Password"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-lg-5">
-                                <div class="md-form mb-5">
-                                    <input type="text" class="form-control">
-                                    <label for="">Mobile Number</label>
-                                    <span asp-validation-for="UserName"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="md-form mb-0 pb-3">
-                                    <input class="form-control" type="email">
-                                    <label for="">Email</label>
-                                    <span asp-validation-for="Password"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-lg-8">
-                                <div class="md-form mb-5">
-                                    <input type="text" class="form-control">
-                                    <label for="">Store Address</label>
-                                    <span asp-validation-for="UserName"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="md-form mb-0 pb-3">
-                                    <input class="form-control" type="password">
-                                    <label for="">Password</label>
-                                    <span asp-validation-for="Password"></span>
-                                </div>
-                            </div>
+                            <span id="mobileError" class="field-validation-error"></span>
                         </div>
 
+                        <div id="othersInfo">
+                            <div class="md-form mb-5">
+                                <input id="inputAuthorizedPerson" class="form-control" type="text" required>
+                                <label for="inputAuthorizedPerson">Authorized Person</label>
+                            </div>
+                            <div class="md-form mb-5">
+                                <input id="inputStoreName" type="text" class="form-control" required>
+                                <label for="inputStoreName">Store Name</label>
+                            </div>
+                            <div class="md-form mb-5">
+                                <input id="inputStoreAddress" type="text" class="form-control" required>
+                                <label for="inputStoreAddress">Store Address</label>
+                            </div>
+                            <button id="btnSignUp" class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3" type="submit">Create account</button>
 
-                        <button class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3" type="submit">Create account</button>
-                        <div asp-validation-summary="ModelOnly"></div>
+
+                            <div class="modal-footer mx-2 pt-3 mt-5">
+                                <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Seller/Login" class="blue-text ml-1">Sign In</a></p>
+                            </div>
+                        </div>
                     </form>
-                   
-                    <div class="modal-footer mx-2 pt-3 mt-5">
-                        <p class="font-small grey-text d-flex justify-content-end">Already have account? <a href="/Seller/Login" class="blue-text ml-1">Sign In</a></p>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+<div class="modal fade" id="codeVerifyModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary justify-content-center">
+                <h5 class="m-0 white-text">Verify Mobile Number</h5>
+            </div>
+
+            <div class="modal-body">
+                <form id="formVerify">
+                    <div class="md-form mb-3">
+                        <input id="inputCode" type="number" class="form-control" required>
+                        <label for="inputCode">Enter Code</label>
+                        <span id="codeError" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="text-center">
+                        <a id="btnResend" class="timerCount"></a>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button id="btnSubmitVerify" type="submit" class="btn btn-primary mt-1">Verify <i class="fas fa-check ml-1"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
+    <script>
+        //registration form
+        const formRegistration = document.getElementById("formRegistration");
+        const btnSendCode = formRegistration.btnSendCode;
+        const codeVerifyModal = $("#codeVerifyModal");
+        const othersInfo = formRegistration.querySelector("#othersInfo");
+
+        //verify form
+        const formVerify = document.getElementById("formVerify");
+        const btnResend = formVerify.querySelector("#btnResend");
+
+        //send code
+        btnSendCode.addEventListener("click", function(evt) {
+            evt.preventDefault();
+
+            if (!formRegistration.inputMobile.value) return;
+
+            this.disabled = true;
+            this.innerText = "sending..";
+
+            const time = 60;
+
+            $.ajax({
+                type: "POST",
+                url: "/Seller/SendCode",
+                data: { mobile: formRegistration.inputMobile.value, time },
+                success: function(response) {
+                    console.log(response);
+
+                    if (response.IsSuccess) {
+                        codeVerifyModal.modal('show');
+                        btnSendCode.disabled = false;
+                        btnSendCode.innerText = "Verify";
+
+                        startTimer(time);
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        //re-send code
+        btnResend.addEventListener("click", function (evt) {
+            evt.preventDefault();
+
+            if (!formRegistration.inputMobile.value) return;
+
+            const time = 60;
+
+            $.ajax({
+                type: "POST",
+                url: "/Seller/SendCode",
+                data: { mobile: formRegistration.inputMobile.value, time },
+                success: function (response) {
+                    console.log(response);
+
+                    if (response.IsSuccess) {
+                        codeVerifyModal.modal('show');
+                        btnSendCode.disabled = false;
+                        btnSendCode.innerText = "Verify";
+                        formVerify.inputCode.value = "";
+
+                        startTimer(time);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        //verify code
+        formVerify.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            this.btnSubmitVerify.disabled = true;
+            this.btnSubmitVerify.textContent = "verifying...";
+
+            const code = this.inputCode.value.trim();
+            const mobile = formRegistration.inputMobile.value.trim();
+
+            $.ajax({
+                type: "POST",
+                url: "/Seller/CodeVerify",
+                data: { code, mobile },
+                success: function(response) {
+                    console.log(response);
+
+                    if (response.IsSuccess) {
+                        codeVerifyModal.modal('hide');
+                        formRegistration.inputMobile.disabled = true;
+
+                        btnSendCode.disabled = true;
+                        btnSendCode.classList.add("btn-success");
+                        btnSendCode.classList.remove("btn-danger");
+                        btnSendCode.innerText = "Verified";
+
+                        othersInfo.style.display = "block";
+                    }
+
+                    formVerify.btnSubmitVerify.disabled = false;
+                    formVerify.btnSubmitVerify.innerText = "verify";
+                },
+                error: function(err) {
+                    console.log(err);
+                    formVerify.btnSubmitVerify.disabled = false;
+                    formVerify.btnSubmitVerify.textContent = "verify";
+                }
+            });
+        });
+
+
+        //post registration
+        formRegistration.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            this.btnSignUp.disabled = true;
+            this.btnSignUp.textContent = "submitting..";
+
+            const data = {
+                AuthorizedPerson: this.inputAuthorizedPerson.value,
+                VerifiedPhone: this.inputMobile.value,
+                StoreName: this.inputStoreName.value,
+                StoreAddress: this.inputStoreAddress.value
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Seller/SignUp",
+                data,
+                success: function(response) {
+                    console.log(response);
+                    alert(response.Message);
+
+                    formRegistration.btnSignUp.disabled = false;
+                    formRegistration.btnSignUp.textContent = "Create account";
+                },
+                error: function(err) {
+                    console.log(err);
+                    formRegistration.btnSignUp.disabled = false;
+                    formRegistration.btnSignUp.textContent = "Create account";
+                }
+            });
+        });
+
+
+        //count down
+        function startTimer(duration) {
+            let timer = duration;
+            let seconds = 0;
+            btnResend.classList.add("timerCount");
+
+            const interval = setInterval(function() {
+                seconds = parseInt(timer % 60, 10);
+                seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+                btnResend.textContent = `Resend after ${seconds}s`;
+                btnResend.style.pointerEvent = "none";
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    btnResend.textContent = "Re Send Code";
+                    btnResend.classList.remove("timerCount");
+                }
+
+            }, 1000);
+        }
+    </script>
 }

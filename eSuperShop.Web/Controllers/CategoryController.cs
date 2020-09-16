@@ -14,12 +14,20 @@ namespace eSuperShop.Web.Controllers
     [Authorize]
     public class CategoryController : Controller
     {
+        private readonly IBrandCore _brand;
+        private readonly IAttributeCore _attribute;
+        private readonly ISpecificationCore _specification;
+         
         private readonly ICatalogCore _catalog;
         private readonly ICloudStorage _cloudStorage;
         private readonly ISeoCore _seo;
 
-        public CategoryController(ICloudStorage cloudStorage, ICatalogCore catalog, IMapper mapper, IUnitOfWork db)
+        public CategoryController(IBrandCore brand, IAttributeCore attribute, ISpecificationCore specification,ICloudStorage cloudStorage, ICatalogCore catalog, IMapper mapper, IUnitOfWork db)
         {
+            _brand = brand;
+            _attribute = attribute;
+            _specification = specification;
+
             _catalog = catalog;
             _cloudStorage = cloudStorage;
             _seo = new SeoCoreCatalog(mapper, db);
@@ -86,6 +94,17 @@ namespace eSuperShop.Web.Controllers
             return View(response.Data);
         }
 
+        //Un-assign Catalog
+        public IActionResult UnAssignCatalog(int id, int catalogId, string type)
+        {
+            return type switch
+            {
+                "brand" => Json(_brand.UnAssignCatalog(id, catalogId)),
+                "attribute" => Json(_attribute.UnAssignCatalog(id, catalogId)),
+                "specification" => Json(_specification.UnAssignCatalog(id, catalogId)),
+                _ => UnprocessableEntity("unable to delete")
+            };
+        }
 
 
 

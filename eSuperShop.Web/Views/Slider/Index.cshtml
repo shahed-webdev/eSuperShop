@@ -8,17 +8,23 @@
 @section Styles
 {
     <style>
-        table #tBody tr td:nth-child(1) { width: 150px; }
-        table #tBody tr img { width: 100%; }
-    </style>  
+        #slider-images .delete { cursor: pointer}
+    </style>
 }
 
 <div class="m-md-4">
     <h4 class="page-header mb-3">Add Slider Image</h4>
 
-    <div class="card card-body">
+    <div class="card card-body mb-3">
         <form id="addForm">
             <div class="row align-items-center">
+                <div class="col-lg-2">
+                    <div class="md-form">
+                        <select id="inputDisplayPlace" asp-items="ViewBag.DisplayPlace" class="mdb-select" required>
+                            <option value="">[ DISPLAY PLACE ]</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-lg-3">
                     <div class="md-form">
                         <div class="file-field">
@@ -44,48 +50,36 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="md-form">
-                        <select id="inputDisplayPlace" asp-items="ViewBag.DisplayPlace" class="mdb-select" required>
-                            <option value="">[ DISPLAY PLACE ]</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="md-form">
                         <input type="submit" value="Add Slider" class="btn btn-danger btn-sm" />
                     </div>
                 </div>
             </div>
         </form>
-
-        <table class="table table-bordered table-sm mt-4">
-            <thead>
-                <tr>
-                    <th><strong>Image</strong></th>
-                    <th><strong>Order</strong></th>
-                    <th><strong>Place</strong></th>
-                    <th><strong>Delete</strong></th>
-                </tr>
-            </thead>
-            <tbody id="tBody">
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td><img src="@item.ImageUrl" /></td>
-                        <td>@item.DisplayOrder</td>
-                        <td>@item.DisplayPlace</td>
-                        <td><button data-id="@item.SliderId" data-filename="@item.FileName" class="btnDelete btn btn-sm btn-danger">Delete</button></td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
     </div>
-</div>
+
+    <div id="slider-images" class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-xl-2 col-lg-4 mb-3">
+                <div class="card h-100">
+                    <div class="view overlay">
+                        <img class="card-img-top" src="@item.ImageUrl" alt="@item.DisplayPlace">
+                        <div class="mask rgba-white-slight"></div>
+                    </div>
+
+                    <div class="p-3 rounded-bottom d-flex justify-content-between align-items-center">
+                        <span>@item.DisplayOrder - @item.DisplayPlace</span>
+                        <i data-id="@item.SliderId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text"></i>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>   
+
 
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
-
     <script>
         $(function () {
             // Material Select Initialization
@@ -104,9 +98,10 @@
             $pathInput.trigger('change');
         });
 
+
         //upload image
         const addForm = document.getElementById('addForm');
-        const tBody = document.getElementById('tBody');
+        const sliderImages = document.getElementById('slider-images');
 
         addForm.addEventListener('submit', function (evt) {
             evt.preventDefault();
@@ -133,7 +128,6 @@
                     addForm.filePath.value = "";
                     addForm.inputRedirectUrl.value = "";
                     addForm.inputDisplayOrder.value = "";
-                    addForm.inputDisplayPlace.selectedIndex = 0;
 
                     appendImage(response.Data);
                 }
@@ -162,37 +156,36 @@
 
             btnDelete.className = "btnDelete btn btn-sm btn-danger";
             btnDelete.textContent = "delete";
-            btnDelete.setAttribute("data-filename",data.FileName);
+            btnDelete.setAttribute("data-filename", data.FileName);
             btnDelete.setAttribute("data-id", data.SliderId);
             td4.appendChild(btnDelete);
 
             tr.appendChild(td4);
 
 
-        tBody.appendChild(tr);
-    }
+            tBody.appendChild(tr);
+        }
 
-    //delete
-    tBody.addEventListener('click', function (evt) {
-        const element = evt.target;
+        //delete
+        sliderImages.addEventListener('click', function (evt) {
+            const element = evt.target;
 
-        const onBtnDelete = element.classList.contains('btnDelete');
-        if (!onBtnDelete) return;
+            const onBtnDelete = element.classList.contains('delete');
+            if (!onBtnDelete) return;
 
-        const fileName = element.getAttribute('data-filename');
-        const id = element.getAttribute('data-id');
+            const imageUrl = element.getAttribute('data-url');
+            const id = element.getAttribute('data-id');
 
-        $.ajax({
-            type: "POST",
-            url: "/Slider/Delete",
-            data: { fileName, id },
-            success: function (response) {
-                console.log(response);
-                if (response.IsSuccess) {
-                    element.parentElement.parentElement.remove()
+            $.ajax({
+                type: "POST",
+                url: "/Slider/Delete",
+                data: { imageUrl, id },
+                success: function (response) {
+                    if (response.IsSuccess) {
+                        element.parentElement.parentElement.parentElement.remove()
+                    }
                 }
-            }
+            });
         });
-    });
-    </script>
+    </script>  
 }

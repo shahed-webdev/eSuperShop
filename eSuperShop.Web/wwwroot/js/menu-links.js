@@ -62,7 +62,7 @@ let linkData = [{
         "LinkCategoryID": 2,
         "SN": 7,
         "Category": "Attribute",
-        "IconClass": "fas fa-user",
+        "IconClass": "fas fa-clipboard-list",
         "links": [
             {
                 "LinkID": 6,
@@ -84,7 +84,7 @@ let linkData = [{
         "LinkCategoryID": 2,
         "SN": 7,
         "Category": "Specification",
-        "IconClass": "fas fa-user",
+        "IconClass": "fas fa-clipboard-list-check",
         "links": [
             {
                 "LinkID": 6,

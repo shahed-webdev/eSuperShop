@@ -33,20 +33,16 @@ namespace Service.SMS
 
             try
             {
-                using (var response = request.GetResponse())
-                {
-                    dynamic responseObject = ParseResponse(response);
+                using var response = request.GetResponse();
+                dynamic responseObject = ParseResponse(response);
 
-                    if (responseObject.isError == "true")
-                    {
-                        throw new Exception(string.Format("Sms Sending was failed. Because: {0}", responseObject.message));
-                    }
-                    else
-                    {
-                        // Get the response stream
-                        return (int)responseObject.AvailableExternalSmsCount;
-                    }
+                if (responseObject.isError == "true")
+                {
+                    throw new Exception(string.Format("Sms Sending was failed. Because: {0}", responseObject.message));
                 }
+
+                // Get the response stream
+                return (int) responseObject.AvailableExternalSmsCount;
             }
             catch (WebException e)
             {
@@ -57,37 +53,39 @@ namespace Service.SMS
                     throw new Exception("Sms Sending was failed. Because: " + responseObject.message);
                 }
             }
+
             return 0;
         }
-        private static object ParseResponse(WebResponse r)
+
+        private static object ParseResponse(WebResponse webResponse)
         {
-            var response = (HttpWebResponse)r;
+            var response = (HttpWebResponse) webResponse;
 
             var responseStream = response.GetResponseStream();
 
             if (responseStream == null) throw new Exception("Response stream found null.");
 
-            using (var responseReader = new StreamReader(responseStream))
-            {
-                var responseString = responseReader.ReadToEnd();
+            using var responseReader = new StreamReader(responseStream);
+            var responseString = responseReader.ReadToEnd();
 
-                try
-                {
-                    return JsonConvert.DeserializeObject(responseString);
-                }
-                catch
-                {
-                    throw new Exception(string.Format("The sms service calling was unsuccessful with code:{0}[{1}]", (int)response.StatusCode, response.StatusCode));
-                }
+            try
+            {
+                return JsonConvert.DeserializeObject(responseString);
+            }
+            catch
+            {
+                throw new Exception(
+                    $"The sms service calling was unsuccessful with code:{(int) response.StatusCode}[{response.StatusCode}]");
             }
         }
+
         public string SendSms(string massage, string number)
         {
             const string actionUrl = "sendsms"; // your powers ms site url; register the ip first
-            var request = HttpWebRequest.Create(HostUrl + actionUrl);
+            var request = WebRequest.Create(HostUrl + actionUrl);
             var smsText = Uri.EscapeDataString(massage);
             var receiversParam = number;
-            var dataFormat = "userId={0}&password={1}&smsText={2}&commaSeperatedReceiverNumbers={3}";
+            const string dataFormat = "userId={0}&password={1}&smsText={2}&commaSeperatedReceiverNumbers={3}";
 
 
             var urlEncodedData = string.Format(dataFormat, UserId, Password, smsText, receiversParam);
@@ -106,19 +104,15 @@ namespace Service.SMS
 
             try
             {
-                using (var response = request.GetResponse())
-                {
-                    dynamic responseObject = ParseResponse(response);
+                using var response = request.GetResponse();
+                dynamic responseObject = ParseResponse(response);
 
-                    if (responseObject.isError == "true")
-                    {
-                        throw new Exception(string.Format("Sms Sending was failed. Because: {0}", responseObject.message));
-                    }
-                    else
-                    {
-                        return responseObject.insertedSmsIds;
-                    }
+                if (responseObject.isError == "true")
+                {
+                    throw new Exception(string.Format("Sms Sending was failed. Because: {0}", responseObject.message));
                 }
+
+                return responseObject.insertedSmsIds;
             }
             catch (WebException e)
             {
@@ -126,7 +120,7 @@ namespace Service.SMS
 
                 if (responseObject.isError == "true")
                 {
-                    throw new Exception("Sms Sending was failed. Because: " + responseObject.message);
+                    throw new Exception("SMS Sending was failed. Because: " + responseObject.message);
                 }
             }
 
