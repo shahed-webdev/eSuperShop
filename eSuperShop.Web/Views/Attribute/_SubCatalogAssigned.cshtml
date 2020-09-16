@@ -10,12 +10,12 @@
     var isNoCategory = !catalog.SubCatalog.Any();
 
     <div class="nested">
-        <input disabled type="checkbox" value="@catalog.CatalogId" @(catalog.IsExist?"checked":"") class="form-check-input" id="c-@catalog.CatalogId" name="check-category">
+        <input disabled type="checkbox" value="@catalog.CatalogId" @(catalog.IsExist? "checked" : "") class="form-check-input" id="c-@catalog.CatalogId" name="check-category">
         <label class="form-check-label" for="c-@catalog.CatalogId">@catalog.CatalogName</label>
 
         @if (!isNoCategory)
         {
-            <partial name="_SubCatalog" model="@catalog.SubCatalog" />
+            <partial name="_SubCatalogAssigned" model="@catalog.SubCatalog" />
         }
     </div>
 }

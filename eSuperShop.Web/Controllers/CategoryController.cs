@@ -70,6 +70,13 @@ namespace eSuperShop.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //Delete Catalog
+        public IActionResult DeleteCatalog(int id)
+        {
+            var response = _catalog.Delete(id);
+            return Json(response);
+        }
+
         //Post Show placement
         public IActionResult Placement()
         {

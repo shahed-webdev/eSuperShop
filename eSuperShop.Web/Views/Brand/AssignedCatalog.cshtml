@@ -29,7 +29,7 @@
                     var isNoCategory = !catalog.SubCatalog.Any();
 
                     <li class="list-group-item parentCategory">
-                        <input disabled type="checkbox" class="form-check-input" @(catalog.IsExist?"checked":"") value="@catalog.CatalogId" id="@catalog.CatalogId" name="check-category">
+                        <input disabled type="checkbox" class="form-check-input" @(catalog.IsExist? "checked": "") value="@catalog.CatalogId" id="@catalog.CatalogId" name="check-category">
                         <label class="form-check-label" for="@catalog.CatalogId"><strong>@catalog.CatalogName</strong></label>
 
                         @if (!isNoCategory)
