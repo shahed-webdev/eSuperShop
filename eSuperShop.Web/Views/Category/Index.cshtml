@@ -156,9 +156,10 @@
 
         //on delete category
         function deleteCategory(id, element) {
-            const url = '/Category/Delete';
+            const url = '/Category/DeleteCatalog';
             axios.post(url, null, { params: { id: id } }).then(function (response) {
-                if (response)
+                console.log(response)
+                if (response.data.IsSuccess)
                     element.parentElement.parentElement.remove();
                 else
                     alert('Category already in used');
