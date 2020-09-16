@@ -14,11 +14,14 @@ namespace eSuperShop.BusinessLogic
         DbResponse<List<ICatalogModel>> BrandWiseList(int brandId);
         DbResponse<List<ICatalogModel>> AttributeWiseList(int attributeId);
         DbResponse<List<ICatalogModel>> SpecificationWiseList(int specificationId);
+        DbResponse<CatalogAssignDetailsModel> AssignDetails(int catalogId);
         DbResponse<string> Breadcrumb(int id);
         List<DDL> DisplayPlaceDdl();
         DbResponse<List<DDL>> ListDdl();
         DbResponse<CatalogDisplayModel> AssignPlace(CatalogAssignModel model, string userName);
         DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace);
+
+
     }
 
 

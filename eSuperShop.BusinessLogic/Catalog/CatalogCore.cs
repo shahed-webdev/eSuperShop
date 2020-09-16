@@ -149,6 +149,25 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<CatalogAssignDetailsModel> AssignDetails(int catalogId)
+        {
+            try
+            {
+                var data = new CatalogAssignDetailsModel
+                {
+                    CatalogInfo = _db.Catalog.Get(catalogId),
+                    Brands = _db.Brand.CatalogWiseList(catalogId),
+                    Specifications = _db.Specification.CatalogWiseList(catalogId),
+                    Attributes = _db.Attribute.CatalogWiseList(catalogId)
+                }; return new DbResponse<CatalogAssignDetailsModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<CatalogAssignDetailsModel>(false, e.Message);
+            }
+
+        }
+
         public DbResponse<string> Breadcrumb(int id)
         {
             try

@@ -105,5 +105,19 @@ namespace eSuperShop.Repository
         public int DisplayOrder { get; set; }
         public int CreatedByRegistrationId { get; set; }
     }
+    public class CatalogAssignDetailsModel
+    {
+        public CatalogAssignDetailsModel()
+        {
+            Brands = new HashSet<BrandModel>();
+            Specifications = new HashSet<SpecificationModel>();
+            Attributes = new HashSet<AttributeModel>();
+        }
+        public CatalogDisplayModel CatalogInfo { get; set; }
+        public ICollection<BrandModel> Brands { get; set; }
+        public ICollection<SpecificationModel> Specifications { get; set; }
+        public ICollection<AttributeModel> Attributes { get; set; }
+    }
+
 
 }
