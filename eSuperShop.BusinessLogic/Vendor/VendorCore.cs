@@ -19,13 +19,14 @@ namespace eSuperShop.BusinessLogic
             _mapper = mapper;
             _db = db;
         }
-        DbResponse SendCode(string mobileNumber, int codeValidSecond)
+        public DbResponse SendCode(string mobileNumber, int codeValidSecond)
         {
             try
             {
+                if (_db.Vendor.IsExistPhone(mobileNumber)) return new DbResponse(false, "Phone number already exist");
+
                 _mobileNumber = mobileNumber;
                 #region Generate Code
-
                 var bytes = Base32Encoding.ToBytes("JBSWY3DPEHPK3PXP");
 
                 _totp = new Totp(bytes, codeValidSecond);
@@ -60,16 +61,44 @@ namespace eSuperShop.BusinessLogic
 
         }
 
-        DbResponse IVendorCore.VerifyMobileNumber(string code, string mobileNumber)
+        public DbResponse VerifyMobileNumber(string code, string mobileNumber)
         {
-            return VerifyMobileNumber(code, mobileNumber);
-        }
+            try
+            {
+                long timeStepMatched;
+                var verify = _totp.VerifyTotp(code, out timeStepMatched, window: null);
+                if (mobileNumber != _mobileNumber) return new DbResponse(false, "Mobile Number not match");
+                if (!verify) return new DbResponse(false, "Invalid Code");
 
-        DbResponse<VendorModel> IVendorCore.Add(VendorAddModel model)
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+        public DbResponse<VendorModel> Add(VendorAddModel model)
         {
-            return Add(model);
-        }
+            try
+            {
+                if (string.IsNullOrEmpty(model.VerifiedPhone))
+                    return new DbResponse<VendorModel>(false, "Invalid Data");
 
+                if (_db.Vendor.IsExistPhone(model.VerifiedPhone))
+                    return new DbResponse<VendorModel>(false, "Phone Name already Exist", null, "Name");
+
+                _db.Vendor.Add(model);
+                _db.SaveChanges();
+
+                var data = _mapper.Map<VendorModel>(_db.Brand.Brand);
+
+                return new DbResponse<VendorModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<VendorModel>(false, e.Message);
+            }
+        }
         public DataResult<VendorModel> List(DataRequest request)
         {
             throw new NotImplementedException();
@@ -100,49 +129,5 @@ namespace eSuperShop.BusinessLogic
             throw new NotImplementedException();
         }
 
-        DbResponse IVendorCore.SendCode(string mobileNumber, int codeValidSecond)
-        {
-            return SendCode(mobileNumber, codeValidSecond);
-        }
-
-        DbResponse VerifyMobileNumber(string code, string mobileNumber)
-        {
-            try
-            {
-                long timeStepMatched;
-                var verify = _totp.VerifyTotp(code, out timeStepMatched, window: null);
-                if (mobileNumber != _mobileNumber) return new DbResponse(false, "Mobile Number not match");
-                if (!verify) return new DbResponse(false, "Invalid Code");
-
-                return new DbResponse(true, "Success");
-            }
-            catch (Exception e)
-            {
-                return new DbResponse(false, e.Message);
-            }
-        }
-
-        DbResponse<VendorModel> Add(VendorAddModel model)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(model.VerifiedPhone))
-                    return new DbResponse<VendorModel>(false, "Invalid Data");
-
-                if (_db.Vendor.IsExistPhone(model.VerifiedPhone))
-                    return new DbResponse<VendorModel>(false, "Phone Name already Exist", null, "Name");
-
-                _db.Vendor.Add(model);
-                _db.SaveChanges();
-
-                var data = _mapper.Map<VendorModel>(_db.Brand.Brand);
-
-                return new DbResponse<VendorModel>(true, "Success", data);
-            }
-            catch (Exception e)
-            {
-                return new DbResponse<VendorModel>(false, e.Message);
-            }
-        }
     }
 }

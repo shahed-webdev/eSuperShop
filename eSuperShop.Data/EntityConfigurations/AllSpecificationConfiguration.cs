@@ -14,8 +14,7 @@ namespace eSuperShop.Data
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(e => e.AllowFiltering)
-                .HasDefaultValueSql("((1))");
+            builder.Property(e => e.AllowFiltering);
 
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")
