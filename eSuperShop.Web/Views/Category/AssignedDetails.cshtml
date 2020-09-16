@@ -1,0 +1,78 @@
+﻿@using eSuperShop.Repository
+@model CatalogAssignDetailsModel
+
+@{
+    ViewData["Title"] = "Category Assigned Details";
+    Layout = "_AdminLayout";
+}
+
+@section Styles{
+      
+}
+
+<div class="container">
+    <h4 class="page-header">
+        Category: @Model.CatalogInfo.CatalogName
+    </h4>
+    <a href="/Category"><i class="far fa-long-arrow-alt-left mr-1 mb-4"></i>Back to List</a>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <ul class="list-group list-group-flush z-depth-1 rounded">
+                <li class="list-group-item active py-3">
+                    <h5 class="font-weight-bold mb-0">Brand</h5>
+                </li>
+
+                @if (Model.Brands.Count < 1)
+                {
+                    <li class="list-group-item text-muted">Brand Not Assigned</li>
+                }
+
+                @foreach (var brand in Model.Brands)
+                {
+                    <li class="list-group-item">@brand.Name</li>
+                }
+            </ul>
+        </div>
+        <div class="col-lg-4">
+            <ul class="list-group list-group-flush z-depth-1 rounded">
+                <li class="list-group-item active py-3">
+                    <h5 class="font-weight-bold mb-0">Attribute</h5>
+                </li>
+
+                @if (Model.Attributes.Count < 1)
+                {
+                    <li class="list-group-item text-muted">Attribute Not Assigned</li>
+                }
+
+                @foreach (var attributes in Model.Attributes)
+                {
+                    <li class="list-group-item">@attributes.KeyName</li>
+                }
+            </ul> 
+        </div>
+        <div class="col-lg-4">
+            <ul class="list-group list-group-flush z-depth-1 rounded">
+                <li class="list-group-item active py-3">
+                    <h5 class="font-weight-bold mb-0">Specification</h5>
+                </li>
+
+                @if (Model.Specifications.Count < 1)
+                {
+                    <li class="list-group-item text-muted">Specification Not Assigned</li>
+                }
+
+                @foreach (var specification in Model.Specifications)
+                {
+                    <li class="list-group-item">@specification.KeyName</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    
+}

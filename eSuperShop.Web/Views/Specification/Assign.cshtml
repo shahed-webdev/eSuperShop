@@ -1,15 +1,15 @@
 ﻿@using eSuperShop.Repository
 @model IEnumerable<ICatalogModel>
 @{
-    ViewData["Title"] = "Assign Attribute";
+    ViewData["Title"] = "Assign Specification";
     Layout = "_AdminLayout";
 }
 
 @section Styles{
     <style>
-        .Attribute-badge { background-color: #373434; padding: 2px 10px; border-radius: 5px; color: #e8e8e8; }
-        .Attribute-badge i { cursor: pointer }
-        .Attribute-badge i:hover { color: #f95151 }
+        .Specification-badge { background-color: #373434; padding: 2px 10px; border-radius: 5px; color: #e8e8e8; }
+        .Specification-badge i { cursor: pointer }
+        .Specification-badge i:hover { color: #f95151 }
 
         .parentCategory, .childCategory { transition: all .3s ease-in-out }
 
@@ -19,14 +19,14 @@
 }
 
 <div class="container">
-    <h4 class="page-header mb-3">Assign Attribute</h4>
+    <h4 class="page-header mb-3">Assign Specification</h4>
 
     <div class="card card-body">
         <div class="md-form m-0">
-            <input id="inputAttribute" placeholder="Find Attribute to assign" class="form-control" type="text"/>
+            <input id="inputSpecification" placeholder="Find Specification to assign" class="form-control" type="text"/>
             <span id="existError" class="field-validation-error"></span>
         </div>
-        <div id="AttributeContainer" class="d-flex flex-wrap align-items-center mb-3"></div>
+        <div id="SpecificationContainer" class="d-flex flex-wrap align-items-center mb-3"></div>
 
         <div class="treeview">
             <ul class="list-group list-group-flush">
@@ -56,8 +56,8 @@
 
 @section Scripts{
     <script>
-        //Attribute autocomplete
-        $('#inputAttribute').typeahead({
+        //Specification autocomplete
+        $('#inputSpecification').typeahead({
             minLength: 1,
             displayText: function(item) {
                 return item.KeyName;
@@ -67,54 +67,54 @@
             },
             source: function(request, result) {
                 $.ajax({
-                    url: "/Attribute/FindAttribute",
+                    url: "/Specification/FindSpecification",
                     data: { name: request },
                     success: function(response) { result(response); },
                     error: function(err) { console.log(err) }
                 });
             },
             updater: function(item) {
-                appendAttribute(item);
+                appendSpecification(item);
                 return item;
             }
         });
 
-        //append Attribute
-        const AttributeContainer = document.getElementById("AttributeContainer");
-        const AttributeIds = [];
+        //append Specification
+        const SpecificationContainer = document.getElementById("SpecificationContainer");
+        const SpecificationIds = [];
 
-        function appendAttribute(item) {
+        function appendSpecification(item) {
             const existError = document.getElementById('existError');
             existError.textContent = "";
-            const index = AttributeIds.indexOf(item.AttributeId);
+            const index = SpecificationIds.indexOf(item.SpecificationId);
 
             if (index !== -1) {
-                existError.textContent = "Attribute Already selected!";
+                existError.textContent = "Specification Already selected!";
                 return;
             }
 
-            AttributeIds.push(+item.AttributeId);
+            SpecificationIds.push(+item.SpecificationId);
 
 
-            const badge = `<div class="Attribute-badge d-flex justify-content-between align-items-center mr-2 mb-2">
+            const badge = `<div class="Specification-badge d-flex justify-content-between align-items-center mr-2 mb-2">
                 <span class="mr-1">${item.KeyName}</span>
-                <i id="${item.AttributeId}" class="remove far fa-times-circle"></i>
+                <i id="${item.SpecificationId}" class="remove far fa-times-circle"></i>
             </div>`;
 
-            AttributeContainer.innerHTML += badge;
+            SpecificationContainer.innerHTML += badge;
         }
 
-        //remove Attribute
-        AttributeContainer.addEventListener('click', function(evt) {
+        //remove Specification
+        SpecificationContainer.addEventListener('click', function(evt) {
             const element = evt.target;
             const onRemove = element.classList.contains('remove');
 
             if (!onRemove) return;
             const id = +element.id;
 
-            const index = AttributeIds.indexOf(id);
+            const index = SpecificationIds.indexOf(id);
             if (index > -1) {
-                AttributeIds.splice(index, 1);
+                SpecificationIds.splice(index, 1);
                 element.parentElement.remove();
             }
         });
@@ -165,22 +165,22 @@
                 if (checkbox.checked) catalogIds.push(+checkbox.value);
             }
 
-            if (!AttributeIds.length) return;
+            if (!SpecificationIds.length) return;
             if (!catalogIds.length) return;
 
-            const model = { AttributeIds: AttributeIds, CatalogIds: catalogIds }
+            const model = { SpecificationIds, CatalogIds: catalogIds }
 
             this.disabled = true;
 
             $.ajax({
                 type: "POST",
-                url: "/Attribute/Assign",
+                url: "/Specification/Assign",
                 data: model,
                 success: function (response) {
                     btnAssign.disabled = false;
 
                     if (response.IsSuccess) 
-                        location.href = "/Attribute/Add";
+                        location.href = "/Specification/Add";
                 },
                 error: function(err) {
                     console.log(err);

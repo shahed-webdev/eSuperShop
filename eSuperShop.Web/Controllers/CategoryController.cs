@@ -77,6 +77,18 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
+        //Assigned Details
+        public IActionResult AssignedDetails(int? id)
+        {
+            if (id == null) return RedirectToAction("index");
+
+            var response = _catalog.AssignDetails(id.GetValueOrDefault());
+            return View(response.Data);
+        }
+
+
+
+
         //Post Show placement
         public IActionResult Placement()
         {

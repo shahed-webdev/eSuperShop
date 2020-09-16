@@ -3,7 +3,7 @@ let linkData = [{
         "LinkCategoryID": 1,
         "SN": 1,
         "Category": "Category",
-        "IconClass": "fas fa-user-tie",
+        "IconClass": "fas fa-list-ul",
         "links": [{
                 "LinkID": 3,
                 "SN": 0,
@@ -25,7 +25,7 @@ let linkData = [{
         "LinkCategoryID": 2,
         "SN": 7,
         "Category": "Slider",
-        "IconClass": "fas fa-user",
+        "IconClass": "far fa-images",
         "links": [
             {
                 "LinkID": 6,
@@ -40,7 +40,7 @@ let linkData = [{
         "LinkCategoryID": 2,
         "SN": 7,
         "Category": "Brand",
-        "IconClass": "fas fa-user",
+        "IconClass": "fas fa-tag",
         "links": [
             {
                 "LinkID": 6,
