@@ -14,7 +14,6 @@ namespace eSuperShop.Repository
         bool IsExistPhone(string phone);
         bool IsExistEmail(string email);
         bool IsNull(int id);
-        bool IsRelatedDataExist(int id);
         DataResult<VendorModel> List(DataRequest request);
         Task<ICollection<VendorModel>> SearchAsync(string key);
         void AssignCatalogMultiple(VendorCatalogAssignModel model);
@@ -22,5 +21,8 @@ namespace eSuperShop.Repository
         bool IsExistVendorInCatalog(int VendorId, int catalogId);
         List<VendorModel> CatalogWiseList(int catalogId);
         void Approved(VendorApprovedModel model);
+        void UnApproved(int vendorId);
+        bool IsApproved(int vendorId);
+        string GetPhone(int vendorId);
     }
 }

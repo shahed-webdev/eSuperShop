@@ -52,11 +52,6 @@ namespace eSuperShop.Repository
             return !Db.Vendor.Any(c => c.VendorId == id);
         }
 
-        public bool IsRelatedDataExist(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public DataResult<VendorModel> List(DataRequest request)
         {
             var list = Db.Vendor
@@ -141,6 +136,24 @@ namespace eSuperShop.Repository
             vendor.IsApproved = true;
 
             Db.Vendor.Update(vendor);
+        }
+
+        public void UnApproved(int vendorId)
+        {
+            var vendor = Db.Vendor
+                .Include(v => v.VendorCatalog)
+                .FirstOrDefault(v => v.VendorId == vendorId);
+            Db.Vendor.Remove(vendor);
+        }
+
+        public bool IsApproved(int vendorId)
+        {
+            return Db.Vendor.Find(vendorId).IsApproved;
+        }
+
+        public string GetPhone(int vendorId)
+        {
+            return Db.Vendor.Find(vendorId).VerifiedPhone;
         }
     }
 }

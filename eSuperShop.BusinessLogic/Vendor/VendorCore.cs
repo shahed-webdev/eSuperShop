@@ -3,6 +3,7 @@ using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Identity;
 using OtpNet;
+using Service.SMS;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -95,7 +96,7 @@ namespace eSuperShop.BusinessLogic
                 _db.Vendor.Add(model);
                 _db.SaveChanges();
 
-                var data = _mapper.Map<VendorModel>(_db.Brand.Brand);
+                var data = _mapper.Map<VendorModel>(_db.Vendor.Vendor);
 
                 return new DbResponse<VendorModel>(true, "Success", data);
             }
@@ -124,19 +125,38 @@ namespace eSuperShop.BusinessLogic
                 if (_db.Vendor.IsNull(model.VendorId))
                     return new DbResponse(false, "Vendor not Found");
 
-
                 //Identity Create
                 var user = new IdentityUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, "123456").ConfigureAwait(false);
+                var password = Password.Generate(8, 3);
+                var result = await _userManager.CreateAsync(user, password).ConfigureAwait(false);
 
                 if (!result.Succeeded) return new DbResponse(false, result.Errors.FirstOrDefault()?.Description);
 
                 await _userManager.AddToRoleAsync(user, "Vendor").ConfigureAwait(false);
 
+
                 //Update vendor table
                 _db.Vendor.Approved(model);
                 _db.SaveChanges();
 
+
+                #region SMS Code
+
+                var textSms = $"Your Account Successfully activated, Your Id: {model.Email} & password: {password} . Please change your password for better security";
+
+                var massageLength = SmsValidator.MassageLength(textSms);
+                var smsCount = SmsValidator.TotalSmsCount(textSms);
+
+                var smsProvider = new SmsProviderBuilder();
+
+                var smsBalance = smsProvider.SmsBalance();
+                if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
+
+                var providerSendId = smsProvider.SendSms(textSms, _db.Vendor.GetPhone(model.VendorId));
+
+                if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
+
+                #endregion
 
 
                 return new DbResponse(true, "Success");
@@ -149,22 +169,76 @@ namespace eSuperShop.BusinessLogic
 
         public DbResponse Unapproved(int vendorId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse(false, "Vendor not Found");
+                if (_db.Vendor.IsApproved(vendorId))
+                    return new DbResponse(false, "Approved Vendor cannot be deleted");
+
+                _db.Vendor.UnApproved(vendorId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
         }
 
-        public DbResponse<VendorDetailsModel> GetDetails(int vendorId)
+        public DbResponse<VendorModel> GetDetails(int vendorId)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse<VendorModel>(false, "No Data Found", null, "VerifiedPhone");
+
+
+                var data = _db.Vendor.Get(vendorId);
+
+                return new DbResponse<VendorModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<VendorModel>(false, e.Message);
+            }
         }
 
         public DbResponse AssignCatalogMultiple(VendorCatalogAssignModel model, string userName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var registrationId = _db.Registration.GetRegID_ByUserName(userName);
+                if (registrationId == 0) return new DbResponse(false, "Invalid User");
+                model.AssignedByRegistrationId = registrationId;
+
+                _db.Vendor.AssignCatalogMultiple(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
         }
 
         public DbResponse UnAssignCatalog(int vendorId, int catalogId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (!_db.Brand.IsExistBrandInCatalog(vendorId, catalogId)) return new DbResponse(false, "Data Not Found");
+                _db.Vendor.UnAssignCatalog(vendorId, catalogId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
         }
 
     }
