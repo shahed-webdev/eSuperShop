@@ -12,7 +12,7 @@ namespace eSuperShop.BusinessLogic
         //Unapproved list & Approved list
         DataResult<VendorModel> List(DataRequest request);
         Task<DbResponse> Approved(VendorApprovedModel model, string userName);
-        DbResponse Unapproved(int vendorId);
+        DbResponse Delete(int vendorId);
         DbResponse<VendorModel> GetDetails(int vendorId);
         DbResponse AssignCatalogMultiple(VendorCatalogAssignModel model, string userName);
         DbResponse UnAssignCatalog(int vendorId, int catalogId);
