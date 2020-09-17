@@ -9,7 +9,6 @@ namespace eSuperShop.BusinessLogic
 {
     public class VendorCore : IVendorCore
     {
-        private string _mobileNumber;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
 
@@ -25,7 +24,7 @@ namespace eSuperShop.BusinessLogic
             {
                 if (_db.Vendor.IsExistPhone(mobileNumber)) return new DbResponse(false, "Phone number already exist");
 
-                _mobileNumber = mobileNumber;
+                OtpServiceSingleton.Instance.PhoneNunber = mobileNumber;
                 #region Generate Code
                 var bytes = Base32Encoding.ToBytes("JBSWY3DPEHPK3PXP");
 
@@ -46,7 +45,7 @@ namespace eSuperShop.BusinessLogic
                 var smsBalance = smsProvider.SmsBalance();
                 if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
 
-                var providerSendId = smsProvider.SendSms(textSms, _mobileNumber);
+                var providerSendId = smsProvider.SendSms(textSms, mobileNumber);
 
                 if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
 
@@ -67,7 +66,7 @@ namespace eSuperShop.BusinessLogic
             {
                 long timeStepMatched;
                 var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(code, out timeStepMatched, window: null);
-                if (mobileNumber != _mobileNumber) return new DbResponse(false, "Mobile number not match");
+                if (mobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
                 if (!verify) return new DbResponse(false, "Invalid Code");
 
                 return new DbResponse(true, "Success");
@@ -86,6 +85,9 @@ namespace eSuperShop.BusinessLogic
 
                 if (_db.Vendor.IsExistPhone(model.VerifiedPhone))
                     return new DbResponse<VendorModel>(false, "Mobile Number already Exist", null, "Name");
+
+                if (_db.Vendor.IsExistEmail(model.Email))
+                    return new DbResponse<VendorModel>(false, "Email already Exist", null, "Name");
 
                 _db.Vendor.Add(model);
                 _db.SaveChanges();

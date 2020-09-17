@@ -15,6 +15,7 @@ namespace eSuperShop.BusinessLogic
         }
 
         public Totp Totp { get; set; }
+        public string PhoneNunber { get; set; }
         public static OtpServiceSingleton Instance => lazy.Value;
     }
 }

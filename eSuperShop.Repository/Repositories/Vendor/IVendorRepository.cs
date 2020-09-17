@@ -12,6 +12,7 @@ namespace eSuperShop.Repository
         void Delete(int id);
         VendorModel Get(int id);
         bool IsExistPhone(string phone);
+        bool IsExistEmail(string email);
         bool IsNull(int id);
         bool IsRelatedDataExist(int id);
         DataResult<VendorModel> List(DataRequest request);
