@@ -41,18 +41,15 @@ namespace eSuperShop.Data
                 .HasColumnType("decimal(18, 2)");
 
             builder.Property(e => e.StoreAddress)
-                .HasMaxLength(500)
-                .IsFixedLength();
+                .HasMaxLength(500);
 
             builder.Property(e => e.StoreName)
                 .IsRequired()
-                .HasMaxLength(255)
-                .IsFixedLength();
+                .HasMaxLength(255);
 
             builder.Property(e => e.Email)
                 .IsRequired()
-                .HasMaxLength(128)
-                .IsFixedLength();
+                .HasMaxLength(128);
 
             builder.Property(e => e.StoreTheme)
                 .HasMaxLength(50)
