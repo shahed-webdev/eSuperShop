@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -120,6 +121,26 @@ namespace eSuperShop.Repository
                 .Select(c => c.Vendor)
                 .ProjectTo<VendorModel>(_mapper.ConfigurationProvider);
             return list.ToList();
+        }
+
+        public void Approved(VendorApprovedModel model)
+        {
+            var vendor = Db.Vendor.Find(model.VendorId);
+            var registration = new Registration
+            {
+                UserName = model.UserName,
+                Validation = true,
+                Type = UserType.Seller,
+                Name = vendor.AuthorizedPerson,
+                Phone = vendor.VerifiedPhone,
+                Email = vendor.Email
+            };
+            vendor.Registration = registration;
+            vendor.ApprovedByRegistrationId = model.ApprovedByRegistrationId;
+            vendor.ApprovedOnUtc = DateTime.UtcNow;
+            vendor.IsApproved = true;
+
+            Db.Vendor.Update(vendor);
         }
     }
 }

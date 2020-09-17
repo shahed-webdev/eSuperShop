@@ -21,5 +21,6 @@ namespace eSuperShop.Repository
         void UnAssignCatalog(int VendorId, int catalogId);
         bool IsExistVendorInCatalog(int VendorId, int catalogId);
         List<VendorModel> CatalogWiseList(int catalogId);
+        void Approved(VendorApprovedModel model);
     }
 }

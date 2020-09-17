@@ -38,10 +38,16 @@ namespace eSuperShop.Repository
 
 
     }
-
     public class VendorCatalogModel
     {
         public int CatalogId { get; set; }
         public decimal CommissionPercentage { get; set; }
+    }
+    public class VendorApprovedModel
+    {
+        public int VendorId { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public int ApprovedByRegistrationId { get; set; }
     }
 }

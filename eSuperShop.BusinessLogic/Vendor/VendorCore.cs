@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Identity;
 using OtpNet;
 using Service.SMS;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -11,12 +14,12 @@ namespace eSuperShop.BusinessLogic
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
-
-        public VendorCore(IMapper mapper, IUnitOfWork db)
+        private readonly UserManager<IdentityUser> _userManager;
+        public VendorCore(IMapper mapper, IUnitOfWork db, UserManager<IdentityUser> userManager)
         {
             _mapper = mapper;
             _db = db;
-
+            _userManager = userManager;
         }
         public DbResponse SendCode(string mobileNumber, int codeValidSecond)
         {
@@ -104,12 +107,33 @@ namespace eSuperShop.BusinessLogic
         }
         public DataResult<VendorModel> List(DataRequest request)
         {
-            throw new NotImplementedException();
+            return _db.Vendor.List(request);
         }
 
-        public DbResponse Approved(int vendorId)
+        public async Task<DbResponse> Approved(VendorApprovedModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                //Identity Create
+                var user = new IdentityUser { UserName = model.UserName, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, "123456").ConfigureAwait(false);
+
+                if (!result.Succeeded) return new DbResponse(false, result.Errors.FirstOrDefault()?.Description);
+
+                await _userManager.AddToRoleAsync(user, "Vendor").ConfigureAwait(false);
+
+                //Update vendor table
+                _db.Vendor.Approved(model);
+                _db.SaveChanges();
+
+
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
         }
 
         public DbResponse Unapproved(int vendorId)

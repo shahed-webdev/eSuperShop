@@ -1,4 +1,5 @@
-﻿using eSuperShop.Repository;
+﻿using System.Threading.Tasks;
+using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 
 namespace eSuperShop.BusinessLogic
@@ -10,7 +11,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<VendorModel> Add(VendorAddModel model);
         //Unapproved list & Approved list
         DataResult<VendorModel> List(DataRequest request);
-        DbResponse Approved(int vendorId);
+        Task<DbResponse> Approved(VendorApprovedModel model);
         DbResponse Unapproved(int vendorId);
         DbResponse<VendorDetailsModel> GetDetails(int vendorId);
         DbResponse AssignCatalogMultiple(VendorCatalogAssignModel model, string userName);

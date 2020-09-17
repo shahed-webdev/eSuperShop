@@ -1,11 +1,9 @@
-﻿
-using System;
+﻿using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using eSuperShop.Repository;
 
 namespace eSuperShop.Web.Controllers
 {
