@@ -22,9 +22,6 @@ namespace eSuperShop.Repository
         public bool IsApproved { get; set; }
         public DateTime CreatedOnUtc { get; set; }
     }
-    public class VendorDetailsModel
-    {
-    }
     public class VendorCatalogAssignModel
     {
         public VendorCatalogAssignModel()
