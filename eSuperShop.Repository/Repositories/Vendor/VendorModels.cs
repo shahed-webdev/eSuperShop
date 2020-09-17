@@ -8,6 +8,7 @@ namespace eSuperShop.Repository
         public string AuthorizedPerson { get; set; }
         public string VerifiedPhone { get; set; }
         public string StoreName { get; set; }
+        public string Email { get; set; }
         public string StoreAddress { get; set; }
     }
     public class VendorModel
@@ -16,6 +17,7 @@ namespace eSuperShop.Repository
         public string AuthorizedPerson { get; set; }
         public string VerifiedPhone { get; set; }
         public string StoreName { get; set; }
+        public string Email { get; set; }
         public string StoreAddress { get; set; }
         public bool IsApproved { get; set; }
         public DateTime CreatedOnUtc { get; set; }
