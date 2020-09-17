@@ -54,10 +54,15 @@
 
 @section Scripts{
     <script>
+        $(function() {
+            getVendorInfo();
+        });
+
         //selectors
         const formAssign = document.getElementById("formAssign");
         const btnAssign = formAssign.btnAssign;
         const listGroup = document.querySelector(".list-group");
+        const VendorId = @ViewBag.VendorId;
 
 
         //on checkbox click
@@ -85,16 +90,14 @@
             for (let checkbox of checkboxes) {
                 if (checkbox.checked) {
                     const inputPercent = checkbox.nextElementSibling.nextElementSibling;
-                    Catalogs.push({ CatalogId: +checkbox.value, CommissionPercentage: +inputPercent.value});
+                    Catalogs.push({ CatalogId: +checkbox.value, CommissionPercentage: +inputPercent.value });
                 }
             }
 
             if (!Catalogs.length) return;
 
-            const model = { VendorId:10, Catalogs }
-            console.log(model)
+            const model = { VendorId, Catalogs }
 
-            return;
             btnAssign.disabled = true;
 
             $.ajax({
@@ -106,7 +109,7 @@
                     console.log(response);
 
                     if (response.IsSuccess)
-                        location.href = "/Seller/UnApprovedList";
+                        location.href = "/Seller/List";
                 },
                 error: function(err) {
                     console.log(err);
@@ -114,5 +117,17 @@
                 }
             });
         });
+
+        //Get Vendor Info
+        function getVendorInfo() {
+            console.log(VendorId)
+            $.ajax({
+                url: `/Seller/GetVendorInfo/${VendorId}`,
+                success: function(response) {
+                    console.log(response)
+                },
+                error: function(err) { console.log(err); }
+            });
+        }
     </script>
 }

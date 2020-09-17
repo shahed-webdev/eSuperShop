@@ -101,6 +101,21 @@ let linkData = [{
                 "Title": "Assign",
                 "IconClass": null
             }]
+    },
+    {
+        "LinkCategoryID": 2,
+        "SN": 7,
+        "Category": "Seller",
+        "IconClass": "fas fa-store",
+        "links": [
+            {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Seller",
+                "Action": "List",
+                "Title": "List",
+                "IconClass": null
+            }]
     }
 ];
 

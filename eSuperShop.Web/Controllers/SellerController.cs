@@ -58,22 +58,41 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        /********Un Approve list********/
+        /******** Un Approve list ********/
         [Authorize]
-        public IActionResult UnApprovedList()
+        public IActionResult List()
         {
             return View();
         }
 
-        public IActionResult PendingSeller(DataRequest request)
+        public IActionResult SellerList(DataRequest request)
         {
            var response= _vendor.List(request);
             return Json(response);
         }
 
-        //Assign Catalog
-        public IActionResult AssignCatalog()
+
+        //Approve Vendor
+        [HttpPost]
+        public IActionResult ApproveVendor(VendorApprovedModel model)
         {
+            var response = _vendor.Approved(model, User.Identity.Name);
+            return Json(response);
+        }
+
+        //Delete Vendor
+        public IActionResult DeleteVendor(int id)
+        {
+            var response = _vendor.Delete(id);
+            return Json(response);
+        }
+
+        //Assign Catalog
+        public IActionResult AssignCatalog(int? id)
+        {
+            if (id == null) return RedirectToAction("List");
+            ViewBag.VendorId = id;
+
             var model = _catalog.List();
             return View(model.Data);
         }
@@ -83,6 +102,15 @@ namespace eSuperShop.Web.Controllers
         {
             var response = _vendor.AssignCatalogMultiple(model, User.Identity.Name);
             return Json(response);
+        }  
+        
+
+        //get vendor info
+        public IActionResult GetVendorInfo(int id)
+        {
+            var model = _vendor.GetDetails(id);
+            return Json(model);
         }
+
     }
 }
