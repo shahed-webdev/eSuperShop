@@ -24,17 +24,18 @@
 
                     <form id="formRegistration">
                         <div class="md-form input-group mb-5">
-                            <input id="inputMobile" type="text" class="form-control" placeholder="Mobile Number">
+                            <input id="inputMobile" type="text" class="form-control" placeholder="Mobile Number" required>
                             <div class="input-group-append">
                                 <button id="btnSendCode" type="button" class="btn btn-danger btn-md m-0 px-3"><i class="fas fa-check mr-1"></i>Verify</button>
                             </div>
-                            <span id="mobileError" class="field-validation-error"></span>
                         </div>
+                        <span id="mobileError" class="field-validation-error"></span>
 
                         <div id="othersInfo">
                             <div class="md-form mb-5">
                                 <input id="inputEmail" class="form-control" type="email" required>
                                 <label for="inputEmail">Email</label>
+                                <small class="form-text text-muted">Email Will be Used As Login ID</small>
                             </div>
                             <div class="md-form mb-5">
                                 <input id="inputAuthorizedPerson" class="form-control" type="text" required>
@@ -49,13 +50,16 @@
                                 <label for="inputStoreAddress">Store Address</label>
                             </div>
                             <button id="btnSignUp" class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3" type="submit">Create account</button>
+                            <div>
+                                <span id="accountError" class="field-validation-error"></span>
+                            </div>
                         </div>
                     </form>
 
                     <div class="mt-5">
                         <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Seller/Login" class="blue-text ml-1">Sign In</a></p>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
@@ -108,7 +112,7 @@
         const verifyError = formVerify.querySelector("#verifyError");
 
         //send code
-        btnSendCode.addEventListener("click", function (evt) {
+        btnSendCode.addEventListener("click", function(evt) {
             mobileError.textContent = "";
             if (!formRegistration.inputMobile.value) return;
 
@@ -130,8 +134,7 @@
                         btnSendCode.innerText = "Verify";
 
                         startTimer(time);
-                    }
-                    else {
+                    } else {
                         btnSendCode.disabled = false;
                         btnSendCode.innerText = "Verify";
                         mobileError.textContent = response.Message;
@@ -217,6 +220,8 @@
         //post registration
         formRegistration.addEventListener('submit', function(evt) {
             evt.preventDefault();
+            const accountError = document.getElementById("accountError");
+            accountError.textContent = "";
 
             this.btnSignUp.disabled = true;
             this.btnSignUp.textContent = "submitting..";
@@ -235,7 +240,11 @@
                 data,
                 success: function(response) {
                     console.log(response);
-                    alert(response.Message);
+                    if (response.IsSuccess) {
+                        location.href = "/Seller/Success";
+                    } else {
+                        accountError.textContent = response.Message;
+                    }
 
                     formRegistration.btnSignUp.disabled = false;
                     formRegistration.btnSignUp.textContent = "Create account";
