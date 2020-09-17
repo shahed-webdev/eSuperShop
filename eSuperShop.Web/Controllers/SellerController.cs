@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eSuperShop.BusinessLogic;
+﻿using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +33,7 @@ namespace eSuperShop.Web.Controllers
 
         //verify code
         [HttpPost]
-        public IActionResult CodeVerify(string code, string mobile) 
+        public IActionResult CodeVerify(string code, string mobile)
         {
             var response = _vendor.VerifyMobileNumber(code, mobile);
             return Json(response);

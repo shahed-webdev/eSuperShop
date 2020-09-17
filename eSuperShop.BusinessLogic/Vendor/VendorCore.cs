@@ -9,7 +9,6 @@ namespace eSuperShop.BusinessLogic
 {
     public class VendorCore : IVendorCore
     {
-        private Totp _totp;
         private string _mobileNumber;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
@@ -18,6 +17,7 @@ namespace eSuperShop.BusinessLogic
         {
             _mapper = mapper;
             _db = db;
+
         }
         public DbResponse SendCode(string mobileNumber, int codeValidSecond)
         {
@@ -29,9 +29,9 @@ namespace eSuperShop.BusinessLogic
                 #region Generate Code
                 var bytes = Base32Encoding.ToBytes("JBSWY3DPEHPK3PXP");
 
-                _totp = new Totp(bytes, codeValidSecond);
+                OtpServiceSingleton.Instance.Totp = new Totp(bytes, codeValidSecond);
 
-                var code = _totp.ComputeTotp(DateTime.UtcNow);
+                var code = OtpServiceSingleton.Instance.Totp.ComputeTotp(DateTime.UtcNow);
 
                 var textSms = $"Your Verification code is {code}. This code is valid for {codeValidSecond} second";
                 #endregion
@@ -66,7 +66,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 long timeStepMatched;
-                var verify = _totp.VerifyTotp(code, out timeStepMatched, window: null);
+                var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(code, out timeStepMatched, window: null);
                 if (mobileNumber != _mobileNumber) return new DbResponse(false, "Mobile number not match");
                 if (!verify) return new DbResponse(false, "Invalid Code");
 

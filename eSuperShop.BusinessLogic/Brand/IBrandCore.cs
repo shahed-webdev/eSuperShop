@@ -16,7 +16,5 @@ namespace eSuperShop.BusinessLogic
         DataResult<BrandModel> List(DataRequest request);
         DbResponse<List<DDL>> Ddl();
         DbResponse<List<BrandModel>> CatalogWiseList(int catalogId);
-
-
     }
 }
