@@ -120,13 +120,13 @@ namespace eSuperShop.BusinessLogic
 
                 model.ApprovedByRegistrationId = registrationId;
 
-                if (string.IsNullOrEmpty(model.Email))
-                    return new DbResponse(false, "Invalid Data");
                 if (_db.Vendor.IsNull(model.VendorId))
                     return new DbResponse(false, "Vendor not Found");
 
+                var vendor = _db.Vendor.Get(model.VendorId);
+
                 //Identity Create
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+                var user = new IdentityUser { UserName = vendor.Email, Email = vendor.Email };
                 var password = Password.Generate(8, 3);
                 var result = await _userManager.CreateAsync(user, password).ConfigureAwait(false);
 
@@ -142,7 +142,7 @@ namespace eSuperShop.BusinessLogic
 
                 #region SMS Code
 
-                var textSms = $"Your Account Successfully activated, Your Id: {model.Email} & password: {password} . Please change your password for better security";
+                var textSms = $"Your Account Successfully activated, Your Id: {vendor.Email} & password: {password} . Please change your password for better security";
 
                 var massageLength = SmsValidator.MassageLength(textSms);
                 var smsCount = SmsValidator.TotalSmsCount(textSms);
@@ -152,7 +152,7 @@ namespace eSuperShop.BusinessLogic
                 var smsBalance = smsProvider.SmsBalance();
                 if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
 
-                var providerSendId = smsProvider.SendSms(textSms, _db.Vendor.GetPhone(model.VendorId));
+                var providerSendId = smsProvider.SendSms(textSms, vendor.VerifiedPhone);
 
                 if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
 

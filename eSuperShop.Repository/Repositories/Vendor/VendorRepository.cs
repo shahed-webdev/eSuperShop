@@ -118,7 +118,7 @@ namespace eSuperShop.Repository
             var vendor = Db.Vendor.Find(model.VendorId);
             var registration = new Registration
             {
-                UserName = model.Email,
+                UserName = vendor.Email,
                 Validation = true,
                 Type = UserType.Seller,
                 Name = vendor.AuthorizedPerson,
