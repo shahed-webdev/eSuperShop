@@ -9,7 +9,6 @@ namespace eSuperShop.Repository
     {
         Vendor Vendor { get; set; }
         void Add(VendorAddModel model);
-        void Delete(int id);
         VendorModel Get(int id);
         bool IsExistPhone(string phone);
         bool IsExistEmail(string email);
@@ -21,7 +20,7 @@ namespace eSuperShop.Repository
         bool IsExistVendorInCatalog(int VendorId, int catalogId);
         List<VendorModel> CatalogWiseList(int catalogId);
         void Approved(VendorApprovedModel model);
-        void UnApproved(int vendorId);
+        void Delete(int vendorId);
         bool IsApproved(int vendorId);
         string GetPhone(int vendorId);
     }

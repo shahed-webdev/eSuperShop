@@ -167,7 +167,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse Unapproved(int vendorId)
+        public DbResponse Delete(int vendorId)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace eSuperShop.BusinessLogic
                 if (_db.Vendor.IsApproved(vendorId))
                     return new DbResponse(false, "Approved Vendor cannot be deleted");
 
-                _db.Vendor.UnApproved(vendorId);
+                _db.Vendor.Delete(vendorId);
                 _db.SaveChanges();
 
                 return new DbResponse(true, "Success");

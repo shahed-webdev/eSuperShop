@@ -24,11 +24,6 @@ namespace eSuperShop.Repository
             Db.Vendor.Add(Vendor);
         }
 
-        public void Delete(int id)
-        {
-            Vendor = Db.Vendor.Find(id);
-            Db.Vendor.Remove(Vendor);
-        }
 
         public VendorModel Get(int id)
         {
@@ -138,7 +133,7 @@ namespace eSuperShop.Repository
             Db.Vendor.Update(vendor);
         }
 
-        public void UnApproved(int vendorId)
+        public void Delete(int vendorId)
         {
             var vendor = Db.Vendor
                 .Include(v => v.VendorCatalog)
