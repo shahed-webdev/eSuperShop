@@ -26,7 +26,7 @@
                         <div class="md-form input-group mb-5">
                             <input id="inputMobile" type="text" class="form-control" placeholder="Mobile Number">
                             <div class="input-group-append">
-                                <button id="btnSendCode" class="btn btn-danger btn-md m-0 px-3"><i class="fas fa-check mr-1"></i>Verify</button>
+                                <button id="btnSendCode" type="button" class="btn btn-danger btn-md m-0 px-3"><i class="fas fa-check mr-1"></i>Verify</button>
                             </div>
                             <span id="mobileError" class="field-validation-error"></span>
                         </div>
@@ -97,7 +97,8 @@
     <script>
         //registration form
         const formRegistration = document.getElementById("formRegistration");
-        const btnSendCode = formRegistration.btnSendCode;
+        const btnSendCode = document.getElementById("btnSendCode");
+        const mobileError = document.getElementById("mobileError");
         const codeVerifyModal = $("#codeVerifyModal");
         const othersInfo = formRegistration.querySelector("#othersInfo");
 
@@ -107,9 +108,8 @@
         const verifyError = formVerify.querySelector("#verifyError");
 
         //send code
-        btnSendCode.addEventListener("click", function(evt) {
-            evt.preventDefault();
-
+        btnSendCode.addEventListener("click", function (evt) {
+            mobileError.textContent = "";
             if (!formRegistration.inputMobile.value) return;
 
             this.disabled = true;
@@ -131,9 +131,16 @@
 
                         startTimer(time);
                     }
+                    else {
+                        btnSendCode.disabled = false;
+                        btnSendCode.innerText = "Verify";
+                        mobileError.textContent = response.Message;
+                    }
                 },
                 error: function(err) {
                     console.log(err);
+                    btnSendCode.disabled = false;
+                    btnSendCode.innerText = "Verify";
                 }
             });
         });
@@ -154,11 +161,7 @@
                     console.log(response);
 
                     if (response.IsSuccess) {
-                        codeVerifyModal.modal('show');
-                        btnSendCode.disabled = false;
-                        btnSendCode.innerText = "Verify";
                         formVerify.inputCode.value = "";
-
                         startTimer(time);
                     }
                 },
