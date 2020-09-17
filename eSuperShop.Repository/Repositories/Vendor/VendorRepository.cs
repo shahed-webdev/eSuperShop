@@ -41,6 +41,11 @@ namespace eSuperShop.Repository
             return Db.Vendor.Any(c => c.VerifiedPhone == phone);
         }
 
+        public bool IsExistEmail(string email)
+        {
+            return Db.Vendor.Any(c => c.Email == email);
+        }
+
         public bool IsNull(int id)
         {
             return !Db.Vendor.Any(c => c.VendorId == id);
