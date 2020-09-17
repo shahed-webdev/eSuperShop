@@ -3,7 +3,6 @@ using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Identity;
 using OtpNet;
-using Service.SMS;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -110,12 +109,24 @@ namespace eSuperShop.BusinessLogic
             return _db.Vendor.List(request);
         }
 
-        public async Task<DbResponse> Approved(VendorApprovedModel model)
+        public async Task<DbResponse> Approved(VendorApprovedModel model, string userName)
         {
             try
             {
+
+                var registrationId = _db.Registration.GetRegID_ByUserName(userName);
+                if (registrationId == 0) return new DbResponse(false, "Invalid User");
+
+                model.ApprovedByRegistrationId = registrationId;
+
+                if (string.IsNullOrEmpty(model.Email))
+                    return new DbResponse(false, "Invalid Data");
+                if (_db.Vendor.IsNull(model.VendorId))
+                    return new DbResponse(false, "Vendor not Found");
+
+
                 //Identity Create
-                var user = new IdentityUser { UserName = model.UserName, Email = model.Email };
+                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, "123456").ConfigureAwait(false);
 
                 if (!result.Succeeded) return new DbResponse(false, result.Errors.FirstOrDefault()?.Description);
