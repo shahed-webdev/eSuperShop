@@ -8,7 +8,7 @@
     <link href="~/css-page/Login.css" rel="stylesheet"/>
     <style>
         .serach-container, #othersInfo { display: none; }
-        #btnResend { color: #1e90ff}
+        #btnResend { color: #1e90ff }
         .timerCount { pointer-events: none; cursor: none; color: #000 !important }
     </style>
 }
@@ -19,7 +19,7 @@
             <div class="card card-signin my-5">
                 <div class="card-body">
                     <h5 class="card-title text-center">
-                        <strong class="dark-grey-text">Create account</strong>
+                        <strong class="dark-grey-text">Create Account</strong>
                     </h5>
 
                     <form id="formRegistration">
@@ -33,6 +33,10 @@
 
                         <div id="othersInfo">
                             <div class="md-form mb-5">
+                                <input id="inputEmail" class="form-control" type="email" required>
+                                <label for="inputEmail">Email</label>
+                            </div>
+                            <div class="md-form mb-5">
                                 <input id="inputAuthorizedPerson" class="form-control" type="text" required>
                                 <label for="inputAuthorizedPerson">Authorized Person</label>
                             </div>
@@ -45,13 +49,12 @@
                                 <label for="inputStoreAddress">Store Address</label>
                             </div>
                             <button id="btnSignUp" class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3" type="submit">Create account</button>
-
-
-                            <div class="modal-footer mx-2 pt-3 mt-5">
-                                <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Seller/Login" class="blue-text ml-1">Sign In</a></p>
-                            </div>
                         </div>
                     </form>
+
+                    <div class="mt-5">
+                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Seller/Login" class="blue-text ml-1">Sign In</a></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,6 +84,7 @@
                     <div class="text-center mt-4">
                         <button id="btnSubmitVerify" type="submit" class="btn btn-primary mt-1">Verify <i class="fas fa-check ml-1"></i></button>
                     </div>
+                    <span id="verifyError" class="field-validation-error"></span>
                 </form>
             </div>
         </div>
@@ -100,6 +104,7 @@
         //verify form
         const formVerify = document.getElementById("formVerify");
         const btnResend = formVerify.querySelector("#btnResend");
+        const verifyError = formVerify.querySelector("#verifyError");
 
         //send code
         btnSendCode.addEventListener("click", function(evt) {
@@ -134,7 +139,7 @@
         });
 
         //re-send code
-        btnResend.addEventListener("click", function (evt) {
+        btnResend.addEventListener("click", function(evt) {
             evt.preventDefault();
 
             if (!formRegistration.inputMobile.value) return;
@@ -145,7 +150,7 @@
                 type: "POST",
                 url: "/Seller/SendCode",
                 data: { mobile: formRegistration.inputMobile.value, time },
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
 
                     if (response.IsSuccess) {
@@ -157,7 +162,7 @@
                         startTimer(time);
                     }
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                 }
             });
@@ -166,6 +171,7 @@
         //verify code
         formVerify.addEventListener('submit', function(evt) {
             evt.preventDefault();
+            verifyError.textContent = "";
 
             this.btnSubmitVerify.disabled = true;
             this.btnSubmitVerify.textContent = "verifying...";
@@ -190,6 +196,8 @@
                         btnSendCode.innerText = "Verified";
 
                         othersInfo.style.display = "block";
+                    } else {
+                        verifyError.textContent = response.Message;
                     }
 
                     formVerify.btnSubmitVerify.disabled = false;
@@ -203,7 +211,6 @@
             });
         });
 
-
         //post registration
         formRegistration.addEventListener('submit', function(evt) {
             evt.preventDefault();
@@ -212,6 +219,7 @@
             this.btnSignUp.textContent = "submitting..";
 
             const data = {
+                Email: this.inputEmail.value,
                 AuthorizedPerson: this.inputAuthorizedPerson.value,
                 VerifiedPhone: this.inputMobile.value,
                 StoreName: this.inputStoreName.value,
