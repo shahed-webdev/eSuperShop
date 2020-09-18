@@ -15,5 +15,10 @@ namespace eSuperShop.Repository
         {
             return Db.Registration.FirstOrDefault(r => r.UserName == userName)?.RegistrationId ?? 0;
         }
+
+        public UserType UserTypeByUserName(string userName)
+        {
+            return Db.Registration.FirstOrDefault(r => r.UserName == userName).Type;
+        }
     }
 }

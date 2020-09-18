@@ -14,6 +14,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<List<ICatalogModel>> BrandWiseList(int brandId);
         DbResponse<List<ICatalogModel>> AttributeWiseList(int attributeId);
         DbResponse<List<ICatalogModel>> SpecificationWiseList(int specificationId);
+        DbResponse<List<ICatalogVendorModel>> VendorWiseList(int vendorId);
         DbResponse<CatalogAssignDetailsModel> AssignDetails(int catalogId);
         DbResponse<string> Breadcrumb(int id);
         List<DDL> DisplayPlaceDdl();

@@ -97,6 +97,28 @@ namespace eSuperShop.Repository
         public bool IsExist { get; set; }
         public IEnumerable<ICatalogModel> SubCatalog { get; set; }
     }
+
+    public class CatalogVendorModel : ICatalogVendorModel
+    {
+        public CatalogVendorModel(Catalog catalog, int vendorId)
+        {
+            CatalogName = catalog.CatalogName;
+            CatalogId = catalog.CatalogId;
+            SlugUrl = catalog.SlugUrl;
+            ImageUrl = catalog.ImageUrl;
+            var vendorCatalog = catalog.VendorCatalog.FirstOrDefault(b => b.VendorId == vendorId && b.CatalogId == catalog.CatalogId);
+            IsExist = vendorCatalog is null;
+            CommissionPercentage = vendorCatalog?.CommissionPercentage ?? 0;
+            SubCatalog = catalog.SubCatalog.Select(c => new CatalogVendorModel(c, vendorId));
+        }
+        public int CatalogId { get; set; }
+        public string CatalogName { get; set; }
+        public string SlugUrl { get; set; }
+        public string ImageUrl { get; set; }
+        public bool IsExist { get; set; }
+        public decimal CommissionPercentage { get; set; }
+        public IEnumerable<ICatalogModel> SubCatalog { get; set; }
+    }
     public class CatalogAssignModel
     {
         public int CatalogShownPlaceId { get; set; }

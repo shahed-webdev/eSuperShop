@@ -11,4 +11,9 @@ namespace eSuperShop.Repository
         bool IsExist { get; set; }
         IEnumerable<ICatalogModel> SubCatalog { get; set; }
     }
+
+    public interface ICatalogVendorModel : ICatalogModel
+    {
+        decimal CommissionPercentage { get; set; }
+    }
 }
