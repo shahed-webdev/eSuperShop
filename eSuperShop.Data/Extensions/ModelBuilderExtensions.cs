@@ -24,6 +24,20 @@ namespace eSuperShop.Data
                     Name = "sub-admin",
                     NormalizedName = "SUB-ADMIN",
                     ConcurrencyStamp = "F73A5277-2535-48A4-A371-300508ADDD2F"
+                },
+                new IdentityRole
+                {
+                    Id = "D2FF0467-0FC2-4F98-9B6A-168079D1D9E7",
+                    Name = UserType.Seller.ToString(),
+                    NormalizedName = UserType.Seller.ToString().ToUpper(),
+                    ConcurrencyStamp = "D2FF0467-0FC2-4F98-9B6A-168079D1D9E7"
+                },
+                new IdentityRole
+                {
+                    Id = "D4D44AB1-65A6-47C5-AD00-49834787E486",
+                    Name = UserType.Customer.ToString(),
+                    NormalizedName = UserType.Customer.ToString().ToUpper(),
+                    ConcurrencyStamp = "D4D44AB1-65A6-47C5-AD00-49834787E486"
                 });
 
 

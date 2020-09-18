@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eSuperShop.Data;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Identity;
@@ -110,7 +111,7 @@ namespace eSuperShop.BusinessLogic
             return _db.Vendor.List(request);
         }
 
-        public async Task<DbResponse> Approved(VendorApprovedModel model, string userName)
+        public async Task<DbResponse> ApprovedAsync(VendorApprovedModel model, string userName)
         {
             try
             {
@@ -132,7 +133,7 @@ namespace eSuperShop.BusinessLogic
 
                 if (!result.Succeeded) return new DbResponse(false, result.Errors.FirstOrDefault()?.Description);
 
-                await _userManager.AddToRoleAsync(user, "Vendor").ConfigureAwait(false);
+                await _userManager.AddToRoleAsync(user, UserType.Seller.ToString()).ConfigureAwait(false);
 
 
                 //Update vendor table

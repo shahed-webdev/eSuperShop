@@ -11,7 +11,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<VendorModel> Add(VendorAddModel model);
         //Unapproved list & Approved list
         DataResult<VendorModel> List(DataRequest request);
-        Task<DbResponse> Approved(VendorApprovedModel model, string userName);
+        Task<DbResponse> ApprovedAsync(VendorApprovedModel model, string userName);
         DbResponse Delete(int vendorId);
         DbResponse<VendorModel> GetDetails(int vendorId);
         DbResponse AssignCatalogMultiple(VendorCatalogAssignModel model, string userName);

@@ -3,6 +3,7 @@ using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -67,16 +68,16 @@ namespace eSuperShop.Web.Controllers
 
         public IActionResult SellerList(DataRequest request)
         {
-           var response= _vendor.List(request);
+            var response = _vendor.List(request);
             return Json(response);
         }
 
 
         //Approve Vendor
         [HttpPost]
-        public IActionResult ApproveVendor(VendorApprovedModel model)
+        public async Task<IActionResult> ApproveVendor(VendorApprovedModel model)
         {
-            var response = _vendor.Approved(model, User.Identity.Name);
+            var response = await _vendor.ApprovedAsync(model, User.Identity.Name);
             return Json(response);
         }
 
@@ -102,8 +103,8 @@ namespace eSuperShop.Web.Controllers
         {
             var response = _vendor.AssignCatalogMultiple(model, User.Identity.Name);
             return Json(response);
-        }  
-        
+        }
+
 
         //get vendor info
         public IActionResult GetVendorInfo(int id)
