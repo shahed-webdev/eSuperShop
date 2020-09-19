@@ -33,6 +33,7 @@ namespace eSuperShop.Data
         public virtual DbSet<VendorCatalog> VendorCatalog { get; set; }
         public virtual DbSet<VendorFollower> VendorFollower { get; set; }
         public virtual DbSet<VendorReview> VendorReview { get; set; }
+        public virtual DbSet<VendorStoreSlider> VendorStoreSlider { get; set; }
         public virtual DbSet<VendorWarehouse> VendorWarehouse { get; set; }
         public virtual DbSet<Warehouse> Warehouse { get; set; }
 
@@ -61,6 +62,7 @@ namespace eSuperShop.Data
             builder.ApplyConfiguration(new VendorCatalogConfiguration());
             builder.ApplyConfiguration(new VendorFollowerConfiguration());
             builder.ApplyConfiguration(new VendorReviewConfiguration());
+            builder.ApplyConfiguration(new VendorStoreSliderConfiguration());
             builder.ApplyConfiguration(new VendorWarehouseConfiguration());
             builder.ApplyConfiguration(new WarehouseConfiguration());
 
