@@ -32,6 +32,17 @@ namespace eSuperShop.Repository
                  .FirstOrDefault(c => c.VendorId == id);
         }
 
+        public VendorDashboardModel Dashboard(int id)
+        {
+            var dashboard = new VendorDashboardModel
+            {
+                VendorInfo = Db.Vendor
+                    .ProjectTo<VendorInfoModel>(_mapper.ConfigurationProvider)
+                    .FirstOrDefault(c => c.VendorId == id)
+            };
+            return dashboard;
+        }
+
         public bool IsExistPhone(string phone)
         {
             return Db.Vendor.Any(c => c.VerifiedPhone == phone);
@@ -149,6 +160,11 @@ namespace eSuperShop.Repository
         public string GetPhone(int vendorId)
         {
             return Db.Vendor.Find(vendorId).VerifiedPhone;
+        }
+
+        public List<VendorCatalogViewModel> Catalogs(int vendorId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

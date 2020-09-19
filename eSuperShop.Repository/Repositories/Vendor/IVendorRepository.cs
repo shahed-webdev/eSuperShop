@@ -9,19 +9,24 @@ namespace eSuperShop.Repository
     {
         Vendor Vendor { get; set; }
         void Add(VendorAddModel model);
-        VendorModel Get(int id);
+        VendorModel Get(int vendorId);
+        VendorDashboardModel Dashboard(int vendorId);
         bool IsExistPhone(string phone);
         bool IsExistEmail(string email);
-        bool IsNull(int id);
+        bool IsNull(int vendorId);
         DataResult<VendorModel> List(DataRequest request);
         Task<ICollection<VendorModel>> SearchAsync(string key);
         void AssignCatalogMultiple(VendorCatalogAssignModel model);
-        void UnAssignCatalog(int VendorId, int catalogId);
-        bool IsExistVendorInCatalog(int VendorId, int catalogId);
+        void UnAssignCatalog(int vendorId, int catalogId);
+        bool IsExistVendorInCatalog(int vendorId, int catalogId);
         List<VendorModel> CatalogWiseList(int catalogId);
         void Approved(VendorApprovedModel model);
         void Delete(int vendorId);
         bool IsApproved(int vendorId);
         string GetPhone(int vendorId);
+
+        List<VendorCatalogViewModel> Catalogs(int vendorId);
     }
+
+
 }
