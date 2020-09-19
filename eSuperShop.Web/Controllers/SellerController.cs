@@ -16,11 +16,6 @@ namespace eSuperShop.Web.Controllers
             _catalog = catalog;
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
-
         //seller sign-up
         public IActionResult Registration()
         {

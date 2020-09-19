@@ -1,3 +1,50 @@
-﻿@{
-    ViewData["Title"] = "Home";
+﻿@using eSuperShop.Repository
+@model LoginViewModel
+@{
+    ViewBag.Title = "Seller Login";
+}
+
+@section Styles {
+    <link href="~/css-page/Login.css" rel="stylesheet" />
+    <style>
+        .serach-container { display: none; }
+    </style>   
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
+            <div class="card card-signin my-5 pt-3">
+                <div class="card-body">
+                    <h5 class="card-title text-center">
+                        <strong class="dark-grey-text">Seller Login</strong>
+                    </h5>
+
+                    <form class="form-signin" asp-controller="Account" asp-action="Login" method="post">
+                        <div class="md-form mb-5">
+                            <input asp-for="UserName" class="form-control">
+                            <label asp-for="UserName"></label>
+                            <span asp-validation-for="UserName"></span>
+                        </div>
+                        <div class="md-form mb-0 pb-3">
+                            <input asp-for="Password" class="form-control" type="password">
+                            <label asp-for="Password"></label>
+                            <span asp-validation-for="Password"></span>
+                        </div>
+
+                        <button class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3" type="submit">Sign in</button>
+                        <div asp-validation-summary="ModelOnly"></div>
+                    </form>
+                    <div class="modal-footer mx-2 pt-3  mt-5">
+                        <p class="font-small grey-text d-flex justify-content-end">Not an account? <a href="/Seller/Registration" class="blue-text ml-1">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>   
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
 }

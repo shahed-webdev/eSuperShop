@@ -23,7 +23,7 @@ namespace eSuperShop.Web.Controllers
 
         //GET: Admin Login
         [AllowAnonymous]
-        public IActionResult AdminLogin(string returnUrl)
+        public IActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -34,7 +34,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdminLogin(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             returnUrl ??= Url.Content("~/Dashboard/Index");
 

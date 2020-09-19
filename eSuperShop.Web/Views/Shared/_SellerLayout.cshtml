@@ -25,7 +25,7 @@
     <!-- custom -->
     <link href="~/css/admin-master.css?v=1" rel="stylesheet" />
 
-    @RenderSection("Styles", false)
+    @await RenderSectionAsync("Styles", false)
 </head>
 <body>
     <div id="header">
@@ -90,10 +90,10 @@
     <script src="https://cdn.muicss.com/mui-latest/js/mui.min.js"></script>
 
     <!-- menu-links -->
-    @*<script src="~/js/menu-links.js"></script>*@
+    <script src="~/js/menu-links-seller.js"></script>
     <script src="~/js/sidedrawer-show-hide.js"></script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 
     <script type="text/javascript">
         $(function () {

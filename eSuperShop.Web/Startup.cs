@@ -44,7 +44,7 @@ namespace eSuperShop.Web
             services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "Identity.Cookie";
-                config.LoginPath = "/Account";
+                config.LoginPath = "/Account/Login";
             });
 
 
