@@ -75,41 +75,125 @@
             </div>
         }
     </div>
-</div>   
+</div>
 
+<!-- image crop modal -->
+<div class="modal fade" id="cropImageModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-notify modal-danger" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">Resize Image</p>
+            </div>
+            <div class="modal-body">
+                <div id="upload-demo"></div>
+            </div>
+            <div class="modal-footer flex-center">
+                <button id="btnCrop" type="button" class="btn  btn-danger waves-effect">CROP</button>
+                <button class="btn btn-outline-danger" data-dismiss="modal">CANCEL</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section Scripts {
     <script>
-        $(function () {
+        $(function() {
             // Material Select Initialization
             $('.mdb-select').materialSelect();
         });
 
-        $('input[type="file"]').change(function (e) {
-            const $this = $(e.target);
-            const $fileField = $this.closest('.file-field');
-            const $pathInput = $fileField.find('input.file-path');
-            const fileNames = [];
+        //global variable
+        const formData = new FormData();
+        const imageError = $("#imageError");
+        const previewImage = $('#prevImage');
+        const cropImageModal = $('#cropImageModal');
+        const inputDisplayPlace = document.getElementById("inputDisplayPlace");
+        const btnCrop = $('#btnCrop');
+        let cropImage = null;
 
-            fileNames.push(e.target.files[0].name);
+        //set image file
+        $('#fileImage').change(function(e) {
+            imageError.text("");
+            if (inputDisplayPlace.selectedIndex < 1) {
+                alert('Select display place');
+                return;
+            }
 
-            $pathInput.val(fileNames.join(', '));
-            $pathInput.trigger('change');
+            const pathInput = $('#filePath');
+            const size = e.target.files[0].size / 1024 / 1024;
+            const allowSize = 1;
+            const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
+
+            if (!(regex.test(e.target.value.toLowerCase()))) {
+                e.target.value = "";
+                pathInput.val("");
+
+                imageError.text(`Please select correct file format`);
+                return;
+            }
+
+            if (size > allowSize) {
+                e.target.value = "";
+                pathInput.val("");
+
+                imageError.text(`image size must be less than ${allowSize}MB. your file size:${size.toFixed()} MB`);
+                return;
+            }
+
+            pathInput.val(e.target.files[0].name);
+
+            if (inputDisplayPlace.value === "Main") {
+                cropImage = $('#upload-demo').croppie({
+                    viewport: { width: 540, height: 400 },
+                    boundary: { width: 550, height: 410 }
+                });
+            }
+
+            if (inputDisplayPlace.value === "Side") {
+                cropImage = $('#upload-demo').croppie({
+                    viewport: { width: 255, height: 400 },
+                    boundary: { width: 275, height: 410 }
+                });
+            }
+
+            readFile(this);
         });
 
+
+        //crop done
+        btnCrop.on('click', function() {
+            cropImage.croppie('result', { type: 'blob' }).then(function(res) {
+                previewImage.attr('src', URL.createObjectURL(res));
+
+                formData.append("image", res, $('#filePath').val());
+                cropImageModal.modal('hide');
+            });
+        });
+
+        //read file
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+
+                reader.onload = function(e) {
+                    cropImage.croppie('bind', { url: e.target.result }).then(function() {
+                        $('.cr-slider').attr({ 'min': 0.5000, 'max': 1.5000 });
+                    });
+                }
+
+                cropImageModal.modal('show');
+            }
+        }
 
         //upload image
         const addForm = document.getElementById('addForm');
         const sliderImages = document.getElementById('slider-images');
 
-        addForm.addEventListener('submit', function (evt) {
+        addForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
-            const file = document.getElementById("fileImage").files[0];
-
-            const formData = new FormData();
-            formData.append("image", file);
             formData.append("RedirectUrl", addForm.inputRedirectUrl.value);
             formData.append("DisplayOrder", addForm.inputDisplayOrder.value);
             formData.append("DisplayPlace", addForm.inputDisplayPlace.options[addForm.inputDisplayPlace.selectedIndex].text);
@@ -120,7 +204,7 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     if (!response.IsSuccess) return;
 
@@ -166,8 +250,8 @@
             tBody.appendChild(tr);
         }
 
-        //delete
-        sliderImages.addEventListener('click', function (evt) {
+        //on delete
+        sliderImages.addEventListener('click', function(evt) {
             const element = evt.target;
 
             const onBtnDelete = element.classList.contains('delete');
@@ -180,12 +264,12 @@
                 type: "POST",
                 url: "/Slider/Delete",
                 data: { imageUrl, id },
-                success: function (response) {
+                success: function(response) {
                     if (response.IsSuccess) {
                         element.parentElement.parentElement.parentElement.remove()
                     }
                 }
             });
         });
-    </script>  
+    </script>
 }

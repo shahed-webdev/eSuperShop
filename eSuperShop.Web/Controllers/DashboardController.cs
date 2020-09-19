@@ -16,6 +16,7 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
+        //seller dashboard
         [Authorize(Roles = "Seller")]
         public IActionResult Seller()
         {

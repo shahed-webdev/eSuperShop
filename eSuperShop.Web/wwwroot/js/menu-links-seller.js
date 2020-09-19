@@ -1,122 +1,27 @@
 ﻿
-let linkData = [{
-        "LinkCategoryID": 1,
-        "SN": 1,
-        "Category": "Category",
-        "IconClass": "fas fa-list-ul",
-        "links": [{
-                "LinkID": 3,
-                "SN": 0,
-                "Controller": "Category",
-                "Action": "Index",
-                "Title": "Category",
-                "IconClass": null
-            },
-            {
-                "LinkID": 1,
-                "SN": 7,
-                "Controller": "Category",
-                "Action": "Placement",
-                "Title": "Placement",
-                "IconClass": null
-            }]
-    },
-    {
-        "LinkCategoryID": 2,
-        "SN": 7,
-        "Category": "Slider",
-        "IconClass": "far fa-images",
-        "links": [
-            {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Slider",
-                "Action": "Index",
-                "Title": "Home Slider",
-                "IconClass": null
-            }]
-    },
-    {
-        "LinkCategoryID": 2,
-        "SN": 7,
-        "Category": "Brand",
-        "IconClass": "fas fa-tag",
-        "links": [
-            {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Brand",
-                "Action": "Add",
-                "Title": "Add",
-                "IconClass": null
-            },{
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Brand",
-                "Action": "Assign",
-                "Title": "Assign",
-                "IconClass": null
-            }]
-    },
-    {
-        "LinkCategoryID": 2,
-        "SN": 7,
-        "Category": "Attribute",
-        "IconClass": "fas fa-clipboard-list",
-        "links": [
-            {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Attribute",
-                "Action": "Add",
-                "Title": "Add",
-                "IconClass": null
-            }, {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Attribute",
-                "Action": "Assign",
-                "Title": "Assign",
-                "IconClass": null
-            }]
-    },
-    {
-        "LinkCategoryID": 2,
-        "SN": 7,
-        "Category": "Specification",
-        "IconClass": "fas fa-clipboard-list-check",
-        "links": [
-            {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Specification",
-                "Action": "Add",
-                "Title": "Add",
-                "IconClass": null
-            }, {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Specification",
-                "Action": "Assign",
-                "Title": "Assign",
-                "IconClass": null
-            }]
-    },
-    {
-        "LinkCategoryID": 2,
-        "SN": 7,
-        "Category": "Seller",
-        "IconClass": "fas fa-store",
-        "links": [
-            {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Seller",
-                "Action": "List",
-                "Title": "List",
-                "IconClass": null
-            }]
-    }
+let linkData = [
+    //{
+    //    "LinkCategoryID": 1,
+    //    "SN": 1,
+    //    "Category": "Category",
+    //    "IconClass": "fas fa-list-ul",
+    //    "links": [{
+    //            "LinkID": 3,
+    //            "SN": 0,
+    //            "Controller": "Category",
+    //            "Action": "Index",
+    //            "Title": "Category",
+    //            "IconClass": null
+    //        },
+    //        {
+    //            "LinkID": 1,
+    //            "SN": 7,
+    //            "Controller": "Category",
+    //            "Action": "Placement",
+    //            "Title": "Placement",
+    //            "IconClass": null
+    //        }]
+    //}
 ];
 
 //selectors
