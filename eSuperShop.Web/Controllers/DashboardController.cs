@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
+using eSuperShop.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -31,19 +32,19 @@ namespace eSuperShop.Web.Controllers
         [Authorize(Roles = "Seller")]
         public IActionResult Seller()
         {
-            var model = _sellerDashboard.GetDetails(User.Identity.Name);
-            ViewBag.ThemeType = new SelectList(_vendor.ThemeDdl(), "value", "label");
+            var response = _sellerDashboard.GetDetails(User.Identity.Name);
+            if (!response.IsSuccess) return View("Error", new ErrorViewModel(response.Message));
 
-            return View(model.Data);
+            ViewBag.ThemeType = new SelectList(_vendor.ThemeDdl(), "value", "label", response.Data.VendorInfo.StoreTheme);
+            return View(response.Data);
         }
 
         [Authorize(Roles = "Seller")]
+        [HttpPost]
         public IActionResult ChangeTheme(int vendorId, StoreTheme theme)
         {
             var model = _vendor.ThemeChange(vendorId, theme);
             return Json(model);
         }
-
-
     }
 }
