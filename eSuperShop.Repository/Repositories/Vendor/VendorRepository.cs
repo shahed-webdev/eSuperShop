@@ -164,7 +164,30 @@ namespace eSuperShop.Repository
 
         public List<VendorCatalogViewModel> Catalogs(int vendorId)
         {
-            throw new NotImplementedException();
+            //var ddls = Db.Catalog
+            //    .AsEnumerable()?
+            //    .ToList().OrderBy(c => c.ParentId).ThenBy(c => c.CatalogLevel).ThenBy(c => c.CatalogName)
+            //    .Select(c => new DDL
+            //    {
+            //        value = c.ProductCatalogId,
+            //        label = CatalogDllFunction(c.Parent, c.CatalogName)
+            //    });
+
+            return new List<VendorCatalogViewModel>(); //ddls.ToList() ;
+
+
+
+        }
+
+        string CatalogDllFunction(Catalog catalog, string cat)
+        {
+
+            //if (catalog != null)
+            //{
+            //    cat = CatalogDllFunction(catalog.Parent, catalog.CatalogName) + ">" + cat;
+            //}
+
+            return cat;
         }
     }
 }

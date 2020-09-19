@@ -15,10 +15,14 @@ namespace eSuperShop.BusinessLogic
             _db = db;
         }
 
-        public DbResponse<VendorDashboardModel> GetDetails(int vendorId)
+        public DbResponse<VendorDashboardModel> GetDetails(string userName)
         {
             try
             {
+                if (string.IsNullOrEmpty(userName))
+                    return new DbResponse<VendorDashboardModel>(false, "Invalid Data");
+
+                var vendorId = _db.Registration.VendorIdByUserName(userName);
 
                 if (_db.Vendor.IsNull(vendorId))
                     return new DbResponse<VendorDashboardModel>(false, "No Data Found", null, "VerifiedPhone");

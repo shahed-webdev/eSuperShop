@@ -24,7 +24,6 @@ namespace eSuperShop.Repository
         void Delete(int vendorId);
         bool IsApproved(int vendorId);
         string GetPhone(int vendorId);
-
         List<VendorCatalogViewModel> Catalogs(int vendorId);
     }
 

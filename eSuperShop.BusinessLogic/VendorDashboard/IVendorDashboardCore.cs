@@ -4,7 +4,7 @@ namespace eSuperShop.BusinessLogic
 {
     public interface IVendorDashboardCore
     {
-        DbResponse<VendorDashboardModel> GetDetails(int vendorId);
+        DbResponse<VendorDashboardModel> GetDetails(string userName);
     }
 
 
