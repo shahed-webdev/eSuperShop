@@ -26,6 +26,7 @@ namespace eSuperShop.Repository
         string GetPhone(int vendorId);
         List<VendorCatalogViewModel> Catalogs(int vendorId);
         List<DDL> ThemeDdl();
+        void ThemeChange(int vendorId, StoreTheme theme);
     }
 
 

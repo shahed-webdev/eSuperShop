@@ -194,6 +194,14 @@ namespace eSuperShop.Repository
                            };
             return list.ToList();
         }
+
+        public void ThemeChange(int vendorId, StoreTheme theme)
+        {
+            var vendor = Db.Vendor.Find(vendorId);
+            vendor.StoreTheme = theme;
+            Db.Vendor.Update(vendor);
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 

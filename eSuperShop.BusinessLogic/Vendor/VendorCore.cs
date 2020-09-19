@@ -247,5 +247,23 @@ namespace eSuperShop.BusinessLogic
             return _db.Vendor.ThemeDdl();
         }
 
+        public DbResponse ThemeChange(int vendorId, StoreTheme theme)
+        {
+            try
+            {
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse(false, "No Data Found");
+
+
+                _db.Vendor.ThemeChange(vendorId, theme);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }
