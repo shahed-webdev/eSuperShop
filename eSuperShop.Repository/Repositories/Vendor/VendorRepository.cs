@@ -40,6 +40,9 @@ namespace eSuperShop.Repository
                     .ProjectTo<VendorInfoModel>(_mapper.ConfigurationProvider)
                     .FirstOrDefault(c => c.VendorId == id)
             };
+
+            dashboard.Catalogs = Catalogs(id);
+
             return dashboard;
         }
 
@@ -164,16 +167,18 @@ namespace eSuperShop.Repository
 
         public List<VendorCatalogViewModel> Catalogs(int vendorId)
         {
-            //var ddls = Db.Catalog
-            //    .AsEnumerable()?
-            //    .ToList().OrderBy(c => c.ParentId).ThenBy(c => c.CatalogLevel).ThenBy(c => c.CatalogName)
-            //    .Select(c => new DDL
-            //    {
-            //        value = c.ProductCatalogId,
-            //        label = CatalogDllFunction(c.Parent, c.CatalogName)
-            //    });
-
-            return new List<VendorCatalogViewModel>(); //ddls.ToList() ;
+            var list = Db
+                .VendorCatalog
+                .Include(v => v.Catalog)
+                .ThenInclude(c => c.ParentCatalog)
+                .AsEnumerable()?.ToList()
+                .Select(c => new VendorCatalogViewModel
+                {
+                    CatalogId = c.CatalogId,
+                    CatalogName = CatalogDllFunction(c.Catalog.ParentCatalog, c.Catalog.CatalogName),
+                    CommissionPercentage = c.CommissionPercentage
+                }).OrderBy(l => l.CatalogName);
+            return list.ToList();
 
 
 
@@ -182,10 +187,10 @@ namespace eSuperShop.Repository
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 
-            //if (catalog != null)
-            //{
-            //    cat = CatalogDllFunction(catalog.Parent, catalog.CatalogName) + ">" + cat;
-            //}
+            if (catalog != null)
+            {
+                cat = CatalogDllFunction(catalog.ParentCatalog, catalog.CatalogName) + ">" + cat;
+            }
 
             return cat;
         }
