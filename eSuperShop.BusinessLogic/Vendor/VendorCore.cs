@@ -267,5 +267,43 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse(false, e.Message);
             }
         }
+
+        public DbResponse SlugUrlChange(int vendorId, string slugUrl)
+        {
+            try
+            {
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse(false, "No Data Found");
+                if (_db.Vendor.IsExistSlugUrl(slugUrl))
+                    return new DbResponse(false, "SlugUrl Already Exist");
+
+                _db.Vendor.SlugUrlChange(vendorId, slugUrl);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse BanarUrlChange(int vendorId, string banarUrl)
+        {
+            try
+            {
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse(false, "No Data Found");
+
+                _db.Vendor.BanarUrlChange(vendorId, banarUrl);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }

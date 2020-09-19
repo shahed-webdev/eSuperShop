@@ -23,6 +23,8 @@ namespace eSuperShop.BusinessLogic
         //DbResponse Delete(int id);
         List<DDL> ThemeDdl();
         DbResponse ThemeChange(int vendorId, StoreTheme theme);
+        DbResponse SlugUrlChange(int vendorId, string slugUrl);
+        DbResponse BanarUrlChange(int vendorId, string banarUrl);
     }
 
 
