@@ -1,14 +1,32 @@
-﻿@{
+﻿@using eSuperShop.Repository
+@model VendorDashboardModel
+@{
     ViewData["Title"] = "Seller Dashboard";
     Layout = "_SellerLayout";
 }
 
 <div class="m-3">
-    <h3>Seller Dashboard</h3>
+    <h4 class="page-header">@Model.VendorInfo.StoreName</h4>
+    <p>@Model.VendorInfo.AuthorizedPerson</p>
+    
+    <select asp-items="ViewBag.ThemeType" class="mdb-select md-form" searchable="Search here..">
+        <option value="" disabled selected>Select Theme</option>
+    </select>
+
+    <p>Gross Sale: @Model.VendorInfo.GrossSale</p>
+    <p>Discount: @Model.VendorInfo.Discount</p>
+    <p>Net Sale: @Model.VendorInfo.NetSale</p>
+    <p>Commission: @Model.VendorInfo.Commission</p>
+    <p>Refund: @Model.VendorInfo.Refund</p>
+    <p>Withdraw: @Model.VendorInfo.Withdraw</p>
+    <p>Balance: @Model.VendorInfo.Balance</p>
 </div>
 
 
 @section Scripts{
     <script type="text/javascript">
+        $(function () {
+            $(".mdb-select").materialSelect();
+        });
     </script>
 }

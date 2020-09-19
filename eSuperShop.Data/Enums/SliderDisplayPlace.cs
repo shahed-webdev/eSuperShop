@@ -4,9 +4,7 @@ namespace eSuperShop.Data
 {
     public enum SliderDisplayPlace
     {
-        [Description("Main")]
-        Main,
-        [Description("Side")]
-        Side
+        [Description("Main Slider")] Main,
+        [Description("Side Slider")] Side
     }
 }

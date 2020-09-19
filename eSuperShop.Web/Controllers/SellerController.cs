@@ -54,8 +54,10 @@ namespace eSuperShop.Web.Controllers
         }
 
 
+
+
         /******** Un Approve list ********/
-        [Authorize]
+        [Authorize(Roles = "Seller")]
         public IActionResult List()
         {
             return View();
@@ -101,12 +103,19 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        //get vendor info
+        //get vendor info(ajax)
         public IActionResult GetVendorInfo(int id)
         {
             var model = _vendor.GetDetails(id);
             return Json(model);
         }
 
+
+        //store
+        [Authorize(Roles = "Seller")]
+        public IActionResult Store()
+        {
+            return View();
+        }
     }
 }

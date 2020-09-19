@@ -10,7 +10,7 @@
     <!-- Bootstrap core CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
     <!-- MDB -->
-    <link href="~/mdb/css/mdb-core.css" rel="stylesheet" />
+    <link href="~/mdb/css/mdb-admin.min.css" rel="stylesheet" />
     <!-- Custom layout -->
     <link href="~/css/public-master.css?v=1" rel="stylesheet" />
 
@@ -23,8 +23,8 @@
             <div class="container">
                 <ul class="nav navbar-nav nav-flex-icons ml-auto">
                     @*<li class="nav-item">
-                        <a class="nav-link" href=""><i class="fal fa-user-headset mr-1"></i>Help</a>
-                    </li>*@
+                            <a class="nav-link" href=""><i class="fal fa-user-headset mr-1"></i>Help</a>
+                        </li>*@
                     <partial name="_LoginPartial" />
                 </ul>
             </div>
@@ -204,18 +204,17 @@
     <!-- Bootstrap core JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
-    <script src="~/mdb/js/mdb-core.js?v=1"></script>
+    <script src="~/mdb/js/mdb-admin.min.js"></script>
     <!-- axios -->
     <script src="~/lib/api.axios.min.js"></script>
     <!-- VUE JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
-@await RenderSectionAsync("Scripts", false)
+    @await RenderSectionAsync("Scripts", false)
 
-<script>
+    <script>
         $(() => {
             new WOW().init();
-            $('.mdb-select').materialSelect();
         });
 
         //disable wheel in number type input
