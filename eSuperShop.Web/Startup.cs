@@ -59,6 +59,7 @@ namespace eSuperShop.Web
             services.AddTransient<ISliderCore, SliderCore>();
             services.AddTransient<ICatalogCore, CatalogCore>();
             services.AddTransient<IVendorCore, VendorCore>();
+            services.AddTransient<IVendorDashboardCore, VendorDashboardCore>();
 
 
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
