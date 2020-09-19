@@ -9,7 +9,7 @@
     <h4 class="page-header">@Model.VendorInfo.StoreName</h4>
     <p>@Model.VendorInfo.AuthorizedPerson</p>
     
-    <select asp-items="ViewBag.ThemeType" class="mdb-select md-form" searchable="Search here..">
+    <select id="selectTheme" asp-items="ViewBag.ThemeType" class="mdb-select md-form" searchable="Search here..">
         <option value="" disabled selected>Select Theme</option>
     </select>
 
@@ -25,8 +25,14 @@
 
 @section Scripts{
     <script type="text/javascript">
-        $(function () {
+        $(function() {
             $(".mdb-select").materialSelect();
+        });
+
+        const selectTheme = document.getElementById("selectTheme");
+        selectTheme.addEventListener('change', function(evt) {
+            const model = { vendorId: @Model.VendorInfo.VendorId, theme: this.value };
+            console.log(model)
         });
     </script>
 }
