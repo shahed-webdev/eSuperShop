@@ -25,7 +25,7 @@ namespace eSuperShop.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.DisplayPlace = new SelectList(_slider.DisplayPlaceDdl(), "label", "label");
+            ViewBag.DisplayPlace = new SelectList(_slider.DisplayPlaceDdl(), "value", "label");
             var response = _slider.List();
 
             return View(response.Data);
