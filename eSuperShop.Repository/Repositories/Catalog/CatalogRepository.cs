@@ -102,7 +102,7 @@ namespace eSuperShop.Repository
         public IEnumerable<ICatalogModel> BrandWiseList(int brandId)
         {
             var catalogs = Db.Catalog
-                .Include(c=> c.CatalogBrand)
+                .Include(c => c.CatalogBrand)
                 .AsEnumerable()?
                 .Where(c => c.ParentCatalog == null)
                 .ToList()
@@ -131,6 +131,18 @@ namespace eSuperShop.Repository
                 .Where(c => c.ParentCatalog == null)
                 .ToList()
                 .Select(c => new CatalogSpecificationModel(c, specificationId));
+
+            return catalogs;
+        }
+
+        public IEnumerable<ICatalogVendorModel> VendorWiseList(int vendorId)
+        {
+            var catalogs = Db.Catalog
+                .Include(c => c.VendorCatalog)
+                .AsEnumerable()?
+                .Where(c => c.ParentCatalog == null)
+                .ToList()
+                .Select(c => new CatalogVendorModel(c, vendorId));
 
             return catalogs;
         }

@@ -23,6 +23,7 @@ namespace eSuperShop.Repository
         IEnumerable<ICatalogModel> BrandWiseList(int brandId);
         IEnumerable<ICatalogModel> AttributeWiseList(int attributeId);
         IEnumerable<ICatalogModel> SpecificationWiseList(int specificationId);
+        IEnumerable<ICatalogVendorModel> VendorWiseList(int vendorId);
         List<DDL> SliderPlaceDdl();
         List<DDL> ListDdl();
         string Breadcrumb(int id);

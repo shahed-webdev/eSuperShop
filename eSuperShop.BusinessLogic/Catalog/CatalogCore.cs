@@ -149,6 +149,19 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<List<ICatalogVendorModel>> VendorWiseList(int vendorId)
+        {
+            try
+            {
+                var data = _db.Catalog.VendorWiseList(vendorId);
+                return new DbResponse<List<ICatalogVendorModel>>(true, "Success", data.ToList());
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<ICatalogVendorModel>>(false, e.Message);
+            }
+        }
+
         public DbResponse<CatalogAssignDetailsModel> AssignDetails(int catalogId)
         {
             try
