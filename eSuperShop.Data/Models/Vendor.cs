@@ -12,6 +12,7 @@ namespace eSuperShop.Data
             VendorFollower = new HashSet<VendorFollower>();
             VendorReview = new HashSet<VendorReview>();
             VendorWarehouse = new HashSet<VendorWarehouse>();
+            VendorStoreSlider = new HashSet<VendorStoreSlider>();
         }
 
         public int VendorId { get; set; }
@@ -42,5 +43,6 @@ namespace eSuperShop.Data
         public virtual ICollection<VendorFollower> VendorFollower { get; set; }
         public virtual ICollection<VendorReview> VendorReview { get; set; }
         public virtual ICollection<VendorWarehouse> VendorWarehouse { get; set; }
+        public virtual ICollection<VendorStoreSlider> VendorStoreSlider { get; set; }
     }
 }
