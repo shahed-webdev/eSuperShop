@@ -94,6 +94,8 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<VendorModel>(false, "Mobile number not Verified", null, "VerifiedPhone");
                 if (_db.Vendor.IsExistEmail(model.Email))
                     return new DbResponse<VendorModel>(false, "Email already Exist", null, "Email");
+                if (_db.Vendor.IsExistStore(model.StoreName))
+                    return new DbResponse<VendorModel>(false, "Store Name already Exist", null, "Email");
 
                 _db.Vendor.Add(model);
                 _db.SaveChanges();
