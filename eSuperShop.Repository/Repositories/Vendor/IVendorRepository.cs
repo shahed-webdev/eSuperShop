@@ -13,6 +13,7 @@ namespace eSuperShop.Repository
         VendorDashboardModel Dashboard(int vendorId);
         bool IsExistPhone(string phone);
         bool IsExistEmail(string email);
+        bool IsExistStore(string store);
         bool IsNull(int vendorId);
         DataResult<VendorModel> List(DataRequest request);
         Task<ICollection<VendorModel>> SearchAsync(string key);
@@ -26,6 +27,7 @@ namespace eSuperShop.Repository
         string GetPhone(int vendorId);
         List<VendorCatalogViewModel> Catalogs(int vendorId);
         List<DDL> ThemeDdl();
+        void ThemeChange(int vendorId, StoreTheme theme);
     }
 
 

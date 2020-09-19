@@ -1,4 +1,5 @@
-﻿using eSuperShop.Repository;
+﻿using eSuperShop.Data;
+using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace eSuperShop.BusinessLogic
 
         //DbResponse Delete(int id);
         List<DDL> ThemeDdl();
+        DbResponse ThemeChange(int vendorId, StoreTheme theme);
     }
 
 

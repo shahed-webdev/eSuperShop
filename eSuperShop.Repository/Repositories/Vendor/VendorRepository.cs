@@ -56,6 +56,11 @@ namespace eSuperShop.Repository
             return Db.Vendor.Any(c => c.Email == email);
         }
 
+        public bool IsExistStore(string store)
+        {
+            return Db.Vendor.Any(c => c.StoreName == store);
+        }
+
         public bool IsNull(int id)
         {
             return !Db.Vendor.Any(c => c.VendorId == id);
@@ -178,7 +183,7 @@ namespace eSuperShop.Repository
                     CatalogName = CatalogDllFunction(c.Catalog.ParentCatalog, c.Catalog.CatalogName),
                     CommissionPercentage = c.CommissionPercentage
                 }).OrderBy(l => l.CatalogName);
-            return list.ToList();
+            return list?.ToList() ?? new List<VendorCatalogViewModel>();
 
 
 
@@ -194,6 +199,14 @@ namespace eSuperShop.Repository
                            };
             return list.ToList();
         }
+
+        public void ThemeChange(int vendorId, StoreTheme theme)
+        {
+            var vendor = Db.Vendor.Find(vendorId);
+            vendor.StoreTheme = theme;
+            Db.Vendor.Update(vendor);
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 

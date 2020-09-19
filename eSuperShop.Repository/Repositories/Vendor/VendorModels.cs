@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eSuperShop.Data;
+using System;
 using System.Collections.Generic;
 
 namespace eSuperShop.Repository
@@ -68,6 +69,7 @@ namespace eSuperShop.Repository
         public decimal Withdraw { get; set; }
         public decimal Balance { get; set; }
         public DateTime CreatedOnUtc { get; set; }
+        public StoreTheme StoreTheme { get; set; }
     }
 
     public class VendorDashboardModel

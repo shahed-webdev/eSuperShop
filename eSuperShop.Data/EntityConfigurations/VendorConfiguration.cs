@@ -51,6 +51,12 @@ namespace eSuperShop.Data
                 .IsRequired()
                 .HasMaxLength(128);
 
+            builder.Property(e => e.StoreSlugUrl)
+                .HasMaxLength(255);
+
+            builder.Property(e => e.StoreBanarUrl)
+                .HasMaxLength(255);
+
             builder.Property(e => e.StoreTheme)
                 .HasMaxLength(50)
                 .HasConversion(c => c.ToString(), c => Enum.Parse<StoreTheme>(c));

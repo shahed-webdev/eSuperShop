@@ -94,6 +94,8 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<VendorModel>(false, "Mobile number not Verified", null, "VerifiedPhone");
                 if (_db.Vendor.IsExistEmail(model.Email))
                     return new DbResponse<VendorModel>(false, "Email already Exist", null, "Email");
+                if (_db.Vendor.IsExistStore(model.StoreName))
+                    return new DbResponse<VendorModel>(false, "Store Name already Exist", null, "Email");
 
                 _db.Vendor.Add(model);
                 _db.SaveChanges();
@@ -247,5 +249,23 @@ namespace eSuperShop.BusinessLogic
             return _db.Vendor.ThemeDdl();
         }
 
+        public DbResponse ThemeChange(int vendorId, StoreTheme theme)
+        {
+            try
+            {
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse(false, "No Data Found");
+
+
+                _db.Vendor.ThemeChange(vendorId, theme);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }
