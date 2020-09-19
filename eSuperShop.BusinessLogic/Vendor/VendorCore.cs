@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using OtpNet;
 using Service.SMS;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -240,6 +241,10 @@ namespace eSuperShop.BusinessLogic
             {
                 return new DbResponse(false, e.Message);
             }
+        }
+        public List<DDL> ThemeDdl()
+        {
+            return _db.Vendor.ThemeDdl();
         }
 
     }

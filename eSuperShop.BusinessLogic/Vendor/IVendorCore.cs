@@ -1,5 +1,6 @@
 ﻿using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
@@ -19,7 +20,7 @@ namespace eSuperShop.BusinessLogic
 
 
         //DbResponse Delete(int id);
-        //DbResponse<List<DDL>> Ddl();
+        List<DDL> ThemeDdl();
     }
 
 

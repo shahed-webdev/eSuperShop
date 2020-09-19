@@ -21,6 +21,8 @@ namespace eSuperShop.Data
         public string StoreName { get; set; }
         public string Email { get; set; }
         public string StoreAddress { get; set; }
+        public string StoreSlugUrl { get; set; }
+        public string StoreBanarUrl { get; set; }
         public StoreTheme StoreTheme { get; set; }
         public bool IsApproved { get; set; }
         public int? ApprovedByRegistrationId { get; set; }

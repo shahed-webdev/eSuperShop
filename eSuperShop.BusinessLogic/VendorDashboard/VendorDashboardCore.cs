@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using eSuperShop.Repository;
 using System;
-using System.Collections.Generic;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -39,9 +38,6 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public List<DDL> ThemeDdl()
-        {
-            return _db.Vendor.ThemeDdl();
-        }
+
     }
 }
