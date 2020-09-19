@@ -183,7 +183,17 @@ namespace eSuperShop.Repository
 
 
         }
-
+        public List<DDL> ThemeDdl()
+        {
+            var list = from StoreTheme a in Enum.GetValues(typeof(StoreTheme))
+                       select
+                           new DDL
+                           {
+                               label = a.GetDescription(),
+                               value = a.ToString()
+                           };
+            return list.ToList();
+        }
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 
