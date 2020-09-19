@@ -4,7 +4,6 @@ const fs = require('fs');
 const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
 
-
 const appBasePath = './VueJS/'; // where the source files located
 const publicPath = '../bundle/'; // public path to modify asset urls. eg: '../bundle' => 'www.example.com/bundle/main.js'
 const bundleExportPath = './wwwroot/bundle/'; // directory to export build files

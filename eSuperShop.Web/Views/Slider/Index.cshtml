@@ -12,21 +12,61 @@
     </style>
 }
 
-<div class="m-md-4">
-    <h4 class="page-header mb-3">Add Slider Image</h4>
+<div class="m-md-3">
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            <h4 class="page-header">Add Slider Image</h4>
+        </div>
+        <div class="col text-right">
+            <a data-toggle="modal" data-target="#InsertModal" class="btn-floating bg-danger" title="Add New">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
 
-    <div class="card card-body mb-4">
-        <form id="addForm">
-            <div class="row align-items-center">
-                <div class="col-lg-2">
+    <div class="card card-body">
+        <div id="slider-images" class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-xl-2 col-lg-4 mb-3">
+                    <div class="card h-100">
+                        <div class="view overlay">
+                            <img class="card-img-top" src="@item.ImageUrl" alt="@item.DisplayPlace">
+                            <div class="mask rgba-white-slight"></div>
+                        </div>
+
+                        <div class="p-3 rounded-bottom d-flex justify-content-between align-items-center">
+                            <span>@item.DisplayOrder - @item.DisplayPlace</span>
+                            <i data-id="@item.SliderId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text"></i>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<!--add modal-->
+<div class="modal fade" id="InsertModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="m-0 white-text">Image slider</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="addForm">
                     <div class="md-form">
                         <select id="inputDisplayPlace" asp-items="ViewBag.DisplayPlace" class="mdb-select" required>
                             <option value="">[ DISPLAY PLACE ]</option>
                         </select>
                     </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="md-form">
+
+                    <div class="md-form mb-0">
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
@@ -37,59 +77,20 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3">
+                    <span id="imageSizeText" class="text-danger"></span>
+
                     <div class="md-form">
                         <input id="inputRedirectUrl" type="text" class="form-control" placeholder="Redirect Url" />
                     </div>
-                </div>
-                <div class="col-lg-2">
+
                     <div class="md-form">
                         <input id="inputDisplayOrder" type="number" class="form-control" placeholder="Display Order" required />
                     </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="md-form">
-                        <input type="submit" value="Add Slider" class="btn btn-danger btn-md" />
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
 
-    <div id="slider-images" class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-xl-2 col-lg-4 mb-3">
-                <div class="card h-100">
-                    <div class="view overlay">
-                        <img class="card-img-top" src="@item.ImageUrl" alt="@item.DisplayPlace">
-                        <div class="mask rgba-white-slight"></div>
+                    <div class="md-form text-center">
+                        <input id="btnSubmit" type="submit" value="Add Slider" class="btn btn-danger" />
                     </div>
-
-                    <div class="p-3 rounded-bottom d-flex justify-content-between align-items-center">
-                        <span>@item.DisplayOrder - @item.DisplayPlace</span>
-                        <i data-id="@item.SliderId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text"></i>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
-
-<!-- image crop modal -->
-<div class="modal fade" id="cropImageModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-notify modal-danger" role="document">
-        <div class="modal-content text-center">
-            <div class="modal-header d-flex justify-content-center">
-                <p class="heading">Resize Image</p>
-            </div>
-            <div class="modal-body">
-                <div id="upload-demo"></div>
-            </div>
-            <div class="modal-footer flex-center">
-                <button id="btnCrop" type="button" class="btn  btn-danger waves-effect">CROP</button>
-                <button class="btn btn-outline-danger" data-dismiss="modal">CANCEL</button>
+                </form>   
             </div>
         </div>
     </div>
@@ -103,23 +104,8 @@
             $('.mdb-select').materialSelect();
         });
 
-        //global variable
-        const formData = new FormData();
-        const imageError = $("#imageError");
-        const previewImage = $('#prevImage');
-        const cropImageModal = $('#cropImageModal');
-        const inputDisplayPlace = document.getElementById("inputDisplayPlace");
-        const btnCrop = $('#btnCrop');
-        let cropImage = null;
-
         //set image file
         $('#fileImage').change(function(e) {
-            imageError.text("");
-            if (inputDisplayPlace.selectedIndex < 1) {
-                alert('Select display place');
-                return;
-            }
-
             const pathInput = $('#filePath');
             const size = e.target.files[0].size / 1024 / 1024;
             const allowSize = 1;
@@ -142,58 +128,24 @@
             }
 
             pathInput.val(e.target.files[0].name);
-
-            if (inputDisplayPlace.value === "Main") {
-                cropImage = $('#upload-demo').croppie({
-                    viewport: { width: 540, height: 400 },
-                    boundary: { width: 550, height: 410 }
-                });
-            }
-
-            if (inputDisplayPlace.value === "Side") {
-                cropImage = $('#upload-demo').croppie({
-                    viewport: { width: 255, height: 400 },
-                    boundary: { width: 275, height: 410 }
-                });
-            }
-
-            readFile(this);
         });
 
-
-        //crop done
-        btnCrop.on('click', function() {
-            cropImage.croppie('result', { type: 'blob' }).then(function(res) {
-                previewImage.attr('src', URL.createObjectURL(res));
-
-                formData.append("image", res, $('#filePath').val());
-                cropImageModal.modal('hide');
-            });
-        });
-
-        //read file
-        function readFile(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.readAsDataURL(input.files[0]);
-
-                reader.onload = function(e) {
-                    cropImage.croppie('bind', { url: e.target.result }).then(function() {
-                        $('.cr-slider').attr({ 'min': 0.5000, 'max': 1.5000 });
-                    });
-                }
-
-                cropImageModal.modal('show');
-            }
-        }
 
         //upload image
         const addForm = document.getElementById('addForm');
+        const btnSubmit = addForm.btnSubmit;
+        const inputDisplayPlace = addForm.inputDisplayPlace;
         const sliderImages = document.getElementById('slider-images');
 
+        //post data
         addForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
+            btnSubmit.disabled = true;
+            btnSubmit.value = "submitting..";
+
+            const formData = new FormData();
+            formData.append("image", document.getElementById('fileImage').files[0]);
             formData.append("RedirectUrl", addForm.inputRedirectUrl.value);
             formData.append("DisplayOrder", addForm.inputDisplayOrder.value);
             formData.append("DisplayPlace", addForm.inputDisplayPlace.options[addForm.inputDisplayPlace.selectedIndex].text);
@@ -205,7 +157,6 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
                     if (!response.IsSuccess) return;
 
                     addForm.fileImage.value = "";
@@ -214,41 +165,50 @@
                     addForm.inputDisplayOrder.value = "";
 
                     appendImage(response.Data);
+
+                    btnSubmit.disabled = false;
+                    btnSubmit.value = "Add Slider";
+                    $("#InsertModal").modal('hide');
+                },
+                error: function(err) {
+                    console.log(err);
+                    btnSubmit.disabled = false;
+                    btnSubmit.value = "Add Slider";
                 }
             });
         });
 
-        function appendImage(data) {
-            const tr = document.createElement("tr");
+        //append data
+        function appendImage(item) {
+            const div = document.createElement('div');
+            div.className = 'col-xl-2 col-lg-4 mb-3';
+            div.innerHTML = `<div class="card h-100">
+                                 <div class="view overlay">
+                                     <img class="card-img-top" src="${item.ImageUrl}" alt="${item.DisplayPlace}">
+                                     <div class="mask rgba-white-slight"></div>
+                                 </div>
 
-            const td1 = document.createElement("td");
-            const img = document.createElement("img");
-            img.src = data.ImageUrl;
-            td1.appendChild(img);
-            tr.appendChild(td1);
+                                 <div class="p-3 rounded-bottom d-flex justify-content-between align-items-center">
+                                     <span>${item.DisplayOrder} - ${item.DisplayPlace}</span>
+                                     <i data-id="${item.SliderId}" data-url="${item.ImageUrl}" class="delete fas fa-trash red-text"></i>
+                                 </div>
+                             </div>`;
 
-            const td2 = document.createElement("td");
-            td2.textContent = data.DisplayOrder;
-            tr.appendChild(td2);
-
-            const td3 = document.createElement("td");
-            td3.textContent = data.DisplayPlace;
-            tr.appendChild(td3);
-
-            const td4 = document.createElement("td");
-            const btnDelete = document.createElement("button");
-
-            btnDelete.className = "btnDelete btn btn-sm btn-danger";
-            btnDelete.textContent = "delete";
-            btnDelete.setAttribute("data-filename", data.FileName);
-            btnDelete.setAttribute("data-id", data.SliderId);
-            td4.appendChild(btnDelete);
-
-            tr.appendChild(td4);
-
-
-            tBody.appendChild(tr);
+            document.getElementById('slider-images').appendChild(div);
         }
+
+        //on change display place
+        inputDisplayPlace.addEventListener('change', function() {
+            const imageSizeText = document.querySelector("#imageSizeText");
+
+            if (this.value === "Main") {
+                imageSizeText.textContent = "Main Slider Image Size: 540 x 400";
+            }
+
+            if (this.value === "Side") {
+                imageSizeText.textContent = "Side Slider Image Size: 255 x 400";
+            }
+        })
 
         //on delete
         sliderImages.addEventListener('click', function(evt) {
@@ -256,6 +216,8 @@
 
             const onBtnDelete = element.classList.contains('delete');
             if (!onBtnDelete) return;
+
+            showSpinner(element, true);
 
             const imageUrl = element.getAttribute('data-url');
             const id = element.getAttribute('data-id');
@@ -265,11 +227,27 @@
                 url: "/Slider/Delete",
                 data: { imageUrl, id },
                 success: function(response) {
-                    if (response.IsSuccess) {
+                    if (response.IsSuccess)
                         element.parentElement.parentElement.parentElement.remove()
-                    }
+
+                    showSpinner(element, false);
+                },
+                error: function(err) {
+                    console.log(err);
+                    showSpinner(element, false);
                 }
             });
         });
+
+        //show spinner
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
     </script>
 }

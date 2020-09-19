@@ -5,21 +5,95 @@
     Layout = "_SellerLayout";
 }
 
-<div class="m-3">
-    <h4 class="page-header">@Model.VendorInfo.StoreName</h4>
-    <p>@Model.VendorInfo.AuthorizedPerson</p>
-    
-    <select id="selectTheme" asp-items="ViewBag.ThemeType" class="mdb-select md-form">
-        <option value="" disabled selected>Select Theme</option>
-    </select>
+<div class="m-md-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="page-header">@Model.VendorInfo.StoreName</h4>
+            <p class="mb-0">@Model.VendorInfo.AuthorizedPerson</p>
+        </div>
+        <h4 class="mb-0 font-weight-bold">Balance: ৳@Model.VendorInfo.Balance</h4>
+    </div>
 
-    <p>Gross Sale: @Model.VendorInfo.GrossSale</p>
-    <p>Discount: @Model.VendorInfo.Discount</p>
-    <p>Net Sale: @Model.VendorInfo.NetSale</p>
-    <p>Commission: @Model.VendorInfo.Commission</p>
-    <p>Refund: @Model.VendorInfo.Refund</p>
-    <p>Withdraw: @Model.VendorInfo.Withdraw</p>
-    <p>Balance: @Model.VendorInfo.Balance</p>
+    <section>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="media white z-depth-1 rounded">
+                    <i class="far fa-money-bill-alt fa-lg blue z-depth-1 p-4 rounded-left text-white mr-3"></i>
+                    <div class="media-body p-1">
+                        <p class="text-uppercase text-muted mb-1"><small>sales</small></p>
+                        <h5 class="font-weight-bold mb-0">৳@Model.VendorInfo.GrossSale</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="media white z-depth-1 rounded">
+                    <i class="fas fa-chart-bar fa-lg deep-purple z-depth-1 p-4 rounded-left text-white mr-3"></i>
+                    <div class="media-body p-1">
+                        <p class="text-uppercase text-muted mb-1"><small>discount</small></p>
+                        <h5 class="font-weight-bold mb-0">৳@Model.VendorInfo.Discount</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="media white z-depth-1 rounded">
+                    <i class="fas fa-chart-pie fa-lg teal z-depth-1 p-4 rounded-left text-white mr-3"></i>
+                    <div class="media-body p-1">
+                        <p class="text-uppercase text-muted mb-1"><small>net sales</small></p>
+                        <h5 class="font-weight-bold mb-0">৳@Model.VendorInfo.NetSale</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="my-3">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="media white z-depth-1 rounded">
+                    <i class="far fa-money-bill-alt fa-lg light-green darken-1 z-depth-1 p-4 rounded-left text-white mr-3"></i>
+                    <div class="media-body p-1">
+                        <p class="text-uppercase text-muted mb-1"><small>commission</small></p>
+                        <h5 class="font-weight-bold mb-0">৳@Model.VendorInfo.Commission</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="media white z-depth-1 rounded">
+                    <i class="fas fa-chart-bar fa-lg pink darken-3 z-depth-1 p-4 rounded-left text-white mr-3"></i>
+                    <div class="media-body p-1">
+                        <p class="text-uppercase text-muted mb-1"><small>refund</small></p>
+                        <h5 class="font-weight-bold mb-0">৳@Model.VendorInfo.Refund</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="media white z-depth-1 rounded">
+                    <i class="fas fa-chart-pie fa-lg indigo z-depth-1 p-4 rounded-left text-white mr-3"></i>
+                    <div class="media-body p-1">
+                        <p class="text-uppercase text-muted mb-1"><small>withdraw</small></p>
+                        <h5 class="font-weight-bold mb-0">৳@Model.VendorInfo.Withdraw</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card card-body text-center">
+                <h5 class="font-weight-bold">Selected Theme</h5>
+                <select id="selectTheme" asp-items="ViewBag.ThemeType" class="mdb-select md-form">
+                    <option value="" disabled selected>Select Theme</option>
+                </select>
+                
+                <button disabled id="btnThemeChange" class="btn btn-danger">Change Theme</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -29,22 +103,37 @@
             $(".mdb-select").materialSelect();
         });
 
+        const btnThemeChange = document.getElementById("btnThemeChange");
         const selectTheme = document.getElementById("selectTheme");
-        selectTheme.addEventListener('change', function (evt) {
+
+        selectTheme.addEventListener('change', function(evt) {
             if (!this.value) return;
 
-            const model = { vendorId: @Model.VendorInfo.VendorId, theme: this.value };
+            btnThemeChange.removeAttribute("disabled");
+        });
+
+        //change theme
+        btnThemeChange.addEventListener('click', function(evt) {
+            if (!selectTheme.value) return;
+
+            const model = { vendorId: @Model.VendorInfo.VendorId, theme: selectTheme.value };
+            this.disabled = true;
 
             $.ajax({
                 type: "POST",
                 url: "/Dashboard/ChangeTheme",
                 data: model,
                 success: function (response) {
-                    console.log(response)
-                    if (response.IsSuccess) {
-                       alert("Theme changed successfully!");
-                    } else
+                    btnThemeChange.disabled = false;
+
+                    if (response.IsSuccess)
+                        alert("Theme changed successfully!");
+                    else
                         alert(response.Message);
+                },
+                error: function (err) {
+                    console.log(err);
+                    btnThemeChange.disabled = false;
                 }
             });
         });

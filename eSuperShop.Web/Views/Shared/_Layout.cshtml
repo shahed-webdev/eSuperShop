@@ -33,16 +33,14 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-sm-12">
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                            <img src="~/images/logo.svg" alt="logo" />
+                        <a class="navbar-brand" href="/Home/Index">
+                            <img src="~/images/logo.svg" alt="logo">
                         </a>
                     </div>
                     <div class="col-lg-6 col-sm-9 mb-3">
                         <div class="serach-container">
-                            <input type="text" placeholder="search products" id="search" class="input-home-search" />
-                            <button id="btn-find">
-                                <i class="fal fa-search"></i>
-                            </button>
+                            <input id="inputSearch" type="text" placeholder="search products" class="input-home-search">
+                            <button id="btn-find"><i class="fal fa-search"></i></button>
                             @*<select class="mdb-select category-select">
                                 <option value="" disabled selected>All Categories</option>
                                 <option value="2">category1</option>
@@ -54,9 +52,7 @@
                     </div>
                     <div class="col-lg-3 col-sm-3">
                         <div class="cart-area">
-                            <div>
-                                <i class="fal fa-heart"></i>
-                            </div>
+                            <div><i class="fal fa-heart"></i></div>
                             <div>
                                 <i class="fal fa-shopping-bag"></i>
                                 <span class="cart-product-count">0</span>

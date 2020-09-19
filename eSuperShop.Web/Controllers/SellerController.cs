@@ -57,7 +57,7 @@ namespace eSuperShop.Web.Controllers
 
 
         /******** Un Approve list ********/
-        [Authorize(Roles = "Seller")]
+        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult List()
         {
             return View();
