@@ -1,29 +1,31 @@
-﻿using eSuperShop.Repository;
+﻿using System;
+using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using eSuperShop.Data;
 
 namespace eSuperShop.Web.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly IUnitOfWork _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<AccountController> logger)
+        public AccountController(IUnitOfWork db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
+            _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
         }
 
         //GET: Admin Login
         [AllowAnonymous]
-        public IActionResult AdminLogin(string returnUrl)
+        public IActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -34,25 +36,29 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdminLogin(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            returnUrl ??= Url.Content("~/Dashboard/Index");
-
             if (!ModelState.IsValid) return View(model);
 
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User logged in.");
-                return LocalRedirect(returnUrl);
+                var type = _db.Registration.UserTypeByUserName(model.UserName);
+
+                return type switch
+                {
+                    UserType.Admin => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Index")),
+                    UserType.Seller => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Seller")),
+                    UserType.SubAdmin => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Index")),
+                    _ => LocalRedirect(returnUrl ??= Url.Content("~/Account/Login"))
+                };
             }
 
             if (result.RequiresTwoFactor) return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, model.RememberMe });
 
             if (result.IsLockedOut)
             {
-                _logger.LogWarning("User account locked out.");
                 return RedirectToPage("./Lockout");
             }
 
@@ -89,7 +95,6 @@ namespace eSuperShop.Web.Controllers
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
 
             return RedirectToAction("Index", "Dashboard", new { Message = "Your password has been changed." });
         }
@@ -99,7 +104,6 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> Logout(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
 
             if (returnUrl != null) return LocalRedirect(returnUrl);
 

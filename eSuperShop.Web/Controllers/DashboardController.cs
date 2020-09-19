@@ -7,10 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eSuperShop.Web.Controllers
 {
-    [Authorize]
+   
     public class DashboardController : Controller
     {
+        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        //seller dashboard
+        [Authorize(Roles = "Seller")]
+        public IActionResult Seller()
         {
             return View();
         }
