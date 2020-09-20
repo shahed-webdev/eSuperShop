@@ -24,8 +24,6 @@ namespace eSuperShop.BusinessLogic
         List<DDL> ThemeDdl();
         DbResponse ThemeChange(int vendorId, StoreTheme theme);
         DbResponse SlugUrlChange(int vendorId, string slugUrl);
-        DbResponse BanarUrlChange(int vendorId, string banarUrl);
+        DbResponse BannerUrlChange(int vendorId, string bannerUrl);
     }
-
-
 }
