@@ -7,7 +7,7 @@ namespace eSuperShop.BusinessLogic
     {
         DbResponse<VendorSliderModel> Add(VendorSliderModel model);
         DbResponse Delete(int vendorStoreSliderId);
-        DbResponse<List<VendorSliderSlideModel>> Display(int vendorId);
-        DbResponse<List<VendorSliderModel>> List(int vendorId);
+        DbResponse<List<VendorSliderSlideModel>> Display(string vendorUserName);
+        DbResponse<List<VendorSliderModel>> List(string vendorUserName);
     }
 }
