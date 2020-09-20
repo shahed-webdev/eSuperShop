@@ -51,11 +51,17 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<List<VendorSliderSlideModel>> Display(int vendorId)
+        public DbResponse<List<VendorSliderSlideModel>> Display(string vendorUserName)
         {
             try
             {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0)
+                    return new DbResponse<List<VendorSliderSlideModel>>(false, "Invalid User");
                 var data = _db.VendorStoreSlider.Display(vendorId);
+
+
+
                 return new DbResponse<List<VendorSliderSlideModel>>(true, "Success", data);
             }
             catch (Exception e)
@@ -64,10 +70,14 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<List<VendorSliderModel>> List(int vendorId)
+        public DbResponse<List<VendorSliderModel>> List(string vendorUserName)
         {
             try
             {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0)
+                    return new DbResponse<List<VendorSliderModel>>(false, "Invalid User");
+
                 var data = _db.VendorStoreSlider.List(vendorId);
                 return new DbResponse<List<VendorSliderModel>>(true, "Success", data);
             }
