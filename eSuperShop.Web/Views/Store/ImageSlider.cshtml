@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Image Slider";
+}
+
+@section Styles{
+
+}
+
+
+<div class="container">
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            <h4 class="page-header">Add Slider Image</h4>
+        </div>
+        <div class="col text-right">
+            <a data-toggle="modal" data-target="#InsertModal" class="btn-floating bg-danger" title="Add New">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+<!--add modal-->
+<div class="modal fade" id="InsertModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="m-0 white-text">Image slider</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="md-form mb-0">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input id="fileImage" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Image" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md-form">
+                        <input id="inputRedirectUrl" type="text" class="form-control" placeholder="Redirect Url" />
+                    </div>
+
+                    <div class="md-form">
+                        <input id="inputDisplayOrder" type="number" class="form-control" placeholder="Display Order" required />
+                    </div>
+
+                    <div class="md-form text-center">
+                        <input id="btnSubmit" type="submit" value="Add Slider" class="btn btn-danger" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+    </script>
+}
