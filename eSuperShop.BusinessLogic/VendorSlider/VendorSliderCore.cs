@@ -16,11 +16,17 @@ namespace eSuperShop.BusinessLogic
             _mapper = mapper;
         }
 
-        public DbResponse<VendorSliderModel> Add(VendorSliderModel model)
+        public DbResponse<VendorSliderModel> Add(VendorSliderModel model, string vendorUserName)
         {
             try
             {
                 if (string.IsNullOrEmpty(model.ImageUrl)) return new DbResponse<VendorSliderModel>(false, "Invalid Data");
+
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0)
+                    return new DbResponse<VendorSliderModel>(false, "Invalid User");
+
+                model.VendorId = vendorId;
                 _db.VendorStoreSlider.Add(model);
                 _db.SaveChanges();
 
