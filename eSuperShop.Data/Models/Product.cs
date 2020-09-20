@@ -12,6 +12,7 @@ namespace eSuperShop.Data
             ProductBlob = new HashSet<ProductBlob>();
             ProductReview = new HashSet<ProductReview>();
             ProductSpecification = new HashSet<ProductSpecification>();
+            VendorProductCategoryList = new HashSet<VendorProductCategoryList>();
         }
 
         public int ProductId { get; set; }
@@ -43,5 +44,6 @@ namespace eSuperShop.Data
         public virtual ICollection<ProductSpecification> ProductSpecification { get; set; }
         public virtual ICollection<ProductBlob> ProductBlob { get; set; }
         public virtual ICollection<ProductReview> ProductReview { get; set; }
+        public virtual ICollection<VendorProductCategoryList> VendorProductCategoryList { get; set; }
     }
 }

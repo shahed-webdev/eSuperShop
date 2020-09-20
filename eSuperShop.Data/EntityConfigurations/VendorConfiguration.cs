@@ -57,6 +57,12 @@ namespace eSuperShop.Data
             builder.Property(e => e.StoreBanarUrl)
                 .HasMaxLength(255);
 
+            builder.Property(e => e.StoreLogoUrl)
+                .HasMaxLength(255);
+
+            builder.Property(e => e.StoreTagLine)
+                .HasMaxLength(255);
+
             builder.Property(e => e.StoreTheme)
                 .HasMaxLength(50)
                 .HasConversion(c => c.ToString(), c => Enum.Parse<StoreTheme>(c));
