@@ -18,6 +18,8 @@ namespace eSuperShop.Data
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getutcdate())");
 
+            builder.Property(e => e.IsActive)
+                .HasDefaultValueSql("((1))");
 
             builder.HasOne(d => d.Vendor)
                 .WithMany(p => p.VendorProductCategory)

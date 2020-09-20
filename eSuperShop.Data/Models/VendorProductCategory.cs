@@ -14,6 +14,7 @@ namespace eSuperShop.Data
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public int? DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreatedOnUtc { get; set; }
 
         public virtual Vendor Vendor { get; set; }
