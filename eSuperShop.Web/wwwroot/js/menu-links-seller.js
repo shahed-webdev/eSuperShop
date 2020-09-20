@@ -1,27 +1,27 @@
 ﻿
 let linkData = [
-    //{
-    //    "LinkCategoryID": 1,
-    //    "SN": 1,
-    //    "Category": "Category",
-    //    "IconClass": "fas fa-list-ul",
-    //    "links": [{
-    //            "LinkID": 3,
-    //            "SN": 0,
-    //            "Controller": "Category",
-    //            "Action": "Index",
-    //            "Title": "Category",
-    //            "IconClass": null
-    //        },
-    //        {
-    //            "LinkID": 1,
-    //            "SN": 7,
-    //            "Controller": "Category",
-    //            "Action": "Placement",
-    //            "Title": "Placement",
-    //            "IconClass": null
-    //        }]
-    //}
+    {
+        "LinkCategoryID": 1,
+        "SN": 1,
+        "Category": "Store",
+        "IconClass": "fas fa-store",
+        "links": [{
+                "LinkID": 3,
+                "SN": 0,
+                "Controller": "Store",
+                "Action": "ImageSlider",
+                "Title": "Add Image Slider",
+                "IconClass": null
+            },
+            {
+                "LinkID": 3,
+                "SN": 0,
+                "Controller": "Store",
+                "Action": "AddCategory",
+                "Title": "Add Category",
+                "IconClass": null
+            }]
+    }
 ];
 
 //selectors
