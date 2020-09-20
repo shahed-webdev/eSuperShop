@@ -14,7 +14,7 @@ namespace eSuperShop.Repository
 
         public VendorProductCategory VendorProductCategory { get; set; }
         public VendorProductCategoryList VendorProductCategoryList { get; set; }
-        public void Add(VendorProductCategoryModel model)
+        public void Add(VendorProductCategoryAddModel model)
         {
             VendorProductCategory = _mapper.Map<VendorProductCategory>(model);
             Db.VendorProductCategory.Add(VendorProductCategory);
@@ -79,7 +79,7 @@ namespace eSuperShop.Repository
 
         public void PlaceAssign(VendorProductCategoryAssignModel model)
         {
-            if (!IsPlaceAssign(model.VendorProductCategoryId, model.ProductId))
+            if (!IsPlaceAssign(model))
             {
 
                 VendorProductCategoryList = _mapper.Map<VendorProductCategoryList>(model);
@@ -87,14 +87,15 @@ namespace eSuperShop.Repository
             }
         }
 
-        public bool IsPlaceAssign(int vendorProductCategoryId, int productId)
+        public bool IsPlaceAssign(VendorProductCategoryAssignModel model)
         {
-            VendorProductCategoryList = Db.VendorProductCategoryList.FirstOrDefault(c => c.VendorProductCategoryId == vendorProductCategoryId && c.ProductId == productId);
+            VendorProductCategoryList = Db.VendorProductCategoryList.FirstOrDefault(c => c.VendorProductCategoryId == model.VendorProductCategoryId && c.ProductId == model.ProductId);
             return VendorProductCategoryList != null;
         }
 
-        public void PlaceDelete(int vendorProductCategoryId, int vendorId)
+        public void PlaceDelete(VendorProductCategoryAssignModel model)
         {
+            VendorProductCategoryList = Db.VendorProductCategoryList.FirstOrDefault(c => c.VendorProductCategoryId == model.VendorProductCategoryId && c.ProductId == model.ProductId);
             Db.VendorProductCategoryList.Remove(VendorProductCategoryList);
         }
 

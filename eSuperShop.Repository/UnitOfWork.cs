@@ -20,6 +20,7 @@ namespace eSuperShop.Repository
             Catalog = new CatalogRepository(_db, _mapper);
             Vendor = new VendorRepository(_db, _mapper);
             VendorStoreSlider = new VendorStoreSliderRepository(_db, _mapper);
+            VendorProductCategory = new VendorProductCategoryRepository(_db, _mapper);
             Warehouse = new WarehouseRepository(_db, _mapper);
         }
 
@@ -31,6 +32,7 @@ namespace eSuperShop.Repository
         public ICatalogRepository Catalog { get; }
         public IVendorRepository Vendor { get; }
         public IVendorStoreSliderRepository VendorStoreSlider { get; }
+        public IVendorProductCategoryRepository VendorProductCategory { get; }
         public IWarehouseRepository Warehouse { get; }
 
         public void Dispose()

@@ -7,7 +7,7 @@ namespace eSuperShop.Repository
     {
         VendorProductCategory VendorProductCategory { get; set; }
 
-        void Add(VendorProductCategoryModel model);
+        void Add(VendorProductCategoryAddModel model);
         void Delete(int vendorProductCategoryId);
         void Update(VendorProductCategoryModel model);
         bool IsExistName(string name);
@@ -19,8 +19,8 @@ namespace eSuperShop.Repository
         List<DDL> ListDdl(int vendorId);
         VendorProductCategoryModel Get(int id);
         void PlaceAssign(VendorProductCategoryAssignModel model);
-        bool IsPlaceAssign(int vendorProductCategoryId, int productId);
-        void PlaceDelete(int vendorProductCategoryId, int productId);
+        bool IsPlaceAssign(VendorProductCategoryAssignModel model);
+        void PlaceDelete(VendorProductCategoryAssignModel model);
 
         List<VendorCategoryProductsModel> Products(int vendorProductCategoryId);
     }
