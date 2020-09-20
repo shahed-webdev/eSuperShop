@@ -288,7 +288,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse BanarUrlChange(int vendorId, string banarUrl)
+        public DbResponse BannerUrlChange(int vendorId, string banarUrl)
         {
             try
             {

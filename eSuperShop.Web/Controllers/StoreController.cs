@@ -4,6 +4,8 @@ using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using CloudStorage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
@@ -13,10 +15,13 @@ namespace eSuperShop.Web.Controllers
     {
         private readonly IVendorCore _vendor;
         private readonly IVendorSliderCore _vendorSlider;
-        public StoreController(IVendorCore vendor, ICatalogCore catalog, IVendorSliderCore vendorSlider)
+        private readonly ICloudStorage _cloudStorage;
+
+        public StoreController(ICloudStorage cloudStorage, IVendorCore vendor, ICatalogCore catalog, IVendorSliderCore vendorSlider)
         {
             _vendor = vendor;
             _vendorSlider = vendorSlider;
+            _cloudStorage = cloudStorage;
         }
 
         //theme
@@ -25,7 +30,7 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
-        //ImageSlider
+        //Image Slider
         public IActionResult ImageSlider()
         {
            // var response = _vendorSlider.List();
@@ -33,9 +38,13 @@ namespace eSuperShop.Web.Controllers
         }
 
         //Add Image Slider
-        public IActionResult AddImageSlider(VendorSliderModel model)
+        public async Task<IActionResult> AddImageSlider(VendorSliderModel model, IFormFile image)
         {
-            return View();
+            var fileName = FileBuilder.FileNameImage("slider", image.FileName);
+            model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            //model.VendorId = 
+            var response = _vendorSlider.Add(model);
+            return Json(response);
         }
     }
 }
