@@ -70,9 +70,16 @@ namespace eSuperShop.Web.Controllers
         }
         
         [HttpPost]
-        public IActionResult AddCategory(VendorProductCategoryAddModel model)
+        public async Task<IActionResult> AddCategory(VendorProductCategoryAddModel model, IFormFile image)
         {
+            if (image != null)
+            {
+                var fileName = FileBuilder.FileNameImage("product-category", image.FileName);
+                model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            }
+
             var response = _category.Add(model, User.Identity.Name);
+
             return Json(response);
         }
 
@@ -80,11 +87,14 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> DeleteCategory(string imageUrl, int id)
         {
             var response = _category.Delete(id);
+
+            if (imageUrl == null) return Json(response);
+
+            if (!response.IsSuccess) return Json(response);
+
             var uri = new Uri(imageUrl);
             var fileName = Path.GetFileName(uri.AbsolutePath);
-
-            if (response.IsSuccess)
-                await _cloudStorage.DeleteFileAsync(fileName);
+            await _cloudStorage.DeleteFileAsync(fileName);
 
             return Json(response);
         }

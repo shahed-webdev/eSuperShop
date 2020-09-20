@@ -20,7 +20,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (string.IsNullOrEmpty(model.ImageUrl)) return new DbResponse<VendorProductCategoryModel>(false, "Invalid Data");
+                if (string.IsNullOrEmpty(model.Name)) return new DbResponse<VendorProductCategoryModel>(false, "Invalid Data");
 
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0)

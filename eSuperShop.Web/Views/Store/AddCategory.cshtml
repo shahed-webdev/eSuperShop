@@ -8,7 +8,7 @@
 
 @section Styles{
     <style>
-        #slider-images .delete { cursor: pointer }
+        #categories .delete { cursor: pointer }
     </style>
 }
 
@@ -31,8 +31,8 @@
             {
                 <div class="list-group-item d-flex justify-content-between align-items-center">
                     <p class="mb-0">
-                        <img src="@item.ImageUrl" class="rounded" alt="">
-                        @item.Name
+                        <img src="@item.ImageUrl" class="rounded" alt="" style="width: 50px">
+                        <strong>@item.Name</strong>
                     </p>
                     <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text"></i>
                 </div>
@@ -65,7 +65,7 @@
                                 <input id="fileImage" type="file" accept="image/*">
                             </div>
                             <div class="file-path-wrapper">
-                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Image" required>
+                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Image">
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="md-form text-center">
-                        <input id="btnSubmit" type="submit" value="Add Slider" class="btn btn-danger"/>
+                        <input id="btnSubmit" type="submit" value="Add" class="btn btn-danger"/>
                     </div>
                 </form>
             </div>
@@ -86,7 +86,7 @@
 @section Scripts{
     <script>
         //set image file
-        $('#fileImage').change(function(e) {
+        $('#fileImage').change(function (e) {
             const pathInput = $('#filePath');
             const size = e.target.files[0].size / 1024 / 1024;
             const allowSize = 1;
@@ -115,11 +115,10 @@
         //upload image
         const addForm = document.getElementById('addForm');
         const btnSubmit = addForm.btnSubmit;
-        const inputDisplayPlace = addForm.inputDisplayPlace;
-        const sliderImages = document.getElementById('slider-images');
+        const categories = document.getElementById('categories');
 
         //post data
-        addForm.addEventListener('submit', function(evt) {
+        addForm.addEventListener('submit', function (evt) {
             evt.preventDefault();
 
             btnSubmit.disabled = true;
@@ -127,7 +126,7 @@
 
             const formData = new FormData();
             formData.append("image", document.getElementById('fileImage').files[0]);
-            formData.append("inputName", addForm.inputName.value);
+            formData.append("Name", addForm.inputName.value);
             formData.append("DisplayOrder", addForm.inputDisplayOrder.value);
 
 
@@ -137,7 +136,10 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                success: function (response) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.value = "Add";
+
                     if (!response.IsSuccess) return;
 
                     addForm.fileImage.value = "";
@@ -146,12 +148,9 @@
                     addForm.inputDisplayOrder.value = "";
 
                     appendImage(response.Data);
-
-                    btnSubmit.disabled = false;
-                    btnSubmit.value = "Add";
                     $("#InsertModal").modal('hide');
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                     btnSubmit.disabled = false;
                     btnSubmit.value = "Add";
@@ -163,50 +162,51 @@
         function appendImage(item) {
             const div = document.createElement('div');
             div.className = 'list-group-item d-flex justify-content-between align-items-center';
-            div.innerHTML = `<p class="mb-0"><img src="${item.ImageUrl}" class="rounded" alt=""> ${item.Name}</p>
+     
+            div.innerHTML = `<p class="mb-0"><img src="${item.ImageUrl}" class="rounded" alt=""> <strong>${item.Name}</strong></p>
                              <i data-id="${item.VendorProductCategoryId}" data-url="${item.ImageUrl}" class="delete fas fa-trash red-text"></i>`;
 
-            document.getElementById('categories').appendChild(div);
-        }
+        document.getElementById('categories').appendChild(div);
+    }
 
-        //on delete
-        sliderImages.addEventListener('click', function(evt) {
-            const element = evt.target;
+    //on delete
+    categories.addEventListener('click', function (evt) {
+        const element = evt.target;
 
-            const onBtnDelete = element.classList.contains('delete');
-            if (!onBtnDelete) return;
+        const onBtnDelete = element.classList.contains('delete');
+        if (!onBtnDelete) return;
 
-            showSpinner(element, true);
+        showSpinner(element, true);
 
-            const imageUrl = element.getAttribute('data-url');
-            const id = element.getAttribute('data-id');
+        const imageUrl = element.getAttribute('data-url');
+        const id = +element.getAttribute('data-id');
 
-            $.ajax({
-                type: "POST",
-                url: "/Store/DeleteCategory",
-                data: { imageUrl, id },
-                success: function(response) {
-                    if (response.IsSuccess)
-                        element.parentElement.remove();
+        $.ajax({
+            type: "POST",
+            url: "/Store/DeleteCategory",
+            data: { imageUrl, id },
+            success: function (response) {
+                if (response.IsSuccess)
+                    element.parentElement.remove();
 
-                    showSpinner(element, false);
-                },
-                error: function(err) {
-                    console.log(err);
-                    showSpinner(element, false);
-                }
-            });
-        });
-
-        //show spinner
-        function showSpinner(element, isShow) {
-            if (isShow) {
-                element.classList.remove("fa-trash");
-                element.classList.add("fa-spinner", "fa-spin");
-            } else {
-                element.classList.remove("fa-spinner", "fa-spin");
-                element.classList.add("fa-trash");
+                showSpinner(element, false);
+            },
+            error: function (err) {
+                console.log(err);
+                showSpinner(element, false);
             }
+        });
+    });
+
+    //show spinner
+    function showSpinner(element, isShow) {
+        if (isShow) {
+            element.classList.remove("fa-trash");
+            element.classList.add("fa-spinner", "fa-spin");
+        } else {
+            element.classList.remove("fa-spinner", "fa-spin");
+            element.classList.add("fa-trash");
         }
+    }
     </script>
 }
