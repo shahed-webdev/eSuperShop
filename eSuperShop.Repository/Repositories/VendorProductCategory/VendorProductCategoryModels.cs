@@ -18,11 +18,21 @@
         public bool IsActive { get; set; }
     }
 
+    public class VendorProductCategoryUpdateModel
+    {
+        public int VendorProductCategoryId { get; set; }
+        public string Name { get; set; }
+        public string ImageUrl { get; set; }
+        public int? DisplayOrder { get; set; }
+        public bool IsActive { get; set; }
+    }
+
     public class VendorProductCategoryDisplayModel
     {
         public int VendorProductCategoryId { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }
+        public bool IsActive { get; set; }
     }
     public class VendorProductCategoryAssignModel
     {

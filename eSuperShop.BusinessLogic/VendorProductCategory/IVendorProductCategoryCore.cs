@@ -7,9 +7,10 @@ namespace eSuperShop.BusinessLogic
     {
         DbResponse<VendorProductCategoryModel> Add(VendorProductCategoryAddModel model, string vendorUserName);
         DbResponse Delete(int id);
+        DbResponse Update(VendorProductCategoryUpdateModel model);
         DbResponse<List<VendorProductCategoryDisplayModel>> DisplayList(string vendorUserName);
         DbResponse<List<DDL>> ListDdl(string vendorUserName);
-        DbResponse<VendorProductCategoryModel> Get(int id);
+        DbResponse<VendorProductCategoryUpdateModel> Get(int id);
         DbResponse PlaceAssign(VendorProductCategoryAssignModel model);
         DbResponse PlaceDelete(VendorProductCategoryAssignModel model);
     }

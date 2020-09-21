@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace eSuperShop.Repository
@@ -26,9 +27,17 @@ namespace eSuperShop.Repository
             Db.VendorProductCategory.Remove(VendorProductCategory);
         }
 
-        public void Update(VendorProductCategoryModel model)
+        public void Update(VendorProductCategoryUpdateModel model)
         {
-            throw new System.NotImplementedException();
+            var vendorCategory = Db.VendorProductCategory.Find(model.VendorProductCategoryId);
+
+            vendorCategory.VendorProductCategoryId = model.VendorProductCategoryId;
+            vendorCategory.Name = model.Name;
+            vendorCategory.ImageUrl = model.ImageUrl;
+            vendorCategory.DisplayOrder = model.DisplayOrder;
+            vendorCategory.IsActive = model.IsActive;
+
+            Db.VendorProductCategory.Update(vendorCategory);
         }
 
         public bool IsExistName(string name)
@@ -54,7 +63,7 @@ namespace eSuperShop.Repository
         public List<VendorProductCategoryDisplayModel> DisplayList(int vendorId)
         {
             return Db.VendorProductCategory
-                .Where(c => c.VendorId == vendorId)
+                .Where(c => c.VendorId == vendorId).OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name)
                 .ProjectTo<VendorProductCategoryDisplayModel>(_mapper.ConfigurationProvider)
                 .ToList();
         }
@@ -72,9 +81,11 @@ namespace eSuperShop.Repository
             return ddl?.ToList() ?? new List<DDL>();
         }
 
-        public VendorProductCategoryModel Get(int id)
+        public VendorProductCategoryUpdateModel Get(int vendorProductCategoryId)
         {
-            return Db.VendorProductCategory.ProjectTo<VendorProductCategoryModel>(_mapper.ConfigurationProvider).FirstOrDefault(c => c.VendorProductCategoryId == id);
+            return Db.VendorProductCategory
+                .ProjectTo<VendorProductCategoryUpdateModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault(c => c.VendorProductCategoryId == vendorProductCategoryId);
         }
 
         public void PlaceAssign(VendorProductCategoryAssignModel model)

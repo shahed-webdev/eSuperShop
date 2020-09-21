@@ -60,6 +60,29 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse Update(VendorProductCategoryUpdateModel model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.Name)) return new DbResponse(false, "Invalid Data");
+
+                if (_db.VendorProductCategory.IsNull(model.VendorProductCategoryId))
+                    return new DbResponse(false, "No Data Found");
+
+                if (_db.VendorProductCategory.IsExistName(model.Name, model.VendorProductCategoryId))
+                    return new DbResponse(false, "Store Name already Exist");
+
+                _db.VendorProductCategory.Update(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
         public DbResponse<List<VendorProductCategoryDisplayModel>> DisplayList(string vendorUserName)
         {
             try
@@ -98,17 +121,17 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<VendorProductCategoryModel> Get(int id)
+        public DbResponse<VendorProductCategoryUpdateModel> Get(int id)
         {
             try
             {
                 var data = _db.VendorProductCategory.Get(id);
 
-                return new DbResponse<VendorProductCategoryModel>(true, "Success", data);
+                return new DbResponse<VendorProductCategoryUpdateModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<VendorProductCategoryModel>(false, e.Message);
+                return new DbResponse<VendorProductCategoryUpdateModel>(false, e.Message);
             }
         }
 
