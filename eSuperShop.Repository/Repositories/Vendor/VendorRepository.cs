@@ -247,6 +247,14 @@ namespace eSuperShop.Repository
             Db.Vendor.Update(vendor);
         }
 
+        public VendorStoreInfoUpdateModel StoreDetails(int vendorId)
+        {
+            return Db.Vendor
+                .Where(c => c.VendorId == vendorId)
+                .ProjectTo<VendorStoreInfoUpdateModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 

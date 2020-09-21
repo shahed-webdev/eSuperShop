@@ -56,6 +56,7 @@ namespace eSuperShop.Repository
             CreateMap<Vendor, VendorAddModel>().ReverseMap();
             CreateMap<Vendor, VendorModel>().ReverseMap();
             CreateMap<Vendor, VendorInfoModel>().ReverseMap();
+            CreateMap<Vendor, VendorStoreInfoUpdateModel>().ReverseMap();
 
 
             //Vendor Slider Mapping
