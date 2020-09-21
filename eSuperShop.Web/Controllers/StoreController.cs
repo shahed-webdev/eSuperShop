@@ -98,5 +98,12 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
+
+        //Update Store
+        public IActionResult UpdateStore()
+        {
+            var response = _category.DisplayList(User.Identity.Name);
+            return View(response.Data);
+        }
     }
 }
