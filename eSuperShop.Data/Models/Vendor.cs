@@ -24,7 +24,7 @@ namespace eSuperShop.Data
         public string StoreName { get; set; }
         public string StoreAddress { get; set; }
         public string StoreSlugUrl { get; set; }
-        public string StoreBanarUrl { get; set; }
+        public string StoreBannerUrl { get; set; }
         public string StoreLogoUrl { get; set; }
         public string StoreTagLine { get; set; }
         public StoreTheme StoreTheme { get; set; }

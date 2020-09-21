@@ -54,7 +54,7 @@ namespace eSuperShop.Data
             builder.Property(e => e.StoreSlugUrl)
                 .HasMaxLength(255);
 
-            builder.Property(e => e.StoreBanarUrl)
+            builder.Property(e => e.StoreBannerUrl)
                 .HasMaxLength(255);
 
             builder.Property(e => e.StoreLogoUrl)

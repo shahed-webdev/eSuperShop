@@ -230,7 +230,7 @@ namespace eSuperShop.Repository
         public void BanarUrlChange(int vendorId, string banarUrl)
         {
             var vendor = Db.Vendor.Find(vendorId);
-            vendor.StoreBanarUrl = banarUrl;
+            vendor.StoreBannerUrl = banarUrl;
             Db.Vendor.Update(vendor);
         }
 
@@ -241,7 +241,7 @@ namespace eSuperShop.Repository
             vendor.StoreName = model.StoreName;
             vendor.StoreAddress = model.StoreAddress;
             vendor.StoreSlugUrl = model.StoreSlugUrl;
-            vendor.StoreBanarUrl = model.StoreBannerUrl;
+            vendor.StoreBannerUrl = model.StoreBannerUrl;
             vendor.StoreLogoUrl = model.StoreLogoUrl;
             vendor.StoreTagLine = model.StoreTagLine;
             Db.Vendor.Update(vendor);
