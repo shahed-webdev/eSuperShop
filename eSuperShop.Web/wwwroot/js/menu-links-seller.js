@@ -20,6 +20,14 @@ let linkData = [
                 "Action": "AddCategory",
                 "Title": "Add Category",
                 "IconClass": null
+            },
+            {
+                "LinkID": 3,
+                "SN": 0,
+                "Controller": "Store",
+                "Action": "UpdateStore",
+                "Title": "Update Store Info",
+                "IconClass": null
             }]
     }
 ];

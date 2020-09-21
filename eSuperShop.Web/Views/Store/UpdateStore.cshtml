@@ -10,36 +10,50 @@
     <style>
         #categories .delete { cursor: pointer }
         .defaut-img { padding: .62rem .59rem; background-color: #ddd; color: #666; }
-    </style>   
+    </style>
 }
 
 
 <div class="container">
-    <h4 class="page-header">Update Store</h4>
+    <h4 class="page-header mb-3">Update Store</h4>
 
     <div class="card card-body">
-        <form id="addForm">
+        @if (!string.IsNullOrEmpty(Model.StoreLogoUrl))
+        {
+            <div class="text-center">
+                <img src="@Model.StoreLogoUrl" alt="@Model.StoreName" style="height: 80px">
+            </div>
+        }
+
+        <form enctype="multipart/form-data" asp-action="UpdateStore">
             <div class="md-form">
                 <label asp-for="StoreName">Store Name</label>
                 <input asp-for="StoreName" class="form-control" required>
+                <span asp-validation-for="StoreName" class="field-validation-error"></span>
             </div>
-            <div class="md-form">
+
+            <div class="md-form my-4">
                 <label asp-for="StoreAddress">Store Address</label>
                 <input asp-for="StoreAddress" class="form-control" required>
             </div>
+
             <div class="md-form">
-                <label asp-for="StoreSlugUrl">Store SlugUrl</label>
-                <input asp-for="StoreSlugUrl" class="form-control" required>
+                <label asp-for="StoreSlugUrl">Store SlugUrl (allow: a-z, 0-9, -, %)</label>
+                <input asp-for="StoreSlugUrl" class="form-control" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" required>
+                <span asp-validation-for="StoreSlugUrl" class="field-validation-error"></span>
             </div>
-            <div class="md-form">
+
+            <div class="md-form my-4">
                 <label asp-for="StoreTagLine">Store Tag Line</label>
                 <input asp-for="StoreTagLine" class="form-control" required>
             </div>
+
             <div class="md-form mb-0">
+                <span id="imageError" class="red-text"></span>
                 <div class="file-field">
                     <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                         <span>Choose Logo<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                        <input id="fileImage" type="file" accept="image/*">
+                        <input id="fileImage" name="logo" type="file" accept="image/*">
                     </div>
                     <div class="file-path-wrapper">
                         <input id="filePath" class="file-path validate" type="text" placeholder="Upload Logo">
@@ -48,26 +62,24 @@
             </div>
 
             <div class="md-form text-center">
-                <input id="btnSubmit" type="submit" value="Submit" class="btn btn-danger" />
+                <input id="btnSubmit" type="submit" value="Update" class="btn btn-danger" />
             </div>
         </form>
     </div>
 </div>
 
 
-
-
 @section Scripts{
     <script>
-        const addForm = document.getElementById('addForm');
-        const btnSubmit = addForm.btnSubmit;
-
         //set image file
-        $('#fileImage').change(function(e) {
+        $('#fileImage').change(function (e) {
+            const imageError = $("#imageError");
             const pathInput = $('#filePath');
             const size = e.target.files[0].size / 1024 / 1024;
             const allowSize = 1;
             const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
+
+            imageError.text("");
 
             if (!(regex.test(e.target.value.toLowerCase()))) {
                 e.target.value = "";
@@ -86,34 +98,6 @@
             }
 
             pathInput.val(e.target.files[0].name);
-        });
-
-
-        //post data
-        addForm.addEventListener('submit', function(evt) {
-            evt.preventDefault();
-
-            btnSubmit.disabled = true;
-            btnSubmit.value = "submitting..";
-
-            const data = {}
-
-            $.ajax({
-                type: "POST",
-                url: "/Store/UpdateStore",
-                data,
-                success: function(response) {
-                    btnSubmit.disabled = false;
-                    btnSubmit.value = "Add";
-
-                    if (!response.IsSuccess) return;
-                },
-                error: function(err) {
-                    console.log(err);
-                    btnSubmit.disabled = false;
-                    btnSubmit.value = "Add";
-                }
-            });
         });
     </script>
 }
