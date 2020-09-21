@@ -14,7 +14,9 @@ namespace eSuperShop.Repository
         bool IsExistPhone(string phone);
         bool IsExistEmail(string email);
         bool IsExistStore(string store);
+        bool IsExistStore(string store, int updateVendorId);
         bool IsExistSlugUrl(string slugUrl);
+        bool IsExistSlugUrl(string slugUrl, int updateVendorId);
         bool IsNull(int vendorId);
         DataResult<VendorModel> List(DataRequest request);
         Task<ICollection<VendorModel>> SearchAsync(string key);
@@ -31,7 +33,6 @@ namespace eSuperShop.Repository
         void ThemeChange(int vendorId, StoreTheme theme);
         void SlugUrlChange(int vendorId, string slugUrl);
         void BanarUrlChange(int vendorId, string banarUrl);
+        void StoreInfoUpdate(vendorStoreInfoUpdateModel model);
     }
-
-
 }

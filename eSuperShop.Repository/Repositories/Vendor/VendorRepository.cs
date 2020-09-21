@@ -61,11 +61,19 @@ namespace eSuperShop.Repository
             return Db.Vendor.Any(c => c.StoreName == store);
         }
 
+        public bool IsExistStore(string store, int updateVendorId)
+        {
+            return Db.Vendor.Any(c => c.StoreName == store && c.VendorId != updateVendorId);
+        }
+
         public bool IsExistSlugUrl(string slugUrl)
         {
             return Db.Vendor.Any(c => c.StoreSlugUrl == slugUrl);
         }
-
+        public bool IsExistSlugUrl(string slugUrl, int updateVendorId)
+        {
+            return Db.Vendor.Any(c => c.StoreSlugUrl == slugUrl && c.VendorId != updateVendorId);
+        }
         public bool IsNull(int id)
         {
             return !Db.Vendor.Any(c => c.VendorId == id);
@@ -223,6 +231,19 @@ namespace eSuperShop.Repository
         {
             var vendor = Db.Vendor.Find(vendorId);
             vendor.StoreBanarUrl = banarUrl;
+            Db.Vendor.Update(vendor);
+        }
+
+        public void StoreInfoUpdate(vendorStoreInfoUpdateModel model)
+        {
+            var vendor = Db.Vendor.Find(model.VendorId);
+
+            vendor.StoreName = model.StoreName;
+            vendor.StoreAddress = model.StoreAddress;
+            vendor.StoreSlugUrl = model.StoreSlugUrl;
+            vendor.StoreBanarUrl = model.StoreBanarUrl;
+            vendor.StoreLogoUrl = model.StoreLogoUrl;
+            vendor.StoreTagLine = model.StoreTagLine;
             Db.Vendor.Update(vendor);
         }
 
