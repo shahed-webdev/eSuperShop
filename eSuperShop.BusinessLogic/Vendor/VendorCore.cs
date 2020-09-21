@@ -337,5 +337,28 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse(false, e.Message);
             }
         }
+
+        public DbResponse<VendorStoreInfoUpdateModel> StoreDetails(string vendorUserName)
+        {
+            try
+            {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0)
+                    return new DbResponse<VendorStoreInfoUpdateModel>(false, "Invalid User");
+
+
+
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse<VendorStoreInfoUpdateModel>(false, "No Data Found");
+
+                var data = _db.Vendor.StoreDetails(vendorId);
+
+                return new DbResponse<VendorStoreInfoUpdateModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<VendorStoreInfoUpdateModel>(false, e.Message);
+            }
+        }
     }
 }
