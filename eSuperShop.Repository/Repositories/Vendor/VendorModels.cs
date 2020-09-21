@@ -83,13 +83,13 @@ namespace eSuperShop.Repository
         public ICollection<VendorCatalogViewModel> Catalogs { get; set; }
     }
 
-    public class vendorStoreInfoUpdateModel
+    public class VendorStoreInfoUpdateModel
     {
         public int VendorId { get; set; }
         public string StoreName { get; set; }
         public string StoreAddress { get; set; }
         public string StoreSlugUrl { get; set; }
-        public string StoreBanarUrl { get; set; }
+        public string StoreBannerUrl { get; set; }
         public string StoreLogoUrl { get; set; }
         public string StoreTagLine { get; set; }
     }

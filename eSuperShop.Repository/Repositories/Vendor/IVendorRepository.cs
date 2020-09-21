@@ -33,6 +33,6 @@ namespace eSuperShop.Repository
         void ThemeChange(int vendorId, StoreTheme theme);
         void SlugUrlChange(int vendorId, string slugUrl);
         void BanarUrlChange(int vendorId, string banarUrl);
-        void StoreInfoUpdate(vendorStoreInfoUpdateModel model);
+        void StoreInfoUpdate(VendorStoreInfoUpdateModel model);
     }
 }

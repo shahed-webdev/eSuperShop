@@ -9,7 +9,8 @@
 @section Styles{
     <style>
         #categories .delete { cursor: pointer }
-    </style>
+        .defaut-img { padding: .62rem .59rem; background-color: #ddd; color: #666; }
+    </style>   
 }
 
 
@@ -30,9 +31,16 @@
             @foreach (var item in Model)
             {
                 <div class="list-group-item d-flex justify-content-between align-items-center">
-                    <p class="mb-0">
-                        <img src="@item.ImageUrl" class="rounded" alt="" style="width: 50px">
-                        <strong>@item.Name</strong>
+                    <p class="mb-0 d-flex align-items-center">
+                        @if (string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <i class="far fa-image fa-2x rounded defaut-img"></i>
+                        }
+                        else
+                        {
+                            <img src="@item.ImageUrl" class="rounded" alt="" style="width: 50px">
+                        }
+                        <strong class="ml-2">@item.Name</strong>
                     </p>
                     <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text"></i>
                 </div>
@@ -162,51 +170,52 @@
         function appendImage(item) {
             const div = document.createElement('div');
             div.className = 'list-group-item d-flex justify-content-between align-items-center';
-     
-            div.innerHTML = `<p class="mb-0"><img src="${item.ImageUrl}" class="rounded" alt=""> <strong>${item.Name}</strong></p>
-                             <i data-id="${item.VendorProductCategoryId}" data-url="${item.ImageUrl}" class="delete fas fa-trash red-text"></i>`;
+            const url = item.ImageUrl ? item.ImageUrl : "";
 
-        document.getElementById('categories').appendChild(div);
-    }
+            div.innerHTML = `<p class="mb-0"><img src="${item.ImageUrl}" class="rounded" alt=""><strong class="ml-2">${item.Name}</strong></p>
+                                 <i data-id="${item.VendorProductCategoryId}" data-url="${url}" class="delete fas fa-trash red-text"></i>`;
 
-    //on delete
-    categories.addEventListener('click', function (evt) {
-        const element = evt.target;
-
-        const onBtnDelete = element.classList.contains('delete');
-        if (!onBtnDelete) return;
-
-        showSpinner(element, true);
-
-        const imageUrl = element.getAttribute('data-url');
-        const id = +element.getAttribute('data-id');
-
-        $.ajax({
-            type: "POST",
-            url: "/Store/DeleteCategory",
-            data: { imageUrl, id },
-            success: function (response) {
-                if (response.IsSuccess)
-                    element.parentElement.remove();
-
-                showSpinner(element, false);
-            },
-            error: function (err) {
-                console.log(err);
-                showSpinner(element, false);
-            }
-        });
-    });
-
-    //show spinner
-    function showSpinner(element, isShow) {
-        if (isShow) {
-            element.classList.remove("fa-trash");
-            element.classList.add("fa-spinner", "fa-spin");
-        } else {
-            element.classList.remove("fa-spinner", "fa-spin");
-            element.classList.add("fa-trash");
+            document.getElementById('categories').appendChild(div);
         }
-    }
-    </script>
+
+        //on delete
+        categories.addEventListener('click', function (evt) {
+            const element = evt.target;
+
+            const onBtnDelete = element.classList.contains('delete');
+            if (!onBtnDelete) return;
+
+            showSpinner(element, true);
+
+            const imageUrl = element.getAttribute('data-url');
+            const id = +element.getAttribute('data-id');
+
+            $.ajax({
+                type: "POST",
+                url: "/Store/DeleteCategory",
+                data: { imageUrl, id },
+                success: function (response) {
+                    if (response.IsSuccess)
+                        element.parentElement.remove();
+
+                    showSpinner(element, false);
+                },
+                error: function (err) {
+                    console.log(err);
+                    showSpinner(element, false);
+                }
+            });
+        });
+
+        //show spinner
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
+    </script>    
 }

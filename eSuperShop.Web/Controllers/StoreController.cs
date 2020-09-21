@@ -88,7 +88,7 @@ namespace eSuperShop.Web.Controllers
         {
             var response = _category.Delete(id);
 
-            if (imageUrl == null) return Json(response);
+            if (string.IsNullOrEmpty(imageUrl)) return Json(response);
 
             if (!response.IsSuccess) return Json(response);
 

@@ -234,14 +234,14 @@ namespace eSuperShop.Repository
             Db.Vendor.Update(vendor);
         }
 
-        public void StoreInfoUpdate(vendorStoreInfoUpdateModel model)
+        public void StoreInfoUpdate(VendorStoreInfoUpdateModel model)
         {
             var vendor = Db.Vendor.Find(model.VendorId);
 
             vendor.StoreName = model.StoreName;
             vendor.StoreAddress = model.StoreAddress;
             vendor.StoreSlugUrl = model.StoreSlugUrl;
-            vendor.StoreBanarUrl = model.StoreBanarUrl;
+            vendor.StoreBanarUrl = model.StoreBannerUrl;
             vendor.StoreLogoUrl = model.StoreLogoUrl;
             vendor.StoreTagLine = model.StoreTagLine;
             Db.Vendor.Update(vendor);

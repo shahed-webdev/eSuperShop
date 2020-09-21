@@ -306,7 +306,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse StoreUpdate(vendorStoreInfoUpdateModel model, string vendorUserName)
+        public DbResponse StoreUpdate(VendorStoreInfoUpdateModel model, string vendorUserName)
         {
             try
             {
