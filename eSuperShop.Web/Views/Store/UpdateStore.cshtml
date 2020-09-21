@@ -13,19 +13,19 @@
     </style>
 }
 
-
 <div class="container">
     <h4 class="page-header mb-3">Update Store</h4>
 
     <div class="card card-body">
-        @if (!string.IsNullOrEmpty(Model.StoreLogoUrl))
-        {
-            <div class="text-center">
-                <img src="@Model.StoreLogoUrl" alt="@Model.StoreName" style="height: 80px">
-            </div>
-        }
-
         <form enctype="multipart/form-data" asp-action="UpdateStore">
+            @if (!string.IsNullOrEmpty(Model.StoreLogoUrl))
+            {
+                <div class="text-center">
+                    <img src="@Model.StoreLogoUrl" alt="@Model.StoreName" style="height: 80px">
+                </div>
+                <input type="hidden" name="StoreLogoUrl" value="@Model.StoreLogoUrl" />
+            }
+
             <div class="md-form">
                 <label asp-for="StoreName">Store Name</label>
                 <input asp-for="StoreName" class="form-control" required>
@@ -60,6 +60,27 @@
                     </div>
                 </div>
             </div>
+
+            <div class="md-form mb-0">
+                <span id="imageError2" class="red-text"></span>
+                <div class="file-field">
+                    <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                        <span>Choose Banner Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                        <input id="fileImage2" name="bannerImage" type="file" accept="image/*">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input id="filePath2" class="file-path validate" type="text" placeholder="Upload Banner Image">
+                    </div>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.StoreBannerUrl))
+            {
+                <input type="hidden" name="StoreBannerUrl" value="@Model.StoreBannerUrl"/>
+                <div class="w-50 mx-auto mt-2">
+                    <img src="@Model.StoreBannerUrl" alt="@Model.StoreName" class="img-thumbnail" style="max-height: 300px">
+                </div>
+            }
 
             <div class="md-form text-center">
                 <input id="btnSubmit" type="submit" value="Update" class="btn btn-danger" />
@@ -99,5 +120,34 @@
 
             pathInput.val(e.target.files[0].name);
         });
-    </script>
+
+        //banner image
+        $('#fileImage2').change(function (e) {
+            const imageError = $("#imageError2");
+            const pathInput = $('#filePath2');
+            const size = e.target.files[0].size / 1024 / 1024;
+            const allowSize = 1;
+            const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
+
+            imageError.text("");
+
+            if (!(regex.test(e.target.value.toLowerCase()))) {
+                e.target.value = "";
+                pathInput.val("");
+
+                imageError.text(`Please select correct file format`);
+                return;
+            }
+
+            if (size > allowSize) {
+                e.target.value = "";
+                pathInput.val("");
+
+                imageError.text(`image size must be less than ${allowSize}MB. your file size:${size.toFixed()} MB`);
+                return;
+            }
+
+            pathInput.val(e.target.files[0].name);
+        });
+    </script> 
 }
