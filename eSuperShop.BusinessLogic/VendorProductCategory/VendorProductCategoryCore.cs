@@ -46,7 +46,7 @@ namespace eSuperShop.BusinessLogic
             {
                 if (!_db.VendorProductCategory.IsNull(id))
                     return new DbResponse(false, "No data Found");
-                if (!_db.VendorProductCategory.IsRelatedDataExist(id))
+                if (_db.VendorProductCategory.IsRelatedDataExist(id))
                     return new DbResponse(false, "Related data Found");
 
                 _db.VendorProductCategory.Delete(id);
