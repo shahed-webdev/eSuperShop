@@ -76,7 +76,7 @@ namespace eSuperShop.Web.Controllers
         {
             if (image != null)
             {
-                var fileName = FileBuilder.FileNameImage("product-category", image.FileName);
+                var fileName = FileBuilder.FileNameImage("store-product-category", image.FileName);
                 model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
             }
 
@@ -100,6 +100,28 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
+      
+        //update category
+        [HttpPost]
+        public async Task<IActionResult> UpdateCategory(VendorProductCategoryUpdateModel model, IFormFile image)
+        {
+            if (image != null)
+            {
+                if (!string.IsNullOrEmpty(model.ImageUrl))
+                {
+                    var uri = new Uri(model.ImageUrl);
+                    await _cloudStorage.DeleteFileAsync(Path.GetFileName(uri.AbsolutePath));
+                }
+
+                var fileName = FileBuilder.FileNameImage("store-product-category", image.FileName);
+                model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            }
+
+            var response = _category.Update(model);
+
+            return Json(response);
+        }
+
 
         //Update Store
         public IActionResult UpdateStore()

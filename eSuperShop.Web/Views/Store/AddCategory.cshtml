@@ -8,9 +8,9 @@
 
 @section Styles{
     <style>
-        #categories .delete { cursor: pointer }
+        .actions i { cursor: pointer }
         .defaut-img { padding: .62rem .59rem; background-color: #ddd; color: #666; }
-    </style>   
+    </style>
 }
 
 
@@ -42,7 +42,10 @@
                         }
                         <strong class="ml-2">@item.Name</strong>
                     </p>
-                    <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text"></i>
+                    <div class="actions">
+                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageUrl" data-name="@item.Name" data-active="@item.IsActive" class="category-update fas fa-edit"></i>
+                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text ml-4"></i>
+                    </div>
                 </div>
             }
         </div>
@@ -78,11 +81,60 @@
                         </div>
                     </div>
                     <div class="md-form">
-                        <input id="inputDisplayOrder" type="number" class="form-control" placeholder="Display Order" required/>
+                        <input id="inputDisplayOrder" type="number" class="form-control" placeholder="Display Order" required />
                     </div>
 
                     <div class="md-form text-center">
-                        <input id="btnSubmit" type="submit" value="Add" class="btn btn-danger"/>
+                        <input id="btnSubmit" type="submit" value="Add" class="btn btn-danger" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--update modal-->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog cascading-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="m-0 white-text">Update Product Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="updateForm">
+                    <input id="productCategoryId" type="hidden">
+                    <div class="text-center">
+                        <img src="" id="showImage" class="rounded" alt="" style="width: 50px">
+                    </div>
+
+                    <div class="md-form">
+                        <input id="inputUpdateName" type="text" class="form-control" placeholder="Category Name" required>
+                    </div>
+                    <div class="md-form mb-0">
+                        <span id="imageErrorUpdate" class="input-validation-error"></span>
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input id="fileImageUpdate" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input id="filePathUpdate" class="file-path validate" type="text" placeholder="Upload Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md-form">
+                        <input id="inputUpdateDisplayOrder" type="number" class="form-control" placeholder="Display Order" required/>
+                    </div>
+                    <div class="md-form">
+                        <input id="activeCheckbox" type="checkbox" class="form-check-input">
+                        <label class="form-check-label" for="activeCheckbox">Active</label>
+                    </div>
+                    <div class="md-form text-center">
+                        <input id="btnUpdate" type="submit" value="Update" class="btn btn-danger"/>
                     </div>
                 </form>
             </div>
@@ -94,7 +146,7 @@
 @section Scripts{
     <script>
         //set image file
-        $('#fileImage').change(function (e) {
+        $('#fileImage').change(function(e) {
             const pathInput = $('#filePath');
             const size = e.target.files[0].size / 1024 / 1024;
             const allowSize = 1;
@@ -119,14 +171,49 @@
             pathInput.val(e.target.files[0].name);
         });
 
+        //set image file
+        $('#fileImageUpdate').change(function(e) {
+            const pathInput = $('#filePathUpdate');
+            const imageError = $('#imageErrorUpdate');
+            const size = e.target.files[0].size / 1024 / 1024;
+            const allowSize = 1;
+            const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
 
-        //upload image
+            if (!(regex.test(e.target.value.toLowerCase()))) {
+                e.target.value = "";
+                pathInput.val("");
+
+                imageError.text(`Please select correct file format`);
+                return;
+            }
+
+            if (size > allowSize) {
+                e.target.value = "";
+                pathInput.val("");
+
+                imageError.text(`image size must be less than ${allowSize}MB. your file size:${size.toFixed()} MB`);
+                return;
+            }
+
+            pathInput.val(e.target.files[0].name);
+        });
+
+        //add form
         const addForm = document.getElementById('addForm');
         const btnSubmit = addForm.btnSubmit;
+
+        //update form
+        const updateForm = document.getElementById('updateForm');
+        const inputUpdateName = updateForm.inputUpdateName;
+        const showImage = updateForm.showImage;
+        const inputUpdateDisplayOrder = updateForm.inputUpdateDisplayOrder;
+        const activeCheckbox = updateForm.activeCheckbox;
+        const btnUpdate = updateForm.btnUpdate;
+
         const categories = document.getElementById('categories');
 
-        //post data
-        addForm.addEventListener('submit', function (evt) {
+        //post insert data
+        addForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
             btnSubmit.disabled = true;
@@ -144,7 +231,7 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
+                success: function(response) {
                     btnSubmit.disabled = false;
                     btnSubmit.value = "Add";
 
@@ -158,7 +245,7 @@
                     appendImage(response.Data);
                     $("#InsertModal").modal('hide');
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                     btnSubmit.disabled = false;
                     btnSubmit.value = "Add";
@@ -173,13 +260,13 @@
             const url = item.ImageUrl ? item.ImageUrl : "";
 
             div.innerHTML = `<p class="mb-0"><img src="${item.ImageUrl}" class="rounded" alt=""><strong class="ml-2">${item.Name}</strong></p>
-                                 <i data-id="${item.VendorProductCategoryId}" data-url="${url}" class="delete fas fa-trash red-text"></i>`;
+                                     <i data-id="${item.VendorProductCategoryId}" data-url="${url}" class="delete fas fa-trash red-text"></i>`;
 
             document.getElementById('categories').appendChild(div);
         }
 
         //on delete
-        categories.addEventListener('click', function (evt) {
+        categories.addEventListener('click', function(evt) {
             const element = evt.target;
 
             const onBtnDelete = element.classList.contains('delete');
@@ -194,15 +281,73 @@
                 type: "POST",
                 url: "/Store/DeleteCategory",
                 data: { imageUrl, id },
-                success: function (response) {
+                success: function(response) {
                     if (response.IsSuccess)
                         element.parentElement.remove();
 
                     showSpinner(element, false);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                     showSpinner(element, false);
+                }
+            });
+        });
+
+
+        //on edit Click
+        categories.addEventListener('click', function(evt) {
+            const element = evt.target;
+
+            const onCategoryUpdate = element.classList.contains('category-update');
+            if (!onCategoryUpdate) return;
+
+            const id = element.getAttribute('data-id');
+            const url = element.getAttribute('data-url');
+            const name = element.getAttribute('data-name');
+            const active = element.getAttribute('data-active');
+
+            inputUpdateName.value = name;
+            active === "True" ? activeCheckbox.checked = true : activeCheckbox.checked = false;
+            showImage.src = url;
+            productCategoryId.value = id;
+
+            $('#updateModal').modal("show");
+        });
+
+        //post update data
+        updateForm.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            btnUpdate.disabled = true;
+            btnUpdate.value = "submitting..";
+
+            const formData = new FormData();
+            formData.append("VendorProductCategoryId", productCategoryId.value);
+            formData.append("image", document.getElementById('fileImageUpdate').files[0]);
+            formData.append("Name", inputUpdateName.value);
+            formData.append("DisplayOrder", inputUpdateDisplayOrder.value);
+            formData.append("ImageUrl", showImage.getAttribute("src"));
+            formData.append("IsActive", activeCheckbox.checked);
+
+   
+            $.ajax({
+                type: "POST",
+                url: "/Store/UpdateCategory",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    btnUpdate.disabled = false;
+                    btnUpdate.value = "Update";
+                    console.log(response)
+                    if (!response.IsSuccess) return;
+                    location.reload();
+                },
+                error: function(err) {
+                    console.log(err);
+                    btnUpdate.disabled = false;
+                    btnUpdate.value = "Add";
                 }
             });
         });
@@ -217,5 +362,5 @@
                 element.classList.add("fa-trash");
             }
         }
-    </script>    
+    </script>
 }

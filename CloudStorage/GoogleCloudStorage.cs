@@ -27,7 +27,7 @@ namespace CloudStorage
             var dataObject = await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, null, memoryStream);
             return dataObject.MediaLink;
         }
-
+   
         public async Task DeleteFileAsync(string fileNameForStorage)
         {
             await _storageClient.DeleteObjectAsync(_bucketName, fileNameForStorage);
