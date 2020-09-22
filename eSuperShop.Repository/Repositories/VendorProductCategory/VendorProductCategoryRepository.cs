@@ -90,12 +90,10 @@ namespace eSuperShop.Repository
 
         public void PlaceAssign(VendorProductCategoryAssignModel model)
         {
-            if (!IsPlaceAssign(model))
-            {
+            if (IsPlaceAssign(model)) return;
 
-                VendorProductCategoryList = _mapper.Map<VendorProductCategoryList>(model);
-                Db.VendorProductCategoryList.Add(VendorProductCategoryList);
-            }
+            VendorProductCategoryList = _mapper.Map<VendorProductCategoryList>(model);
+            Db.VendorProductCategoryList.Add(VendorProductCategoryList);
         }
 
         public bool IsPlaceAssign(VendorProductCategoryAssignModel model)

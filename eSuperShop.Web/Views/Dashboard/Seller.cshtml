@@ -84,14 +84,19 @@
     
     <div class="row">
         <div class="col-lg-4">
-            <div class="card card-body text-center">
-                <h5 class="font-weight-bold">Selected Theme</h5>
-                <select id="selectTheme" asp-items="ViewBag.ThemeType" class="mdb-select md-form">
+            <div class="card card-body">
+                <h5 class="font-weight-bold text-center">Selected Theme</h5>
+                <select id="selectTheme" asp-items="ViewBag.ThemeType" class="mdb-select md-form mb-1">
                     <option value="" disabled selected>Select Theme</option>
                 </select>
-                
-                <button disabled id="btnThemeChange" class="btn btn-danger">Change Theme</button>
-            </div>
+
+                <a target="_blank" href="/StoreThemes/Defaults">Only Category (pink)</a>
+                <a target="_blank" href="/StoreThemes/FullSlider">Full Slider (black)</a>
+                <a target="_blank" href="/StoreThemes/HalfSlider">Half Slider (blue)</a>
+                <a target="_blank" href="/StoreThemes/BannerBigImage">Full Banner image (gray)</a>
+
+                <button disabled id="btnThemeChange" class="btn btn-danger m-0 mt-3">Change Theme</button>
+            </div> 
         </div>
     </div>
 </div>
