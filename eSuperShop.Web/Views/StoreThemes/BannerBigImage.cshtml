@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Store Theme 3";
+}
+
+@section Styles{
+    <style>
+        body { background-color: #fff; }
+        .serach-container { display: none }
+
+        #store-name { color: #6F6F6F; font-size: 30px; font-weight: 700; margin-bottom: 0 }
+
+        .search-group { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25); }
+        .bg-custom { background-color: #F9F9F9; }
+
+        input:hover,
+        input:active,
+        input:focus,
+        button:focus,
+        button:active,
+        button:hover,
+        label:focus,
+        .btn:active,
+        .btn.active { outline: 0 !important; -webkit-appearance: none; box-shadow: none !important; }
+
+        #coverImage {max-height:700px; }
+        #coverImage img { width: 100%; max-height: 700px; }
+
+        .category-title { color: #6F6F6F; font-size: 25px; font-weight: bold; text-align: center; }
+
+        .product-name { color: #6F6F6F; text-align: center; padding: 1rem 5px; }
+        .product-name p { margin-bottom: 0; font-size: 15px }
+    </style>  
+}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-6">
+            <h4 id="store-name">The Store Name</h4>
+        </div>
+        <div class="col-lg-6 text-right">
+            <form id="formFind">
+                <div class="input-group border-0 form-sm pl-0 search-group bg-custom">
+                    <input class="form-control my-0 py-1 border-0 bg-custom" type="text" placeholder="Search">
+                    <div class="input-group-append">
+                        <button class="input-group-text border-0 bg-custom">
+                            <i class="fas fa-search text-grey"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="coverImage">
+    <img src="~/images/men/coverImage.jpg" />
+</div>
+
+<section id="products" class="container mt-5">
+    <h4 class="category-title mb-4">THE CATEGORY</h4>
+
+    <div class="row">
+        <div class="col-lg-4 col-6 mb-4">
+            <div class="card">
+                <div class="view overlay">
+                    <img class="card-img-top" src="/images/men/1.jpg" alt="">
+                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
+                </div>
+
+                <div class="product-name">
+                    <p class="mb-0">Name of the product</p>
+                    <strong>৳500</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-6 mb-4">
+            <div class="card">
+                <div class="view overlay">
+                    <img class="card-img-top" src="/images/men/2.jpg" alt="">
+                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
+                </div>
+
+                <div class="product-name">
+                    <p class="mb-0">Name of the product</p>
+                    <strong>৳500</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-6 mb-4">
+            <div class="card">
+                <div class="view overlay">
+                    <img class="card-img-top" src="/images/men/3.jpg" alt="">
+                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
+                </div>
+
+                <div class="product-name">
+                    <p class="mb-0">Name of the product</p>
+                    <strong>৳500</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-6 mb-4">
+            <div class="card">
+                <div class="view overlay">
+                    <img class="card-img-top" src="/images/men/2.jpg" alt="">
+                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
+                </div>
+
+                <div class="product-name">
+                    <p class="mb-0">Name of the product</p>
+                    <strong>৳500</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-6 mb-4">
+            <div class="card">
+                <div class="view overlay">
+                    <img class="card-img-top" src="/images/men/3.jpg" alt="">
+                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
+                </div>
+
+                <div class="product-name">
+                    <p class="mb-0">Name of the product</p>
+                    <strong>৳500</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-6 mb-4">
+            <div class="card">
+                <div class="view overlay">
+                    <img class="card-img-top" src="/images/men/1.jpg" alt="">
+                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
+                </div>
+
+                <div class="product-name">
+                    <p class="mb-0">Name of the product</p>
+                    <strong>৳500</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script>
+    </script>
+}
