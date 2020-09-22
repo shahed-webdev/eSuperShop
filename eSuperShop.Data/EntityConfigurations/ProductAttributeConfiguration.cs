@@ -14,16 +14,9 @@ namespace eSuperShop.Data
                 .HasMaxLength(50)
                 .HasConversion(c => c.ToString(), c => Enum.Parse<ProductAttributeDisplay>(c));
 
-            builder.Property(e => e.ImageUrl)
-                .HasMaxLength(255);
-
             builder.Property(e => e.InsertedOnUtc)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getutcdate())");
-
-            builder.Property(e => e.Value)
-                .IsRequired()
-                .HasMaxLength(255);
 
             builder.HasOne(d => d.Attribute)
                 .WithMany(p => p.ProductAttribute)

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eSuperShop.Data
 {
-    public class ProductAttributeSetConfiguration : IEntityTypeConfiguration<ProductAttributeSet>
+    public class ProductQuantitySetConfiguration : IEntityTypeConfiguration<ProductQuantitySet>
     {
-        public void Configure(EntityTypeBuilder<ProductAttributeSet> builder)
+        public void Configure(EntityTypeBuilder<ProductQuantitySet> builder)
         {
             builder.Property(e => e.InsertedOnUtc)
                     .HasColumnType("datetime")
@@ -15,10 +15,10 @@ namespace eSuperShop.Data
                 .HasColumnType("decimal(18, 2)");
 
             builder.HasOne(d => d.Product)
-                .WithMany(p => p.ProductAttributeSet)
+                .WithMany(p => p.ProductQuantitySet)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientCascade)
-                .HasConstraintName("FK_ProductAttributeSet_Product");
+                .HasConstraintName("FK_ProductQuantitySet_Product");
         }
     }
 }

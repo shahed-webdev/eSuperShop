@@ -8,7 +8,7 @@ namespace eSuperShop.Data
         public Product()
         {
             ProductAttribute = new HashSet<ProductAttribute>();
-            ProductAttributeSet = new HashSet<ProductAttributeSet>();
+            ProductQuantitySet = new HashSet<ProductQuantitySet>();
             ProductBlob = new HashSet<ProductBlob>();
             ProductReview = new HashSet<ProductReview>();
             ProductSpecification = new HashSet<ProductSpecification>();
@@ -40,7 +40,7 @@ namespace eSuperShop.Data
         public virtual Seo Seo { get; set; }
         public virtual Vendor Vendor { get; set; }
         public virtual ICollection<ProductAttribute> ProductAttribute { get; set; }
-        public virtual ICollection<ProductAttributeSet> ProductAttributeSet { get; set; }
+        public virtual ICollection<ProductQuantitySet> ProductQuantitySet { get; set; }
         public virtual ICollection<ProductSpecification> ProductSpecification { get; set; }
         public virtual ICollection<ProductBlob> ProductBlob { get; set; }
         public virtual ICollection<ProductReview> ProductReview { get; set; }
