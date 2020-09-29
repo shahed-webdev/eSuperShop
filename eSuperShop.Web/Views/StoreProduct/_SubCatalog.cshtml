@@ -1,0 +1,22 @@
+﻿@using eSuperShop.Repository
+@model IEnumerable<ICatalogModel>
+@{
+    Layout = null;
+}
+
+@foreach (var catalog in Model)
+{
+    var isNoCategory = !catalog.SubCatalog.Any();
+   
+    <div class="nested">
+        <a href="@(catalog.IsExist ? "/StoreProduct/AddProduct/" + catalog.CatalogId : "#")" class="d-flex justify-content-between align-items-center @(catalog.IsExist ? "blue-text" : "text-muted")">
+            @catalog.CatalogName
+            <i title="@catalog.CatalogName" class="fas fa-cart-plus"></i>
+        </a>
+
+        @if (!isNoCategory)
+        {
+            <partial name="_SubCatalog" model="@catalog.SubCatalog"/>
+        }
+    </div>
+}

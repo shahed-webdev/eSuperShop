@@ -1,0 +1,114 @@
+﻿@using eSuperShop.Repository
+@model ProductAddModel
+
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "_SellerLayout";
+}
+
+<div class="m-md-3">
+    <h4 class="page-header">Add Product</h4>
+    <a class="blue-text mb-3 d-inline-block" href="/StoreProduct/ProductCategory"><i class="fal fa-long-arrow-left"></i> Back to Category</a>
+    <form>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card card-body">
+                    <h5 class="font-weight-bold mt-3">PRODUCT INFORMATION</h5>
+
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="md-form">
+                                <label for="inputProductName">Product Name</label>
+                                <input id="inputProductName" type="text" name="Name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="md-form">
+                                <label for="inputShortDescription">Short Description</label>
+                                <input id="inputShortDescription" type="text" name="ShortDescription" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-lg-4">
+                            <div class="md-form">
+                                <label for="inputBrand">Product Brand</label>
+                                <input id="inputBrand" type="text" class="form-control">
+                                <input id="hiddenBrandId" type="hidden" name="BrandId">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="md-form">
+                                <label for="inputOldPrice">Regular Price</label>
+                                <input id="inputOldPrice" type="number" name="OldPrice" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="md-form">
+                                <label for="inputPrice">Sale Price</label>
+                                <input id="inputPrice" type="number" name="Price" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md-form">
+                        <p class="mb-1 text-muted">Product Description</p>
+                        <textarea id="inputFullDescription" name="FullDescription"></textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-body mb-3">
+                    <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
+                </div>
+
+                <div class="card card-body">
+                    <h5 class="font-weight-bold mt-3">PRODUCT ATTRIBUTE</h5>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
+    <script>
+        const textArea = document.querySelector('#inputFullDescription');
+        ClassicEditor.create(textArea).catch(error => console.error(error));
+
+        //brand autocomplete
+        const inputBrand = document.getElementById("inputBrand");
+        const hiddenBrandId = document.getElementById("hiddenBrandId");
+        hiddenBrandId.value = "";
+
+        //clear hidden BrandId
+        inputBrand.addEventListener('input', function () {
+            hiddenBrandId.value = "";
+        });
+
+        $('#inputBrand').typeahead({
+            minLength: 1,
+            displayText: function (item) {
+                return item.Name;
+            },
+            afterSelect: function (item) {
+                this.$element[0].value = item.Name;
+            },
+            source: function (request, result) {
+                $.ajax({
+                    url: "/StoreProduct/FindBrand",
+                    data: { name: request },
+                    success: function (response) { result(response); },
+                    error: function (err) { console.log(err) }
+                });
+            },
+            updater: function (item) {
+                hiddenBrandId.value = item.BrandId;
+                return item;
+            }
+        });
+    </script>
+}
+

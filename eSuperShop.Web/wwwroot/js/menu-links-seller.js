@@ -29,6 +29,20 @@ let linkData = [
                 "Title": "Update Store Info",
                 "IconClass": null
             }]
+    },
+    {
+        "LinkCategoryID": 1,
+        "SN": 1,
+        "Category": "Product",
+        "IconClass": "fas fa-shopping-bag",
+        "links": [{
+            "LinkID": 3,
+            "SN": 0,
+            "Controller": "StoreProduct",
+            "Action": "ProductCategory",
+            "Title": "Add Product",
+            "IconClass": null
+        }]
     }
 ];
 

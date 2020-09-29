@@ -1,0 +1,43 @@
+﻿@using eSuperShop.Repository
+@model IEnumerable<ICatalogModel>
+@{
+    ViewData["Title"] = "Product Category";
+    Layout = "_SellerLayout";
+}
+
+@section Styles{
+    <style>
+        .nested { padding-left: 30px; display: block !important; margin: 5px 0; }
+        .list-group-item a[href="#"] { pointer-events: none; }
+    </style>    
+}
+
+<div class="container">
+    <h4 class="page-header mb-3">Product Category</h4>
+
+    <div class="card card-body">
+        <p class="mb-3 font-weight-bold">Select Category To Add Product</p>
+
+        <div class="treeview">
+            <ul class="list-group list-group-flush">
+                @foreach (var catalog in Model)
+                {
+                    var isNoCategory = !catalog.SubCatalog.Any();
+
+                    <li class="list-group-item">
+                        <a href="@(catalog.IsExist ? "/StoreProduct/AddProduct/" + catalog.CatalogId : "#")" class="d-flex justify-content-between align-items-center @(catalog.IsExist ? "blue-text" : "text-muted")">
+                            <strong>@catalog.CatalogName</strong>
+                            <i title="@catalog.CatalogName" class="fas fa-cart-plus"></i>
+                        </a>
+
+                        @if (!isNoCategory)
+                        {
+                            <partial name="_SubCatalog" model="@catalog.SubCatalog" />
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
