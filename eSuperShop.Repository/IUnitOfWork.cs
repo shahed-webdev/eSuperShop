@@ -6,6 +6,7 @@ namespace eSuperShop.Repository
     {
         IAttributeRepository Attribute { get; }
         IBrandRepository Brand { get; }
+        IProductRepository Product { get; }
         IRegistrationRepository Registration { get; }
         ISliderRepository Slider { get; }
         ISpecificationRepository Specification { get; }

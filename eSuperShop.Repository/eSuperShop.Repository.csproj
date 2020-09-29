@@ -28,7 +28,6 @@
     <Folder Include="Repositories\ProductAttributeSetList\" />
     <Folder Include="Repositories\ProductAttributeSet\" />
     <Folder Include="Repositories\ProductAttribute\" />
-    <Folder Include="Repositories\Product\" />
   </ItemGroup>
 
 </Project>

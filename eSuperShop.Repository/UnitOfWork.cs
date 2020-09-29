@@ -14,6 +14,7 @@ namespace eSuperShop.Repository
 
             Attribute = new AttributeRepository(_db, _mapper);
             Brand = new BrandRepository(_db, _mapper);
+            Product = new ProductRepository(_db, _mapper);
             Registration = new RegistrationRepository(_db, _mapper);
             Slider = new SliderRepository(_db, _mapper);
             Specification = new SpecificationRepository(_db, _mapper);
@@ -26,6 +27,7 @@ namespace eSuperShop.Repository
 
         public IAttributeRepository Attribute { get; }
         public IBrandRepository Brand { get; }
+        public IProductRepository Product { get; }
         public IRegistrationRepository Registration { get; }
         public ISliderRepository Slider { get; }
         public ISpecificationRepository Specification { get; }
