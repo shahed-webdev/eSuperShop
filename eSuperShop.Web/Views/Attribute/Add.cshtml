@@ -4,6 +4,9 @@
 }
 
 @section Styles{
+    <style>
+        .fa-spinner { pointer-events: none}
+    </style>
 }
 
 <div class="container">
@@ -101,7 +104,7 @@
                         },
                         {
                             data: "AttributeId", "render": function(data, type, row, meta) {
-                                return `<a class="delete far fa-trash-alt" data-url="/Attribute/DeleteAttribute" data-id="${data}"></a>`
+                                return `<a class="delete fas fa-trash red-text" data-url="/Attribute/DeleteAttribute" data-id="${data}"></a>`
                             }
                         }
                     ],
@@ -139,6 +142,7 @@
                     if (response.IsSuccess) {
                         $.notify("Attribute added Successfully", "success", { position: "right" });
                         dataTable.getData();
+                        formAdd.inputKeyName.value = "";
 
                         $("#addModal").modal("hide");
                     } else {
@@ -165,17 +169,37 @@
 
             if (!isConfirm) return;
 
+            showSpinner(evt.target, true);
+
             $.ajax({
                 url,
                 data: { id },
                 success: function(response) {
-                    if (response)
+                    showSpinner(evt.target, false);
+
+                    if (response.IsSuccess) {
                         element.remove();
+                    } else {
+                        $.notify(response.Message, "error", { position: "right" });
+                        console.log(response);
+                    }
                 },
                 error: function(err) {
                     console.log(err);
+                    showSpinner(evt.target, false);
                 }
             });
         });
+
+        //show spinner
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
     </script>
 }

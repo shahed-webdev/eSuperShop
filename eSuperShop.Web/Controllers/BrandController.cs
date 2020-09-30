@@ -35,6 +35,8 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBrand(BrandAddModel model, IFormFile logo)
         {
+            if (logo == null) return UnprocessableEntity("Insert logo!");
+
             var fileName = FileBuilder.FileNameImage("brand-logo", logo.FileName);
             model.LogoUrl = await _cloudStorage.UploadFileAsync(logo, fileName);
 
@@ -62,7 +64,7 @@ namespace eSuperShop.Web.Controllers
                 await _cloudStorage.DeleteFileAsync(fileName);
             }
 
-            return Json(response.IsSuccess);
+            return Json(response);
         }
 
         //FindBrand

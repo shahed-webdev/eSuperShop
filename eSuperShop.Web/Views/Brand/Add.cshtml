@@ -6,7 +6,8 @@
 @section Styles{
     <style>
         .logo { width: 50px; }
-    </style>    
+        .fa-spinner { pointer-events: none}
+    </style>
 }
 
 
@@ -30,7 +31,7 @@
                                 <input id="fileImage" name="image" type="file" accept="image/*">
                             </div>
                             <div class="file-path-wrapper">
-                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Logo" autocomplete="off">
+                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Logo" autocomplete="off" required>
                             </div>
                         </div>
                         <span id="imageError" class="field-validation-error"></span>
@@ -107,7 +108,7 @@
                         },
                         {
                             data: "BrandId", "render": function(data, type, row, meta) {
-                                return `<a class="delete far fa-trash-alt" data-image="${row.LogoUrl}" data-id="${data}"></a>`
+                                return `<a class="delete fas fa-trash red-text" data-image="${row.LogoUrl}" data-id="${data}"></a>`
                             }
                         }
                     ],
@@ -151,8 +152,8 @@
         const cropImageModal = $('#cropImageModal');
         const btnCrop = $('#btnCrop');
         const cropImage = $('#upload-demo').croppie({
-            viewport: { width: 160, height: 160 },
-            boundary: { width: 180, height: 180 }
+            viewport: { width: 200, height: 140 },
+            boundary: { width: 210, height: 150 }
         });
 
         //set image file
@@ -235,6 +236,7 @@
                         formAdd.inputBrandName.value = "";
                         $('#filePath').val("");
 
+                        formAdd.inputBrandName.value = "";
                         formData.delete('Name');
                         formData.delete('logo');
 
@@ -264,17 +266,37 @@
 
             if (!isConfirm) return;
 
+            showSpinner(evt.target, true);
+
             $.ajax({
                 url: "/Brand/DeleteBrand",
                 data: { id, imageUrl },
-                success: function(response) {
-                    if (response)
+                success: function (response) {
+                    showSpinner(evt.target, false);
+
+                    if (response.IsSuccess) {
                         element.remove();
+                    } else {
+                        $.notify(response.Message, "error", { position: "right" });
+                        console.log(response);
+                    }
                 },
                 error: function(err) {
                     console.log(err);
+                    showSpinner(evt.target, false);
                 }
             });
         });
+
+        //show spinner
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
     </script>
 }
