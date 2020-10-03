@@ -72,6 +72,12 @@ namespace eSuperShop.Repository
 
             //Vendor ProductCategory Assign Mapping
             CreateMap<VendorProductCategoryList, VendorProductCategoryAssignModel>().ReverseMap();
+
+            //Vendor Product Add
+            CreateMap<Product, ProductAddModel>().ReverseMap();
+            CreateMap<ProductAttribute, ProductAttributeAddModel>().ReverseMap();
+            CreateMap<ProductAttributeValue, ProductAttributeValueAddModel>().ReverseMap();
+            CreateMap<ProductSpecification, ProductSpecificationAddModel>().ReverseMap();
         }
     }
 }
