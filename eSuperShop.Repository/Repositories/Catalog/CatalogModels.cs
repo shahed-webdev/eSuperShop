@@ -107,7 +107,7 @@ namespace eSuperShop.Repository
             SlugUrl = catalog.SlugUrl;
             ImageUrl = catalog.ImageUrl;
             var vendorCatalog = catalog.VendorCatalog.FirstOrDefault(b => b.VendorId == vendorId && b.CatalogId == catalog.CatalogId);
-            IsExist = vendorCatalog is null;
+            IsExist = vendorCatalog != null;
             CommissionPercentage = vendorCatalog?.CommissionPercentage ?? 0;
             SubCatalog = catalog.SubCatalog.Select(c => new CatalogVendorModel(c, vendorId));
         }
