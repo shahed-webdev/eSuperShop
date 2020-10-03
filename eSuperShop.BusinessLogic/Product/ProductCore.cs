@@ -18,6 +18,20 @@ namespace eSuperShop.BusinessLogic
             _db = db;
         }
 
+        public DbResponse<CatalogDisplayModel> CatalogDetails(int catalogId)
+        {
+            try
+            {
+                var data = _db.Catalog.Get(catalogId);
+
+                return new DbResponse<CatalogDisplayModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<CatalogDisplayModel>(false, e.Message);
+            }
+        }
+
         public DbResponse AddProduct(ProductAddModel model, string vendorUserName)
         {
             try
