@@ -46,7 +46,7 @@ namespace eSuperShop.Web.Controllers
         public IActionResult DeleteAttribute(int? id)
         {
             var response = _attribute.Delete(id.GetValueOrDefault());
-            return Json(response.IsSuccess);
+            return Json(response);
         }
 
         //Find attribute

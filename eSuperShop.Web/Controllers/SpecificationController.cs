@@ -43,7 +43,7 @@ namespace eSuperShop.Web.Controllers
         public IActionResult DeleteSpecification(int? id)
         {
             var response = _specification.Delete(id.GetValueOrDefault());
-            return Json(response.IsSuccess);
+            return Json(response);
         }
 
         //Find Specification
