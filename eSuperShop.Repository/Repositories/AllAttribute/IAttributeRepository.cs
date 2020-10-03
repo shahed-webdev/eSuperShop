@@ -19,6 +19,7 @@ namespace eSuperShop.Repository
         DataResult<AttributeModel> List(DataRequest request);
         List<DDL> ListDdl();
         Task<ICollection<AttributeModel>> SearchAsync(string key);
+        Task<ICollection<AttributeModel>> SearchAsync(string key, int catalogId);
 
         void AssignCatalog(AttributeAssignModel model);
         void AssignCatalogMultiple(AttributeAssignMultipleModel model);

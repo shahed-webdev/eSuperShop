@@ -21,6 +21,7 @@ namespace eSuperShop.Data
         public int? BrandId { get; set; }
         public int? SeoId { get; set; }
         public string Name { get; set; }
+        public string SlugUrl { get; set; }
         public string ShortDescription { get; set; }
         public string FullDescription { get; set; }
         public string AdminComment { get; set; }

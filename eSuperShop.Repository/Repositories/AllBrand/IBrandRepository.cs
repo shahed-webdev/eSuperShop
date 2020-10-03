@@ -20,6 +20,7 @@ namespace eSuperShop.Repository
         DataResult<BrandModel> List(DataRequest request);
         List<DDL> ListDdl();
         Task<ICollection<BrandModel>> SearchAsync(string key);
+        Task<ICollection<BrandModel>> SearchAsync(string key, int catalogId);
 
         void AssignCatalog(BrandAssignModel model);
         void AssignCatalogMultiple(BrandAssignMultipleModel model);

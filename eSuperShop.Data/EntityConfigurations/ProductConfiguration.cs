@@ -17,6 +17,9 @@ namespace eSuperShop.Data
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(400);
+            builder.Property(e => e.SlugUrl)
+                .IsRequired()
+                .HasMaxLength(255);
 
             builder.Property(e => e.OldPrice)
                 .HasColumnType("decimal(18, 2)");

@@ -87,6 +87,18 @@ namespace eSuperShop.Repository
                 .ConfigureAwait(false);
         }
 
+        public async Task<ICollection<SpecificationModel>> SearchAsync(string key, int catalogId)
+        {
+            return await Db.CatalogSpecification
+                .Include(s => s.Specification)
+                .Where(c => c.CatalogId == catalogId && c.Specification.KeyName.Contains(key))
+                .Select(s => s.Specification)
+                .ProjectTo<SpecificationModel>(_mapper.ConfigurationProvider)
+                .Take(5)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
         public void AssignCatalog(SpecificationAssignModel model)
         {
             CatalogSpecification = _mapper.Map<CatalogSpecification>(model);

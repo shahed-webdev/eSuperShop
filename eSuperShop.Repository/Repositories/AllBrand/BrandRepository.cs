@@ -86,6 +86,17 @@ namespace eSuperShop.Repository
                 .ConfigureAwait(false);
         }
 
+        public async Task<ICollection<BrandModel>> SearchAsync(string key, int catalogId)
+        {
+            return await Db.CatalogBrand.Include(b => b.Brand)
+                .Where(c => c.CatalogId == catalogId && c.Brand.Name.Contains(key))
+                .Select(b => b.Brand)
+                .ProjectTo<BrandModel>(_mapper.ConfigurationProvider)
+                .Take(5)
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
         public void AssignCatalog(BrandAssignModel model)
         {
             CatalogBrand = _mapper.Map<CatalogBrand>(model);
