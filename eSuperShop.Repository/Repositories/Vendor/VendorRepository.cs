@@ -201,6 +201,12 @@ namespace eSuperShop.Repository
 
 
         }
+
+        public bool IsCatalogExist(int vendorId, int catalogId)
+        {
+            return Db.VendorCatalog.Any(v => v.CatalogId == catalogId && v.VendorId == vendorId);
+        }
+
         public List<DDL> ThemeDdl()
         {
             var list = from StoreTheme a in Enum.GetValues(typeof(StoreTheme))
