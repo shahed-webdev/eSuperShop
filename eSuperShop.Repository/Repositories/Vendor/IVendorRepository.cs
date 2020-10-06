@@ -29,6 +29,7 @@ namespace eSuperShop.Repository
         bool IsApproved(int vendorId);
         string GetPhone(int vendorId);
         List<VendorCatalogViewModel> Catalogs(int vendorId);
+        bool IsCatalogExist(int vendorId, int catalogId);
         List<DDL> ThemeDdl();
         void ThemeChange(int vendorId, StoreTheme theme);
         void SlugUrlChange(int vendorId, string slugUrl);
