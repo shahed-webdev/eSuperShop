@@ -11,7 +11,8 @@
     <style>
         fieldset { padding: .5rem; margin: 1rem 0; border: 1px solid #dee2e6; border-radius: .25rem; }
         fieldset legend { width: auto; padding: 0 5px; font-weight: bold; color: #484848; }
-        .attImg { max-width: 150px}
+        .attImg { max-width: 150px }
+        .remove { cursor: pointer}
     </style>
 }
 
@@ -88,7 +89,6 @@
                     <div class="md-form mb-0">
                         <label for="inputAttribute">Find Attribute</label>
                         <input id="inputAttribute" type="text" class="form-control">
-                        <input id="hiddenAttributeId" type="hidden" name="AttributeId">
                     </div>
 
                     <div id="fieldAttribute"></div>
@@ -96,12 +96,13 @@
 
                 <div class="card card-body mb-4">
                     <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
-                    <div class="md-form">
+                    <div class="md-form mb-0">
                         <label for="inputSpecification">Find Specification</label>
                         <input id="inputSpecification" type="text" class="form-control">
-                        <input id="hiddenSpecificationId" type="hidden" name="SpecificationId">
                     </div>
-                </div>
+
+                    <div id="fieldSpecification" class="list-group-flush mt-3"></div>
+                </div> 
 
                 <div class="card card-body mb-3">
                     <h5 class="font-weight-bold mt-3">PRODUCT IMAGE</h5>
@@ -137,7 +138,6 @@
         const textArea = document.querySelector('#inputFullDescription');
         ClassicEditor.create(textArea).catch(error => console.error(error));
 
-
         const catalogId = @Context.Request.RouteValues["id"];
 
         //brand
@@ -145,18 +145,6 @@
         const hiddenBrandId = document.getElementById("hiddenBrandId");
         hiddenBrandId.value = "";
         inputBrand.addEventListener('input', function() { hiddenBrandId.value = ""; });
-
-        //Attribute
-        const inputAttribute = document.getElementById("inputAttribute");
-        const hiddenAttributeId = document.getElementById("hiddenAttributeId");
-        hiddenAttributeId.value = "";
-        inputAttribute.addEventListener('input', function() { hiddenAttributeId.value = ""; });
-
-        //Specification
-        const inputSpecification = document.getElementById("inputSpecification");
-        const hiddenSpecificationId = document.getElementById("hiddenSpecificationId");
-        hiddenSpecificationId.value = "";
-        inputSpecification.addEventListener('input', function() { hiddenSpecificationId.value = ""; });
 
 
         //Brand autocomplete
@@ -202,7 +190,6 @@
                 });
             },
             updater: function(item) {
-                // hiddenBrandId.value = item.BrandId;
                 appendAttribute(item);
                 return item;
             }
@@ -229,7 +216,7 @@
                             <strong>Display:</strong>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" id="${attribute.AttributeId}-1" value="Text">
+                            <input type="radio" class="form-check-input" id="${attribute.AttributeId}-1" value="Text" checked>
                             <label class="form-check-label" for="${attribute.AttributeId}-1">Text</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -306,14 +293,14 @@
         }
 
 
-        //** Specification ****//
+        //** Specification **//
         $('#inputSpecification').typeahead({
             minLength: 1,
             displayText: function(item) {
                 return item.KeyName;
             },
             afterSelect: function(item) {
-                this.$element[0].value = item.KeyName;
+                this.$element[0].value = '';
             },
             source: function(request, result) {
                 $.ajax({
@@ -324,10 +311,45 @@
                 });
             },
             updater: function(item) {
-                //hiddenBrandId.value = item.BrandId;
+                appendSpecification(item);
                 return item;
             }
         });
+
+        const fieldSpecification = document.getElementById("fieldSpecification");
+
+        //add
+        function appendSpecification(item) {
+            const div = document.createElement('div');
+
+            div.className = "list-group-item d-flex flex-wrap justify-content-between align-items-center";
+            div.innerHTML = `<strong class="flex-grow-1">${item.KeyName}</strong>
+                            <input type="hidden" class="specificationId" class="hiddenSpecificationId" value="${item.SpecificationId}">
+                            <input type="text" class="value form-control form-control-sm mr-2 w-auto" placeholder="${item.KeyName}">
+                            <i class="remove red-text fas fa-trash-alt"></i>`;
+            fieldSpecification.appendChild(div);
+            addFieldIndex();
+        }
+
+        //remove
+        fieldSpecification.addEventListener('click', function(evt) {
+            const element = evt.target;
+
+            const onRemove = element.classList.contains('remove');
+            if (!onRemove) return;
+
+            element.parentElement.remove();
+            addFieldIndex();
+        });
+
+        function addFieldIndex() {
+            const listItem = document.querySelectorAll(".list-group-item");
+            listItem.forEach((elem, i) => {
+                elem.querySelector('.specificationId').name = `Specifications[${i}].SpecificationId`;
+                elem.querySelector('.value').name = `Specifications[${i}].Value`;
+                console.log(elem)
+            });
+        }
 
 
         //get selected category
