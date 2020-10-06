@@ -33,6 +33,7 @@ namespace eSuperShop.Repository
             ImageUrl = catalog.ImageUrl;
             SubCatalog = catalog.SubCatalog.Select(c => new CatalogModel(c));
         }
+
         public int CatalogId { get; set; }
         public string CatalogName { get; set; }
         public string SlugUrl { get; set; }
@@ -140,6 +141,4 @@ namespace eSuperShop.Repository
         public ICollection<SpecificationModel> Specifications { get; set; }
         public ICollection<AttributeModel> Attributes { get; set; }
     }
-
-
 }

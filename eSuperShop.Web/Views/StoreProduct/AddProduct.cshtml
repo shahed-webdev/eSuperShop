@@ -6,30 +6,53 @@
     Layout = "_SellerLayout";
 }
 
+@section Styles{
+    <link href="~/lib/imageUploader/src/image-uploader.min.css" rel="stylesheet"/>
+    <style>
+        fieldset { padding: .5rem; margin: 1rem 0; border: 1px solid #dee2e6; border-radius: .25rem; }
+        fieldset legend { width: auto; padding: 0 5px; font-weight: bold; color: #484848; }
+        .attImg { max-width: 150px}
+    </style>
+}
+
+
 <div class="m-md-3">
-    <h4 class="page-header">Add Product</h4>
-    <a class="blue-text mb-3 d-inline-block" href="/StoreProduct/ProductCategory"><i class="fal fa-long-arrow-left"></i> Back to Category</a>
-    <form>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="page-header">Add Product</h4>
+            <a class="blue-text" href="/StoreProduct/ProductCategory"><i class="fal fa-long-arrow-left"></i> Back to Category</a>
+        </div>
+        <h5 id="categoryName" class="font-weight-bold">loading...</h5>
+    </div>   
+
+    <form asp-action="AddProduct" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-xl-8 col-md-7 mb-3">
                 <div class="card card-body">
                     <h5 class="font-weight-bold mt-3">PRODUCT INFORMATION</h5>
 
                     <div class="form-row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="md-form">
                                 <label for="inputProductName">Product Name</label>
                                 <input id="inputProductName" type="text" name="Name" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                       
+                        <div class="col-lg-4">
                             <div class="md-form">
                                 <label for="inputShortDescription">Short Description</label>
                                 <input id="inputShortDescription" type="text" name="ShortDescription" class="form-control" required>
                             </div>
                         </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="md-form">
+                                <label for="inputSlugUrl">Slug Url</label>
+                                <input id="inputSlugUrl" type="text" name="SlugUrl" class="form-control" required>
+                            </div>
+                        </div>
                     </div>
-
                     <div class="form-row">
                         <div class="col-lg-4">
                             <div class="md-form">
@@ -55,60 +78,271 @@
                         <p class="mb-1 text-muted">Product Description</p>
                         <textarea id="inputFullDescription" name="FullDescription"></textarea>
                     </div>
-
                 </div>
-            </div>
+            </div>  
 
-            <div class="col-md-4">
+            <div class="col-xl-4 col-md-5">
                 <div class="card card-body mb-4">
                     <h5 class="font-weight-bold mt-3">PRODUCT ATTRIBUTE</h5>
+
+                    <div class="md-form mb-0">
+                        <label for="inputAttribute">Find Attribute</label>
+                        <input id="inputAttribute" type="text" class="form-control">
+                        <input id="hiddenAttributeId" type="hidden" name="AttributeId">
+                    </div>
+
+                    <div id="fieldAttribute"></div>
+                </div>
+
+                <div class="card card-body mb-4">
+                    <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
+                    <div class="md-form">
+                        <label for="inputSpecification">Find Specification</label>
+                        <input id="inputSpecification" type="text" class="form-control">
+                        <input id="hiddenSpecificationId" type="hidden" name="SpecificationId">
+                    </div>
                 </div>
 
                 <div class="card card-body mb-3">
-                    <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
+                    <h5 class="font-weight-bold mt-3">PRODUCT IMAGE</h5>
+                    <div class="md-form">
+                        <div class="input-images"></div>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <input type="submit" value="Add Product" class="btn btn-danger">
     </form>
 </div>
 
+
 @section Scripts{
     <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
+    <script src="~/lib/imageUploader/src/image-uploader.min.js"></script>
+
     <script>
+        $(function() {
+            getDetails();
+
+            $('.input-images').imageUploader({
+                imagesInputName: 'productImage',
+                maxSize: 1 * 1024 * 1024,
+                maxFiles: 10,
+                extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg', 'webp']
+            });
+        });
+
+        //rich text editor
         const textArea = document.querySelector('#inputFullDescription');
         ClassicEditor.create(textArea).catch(error => console.error(error));
 
-        //brand autocomplete
+
+        const catalogId = @Context.Request.RouteValues["id"];
+
+        //brand
         const inputBrand = document.getElementById("inputBrand");
         const hiddenBrandId = document.getElementById("hiddenBrandId");
         hiddenBrandId.value = "";
+        inputBrand.addEventListener('input', function() { hiddenBrandId.value = ""; });
 
-        //clear hidden BrandId
-        inputBrand.addEventListener('input', function () {
-            hiddenBrandId.value = "";
-        });
+        //Attribute
+        const inputAttribute = document.getElementById("inputAttribute");
+        const hiddenAttributeId = document.getElementById("hiddenAttributeId");
+        hiddenAttributeId.value = "";
+        inputAttribute.addEventListener('input', function() { hiddenAttributeId.value = ""; });
 
+        //Specification
+        const inputSpecification = document.getElementById("inputSpecification");
+        const hiddenSpecificationId = document.getElementById("hiddenSpecificationId");
+        hiddenSpecificationId.value = "";
+        inputSpecification.addEventListener('input', function() { hiddenSpecificationId.value = ""; });
+
+
+        //Brand autocomplete
         $('#inputBrand').typeahead({
             minLength: 1,
-            displayText: function (item) {
+            displayText: function(item) {
                 return item.Name;
             },
-            afterSelect: function (item) {
+            afterSelect: function(item) {
                 this.$element[0].value = item.Name;
             },
-            source: function (request, result) {
+            source: function(request, result) {
                 $.ajax({
                     url: "/StoreProduct/FindBrand",
-                    data: { name: request },
-                    success: function (response) { result(response); },
-                    error: function (err) { console.log(err) }
+                    data: { catalogId, name: request },
+                    success: function(response) { result(response); },
+                    error: function(err) { console.log(err) }
                 });
             },
-            updater: function (item) {
+            updater: function(item) {
                 hiddenBrandId.value = item.BrandId;
                 return item;
             }
         });
+
+
+        //** Attribute ****// 
+        const allAttributes = [];
+        $('#inputAttribute').typeahead({
+            minLength: 1,
+            displayText: function(item) {
+                return item.KeyName;
+            },
+            afterSelect: function(item) {
+                this.$element[0].value = '';
+            },
+            source: function(request, result) {
+                $.ajax({
+                    url: "/StoreProduct/FindAttribute",
+                    data: { catalogId, name: request },
+                    success: function(response) { result(response); },
+                    error: function(err) { console.log(err) }
+                });
+            },
+            updater: function(item) {
+                // hiddenBrandId.value = item.BrandId;
+                appendAttribute(item);
+                return item;
+            }
+        });
+
+
+        //add new attribute
+        function appendAttribute(attribute) {
+            const isExist = allAttributes.some(obj => obj.AttributeId === attribute.AttributeId);
+            if (isExist) {
+                alert(`${attribute.KeyName} already added`);
+                return;
+            }
+
+            allAttributes.push(attribute);
+
+            const fieldAttribute = document.getElementById("fieldAttribute");
+            const fieldset = document.createElement("fieldset");
+            fieldset.className = "fieldset";
+
+            fieldset.innerHTML = `
+                      <div class="mb-3">
+                        <div class="form-check form-check-inline">
+                            <strong>Display:</strong>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" id="${attribute.AttributeId}-1" value="Text">
+                            <label class="form-check-label" for="${attribute.AttributeId}-1">Text</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" id="${attribute.AttributeId}-2" value="Image">
+                            <label class="form-check-label" for="${attribute.AttributeId}-2">Image</label>
+                        </div>
+                    </div>
+
+                    <input class="hiddenAttributeId" type="hidden" value="${attribute.AttributeId}" />
+                    <legend>${attribute.KeyName}</legend>
+
+                    <div class="value-container d-flex justify-content-center align-items-center">
+                        <div class="md-form m-0"><input type="text" class="attText form-control" placeholder="Attribute Text"></div>
+                        <input class="attImg" type="file" class="w-50 mx-1">
+                        <div><input type="button" class="attribute-add-btn btn btn-sm btn-elegant btn-rounded" value="Add"></div>
+                    </div>`;
+
+            fieldAttribute.appendChild(fieldset);
+
+            const allFieldsets = document.querySelectorAll("fieldset");
+            allFieldsets.forEach((element, i) => {
+                element.querySelectorAll('.form-check-input').forEach(radio => {
+                    radio.name = `Attributes[${i}].DisplayType`;
+                });
+
+                element.querySelector('.hiddenAttributeId').name = `Attributes[${i}].AttributeId`;
+                element.querySelector('.attText').name = `Attributes[${i}].Values[${i}].Value`;
+                element.querySelector('.attImg').name = `Attributes[${i}].Values[${i}].AttributeImage`;
+            });
+        }
+
+        //add attribute value click
+        fieldAttribute.addEventListener('click', function(evt) {
+            const element = evt.target;
+
+            const onAddButton = element.classList.contains("attribute-add-btn");
+            const onRemoveButton = element.classList.contains("attribute-remove-btn");
+
+            const fieldset = element.parentElement.parentElement.parentElement;
+            const valueContainer = fieldset.querySelector(".value-container");
+
+            if (onAddButton) {
+                //create new input and file
+                const div = document.createElement("div");
+                div.className = "value-container d-flex justify-content-center align-items-center my-3";
+                div.innerHTML = `<div class="md-form m-0"><input type="text" class="attText form-control" placeholder="Attribute Text"></div>
+                              <input class="attImg" type="file" class="w-50 mx-1">
+                              <div><input type="button" class="attribute-remove-btn btn btn-sm btn-danger btn-rounded" value="x">
+                            </div>`;
+
+                fieldset.appendChild(div);
+
+                applyIndex(element, false);
+            }
+
+            if (onRemoveButton) {
+                applyIndex(element, true);
+            }
+        });
+
+        //apply element index
+        function applyIndex(element, isRemove) {
+            if (isRemove) {
+                element.parentElement.parentElement.remove();
+            }
+
+            const allFieldsets = document.querySelectorAll("fieldset");
+            allFieldsets.forEach((child, index) => {
+                child.querySelectorAll(".value-container").forEach((ele, i) => {
+                    ele.querySelector('.attText').name = `Attributes[${index}].Values[${i}].Value`;
+                    ele.querySelector('.attImg').name = `Attributes[${index}].Values[${i}].AttributeImage`;
+                });
+            });
+        }
+
+
+        //** Specification ****//
+        $('#inputSpecification').typeahead({
+            minLength: 1,
+            displayText: function(item) {
+                return item.KeyName;
+            },
+            afterSelect: function(item) {
+                this.$element[0].value = item.KeyName;
+            },
+            source: function(request, result) {
+                $.ajax({
+                    url: "/StoreProduct/FindSpecification",
+                    data: { catalogId, name: request },
+                    success: function(response) { result(response); },
+                    error: function(err) { console.log(err) }
+                });
+            },
+            updater: function(item) {
+                //hiddenBrandId.value = item.BrandId;
+                return item;
+            }
+        });
+
+
+        //get selected category
+        function getDetails() {
+            $.ajax({
+                url: "/StoreProduct/CategoryDetails",
+                data: { id: catalogId },
+                success: function(response) {
+                    if (response.IsSuccess) {
+                        document.querySelector("#categoryName").textContent = response.Data.CatalogName;
+                    }
+                },
+                error: function(err) { console.log(err) }
+            });
+        }
     </script>
 }
 
