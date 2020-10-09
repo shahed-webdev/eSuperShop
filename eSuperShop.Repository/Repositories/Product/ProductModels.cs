@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Data;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
 namespace eSuperShop.Repository
@@ -42,6 +43,7 @@ namespace eSuperShop.Repository
     {
         public string Value { get; set; }
         public string ImageUrl { get; set; }
+        public IFormFile AttributeImage { get; set; }
     }
 
     public class ProductBlobAddModel

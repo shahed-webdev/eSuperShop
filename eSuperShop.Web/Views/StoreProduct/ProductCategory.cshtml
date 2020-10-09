@@ -1,5 +1,6 @@
 ﻿@using eSuperShop.Repository
 @model IEnumerable<ICatalogVendorModel>
+
 @{
     ViewData["Title"] = "Product Category";
     Layout = "_SellerLayout";
@@ -9,7 +10,7 @@
     <style>
         .nested { padding-left: 30px; display: block !important; margin: 5px 0; }
         .list-group-item a[href="#"] { pointer-events: none; }
-    </style>    
+    </style>
 }
 
 <div class="container">
@@ -27,7 +28,7 @@
                     <li class="list-group-item">
                         <a href="@(catalog.IsExist ? "/StoreProduct/AddProduct/" + catalog.CatalogId : "#")" class="d-flex justify-content-between align-items-center @(catalog.IsExist ? "blue-text" : "text-muted")">
                             <strong>@catalog.CatalogName</strong>
-                            <i title="@catalog.CatalogName" class="fas fa-cart-plus">@catalog.CommissionPercentage</i>
+                            <strong>@catalog.CommissionPercentage</strong>
                         </a>
 
                         @if (!isNoCategory)
