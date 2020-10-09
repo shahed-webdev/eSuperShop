@@ -65,41 +65,15 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductAddModel model, IFormFile[] productImage)
+        public async Task<IActionResult> AddProduct(ProductAddModel model)
         {
             if (!ModelState.IsValid) return View(model);
             
-            if (productImage != null)
-            {
-                var count = 1;
-                foreach (var img in productImage)
-                {
-                    var fileName = FileBuilder.FileNameImage("product-image", img.FileName);
-                    var blob = new ProductBlobAddModel
-                    {
-                        DisplayOrder = count,
-                        BlobUrl = await _cloudStorage.UploadFileAsync(img, fileName)
-                    };
-                    model.Blobs.Add(blob);
-                    count++;
-                }
-            }
+            var response = await _product.AddProductAsync(model, User.Identity.Name);
+            if (response.IsSuccess) return RedirectToAction("ProductCategory");
 
-            foreach (var attribute in model.Attributes)
-            {
-                foreach (var value in attribute.Values)
-                {
-                    if (value.AttributeImage == null) continue;
-
-                    var fileName = FileBuilder.FileNameImage("product-attribute-image", value.AttributeImage.FileName);
-                    value.ImageUrl = await _cloudStorage.UploadFileAsync(value.AttributeImage, fileName);
-                }
-            }
-            
-            var response = _product.AddProduct(model, User.Identity.Name);
-            if (!response.IsSuccess) return View(model);
-
-            return RedirectToAction("ProductCategory");
+            ModelState.AddModelError("", response.Message);
+            return View(model);
         }
     }
 }

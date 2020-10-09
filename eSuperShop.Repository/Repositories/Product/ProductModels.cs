@@ -22,6 +22,7 @@ namespace eSuperShop.Repository
         public string FullDescription { get; set; }
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
+        public IFormFile[] ProductImage { get; set; }
 
         public ICollection<ProductAttributeAddModel> Attributes { get; set; }
         public ICollection<ProductBlobAddModel> Blobs { get; set; }

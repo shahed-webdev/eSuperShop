@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CloudStorage\CloudStorage.csproj" />
     <ProjectReference Include="..\eSuperShop.Repository\eSuperShop.Repository.csproj" />
     <ProjectReference Include="..\Service.SMS\Service.SMS.csproj" />
   </ItemGroup>

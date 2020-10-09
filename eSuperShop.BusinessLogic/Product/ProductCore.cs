@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CloudStorage;
 using eSuperShop.Repository;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ namespace eSuperShop.BusinessLogic
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _db;
+        private readonly ICloudStorage _cloudStorage;
 
-        public ProductCore(IMapper mapper, IUnitOfWork db)
+        public ProductCore(IMapper mapper, IUnitOfWork db, ICloudStorage cloudStorage)
         {
             _mapper = mapper;
             _db = db;
+            _cloudStorage = cloudStorage;
         }
 
         public DbResponse<CatalogDisplayModel> CatalogDetails(int catalogId)
@@ -32,7 +35,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse AddProduct(ProductAddModel model, string vendorUserName)
+        public async Task<DbResponse> AddProductAsync(ProductAddModel model, string vendorUserName)
         {
             try
             {
@@ -48,6 +51,37 @@ namespace eSuperShop.BusinessLogic
 
                 if (_db.Product.IsExistSlugUrl(model.SlugUrl))
                     return new DbResponse(false, "SlugUrl already Exist");
+
+                //add product image
+                if (model.ProductImage == null)
+                    return new DbResponse(false, "Product Image Required!");
+
+                var count = 1;
+                foreach (var img in model.ProductImage)
+                {
+                    var fileName = FileBuilder.FileNameImage("product-image", img.FileName);
+                    var blob = new ProductBlobAddModel
+                    {
+                        DisplayOrder = count,
+                        BlobUrl = await _cloudStorage.UploadFileAsync(img, fileName)
+                    };
+                    model.Blobs.Add(blob);
+                    count++;
+                }
+
+
+                //add attribute
+                foreach (var attribute in model.Attributes)
+                {
+                    foreach (var value in attribute.Values)
+                    {
+                        if (value.AttributeImage == null) continue;
+
+                        var fileName = FileBuilder.FileNameImage("product-attribute-image", value.AttributeImage.FileName);
+                        value.ImageUrl = await _cloudStorage.UploadFileAsync(value.AttributeImage, fileName);
+                    }
+                }
+
 
                 _db.Product.Add(model);
                 _db.SaveChanges();
