@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using eSuperShop.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -87,6 +88,13 @@ namespace eSuperShop.Web.Controllers
 
             var response = _product.Details(User.Identity.Name, id.GetValueOrDefault());
             return View(response.Data);
+        } 
+        
+        [HttpPost]
+        public IActionResult AddStock(List<ProductQuantityAddModel> model)
+        {
+            _product.QuantityAdd(model, User.Identity.Name);
+            return View();
         }
     }
 }
