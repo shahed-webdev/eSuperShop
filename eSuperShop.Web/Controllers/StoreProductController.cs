@@ -81,9 +81,11 @@ namespace eSuperShop.Web.Controllers
         }
 
         //Add stock
-        public IActionResult AddProductStock()
+        public IActionResult AddProductStock(int? id)
         {
-            var response = _product.UnpublishedList(User.Identity.Name);
+            if (id == null) return RedirectToAction("UnPublishedProduct");
+
+            var response = _product.Details(User.Identity.Name, id.GetValueOrDefault());
             return View(response.Data);
         }
     }
