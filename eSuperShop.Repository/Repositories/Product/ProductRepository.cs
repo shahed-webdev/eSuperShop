@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -77,6 +78,8 @@ namespace eSuperShop.Repository
         public ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId)
         {
             return Db.Product
+                .Include(p => p.Catalog)
+                .Include(p => p.Brand)
                 .Where(p => p.VendorId == vendorId && !p.Published)
                 .Select(c => c.Catalog)
                 .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)

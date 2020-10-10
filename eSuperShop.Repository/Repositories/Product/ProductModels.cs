@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace eSuperShop.Repository
 {
+    #region Product Add Models
     public class ProductAddModel
     {
         public ProductAddModel()
@@ -60,7 +61,7 @@ namespace eSuperShop.Repository
         public int SpecificationId { get; set; }
         public string Value { get; set; }
     }
-
+    #endregion Product Add Models
     public class ProductDetailsModel
     {
         public ProductDetailsModel()
