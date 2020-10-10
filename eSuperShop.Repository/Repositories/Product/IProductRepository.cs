@@ -10,6 +10,8 @@ namespace eSuperShop.Repository
         bool IsNull(int id);
         bool IsRelatedDataExist(int id);
         ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId);
+        ProductDetailsModel Details(int productId);
+        bool IsProductExist(int vendorId, int productId);
     }
 
 }

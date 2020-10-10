@@ -117,6 +117,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0) return new DbResponse<List<ProductUnpublishedModel>>(false, "Invalid User");
                 var data = _db.Product.UnpublishedList(vendorId);
                 return new DbResponse<List<ProductUnpublishedModel>>(true, "Success", data.ToList());
             }
@@ -139,6 +140,24 @@ namespace eSuperShop.BusinessLogic
         public Task<ICollection<SpecificationModel>> SearchSpecificationAsync(int catalogId, string key)
         {
             return _db.Specification.SearchAsync(key, catalogId);
+        }
+
+        public DbResponse<ProductDetailsModel> Details(string vendorUserName, int productId)
+        {
+            try
+            {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0) return new DbResponse<ProductDetailsModel>(false, "Invalid User");
+                if (_db.Product.IsProductExist(vendorId, productId)) return new DbResponse<ProductDetailsModel>(false, "Product Not Found");
+
+
+                var data = _db.Product.Details(productId);
+                return new DbResponse<ProductDetailsModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<ProductDetailsModel>(false, e.Message);
+            }
         }
     }
 }
