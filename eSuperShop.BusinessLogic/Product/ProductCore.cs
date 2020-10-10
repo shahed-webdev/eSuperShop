@@ -112,6 +112,20 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<List<ProductUnpublishedModel>> UnpublishedList(string vendorUserName)
+        {
+            try
+            {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                var data = _db.Product.UnpublishedList(vendorId);
+                return new DbResponse<List<ProductUnpublishedModel>>(true, "Success", data.ToList());
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<ProductUnpublishedModel>>(false, e.Message);
+            }
+        }
+
         public Task<ICollection<BrandModel>> SearchBrandAsync(int catalogId, string key)
         {
             return _db.Brand.SearchAsync(key, catalogId);

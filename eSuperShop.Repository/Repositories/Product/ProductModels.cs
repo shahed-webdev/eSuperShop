@@ -1,6 +1,6 @@
-﻿using System;
-using eSuperShop.Data;
+﻿using eSuperShop.Data;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 
 namespace eSuperShop.Repository
@@ -122,5 +122,19 @@ namespace eSuperShop.Repository
         public int ProductId { get; set; }
         public string BlobUrl { get; set; }
         public int? DisplayOrder { get; set; }
+    }
+
+    public class ProductUnpublishedModel
+    {
+        public int ProductId { get; set; }
+        public int CatalogId { get; set; }
+        public string CatalogName { get; set; }
+        public int? BrandId { get; set; }
+        public string BrandName { get; set; }
+        public string Name { get; set; }
+        public string SlugUrl { get; set; }
+        public decimal Price { get; set; }
+        public decimal OldPrice { get; set; }
+        public DateTime UpdatedOnUtc { get; set; }
     }
 }

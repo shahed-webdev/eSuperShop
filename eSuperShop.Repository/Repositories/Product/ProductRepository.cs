@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace eSuperShop.Repository
@@ -12,42 +14,42 @@ namespace eSuperShop.Repository
 
         public void Add(ProductAddModel model)
         {
-            var product = new Product
-            {
-                VendorId = model.VendorId,
-                CatalogId = model.CatalogId,
-                BrandId = model.BrandId,
-                Name = model.Name,
-                SlugUrl = model.SlugUrl,
-                ShortDescription = model.ShortDescription,
-                FullDescription = model.FullDescription,
-                Price = model.Price,
-                OldPrice = model.OldPrice, 
-                UpdatedOnUtc = model.UpdatedOnUtc,
-                ProductAttribute = model.Attributes.Select(a => new ProductAttribute
-                {
-                    AttributeId = a.AttributeId,
-                    DisplayType = a.DisplayType,
-                    ProductAttributeValue = a.Values.Select(v => new ProductAttributeValue
-                    {
-                        Value = v.Value,
-                        ImageUrl = v.ImageUrl
-                    }).ToList()
-                }).ToList(),
-                ProductQuantitySet = null,
-                ProductSpecification = model.Specifications.Select(s => new ProductSpecification
-                {
-                    SpecificationId = s.SpecificationId,
-                    Value = s.Value
-                }).ToList(),
-                ProductBlob = model.Blobs.Select(b => new ProductBlob
-                {
-                    BlobUrl = b.BlobUrl,
-                    DisplayOrder = b.DisplayOrder,
-                }).ToList()
-            };
+            //var product = new Product
+            //{
+            //    VendorId = model.VendorId,
+            //    CatalogId = model.CatalogId,
+            //    BrandId = model.BrandId,
+            //    Name = model.Name,
+            //    SlugUrl = model.SlugUrl,
+            //    ShortDescription = model.ShortDescription,
+            //    FullDescription = model.FullDescription,
+            //    Price = model.Price,
+            //    OldPrice = model.OldPrice,
+            //    UpdatedOnUtc = model.UpdatedOnUtc,
+            //    ProductAttribute = model.Attributes.Select(a => new ProductAttribute
+            //    {
+            //        AttributeId = a.AttributeId,
+            //        DisplayType = a.DisplayType,
+            //        ProductAttributeValue = a.Values.Select(v => new ProductAttributeValue
+            //        {
+            //            Value = v.Value,
+            //            ImageUrl = v.ImageUrl
+            //        }).ToList()
+            //    }).ToList(),
+            //    ProductQuantitySet = null,
+            //    ProductSpecification = model.Specifications.Select(s => new ProductSpecification
+            //    {
+            //        SpecificationId = s.SpecificationId,
+            //        Value = s.Value
+            //    }).ToList(),
+            //    ProductBlob = model.Blobs.Select(b => new ProductBlob
+            //    {
+            //        BlobUrl = b.BlobUrl,
+            //        DisplayOrder = b.DisplayOrder,
+            //    }).ToList()
+            //};
 
-            // var product = _mapper.Map<Product>(model);
+            var product = _mapper.Map<Product>(model);
             Db.Product.Add(product);
         }
 
@@ -70,6 +72,16 @@ namespace eSuperShop.Repository
         {
             //Related to order
             throw new System.NotImplementedException();
+        }
+
+        public ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId)
+        {
+            return Db.Product
+                .Where(p => p.VendorId == vendorId && !p.Published)
+                .Select(c => c.Catalog)
+                .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
+                .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
+                .ToList();
         }
     }
 }
