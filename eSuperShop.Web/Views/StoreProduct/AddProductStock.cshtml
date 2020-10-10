@@ -1,0 +1,13 @@
+﻿@using eSuperShop.Repository
+@model ProductDetailsModel
+
+@{
+    ViewData["Title"] = "Add Product Stock";
+    Layout = "_SellerLayout";
+}
+
+<div class="container">
+    <h4 class="page-header mb-3">Add Product Stock</h4>
+    <p><strong>Name: </strong>@Model.Name, <strong>Brand: </strong>@Model.BrandInfo.Name</p>
+</div>
+

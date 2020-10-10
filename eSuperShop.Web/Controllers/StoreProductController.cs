@@ -73,16 +73,18 @@ namespace eSuperShop.Web.Controllers
             return UnprocessableEntity(response.Message);
         }
 
-        //Add stock
-        public IActionResult AddProductStock(int? id)
+        //Un Published Product
+        public IActionResult UnPublishedProduct()
         {
-            return View();
+            var response = _product.UnpublishedList(User.Identity.Name);
+            return View(response.Data);
         }
 
-        [HttpPost]
+        //Add stock
         public IActionResult AddProductStock()
         {
-            return View();
+            var response = _product.UnpublishedList(User.Identity.Name);
+            return View(response.Data);
         }
     }
 }

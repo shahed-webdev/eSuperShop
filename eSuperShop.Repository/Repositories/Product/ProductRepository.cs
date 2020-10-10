@@ -78,10 +78,9 @@ namespace eSuperShop.Repository
         public ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId)
         {
             return Db.Product
-                .Include(p => p.Catalog)
-                .Include(p => p.Brand)
+                //.Include(p => p.Catalog)
+                //.Include(p => p.Brand)
                 .Where(p => p.VendorId == vendorId && !p.Published)
-                .Select(c => c.Catalog)
                 .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
                 .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
                 .ToList();

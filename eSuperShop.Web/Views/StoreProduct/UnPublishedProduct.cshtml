@@ -1,0 +1,39 @@
+﻿@using eSuperShop.Repository
+@model IEnumerable<ProductUnpublishedModel>
+
+@{
+    ViewData["Title"] = "Un-Published Product";
+    Layout = "_SellerLayout";
+}
+
+
+<div class="container">
+    <h4 class="page-header mb-3">Un-Published Product</h4>
+    <div class="card card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><strong>Category</strong></th>
+                    <th><strong>Product</strong></th>
+                    <th><strong>Brand</strong></th>
+                    <th class="text-right"><strong>Price</strong></th>
+                    <th class="text-center"><strong>Publish</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CatalogName</td>
+                        <td>@item.Name</td>
+                        <td>@item.BrandName</td>
+                        <td class="text-right">@item.Price</td>
+                        <td class="text-center">
+                            <a class="blue-text" href="/StoreProduct/@item.ProductId">Publish<i class="ml-1 far fa-long-arrow-alt-right"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
