@@ -67,13 +67,22 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductAddModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-            
             var response = await _product.AddProductAsync(model, User.Identity.Name);
             if (response.IsSuccess) return RedirectToAction("ProductCategory");
 
-            ModelState.AddModelError("", response.Message);
-            return View(model);
+            return UnprocessableEntity(response.Message);
+        }
+
+        //Add stock
+        public IActionResult AddProductStock(int? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddProductStock()
+        {
+            return View();
         }
     }
 }
