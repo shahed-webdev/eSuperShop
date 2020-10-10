@@ -13,6 +13,7 @@ namespace eSuperShop.BusinessLogic
         Task<ICollection<BrandModel>> SearchBrandAsync(int catalogId, string key);
         Task<ICollection<AttributeModel>> SearchAttributeAsync(int catalogId, string key);
         Task<ICollection<SpecificationModel>> SearchSpecificationAsync(int catalogId, string key);
+        DbResponse<ProductDetailsModel> Details(string vendorUserName, int productId);
 
     }
 }

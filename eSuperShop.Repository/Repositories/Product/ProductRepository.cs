@@ -81,10 +81,22 @@ namespace eSuperShop.Repository
                 .Include(p => p.Catalog)
                 .Include(p => p.Brand)
                 .Where(p => p.VendorId == vendorId && !p.Published)
-                .Select(c => c.Catalog)
                 .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
                 .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
                 .ToList();
+        }
+
+        public ProductDetailsModel Details(int productId)
+        {
+            return Db.Product
+                .Where(p => p.ProductId == productId)
+                .ProjectTo<ProductDetailsModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
+        public bool IsProductExist(int vendorId, int productId)
+        {
+            return Db.Product.Any(p => p.ProductId == productId && p.VendorId == vendorId);
         }
     }
 }
