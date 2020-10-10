@@ -148,7 +148,7 @@ namespace eSuperShop.BusinessLogic
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0) return new DbResponse<ProductDetailsModel>(false, "Invalid User");
-                if (_db.Product.IsProductExist(vendorId, productId)) return new DbResponse<ProductDetailsModel>(false, "Product Not Found");
+                if (!_db.Product.IsProductExist(vendorId, productId)) return new DbResponse<ProductDetailsModel>(false, "Product Not Found");
 
 
                 var data = _db.Product.Details(productId);
