@@ -80,6 +80,7 @@ namespace eSuperShop.Repository
                 .Where(p => p.VendorId == vendorId && !p.Published)
                 .Select(c => c.Catalog)
                 .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
+                .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
                 .ToList();
         }
     }
