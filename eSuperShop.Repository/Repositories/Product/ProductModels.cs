@@ -138,4 +138,21 @@ namespace eSuperShop.Repository
         public decimal OldPrice { get; set; }
         public DateTime UpdatedOnUtc { get; set; }
     }
+
+    public class ProductQuantityAddModel
+    {
+        public ProductQuantityAddModel()
+        {
+            ProductQuantitySetAttribute = new HashSet<ProductQuantitySetAttributeModel>();
+        }
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+        public decimal PriceAdjustment { get; set; }
+        public virtual ICollection<ProductQuantitySetAttributeModel> ProductQuantitySetAttribute { get; set; }
+    }
+
+    public class ProductQuantitySetAttributeModel
+    {
+        public int ProductAttributeValueId { get; set; }
+    }
 }
