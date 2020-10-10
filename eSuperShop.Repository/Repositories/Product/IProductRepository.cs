@@ -1,4 +1,6 @@
-﻿namespace eSuperShop.Repository
+﻿using System.Collections.Generic;
+
+namespace eSuperShop.Repository
 {
     public interface IProductRepository
     {
@@ -7,6 +9,7 @@
         bool IsExistSlugUrl(string slugUrl, int updateId);
         bool IsNull(int id);
         bool IsRelatedDataExist(int id);
+        ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId);
     }
 
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace eSuperShop.Repository
@@ -22,7 +24,7 @@ namespace eSuperShop.Repository
                 ShortDescription = model.ShortDescription,
                 FullDescription = model.FullDescription,
                 Price = model.Price,
-                OldPrice = model.OldPrice, 
+                OldPrice = model.OldPrice,
                 UpdatedOnUtc = model.UpdatedOnUtc,
                 ProductAttribute = model.Attributes.Select(a => new ProductAttribute
                 {
@@ -70,6 +72,15 @@ namespace eSuperShop.Repository
         {
             //Related to order
             throw new System.NotImplementedException();
+        }
+
+        public ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId)
+        {
+            return Db.Product
+                .Where(p => p.VendorId == vendorId && !p.Published)
+                .Select(c => c.Catalog)
+                .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
+                .ToList();
         }
     }
 }
