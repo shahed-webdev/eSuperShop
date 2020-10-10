@@ -98,5 +98,11 @@ namespace eSuperShop.Repository
         {
             return Db.Product.Any(p => p.ProductId == productId && p.VendorId == vendorId);
         }
+
+        public void QuantityAdd(List<ProductQuantityAddModel> model)
+        {
+            var productQuantitySet = model.Select(p => _mapper.Map<ProductQuantitySet>(p)).ToList();
+            Db.ProductQuantitySet.AddRange(productQuantitySet);
+        }
     }
 }

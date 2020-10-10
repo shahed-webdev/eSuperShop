@@ -159,5 +159,22 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<ProductDetailsModel>(false, e.Message);
             }
         }
+
+        public DbResponse QuantityAdd(List<ProductQuantityAddModel> model, string vendorUserName)
+        {
+            try
+            {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0) return new DbResponse(false, "Invalid User");
+                if (_db.Product.IsProductExist(vendorId, model.FirstOrDefault().ProductId)) return new DbResponse(false, "Product Not Found");
+
+                _db.Product.QuantityAdd(model);
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }

@@ -14,6 +14,8 @@ namespace eSuperShop.BusinessLogic
         Task<ICollection<AttributeModel>> SearchAttributeAsync(int catalogId, string key);
         Task<ICollection<SpecificationModel>> SearchSpecificationAsync(int catalogId, string key);
         DbResponse<ProductDetailsModel> Details(string vendorUserName, int productId);
+        DbResponse QuantityAdd(List<ProductQuantityAddModel> model, string vendorUserName);
+
 
     }
 }
