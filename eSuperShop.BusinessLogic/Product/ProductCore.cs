@@ -43,6 +43,8 @@ namespace eSuperShop.BusinessLogic
                 if (vendorId == 0) return new DbResponse(false, "Invalid User");
 
                 model.VendorId = vendorId;
+                model.UpdatedOnUtc = DateTime.UtcNow;
+
                 if (!_db.Vendor.IsCatalogExist(vendorId, model.CatalogId))
                     return new DbResponse(false, "Catalog Not Assign");
 

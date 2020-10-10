@@ -1,4 +1,5 @@
-﻿using eSuperShop.Data;
+﻿using System;
+using eSuperShop.Data;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
@@ -22,6 +23,7 @@ namespace eSuperShop.Repository
         public string FullDescription { get; set; }
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
+        public DateTime UpdatedOnUtc { get; set; }
         public IFormFile[] ProductImage { get; set; }
 
         public ICollection<ProductAttributeAddModel> Attributes { get; set; }
