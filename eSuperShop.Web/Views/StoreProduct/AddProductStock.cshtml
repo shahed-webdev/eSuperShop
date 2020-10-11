@@ -6,8 +6,7 @@
     Layout = "_SellerLayout";
 }
 
-@section Styles
-{
+@section Styles{
     <style>
         .productImage img { width: 100px; margin: 5px; border-radius: 3px; }
     </style>   
@@ -44,34 +43,45 @@
         </div>
 
         <div class="col-xl-5 mb-3">
-            <div class="card card-body mb-3">
-                @foreach (var value in Model.Attributes)
-                {
-                    <div class="form-group">
-                        <label>@value.KeyName</label>
-                        <select class="form-control">
-                            @foreach (var item in value.Values)
-                            {
-                                <option value="@item.ProductAttributeValueId">@item.Value</option>
-                            }
-                        </select>
-                    </div>
-                }
+            <form id="formAdd">
+                <div class="card card-body mb-3">
+                    <h5 class="font-weight-bold mt-3 mb-0">PRODUCT STOCK</h5>
+                    <em class="mb-3">Select Attribute And Add Product Quantity</em>
 
-                <div class="form-group">
-                    <label>Product Quantity</label>
-                    <input type="number" class="form-control" placeholder="Quantity">
+                    @foreach (var value in Model.Attributes)
+                    {
+                        <div class="form-group">
+                            <label>@value.KeyName</label>
+                            <select name="AttributeValueId" class="form-control" required>
+                                <option value="">[ SELECT ]</option>
+                                @foreach (var item in value.Values)
+                                {
+                                    <option value="@item.ProductAttributeValueId">@item.Value</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <label>Product Quantity</label>
+                        <input type="number" name="Quantity" class="form-control" placeholder="Quantity" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Additional Price</label>
+                        <input type="number" name="PriceAdjustment" class="form-control" placeholder="Additional Price">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Add Stock" class="btn btn-danger btn-md">
+                        <input type="hidden" name="ProductId" value="@Model.ProductId">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Additional Price</label>
-                    <input type="number" class="form-control" placeholder="Additional Price">
-                </div>
-                <input type="submit" value="Add" class="btn btn-danger btn-sm">
-            </div>    
-            
+            </form>
+
             <div class="card card-body">
                 <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
-                
+
                 <div class="list-group-flush mt-3">
                     @foreach (var item in Model.Specifications)
                     {
@@ -86,3 +96,20 @@
     </div>
 </div>
 
+@section Scripts
+{
+    <script>
+        const formAdd = document.getElementById("formAdd");
+        formAdd.addEventListener("submit", function(evt) {
+            evt.preventDefault();
+
+            const valueIds = document.getElementsByName("AttributeValueId");
+            const AttributeValueId = [];
+            valueIds.forEach(id => {
+                AttributeValueId.push(id.value);
+            });
+
+            console.log(new FormData(formAdd))
+        });
+    </script>
+}
