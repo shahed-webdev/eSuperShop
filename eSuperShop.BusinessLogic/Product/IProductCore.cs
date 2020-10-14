@@ -14,8 +14,9 @@ namespace eSuperShop.BusinessLogic
         Task<ICollection<AttributeModel>> SearchAttributeAsync(int catalogId, string key);
         Task<ICollection<SpecificationModel>> SearchSpecificationAsync(int catalogId, string key);
         DbResponse<ProductDetailsModel> Details(string vendorUserName, int productId);
-        DbResponse QuantityAdd(List<ProductQuantityAddModel> model, string vendorUserName);
-
+        DbResponse<List<ProductQuantitySetViewModel>> QuantitySetList(int productId, string vendorUserName);
+        DbResponse QuantityAdd(ProductQuantityAddModel model, string vendorUserName);
+        DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName);
 
     }
 }

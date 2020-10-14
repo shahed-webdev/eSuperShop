@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using CloudStorage;
 using eSuperShop.BusinessLogic;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using CloudStorage;
 using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -88,10 +85,10 @@ namespace eSuperShop.Web.Controllers
 
             var response = _product.Details(User.Identity.Name, id.GetValueOrDefault());
             return View(response.Data);
-        } 
-        
+        }
+
         [HttpPost]
-        public IActionResult AddStock(List<ProductQuantityAddModel> model)
+        public IActionResult AddStock(ProductQuantityAddModel model)
         {
             _product.QuantityAdd(model, User.Identity.Name);
             return View();

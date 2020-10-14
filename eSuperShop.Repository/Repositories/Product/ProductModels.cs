@@ -155,4 +155,41 @@ namespace eSuperShop.Repository
     {
         public int ProductAttributeValueId { get; set; }
     }
+
+    public class ProductQuantityCheckModel
+    {
+        public int ProductId { get; set; }
+        public int[] ProductAttributeValueIds { get; set; }
+    }
+
+    public class ProductQuantityViewModel
+    {
+        public int ProductQuantitySetId { get; set; }
+        public int Quantity { get; set; }
+        public decimal PriceAdjustment { get; set; }
+
+    }
+
+    public class ProductQuantitySetViewModel
+    {
+        public ProductQuantitySetViewModel()
+        {
+            AttributesWithValue = new HashSet<ProductQuantitySetAttributeViewModel>();
+        }
+        public int ProductQuantitySetId { get; set; }
+        public int Quantity { get; set; }
+        public decimal PriceAdjustment { get; set; }
+        public virtual ICollection<ProductQuantitySetAttributeViewModel> AttributesWithValue { get; set; }
+    }
+    public class ProductQuantitySetAttributeViewModel
+    {
+        public int ProductQuantitySetAttributeId { get; set; }
+        public int AttributeId { get; set; }
+        public string KeyName { get; set; }
+        public int ProductAttributeValueId { get; set; }
+        public string Value { get; set; }
+
+
+    }
 }
+

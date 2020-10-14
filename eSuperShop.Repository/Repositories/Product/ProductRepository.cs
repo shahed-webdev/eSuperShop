@@ -78,8 +78,6 @@ namespace eSuperShop.Repository
         public ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId)
         {
             return Db.Product
-                //.Include(p => p.Catalog)
-                //.Include(p => p.Brand)
                 .Where(p => p.VendorId == vendorId && !p.Published)
                 .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
                 .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
@@ -99,10 +97,36 @@ namespace eSuperShop.Repository
             return Db.Product.Any(p => p.ProductId == productId && p.VendorId == vendorId);
         }
 
-        public void QuantityAdd(List<ProductQuantityAddModel> model)
+        public void QuantityAdd(ProductQuantityAddModel model)
         {
-            var productQuantitySet = model.Select(p => _mapper.Map<ProductQuantitySet>(p)).ToList();
-            Db.ProductQuantitySet.AddRange(productQuantitySet);
+            var productQuantitySet = Db.ProductQuantitySet.Where(p =>
+                p.ProductId == model.ProductId && p.ProductQuantitySetAttribute.Select(q => q.ProductAttributeValueId)
+                    .All(model.ProductQuantitySetAttribute.Select(s => s.ProductAttributeValueId).Contains)).ToList();
+            if (productQuantitySet == null)
+            {
+                var productQuantitySetAdd = _mapper.Map<ProductQuantitySet>(model);
+                Db.ProductQuantitySet.Add(productQuantitySetAdd);
+            }
+
+        }
+
+        public ProductQuantityViewModel GetQuantitySet(ProductQuantityCheckModel model)
+        {
+            return Db.ProductQuantitySet.Where(p =>
+                p.ProductId == model.ProductId &&
+                p.ProductQuantitySetAttribute.Select(q => q.ProductAttributeValueId)
+                    .All(model.ProductAttributeValueIds.Contains) &&
+                p.ProductQuantitySetAttribute.Count == model.ProductAttributeValueIds.Length)
+                .ProjectTo<ProductQuantityViewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
+        public ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId)
+        {
+            return Db.ProductQuantitySet
+                .Where(p => p.ProductId == productId)
+                .ProjectTo<ProductQuantitySetViewModel>(_mapper.ConfigurationProvider)
+                .ToList();
         }
     }
 }

@@ -12,7 +12,9 @@ namespace eSuperShop.Repository
         ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId);
         ProductDetailsModel Details(int productId);
         bool IsProductExist(int vendorId, int productId);
-        void QuantityAdd(List<ProductQuantityAddModel> model);
+        void QuantityAdd(ProductQuantityAddModel model);
+        ProductQuantityViewModel GetQuantitySet(ProductQuantityCheckModel model);
+        ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId);
     }
 
 }

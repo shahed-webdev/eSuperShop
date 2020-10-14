@@ -114,6 +114,21 @@ namespace eSuperShop.Repository
             CreateMap<ProductQuantitySet, ProductQuantityAddModel>();
             CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeModel>();
 
+            //Product Quantity Set
+            CreateMap<ProductQuantitySet, ProductQuantityViewModel>().ReverseMap();
+            CreateMap<ProductQuantitySet, ProductQuantitySetViewModel>()
+                .ForMember(d => d.AttributesWithValue, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute));
+
+            CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeViewModel>()
+                .ForMember(d => d.AttributeId,
+                    opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.AttributeId))
+                .ForMember(d => d.KeyName,
+                    opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.Attribute.KeyName))
+                .ForMember(d => d.Value, opt => opt.MapFrom(c => c.ProductAttributeValue.Value));
+
+
+
+
         }
     }
 }
