@@ -110,6 +110,15 @@ namespace eSuperShop.Repository
 
         }
 
+        public void QuantityUpdate(ProductQuantityViewModel model)
+        {
+            var productQuantitySet = Db.ProductQuantitySet.Find(model.ProductQuantitySetId);
+
+            productQuantitySet.Quantity = model.Quantity;
+            productQuantitySet.PriceAdjustment = model.PriceAdjustment;
+            Db.ProductQuantitySet.Update(productQuantitySet);
+        }
+
         public ProductQuantityViewModel GetQuantitySet(ProductQuantityCheckModel model)
         {
             return Db.ProductQuantitySet.Where(p =>

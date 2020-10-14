@@ -13,6 +13,7 @@ namespace eSuperShop.Repository
         ProductDetailsModel Details(int productId);
         bool IsProductExist(int vendorId, int productId);
         void QuantityAdd(ProductQuantityAddModel model);
+        void QuantityUpdate(ProductQuantityViewModel model);
         ProductQuantityViewModel GetQuantitySet(ProductQuantityCheckModel model);
         ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId);
     }

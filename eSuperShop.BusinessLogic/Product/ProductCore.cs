@@ -196,6 +196,20 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse QuantityUpdate(ProductQuantityViewModel model)
+        {
+            try
+            {
+                _db.Product.QuantityUpdate(model);
+                _db.SaveChanges();
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
         public DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName)
         {
             try
