@@ -88,6 +88,7 @@ namespace eSuperShop.Web.Controllers
         }
 
         //get stock
+        [HttpPost]
         public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
         {
             var response = _product.GetQuantitySet(model, User.Identity.Name);

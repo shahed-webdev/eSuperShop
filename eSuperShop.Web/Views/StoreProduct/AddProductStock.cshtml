@@ -110,9 +110,10 @@
                 ProductId: @Model.ProductId,
                 ProductAttributeValueIds: attributeIds(true)
             }
-
+            console.log(model)
             $.ajax({
                 url: "/StoreProduct/GetInsertedStock",
+                type: "POST",
                 data: model,
                 success: function(response) {
                     console.log(response);

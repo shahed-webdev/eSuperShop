@@ -73,11 +73,11 @@ namespace eSuperShop.Web
             //    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             //});
 
-            //services.AddAuthentication().AddFacebook(facebookOptions =>
-            //{
-            //    facebookOptions.AppId = "422952768651477";
-            //    facebookOptions.AppSecret = "a2f2c1b1fb31c2dfd57a9f7be373e760";
-            //});
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = "422952768651477";
+                facebookOptions.AppSecret = "a2f2c1b1fb31c2dfd57a9f7be373e760";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
