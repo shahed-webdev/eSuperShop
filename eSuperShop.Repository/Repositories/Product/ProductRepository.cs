@@ -114,13 +114,26 @@ namespace eSuperShop.Repository
 
         public ProductQuantityViewModel GetQuantitySet(ProductQuantityCheckModel model)
         {
-            return Db.ProductQuantitySet.Where(p =>
-                p.ProductId == model.ProductId &&
-                p.ProductQuantitySetAttribute.Select(q => q.ProductAttributeValueId)
-                    .All(model.ProductAttributeValueIds.Contains) &&
-                p.ProductQuantitySetAttribute.Count == model.ProductAttributeValueIds.Length)
-                .ProjectTo<ProductQuantityViewModel>(_mapper.ConfigurationProvider)
-                .FirstOrDefault();
+            var setList = Db.ProductQuantitySet
+                .Include(p => p.ProductQuantitySetAttribute)
+                .Where(p =>
+                 p.ProductId == model.ProductId &&
+                 p.ProductQuantitySetAttribute.Count == model.ProductAttributeValueIds.Length)
+                .ToList();
+
+            if (setList.Count <= 0) return null;
+
+            var set = setList
+                  .Where(p => p.ProductQuantitySetAttribute
+                      .Select(q => q.ProductAttributeValueId)
+                      .All(model.ProductAttributeValueIds.Contains))
+                  .Select(p => new ProductQuantityViewModel
+                  {
+                      ProductQuantitySetId = p.ProductQuantitySetId,
+                      Quantity = p.Quantity,
+                      PriceAdjustment = p.PriceAdjustment
+                  }).FirstOrDefault();
+            return set;
         }
 
         public ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId)
