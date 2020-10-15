@@ -36,13 +36,21 @@ let linkData = [
         "Category": "Product",
         "IconClass": "fas fa-shopping-bag",
         "links": [{
-            "LinkID": 3,
-            "SN": 0,
-            "Controller": "StoreProduct",
-            "Action": "ProductCategory",
-            "Title": "Add Product",
-            "IconClass": null
-        }]
+                "LinkID": 3,
+                "SN": 0,
+                "Controller": "StoreProduct",
+                "Action": "ProductCategory",
+                "Title": "Add Product",
+                "IconClass": null
+            },
+            {
+                "LinkID": 3,
+                "SN": 0,
+                "Controller": "StoreProduct",
+                "Action": "UnPublishedProduct",
+                "Title": "Add Quantity",
+                "IconClass": null
+            }]
     }
 ];
 

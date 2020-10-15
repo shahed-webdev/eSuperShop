@@ -87,11 +87,29 @@ namespace eSuperShop.Web.Controllers
             return View(response.Data);
         }
 
+        //get stock
+        public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
+        {
+            var response = _product.GetQuantitySet(model, User.Identity.Name);
+            return Json(response);
+        }
+
+        //post
         [HttpPost]
         public IActionResult AddStock(ProductQuantityAddModel model)
         {
-            _product.QuantityAdd(model, User.Identity.Name);
-            return View();
+            var response = _product.QuantityAdd(model, User.Identity.Name);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+            return Json(response);
+        }
+
+        //update
+        [HttpPost]
+        public IActionResult UpdateStock(ProductQuantityViewModel model)
+        {
+            var response = _product.QuantityUpdate(model);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+            return Json(response);
         }
     }
 }

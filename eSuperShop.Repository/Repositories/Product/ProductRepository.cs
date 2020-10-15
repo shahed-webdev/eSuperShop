@@ -99,14 +99,14 @@ namespace eSuperShop.Repository
 
         public void QuantityAdd(ProductQuantityAddModel model)
         {
-            var productQuantitySet = Db.ProductQuantitySet.Where(p =>
-                p.ProductId == model.ProductId && p.ProductQuantitySetAttribute.Select(q => q.ProductAttributeValueId)
-                    .All(model.ProductQuantitySetAttribute.Select(s => s.ProductAttributeValueId).Contains)).ToList();
-            if (productQuantitySet == null)
-            {
+            //var productQuantitySet = Db.ProductQuantitySet.Where(p =>
+            //    p.ProductId == model.ProductId && p.ProductQuantitySetAttribute.Select(q => q.ProductAttributeValueId)
+            //        .All(model.ProductQuantitySetAttribute.Select(s => s.ProductAttributeValueId).Contains)).ToList();
+            //if (productQuantitySet == null)
+            //{
                 var productQuantitySetAdd = _mapper.Map<ProductQuantitySet>(model);
                 Db.ProductQuantitySet.Add(productQuantitySetAdd);
-            }
+            //}
 
         }
 
