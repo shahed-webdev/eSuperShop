@@ -107,7 +107,8 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
                 .ForMember(d => d.BrandInfo, opt => opt.MapFrom(c => c.Brand))
                 .ForMember(d => d.CatalogInfo, opt => opt.MapFrom(c => c.Catalog))
-                .ForMember(d => d.VendorInfo, opt => opt.MapFrom(c => c.Vendor));
+                .ForMember(d => d.VendorInfo, opt => opt.MapFrom(c => c.Vendor))
+                .ForMember(d => d.QuantitySets, opt => opt.MapFrom(c => c.ProductQuantitySet));
 
 
             //Vendor Product Quantity show
