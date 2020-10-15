@@ -18,12 +18,20 @@
     <div class="row">
         <div class="col-xl-7 mb-3">
             <div class="card card-body">
-                <h4 class="font-weight-bold mb-0">
-                    @Model.Name
-                    <small class="text-muted" style="text-decoration: line-through">৳@Model.OldPrice</small>
-                    <small>৳@Model.Price</small>
-                </h4>
-                <p class="mb-0">@Model.ShortDescription</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="font-weight-bold mb-0">
+                            @Model.Name
+                            <small class="text-muted" style="text-decoration: line-through">৳@Model.OldPrice</small>
+                            <small>৳@Model.Price</small>
+                        </h4>
+                        <p class="mb-0">@Model.ShortDescription</p>
+                    </div>
+                    <button id="btnPublish" type="button" class="btn btn-outline-success btn-rounded">
+                        @*<i class="fas fa-ban mr-1"></i>Publish Product*@
+                        <i class="fas fa-check mr-1"></i>Published
+                    </button>
+                </div>
                 <hr/>
                 <p>
                     <strong>Category: </strong>@Model.CatalogInfo.CatalogName,
@@ -32,7 +40,7 @@
                 </p>
 
                 <div class="mt-3">@Html.Raw(@Model.FullDescription)</div>
-                
+
                 <div class="productImage mt-3">
                     @foreach (var img in Model.Blobs)
                     {
@@ -73,7 +81,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Add Stock" class="btn btn-danger btn-md">
+                        <input id="inputSubmit" type="submit" data-id="" value="Add Stock" class="btn btn-danger btn-md">
                         <input type="hidden" name="ProductId" value="@Model.ProductId">
                     </div>
                 </div>
@@ -98,34 +106,81 @@
 
 @section Scripts{
     <script>
-        //on change attribute
+        //selectors
+        const valueIds = document.getElementsByName("AttributeValueId");
         const attributeCard = document.getElementById("attributeCard");
+        const formAdd = document.getElementById("formAdd");
+        const btnPublish = document.getElementById("btnPublish");
+
+        //on change attribute
         attributeCard.addEventListener("change", function(evt) {
             const element = evt.target;
 
             const onAttribute = element.classList.contains("attributeSelect");
             if (!onAttribute) return;
 
+            const Ids = attributeIds(true);
+
+            if (valueIds.length !== Ids.length) return;
+
             const model = {
                 ProductId: @Model.ProductId,
                 ProductAttributeValueIds: attributeIds(true)
             }
-            console.log(model)
+
+            formAdd.inputSubmit.disabled = true;
+
             $.ajax({
                 url: "/StoreProduct/GetInsertedStock",
                 type: "POST",
                 data: model,
                 success: function(response) {
-                    console.log(response);
+                    if (response.IsSuccess) {
+                        formAdd.Quantity.value = response.Data.Quantity;
+                        formAdd.PriceAdjustment.value = response.Data.PriceAdjustment;
+                        formAdd.inputSubmit.setAttribute("data-id", response.Data.ProductQuantitySetId);
+                    } else {
+                        formAdd.Quantity.value = "";
+                        formAdd.PriceAdjustment.value = "";
+                        formAdd.inputSubmit.setAttribute("data-id", "");
+                    }
+
+                    changeButton();
+                    formAdd.inputSubmit.disabled = false;
                 },
-                error: function(err) { console.log(err) }
+                error: function(err) {
+                    console.log(err);
+                    formAdd.inputSubmit.disabled = false;
+                }
             });
         });
 
         //post
-        const formAdd = document.getElementById("formAdd");
         formAdd.addEventListener("submit", function(evt) {
             evt.preventDefault();
+            const id = formAdd.inputSubmit.getAttribute("data-id");
+
+            if (id) {
+                const updateModel = {
+                    ProductQuantitySetId: +id,
+                    Quantity: +formAdd.Quantity.value,
+                    PriceAdjustment: +formAdd.PriceAdjustment.value
+                }
+
+                $.ajax({
+                    url: "/StoreProduct/UpdateStock",
+                    type: "POST",
+                    data: updateModel,
+                    success: function(response) {
+                        console.log(response);
+                        $.notify("Update Stock Successfully", "success", { position: "right" });
+                    },
+                    error: function(err) { console.log(err) }
+                });
+
+                return;
+            }
+
 
             const model = {
                 ProductId: @Model.ProductId,
@@ -140,22 +195,44 @@
                 data: model,
                 success: function(response) {
                     console.log(response);
+                    $.notify("Add Stock Successfully", "success", { position: "right" });
                 },
                 error: function(err) { console.log(err) }
             });
         });
 
+        //publish
+        btnPublish.addEventListener("click", function() {
+
+        });
+
         //get selected id
         function attributeIds(isArray) {
-            const valueIds = document.getElementsByName("AttributeValueId");
             const AttributeValueId = [];
+
             valueIds.forEach(id => {
-                if (id.value) {
-                    isArray ? AttributeValueId.push(+id.value) : AttributeValueId.push({ ProductAttributeValueId: +id.value});
-                }
+                if (id.value)
+                    isArray ? AttributeValueId.push(+id.value) : AttributeValueId.push({ ProductAttributeValueId: +id.value });
             });
 
             return AttributeValueId;
+        }
+
+        //change button state
+        function changeButton() {
+            const id = formAdd.inputSubmit.getAttribute("data-id");
+
+            formAdd.inputSubmit.value = id ? "Update Stock" : "Add Stock";
+
+            if (id) {
+                formAdd.inputSubmit.value = "Update Stock";
+                formAdd.inputSubmit.classList.remove("btn-danger");
+                formAdd.inputSubmit.classList.add("btn-success");
+            } else {
+                formAdd.inputSubmit.value = "Add Stock";
+                formAdd.inputSubmit.classList.add("btn-danger");
+                formAdd.inputSubmit.classList.remove("btn-success");
+            }
         }
     </script>
 }

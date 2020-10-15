@@ -167,7 +167,6 @@ namespace eSuperShop.Repository
         public int ProductQuantitySetId { get; set; }
         public int Quantity { get; set; }
         public decimal PriceAdjustment { get; set; }
-
     }
 
     public class ProductQuantitySetViewModel
