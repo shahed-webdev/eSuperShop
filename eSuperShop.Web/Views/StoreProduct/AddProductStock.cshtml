@@ -51,8 +51,9 @@
         </div>
 
         <div class="col-xl-5 mb-3">
-            <form id="formAdd">
-                <div id="attributeCard" class="card card-body mb-4">
+
+            <div id="attributeCard" class="card card-body mb-4">
+                <form id="formAdd">
                     <h5 class="font-weight-bold mt-3 mb-0">PRODUCT STOCK</h5>
                     <em class="mb-3">Select Attribute And Add Product Quantity</em>
 
@@ -84,8 +85,37 @@
                         <input id="inputSubmit" type="submit" data-id="" value="Add Stock" class="btn btn-danger btn-md">
                         <input type="hidden" name="ProductId" value="@Model.ProductId">
                     </div>
-                </div>
-            </form>
+                </form>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            @foreach (var head in Model.QuantitySets)
+                            {
+                                @foreach (var val in head.AttributesWithValue)
+                                {
+                                    <th><strong>@val.KeyName</strong></th>
+                                }
+                                <th><strong>Quantity</strong></th>
+                                <th><strong>Additional Price</strong></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var head in Model.QuantitySets)
+                        {
+                            <tr>
+                                @foreach (var val in head.AttributesWithValue)
+                                {
+                                    <td>@val.Value</td>
+                                }
+                                <td>@head.Quantity</td>
+                                <td>@head.PriceAdjustment</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
             <div class="card card-body">
                 <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
@@ -128,7 +158,7 @@
                 ProductAttributeValueIds: attributeIds(true)
             }
 
-            formAdd.inputSubmit.disabled = true;
+            disabledButton(true);
 
             $.ajax({
                 url: "/StoreProduct/GetInsertedStock",
@@ -146,11 +176,11 @@
                     }
 
                     changeButton();
-                    formAdd.inputSubmit.disabled = false;
+                    disabledButton(false);
                 },
                 error: function(err) {
                     console.log(err);
-                    formAdd.inputSubmit.disabled = false;
+                    disabledButton(false);
                 }
             });
         });
@@ -159,6 +189,8 @@
         formAdd.addEventListener("submit", function(evt) {
             evt.preventDefault();
             const id = formAdd.inputSubmit.getAttribute("data-id");
+
+            disabledButton(true);
 
             if (id) {
                 const updateModel = {
@@ -174,8 +206,12 @@
                     success: function(response) {
                         console.log(response);
                         $.notify("Update Stock Successfully", "success", { position: "right" });
+                        disabledButton(false);
                     },
-                    error: function(err) { console.log(err) }
+                    error: function(err) {
+                        console.log(err);
+                        disabledButton(false);
+                    }
                 });
 
                 return;
@@ -196,8 +232,12 @@
                 success: function(response) {
                     console.log(response);
                     $.notify("Add Stock Successfully", "success", { position: "right" });
+                    disabledButton(false);
                 },
-                error: function(err) { console.log(err) }
+                error: function(err) {
+                    console.log(err);
+                    disabledButton(false);
+                }
             });
         });
 
@@ -233,6 +273,11 @@
                 formAdd.inputSubmit.classList.add("btn-danger");
                 formAdd.inputSubmit.classList.remove("btn-success");
             }
+        }
+
+        //disabled button
+        function disabledButton(isLoading) {
+            formAdd.inputSubmit.disabled = isLoading;
         }
     </script>
 }
