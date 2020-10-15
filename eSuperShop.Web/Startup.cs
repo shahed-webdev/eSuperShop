@@ -67,12 +67,14 @@ namespace eSuperShop.Web
 
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
-            //services.AddAuthentication().AddGoogle(googleOptions =>
-            //{
-            //    googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-            //    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-            //});
+            //google login
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = "612248071655-ejs1j0sagf8r1k0dn41j88uktl23tqet.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "3LqSP3xBZx2sHZ2hM479UWJ_";
+            });
 
+            //facebook login
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = "422952768651477";
