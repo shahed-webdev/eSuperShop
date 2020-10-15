@@ -23,7 +23,7 @@ namespace eSuperShop.Web.Controllers
             _signInManager = signInManager;
         }
 
-        //GET: Admin Login
+        //GET: Admin/seller Login
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
@@ -32,7 +32,7 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        //POST: Admin Login
+        //POST: Admin/seller Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -65,6 +65,41 @@ namespace eSuperShop.Web.Controllers
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
         }
+
+
+        //GET: Customer Login
+        [AllowAnonymous]
+        public IActionResult CustomerLogin(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+
+        //POST: Customer Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CustomerLogin(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+
+            if (result.Succeeded)
+                LocalRedirect(Url.Content("~/Dashboard/Index"));
+
+            if (result.RequiresTwoFactor)
+                return RedirectToPage("./LoginWith2fa", new {ReturnUrl = returnUrl, model.RememberMe});
+
+            if (result.IsLockedOut)
+                return RedirectToPage("./Lockout");
+
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View(model);
+        }
+
 
 
         // GET: ChangePassword
