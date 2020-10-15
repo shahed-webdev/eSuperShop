@@ -69,6 +69,7 @@ namespace eSuperShop.Repository
             Attributes = new HashSet<ProductAttributeViewModel>();
             Blobs = new HashSet<ProductBlobViewModel>();
             Specifications = new HashSet<ProductSpecificationViewModel>();
+            QuantitySets = new HashSet<ProductQuantitySetViewModel>();
         }
         public int ProductId { get; set; }
         public VendorInfoModel VendorInfo { get; set; }
@@ -80,6 +81,8 @@ namespace eSuperShop.Repository
         public string FullDescription { get; set; }
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
+
+        public ICollection<ProductQuantitySetViewModel> QuantitySets { get; set; }
         public ICollection<ProductAttributeViewModel> Attributes { get; set; }
         public ICollection<ProductBlobViewModel> Blobs { get; set; }
         public ICollection<ProductSpecificationViewModel> Specifications { get; set; }
