@@ -81,6 +81,7 @@ namespace eSuperShop.Repository
         public string FullDescription { get; set; }
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
+        public bool Published { get; set; }
 
         public ICollection<ProductQuantitySetViewModel> QuantitySets { get; set; }
         public ICollection<ProductAttributeViewModel> Attributes { get; set; }
