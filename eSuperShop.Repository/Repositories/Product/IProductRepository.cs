@@ -16,6 +16,8 @@ namespace eSuperShop.Repository
         void QuantityUpdate(ProductQuantityViewModel model);
         ProductQuantityViewModel GetQuantitySet(ProductQuantityCheckModel model);
         ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId);
+
+        void PublishedUpdate(int productId, bool published);
     }
 
 }

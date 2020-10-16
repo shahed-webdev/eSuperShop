@@ -143,5 +143,12 @@ namespace eSuperShop.Repository
                 .ProjectTo<ProductQuantitySetViewModel>(_mapper.ConfigurationProvider)
                 .ToList();
         }
+
+        public void PublishedUpdate(int productId, bool published)
+        {
+            var product = Db.Product.Find(productId);
+            product.Published = published;
+            Db.Product.Update(product);
+        }
     }
 }
