@@ -213,21 +213,42 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse PublishedUpdate(int productId, bool published, string vendorUserName)
+        {
+            try
+            {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0) return new DbResponse(false, "Invalid User");
+
+                if (!_db.Product.IsProductExist(vendorId, productId))
+                    return new DbResponse(false, "Product Not Found");
+
+                _db.Product.PublishedUpdate(productId, published);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
         public DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName)
         {
             try
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
-                
-                if (vendorId == 0) 
+
+                if (vendorId == 0)
                     return new DbResponse<ProductQuantityViewModel>(false, "Invalid User");
-                
-                if (!_db.Product.IsProductExist(vendorId, model.ProductId)) 
+
+                if (!_db.Product.IsProductExist(vendorId, model.ProductId))
                     return new DbResponse<ProductQuantityViewModel>(false, "Product Not Found");
 
                 var data = _db.Product.GetQuantitySet(model);
 
-                if (data == null) 
+                if (data == null)
                     return new DbResponse<ProductQuantityViewModel>(false, "Quantity Not Found");
 
                 return new DbResponse<ProductQuantityViewModel>(true, "Success", data);

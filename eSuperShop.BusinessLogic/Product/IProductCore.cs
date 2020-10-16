@@ -17,6 +17,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<List<ProductQuantitySetViewModel>> QuantitySetList(int productId, string vendorUserName);
         DbResponse QuantityAdd(ProductQuantityAddModel model, string vendorUserName);
         DbResponse QuantityUpdate(ProductQuantityViewModel model);
+        DbResponse PublishedUpdate(int productId, bool published, string vendorUserName);
         DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName);
 
     }
