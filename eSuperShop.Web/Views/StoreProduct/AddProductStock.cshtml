@@ -8,8 +8,12 @@
 
 @section Styles{
     <style>
-        .productImage img { width: 100px; margin: 5px; border-radius: 3px; }
-    </style>   
+        .productImage img {
+            width: 100px;
+            margin: 5px;
+            border-radius: 3px;
+        }
+    </style>
 }
 
 
@@ -32,7 +36,7 @@
                         <i class="fas fa-check mr-1"></i>Published
                     </button>
                 </div>
-                <hr/>
+                <hr />
                 <p>
                     <strong>Category: </strong>@Model.CatalogInfo.CatalogName,
                     <strong>Brand: </strong>@Model.BrandInfo.Name,
@@ -90,15 +94,14 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            @foreach (var head in Model.QuantitySets)
+
+                            @foreach (var val in Model.QuantitySets.FirstOrDefault().AttributesWithValue)
                             {
-                                @foreach (var val in head.AttributesWithValue)
-                                {
-                                    <th><strong>@val.KeyName</strong></th>
-                                }
-                                <th><strong>Quantity</strong></th>
-                                <th><strong>Additional Price</strong></th>
+                                <th><strong>@val.KeyName</strong></th>
                             }
+                            <th><strong>Quantity</strong></th>
+                            <th><strong>Additional Price</strong></th>
+
                         </tr>
                     </thead>
                     <tbody>
