@@ -84,6 +84,15 @@ namespace eSuperShop.Repository
                 .ToList();
         }
 
+        public ICollection<ProductUnpublishedModel> PublishedList(int vendorId)
+        {
+            return Db.Product
+                .Where(p => p.VendorId == vendorId && p.Published)
+                .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
+                .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
+                .ToList();
+        }
+
         public ProductDetailsModel Details(int productId)
         {
             return Db.Product
