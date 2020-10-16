@@ -31,9 +31,10 @@
                         </h4>
                         <p class="mb-0">@Model.ShortDescription</p>
                     </div>
-                    <button id="btnPublish" type="button" class="btn btn-outline-success btn-rounded">
-                        @*<i class="fas fa-ban mr-1"></i>Publish Product*@
-                        <i class="fas fa-check mr-1"></i>Published
+
+                    <button id="btnPublish" data-publish="@Model.Published" type="button" class="btn btn-outline-@(Model.Published ? "success" : "danger") btn-rounded">
+                        <i class="fas mr-1 fa-@(Model.Published ? "check" : "ban")"></i>
+                        @(Model.Published ? "Published" : "Un-Published")
                     </button>
                 </div>
                 <hr />
@@ -55,7 +56,6 @@
         </div>
 
         <div class="col-xl-5 mb-3">
-
             <div id="attributeCard" class="card card-body mb-4">
                 <form id="formAdd">
                     <h5 class="font-weight-bold mt-3 mb-0">PRODUCT STOCK</h5>
@@ -94,14 +94,12 @@
                 <table class="table">
                     <thead>
                         <tr>
-
                             @foreach (var val in Model.QuantitySets.FirstOrDefault().AttributesWithValue)
                             {
                                 <th><strong>@val.KeyName</strong></th>
                             }
                             <th><strong>Quantity</strong></th>
                             <th><strong>Additional Price</strong></th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -113,7 +111,7 @@
                                     <td>@val.Value</td>
                                 }
                                 <td>@head.Quantity</td>
-                                <td>@head.PriceAdjustment</td>
+                                <td>৳@head.PriceAdjustment</td>
                             </tr>
                         }
                     </tbody>
@@ -246,7 +244,19 @@
 
         //publish
         btnPublish.addEventListener("click", function() {
+            const isPublished = this.getAttribute("data-publish").toLocaleLowerCase() === "true" ? true : false;
+            const content = !isPublished ? `<i class="fas mr-1 fa-check"></i>Published` : `<i class="fas mr-1 fa-ban"></i>Un-Published`;
 
+            this.innerHTML = content;
+            this.setAttribute("data-publish", !isPublished);
+
+            if (!isPublished) {
+                this.classList.remove("btn-outline-danger");
+                this.classList.add("btn-outline-success");
+            } else {
+                this.classList.remove("btn-outline-success");
+                this.classList.add("btn-outline-danger");
+            }
         });
 
         //get selected id
