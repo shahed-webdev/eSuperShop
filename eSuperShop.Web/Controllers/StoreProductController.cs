@@ -112,5 +112,14 @@ namespace eSuperShop.Web.Controllers
             if (!response.IsSuccess) return UnprocessableEntity(response.Message);
             return Json(response);
         }
+
+        //update published status
+        //update
+        [HttpPost]
+        public IActionResult PublishedUpdate(int productId, bool isPublished)
+        {
+            var response = _product.PublishedUpdate(productId, isPublished, User.Identity.Name);
+            return Json(response);
+        }
     }
 }

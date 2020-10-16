@@ -246,17 +246,33 @@
         btnPublish.addEventListener("click", function() {
             const isPublished = this.getAttribute("data-publish").toLocaleLowerCase() === "true" ? true : false;
             const content = !isPublished ? `<i class="fas mr-1 fa-check"></i>Published` : `<i class="fas mr-1 fa-ban"></i>Un-Published`;
+            this.disabled = true;
 
-            this.innerHTML = content;
-            this.setAttribute("data-publish", !isPublished);
+            $.ajax({
+                url: "/StoreProduct/PublishedUpdate",
+                type: "POST",
+                data: { productId: @Model.ProductId, isPublished: !isPublished},
+                success: response => {
+                    this.disabled = false;
 
-            if (!isPublished) {
-                this.classList.remove("btn-outline-danger");
-                this.classList.add("btn-outline-success");
-            } else {
-                this.classList.remove("btn-outline-success");
-                this.classList.add("btn-outline-danger");
-            }
+                    if (!response.IsSuccess) return;
+
+                    this.innerHTML = content;
+                    this.setAttribute("data-publish", !isPublished);
+
+                    if (!isPublished) {
+                        this.classList.remove("btn-outline-danger");
+                        this.classList.add("btn-outline-success");
+                    } else {
+                        this.classList.remove("btn-outline-success");
+                        this.classList.add("btn-outline-danger");
+                    }
+                },
+                error: err => {
+                    console.log(err);
+                    this.disabled = false;
+                }
+            });
         });
 
         //get selected id
