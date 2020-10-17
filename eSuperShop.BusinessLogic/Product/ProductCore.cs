@@ -19,7 +19,10 @@ namespace eSuperShop.BusinessLogic
             _mapper = mapper;
             _db = db;
             _cloudStorage = cloudStorage;
+            Seo = new SeoCoreProduct(_mapper, _db);
         }
+
+        public ISeoCore Seo { get; set; }
 
         public DbResponse<CatalogDisplayModel> CatalogDetails(int catalogId)
         {

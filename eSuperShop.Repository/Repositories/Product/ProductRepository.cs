@@ -159,5 +159,46 @@ namespace eSuperShop.Repository
             product.Published = published;
             Db.Product.Update(product);
         }
+
+        public SeoModel GetSeo(int id)
+        {
+            return Db.Product
+                .Where(c => c.ProductId == id)
+                .Select(c => c.Seo)
+                .ProjectTo<SeoModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
+        public void SeoDelete(int id)
+        {
+            var seo = Db.Product.Include(c => c.Seo).FirstOrDefault(c => c.ProductId == id).Seo;
+            Db.Seo.Remove(seo);
+        }
+
+        public bool IsSeoExist(int id)
+        {
+            return Db.Product.Any(c => c.ProductId == id && c.SeoId != null);
+        }
+
+        public void PostSeo(SeoAddModel model)
+        {
+            var product = Db.Product.Include(c => c.Seo).FirstOrDefault(c => c.ProductId == model.AssignTableId);
+
+            if (product == null) return;
+
+            if (product.Seo == null)
+            {
+                var seo = _mapper.Map<Seo>(model);
+                product.Seo = seo;
+            }
+            else
+            {
+                product.Seo.MetaTitle = model.MetaTitle;
+                product.Seo.MetaDescription = model.MetaDescription;
+                product.Seo.MetaKeywords = model.MetaKeywords;
+            }
+
+            Db.Product.Update(product);
+        }
     }
 }
