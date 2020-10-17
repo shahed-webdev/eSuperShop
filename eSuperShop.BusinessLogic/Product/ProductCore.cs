@@ -216,7 +216,7 @@ namespace eSuperShop.BusinessLogic
                     QuantitySet = _db.Product.GetQuantitySetDetailsById(_db.Product.ProductQuantitySet.ProductQuantitySetId)
                 };
 
-                return new DbResponse<ProductQuantitySetAddReturnModel>(true, "Success");
+                return new DbResponse<ProductQuantitySetAddReturnModel>(true, "Success", data);
             }
             catch (Exception e)
             {
