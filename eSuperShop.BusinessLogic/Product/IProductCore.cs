@@ -6,6 +6,7 @@ namespace eSuperShop.BusinessLogic
 {
     public interface IProductCore
     {
+        ISeoCore Seo { get; set; }
         DbResponse<CatalogDisplayModel> CatalogDetails(int catalogId);
         Task<DbResponse> AddProductAsync(ProductAddModel model, string vendorUserName);
         DbResponse<List<ICatalogVendorModel>> VendorWiseCatalogList(string vendorUserName);

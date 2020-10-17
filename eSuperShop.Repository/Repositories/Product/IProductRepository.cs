@@ -2,7 +2,7 @@
 
 namespace eSuperShop.Repository
 {
-    public interface IProductRepository
+    public interface IProductRepository : ISeoRepository
     {
         void Add(ProductAddModel model);
         bool IsExistSlugUrl(string slugUrl);
