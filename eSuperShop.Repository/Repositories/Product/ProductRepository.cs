@@ -160,6 +160,16 @@ namespace eSuperShop.Repository
             Db.Product.Update(product);
         }
 
+        public void UpdateMainQuantity(int productId)
+        {
+            var product = Db.Product.Find(productId);
+            var quantity = Db.ProductQuantitySet
+                .Where(q => q.ProductId == productId)
+                .Sum(q => q.Quantity);
+            Db.Product.Update(product);
+            Db.SaveChanges();
+        }
+
         public SeoModel GetSeo(int id)
         {
             return Db.Product

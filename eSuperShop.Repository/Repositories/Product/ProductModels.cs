@@ -81,6 +81,7 @@ namespace eSuperShop.Repository
         public string FullDescription { get; set; }
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
+        public int StockQuantity { get; set; }
         public bool Published { get; set; }
 
         public ICollection<ProductQuantitySetViewModel> QuantitySets { get; set; }
@@ -140,6 +141,7 @@ namespace eSuperShop.Repository
         public string SlugUrl { get; set; }
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
+        public int StockQuantity { get; set; }
         public DateTime UpdatedOnUtc { get; set; }
     }
 
@@ -169,8 +171,10 @@ namespace eSuperShop.Repository
     public class ProductQuantityViewModel
     {
         public int ProductQuantitySetId { get; set; }
+        public int ProductId { get; set; }
         public int Quantity { get; set; }
         public decimal PriceAdjustment { get; set; }
+
     }
 
     public class ProductQuantitySetViewModel

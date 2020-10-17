@@ -19,6 +19,7 @@ namespace eSuperShop.Repository
         ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId);
 
         void PublishedUpdate(int productId, bool published);
+        void UpdateMainQuantity(int productId);
     }
 
 }
