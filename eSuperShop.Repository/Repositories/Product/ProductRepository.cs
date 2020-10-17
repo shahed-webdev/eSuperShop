@@ -166,6 +166,7 @@ namespace eSuperShop.Repository
             var quantity = Db.ProductQuantitySet
                 .Where(q => q.ProductId == productId)
                 .Sum(q => q.Quantity);
+            product.StockQuantity = quantity;
             Db.Product.Update(product);
             Db.SaveChanges();
         }
