@@ -97,13 +97,17 @@ namespace eSuperShop.Web.Controllers
         //Un-assign Catalog
         public IActionResult UnAssignCatalog(int id, int catalogId, string type)
         {
-            return type switch
+            switch (type)
             {
-                "brand" => Json(_brand.UnAssignCatalog(id, catalogId)),
-                "attribute" => Json(_attribute.UnAssignCatalog(id, catalogId)),
-                "specification" => Json(_specification.UnAssignCatalog(id, catalogId)),
-                _ => UnprocessableEntity("unable to delete")
-            };
+                case "brand":
+                    return Json(_brand.UnAssignCatalog(id, catalogId));
+                case "attribute":
+                    return Json(_attribute.UnAssignCatalog(id, catalogId));
+                case "specification":
+                    return Json(_specification.UnAssignCatalog(id, catalogId));
+                default:
+                    return UnprocessableEntity("unable to delete");
+            }
         }
 
 
@@ -137,7 +141,8 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-        //SEO
+    
+        //*****SEO******
         public IActionResult GetSeo(int id)
         {
             var response = _seo.Get(id);

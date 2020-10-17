@@ -48,7 +48,15 @@ let linkData = [
                 "SN": 0,
                 "Controller": "StoreProduct",
                 "Action": "UnPublishedProduct",
-                "Title": "Add Quantity",
+                "Title": "Un-Published Product",
+                "IconClass": null
+            },
+            {
+                "LinkID": 3,
+                "SN": 0,
+                "Controller": "StoreProduct",
+                "Action": "PublishedProduct",
+                "Title": "Published Product",
                 "IconClass": null
             }]
     }

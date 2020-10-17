@@ -1,0 +1,199 @@
+﻿@using eSuperShop.Repository
+@model IEnumerable<ProductUnpublishedModel>
+
+@{
+    ViewData["Title"] = "Published Product";
+    Layout = "_SellerLayout";
+}
+
+
+<div class="m-md-3">
+    <h4 class="page-header mb-3">Published Product</h4>
+    <div class="card card-body">
+        <table class="table table-md">
+            <thead>
+                <tr>
+                    <th><strong>Category</strong></th>
+                    <th><strong>Product</strong></th>
+                    <th><strong>Brand</strong></th>
+                    <th class="text-right"><strong>Price</strong></th>
+                    <th class="text-center"><strong>Details</strong></th>
+                    <th class="text-center"><strong>SEO</strong></th>
+                </tr>
+            </thead>
+            <tbody id="tBody">
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.CatalogName</td>
+                    <td>@item.Name</td>
+                    <td>@item.BrandName</td>
+                    <td class="text-right">@item.Price</td>
+                    <td class="text-center">
+                        <a class="blue-text" href="/StoreProduct/AddProductStock/@item.ProductId">Details<i class="ml-1 far fa-long-arrow-alt-right"></i></a>
+                    </td>
+                    <td class="text-center">
+                        <a data-id="@item.ProductId" data-name="@item.Name" class="addSeo blue-text">
+                            <i class="far fa-search-location"></i> SEO
+                        </a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- seo Modal -->
+<div class="modal fade" id="seoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content form-elegant">
+            <div class="modal-header text-center">
+                <div class="modal-title w-100">
+                    <h3 class="dark-grey-text font-weight-bold m-0">
+                        <strong>SEO</strong>
+                    </h3>
+                    <p id="showCategoryName" class="mb-0"></p>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body mx-4">
+                <form id="seoForm">
+                    <input id="hiddenAssignTableId" type="hidden">
+                    <div class="md-form mb-5">
+                        <input type="text" id="inputMetaTitle" class="form-control" required>
+                        <label for="inputMetaTitle">Meta Title</label>
+                    </div>
+                    <div class="md-form pb-3">
+                        <input type="text" id="inputMetaDescription" class="form-control" required>
+                        <label for="inputMetaDescription">Meta Description</label>
+                    </div>
+                    <div class="md-form pb-3">
+                        <input type="text" id="inputMetaKeywords" class="form-control" required>
+                        <label for="inputMetaKeywords">Meta Keywords</label>
+                    </div>
+                    <div class="text-center mb-3">
+                        <button type="submit" class="btn btn-success btn-rounded z-depth-1a"><i class="far fa-check"></i> Save</button>
+                        <button id="btnSeoDelete" type="button" class="btn btn-danger btn-rounded z-depth-1a"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        //**SEO***
+        const tBody = document.querySelector('#tBody');
+        const seoForm = document.getElementById('seoForm');
+        const btnSeoDelete = document.getElementById('btnSeoDelete');
+
+        //event listener
+        tBody.addEventListener('click', function(evt) {
+            const element = evt.target;
+
+            //show seo modal
+            if (element.classList.contains('addSeo')) {
+                const id = element.getAttribute('data-id');
+                const category = element.getAttribute('data-name');
+                showSeoModal(id, category);
+            }
+        });
+
+        const inputMetaTitle = seoForm.inputMetaTitle;
+        const inputMetaDescription = seoForm.inputMetaDescription;
+        const inputMetaKeywords = seoForm.inputMetaKeywords;
+        const hiddenAssignTableId = seoForm.hiddenAssignTableId;
+
+        //get
+        function showSeoModal(id, category) {
+            btnSeoDelete.style.display = "none";
+            clearInput();
+
+            $.ajax({
+                type: "POST",
+                url: "/StoreProduct/GetSeo",
+                data: { id },
+                success: function(response) {
+                    btnSeoDelete.style.display = "inline-block";
+                    btnSeoDelete.setAttribute("data-id", id);
+                    setValueInput(response.Data);
+                },
+                error: function(err) { console.log(err.responseText); }
+            });
+
+            $("#seoModal").modal("show");
+            $("#showCategoryName").text(category);
+            $("#hiddenAssignTableId").val(id);
+        }
+
+        //set inserted value
+        function setValueInput(data) {
+            inputMetaTitle.value = data.MetaTitle;
+            inputMetaTitle.nextElementSibling.classList.add('active');
+
+            inputMetaDescription.value = data.MetaDescription;
+            inputMetaDescription.nextElementSibling.classList.add('active');
+
+            inputMetaKeywords.value = data.MetaKeywords;
+            inputMetaKeywords.nextElementSibling.classList.add('active');
+        }
+
+        //clear inserted value
+        function clearInput() {
+            inputMetaTitle.value = "";
+            inputMetaTitle.nextElementSibling.classList.remove('active');
+
+            inputMetaDescription.value = "";
+            inputMetaDescription.nextElementSibling.classList.remove('active');
+
+            inputMetaKeywords.value = "";
+            inputMetaKeywords.nextElementSibling.classList.remove('active');
+        }
+
+        //post seo
+        seoForm.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            const body = {
+                AssignTableId: +hiddenAssignTableId.value,
+                MetaTitle: inputMetaTitle.value,
+                MetaDescription: inputMetaDescription.value,
+                MetaKeywords: inputMetaKeywords.value
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/StoreProduct/AddSeo",
+                data: body,
+                success: function(response) {
+                    if (response.IsSuccess)
+                        $("#seoModal").modal("hide");
+                },
+                error: function(err) { console.log(err.responseText) }
+            });
+        });
+
+        //delete
+        btnSeoDelete.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            if (!id) return;
+
+            $.ajax({
+                type: "POST",
+                url: "/StoreProduct/DeleteSeo",
+                data: { id },
+                success: function(response) {
+                    $("#seoModal").modal("hide");
+                },
+                error: function(err) { console.log(err.responseText); }
+            });
+        });
+    </script>
+}

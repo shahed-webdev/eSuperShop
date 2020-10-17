@@ -114,11 +114,45 @@ namespace eSuperShop.Web.Controllers
         }
 
         //update published status
-        //update
         [HttpPost]
         public IActionResult PublishedUpdate(int productId, bool isPublished)
         {
             var response = _product.PublishedUpdate(productId, isPublished, User.Identity.Name);
+            return Json(response);
+        }
+
+        //Published Product
+        public IActionResult PublishedProduct()
+        {
+            var response = _product.PublishedList(User.Identity.Name);
+            return View(response.Data);
+        }
+
+
+        //*****SEO******
+        public IActionResult GetSeo(int id)
+        {
+            var response = _seo.Get(id);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        public IActionResult AddSeo(SeoAddModel model)
+        {
+            var response = _seo.Post(model, User.Identity.Name);
+
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+
+            return Json(response);
+        }
+
+        public IActionResult DeleteSeo(int id)
+        {
+            var response = _seo.Delete(id);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+
             return Json(response);
         }
     }
