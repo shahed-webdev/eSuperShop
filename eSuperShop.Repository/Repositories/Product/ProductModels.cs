@@ -168,6 +168,18 @@ namespace eSuperShop.Repository
         public int[] ProductAttributeValueIds { get; set; }
     }
 
+    public class ProductQuantitySetAddReturnModel
+    {
+        public int StockQuantity { get; set; }
+        public ProductQuantitySetViewModel QuantitySet { get; set; }
+    }
+    public class ProductQuantitySetUpdateReturnModel
+    {
+        public int ProductQuantitySetId { get; set; }
+        public int StockQuantity { get; set; }
+        public int Quantity { get; set; }
+        public decimal PriceAdjustment { get; set; }
+    }
     public class ProductQuantityViewModel
     {
         public int ProductQuantitySetId { get; set; }
@@ -195,8 +207,6 @@ namespace eSuperShop.Repository
         public string KeyName { get; set; }
         public int ProductAttributeValueId { get; set; }
         public string Value { get; set; }
-
-
     }
 }
 

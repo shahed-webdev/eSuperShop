@@ -196,30 +196,35 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse QuantityAdd(ProductQuantityAddModel model, string vendorUserName)
+        public DbResponse<ProductQuantitySetAddReturnModel> QuantityAdd(ProductQuantityAddModel model, string vendorUserName)
         {
             try
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
-                if (vendorId == 0) return new DbResponse(false, "Invalid User");
+                if (vendorId == 0) return new DbResponse<ProductQuantitySetAddReturnModel>(false, "Invalid User");
 
                 if (!_db.Product.IsProductExist(vendorId, model.ProductId))
-                    return new DbResponse(false, "Product Not Found");
+                    return new DbResponse<ProductQuantitySetAddReturnModel>(false, "Product Not Found");
 
                 _db.Product.QuantityAdd(model);
                 _db.SaveChanges();
 
                 _db.Product.UpdateMainQuantity(model.ProductId);
+                var data = new ProductQuantitySetAddReturnModel
+                {
+                    StockQuantity = _db.Product.GetStock(model.ProductId),
+                    QuantitySet = _db.Product.GetQuantitySetDetailsById(_db.Product.ProductQuantitySet.ProductQuantitySetId)
+                };
 
-                return new DbResponse(true, "Success");
+                return new DbResponse<ProductQuantitySetAddReturnModel>(true, "Success");
             }
             catch (Exception e)
             {
-                return new DbResponse(false, e.Message);
+                return new DbResponse<ProductQuantitySetAddReturnModel>(false, e.Message);
             }
         }
 
-        public DbResponse QuantityUpdate(ProductQuantityViewModel model)
+        public DbResponse<ProductQuantitySetUpdateReturnModel> QuantityUpdate(ProductQuantityViewModel model)
         {
             try
             {
@@ -228,11 +233,16 @@ namespace eSuperShop.BusinessLogic
 
                 _db.Product.UpdateMainQuantity(model.ProductId);
 
-                return new DbResponse(true, "Success");
+                var quantitySet = _db.Product.GetQuantitySetById(model.ProductQuantitySetId);
+
+                var data = _mapper.Map<ProductQuantitySetUpdateReturnModel>(quantitySet);
+                data.StockQuantity = _db.Product.GetStock(model.ProductId);
+
+                return new DbResponse<ProductQuantitySetUpdateReturnModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse(false, e.Message);
+                return new DbResponse<ProductQuantitySetUpdateReturnModel>(false, e.Message);
             }
         }
 

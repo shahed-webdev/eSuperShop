@@ -13,6 +13,8 @@ namespace eSuperShop.Repository
         {
         }
 
+        public ProductQuantitySet ProductQuantitySet { get; set; }
+
         public void Add(ProductAddModel model)
         {
             //var product = new Product
@@ -108,8 +110,8 @@ namespace eSuperShop.Repository
 
         public void QuantityAdd(ProductQuantityAddModel model)
         {
-            var productQuantitySetAdd = _mapper.Map<ProductQuantitySet>(model);
-            Db.ProductQuantitySet.Add(productQuantitySetAdd);
+            ProductQuantitySet = _mapper.Map<ProductQuantitySet>(model);
+            Db.ProductQuantitySet.Add(ProductQuantitySet);
         }
 
         public void QuantityUpdate(ProductQuantityViewModel model)
@@ -136,13 +138,24 @@ namespace eSuperShop.Repository
                   .Where(p => p.ProductQuantitySetAttribute
                       .Select(q => q.ProductAttributeValueId)
                       .All(model.ProductAttributeValueIds.Contains))
-                  .Select(p => new ProductQuantityViewModel
-                  {
-                      ProductQuantitySetId = p.ProductQuantitySetId,
-                      Quantity = p.Quantity,
-                      PriceAdjustment = p.PriceAdjustment
-                  }).FirstOrDefault();
+                  //.Select(p => new ProductQuantityViewModel
+                  //{
+                  //    ProductQuantitySetId = p.ProductQuantitySetId,
+                  //    Quantity = p.Quantity,
+                  //    PriceAdjustment = p.PriceAdjustment
+                  //})
+                  .Select(p => _mapper.Map<ProductQuantityViewModel>(p))
+                  .FirstOrDefault();
             return set;
+        }
+
+        public ProductQuantityViewModel GetQuantitySetById(int productQuantitySetId)
+        {
+            return Db.ProductQuantitySet
+                .Include(p => p.ProductQuantitySetAttribute)
+                .Where(p => p.ProductQuantitySetId == productQuantitySetId)
+                .ProjectTo<ProductQuantityViewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
         }
 
         public ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId)
@@ -151,6 +164,14 @@ namespace eSuperShop.Repository
                 .Where(p => p.ProductId == productId)
                 .ProjectTo<ProductQuantitySetViewModel>(_mapper.ConfigurationProvider)
                 .ToList();
+        }
+
+        public ProductQuantitySetViewModel GetQuantitySetDetailsById(int productQuantitySetId)
+        {
+            return Db.ProductQuantitySet
+                .Where(p => p.ProductQuantitySetId == productQuantitySetId)
+                .ProjectTo<ProductQuantitySetViewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
         }
 
         public void PublishedUpdate(int productId, bool published)
@@ -169,6 +190,11 @@ namespace eSuperShop.Repository
             product.StockQuantity = quantity;
             Db.Product.Update(product);
             Db.SaveChanges();
+        }
+
+        public int GetStock(int productId)
+        {
+            return Db.Product.Find(productId).StockQuantity;
         }
 
         public SeoModel GetSeo(int id)
@@ -211,5 +237,7 @@ namespace eSuperShop.Repository
 
             Db.Product.Update(product);
         }
+
+
     }
 }
