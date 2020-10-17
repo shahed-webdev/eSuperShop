@@ -139,6 +139,36 @@
 
 @section Scripts{
     <script>
+        //var obj = {
+        //    "IsSuccess": true,
+        //    "Message": "Success",
+        //    "FieldName": null,
+        //    "Data": {
+        //        "StockQuantity": 220,
+        //        "QuantitySet": {
+        //            "ProductQuantitySetId": 8,
+        //            "Quantity": 120,
+        //            "PriceAdjustment": 1,
+        //            "AttributesWithValue": [
+        //                {
+        //                    "ProductQuantitySetAttributeId": 15,
+        //                    "AttributeId": 1,
+        //                    "KeyName": "colors",
+        //                    "ProductAttributeValueId": 10,
+        //                    "Value": "Print"
+        //                },
+        //                {
+        //                    "ProductQuantitySetAttributeId": 16,
+        //                    "AttributeId": 4,
+        //                    "KeyName": "size",
+        //                    "ProductAttributeValueId": 13,
+        //                    "Value": "L"
+        //                }
+        //            ]
+        //        }
+        //    }
+        //}
+
         //selectors
         const valueIds = document.getElementsByName("AttributeValueId");
         const attributeCard = document.getElementById("attributeCard");
@@ -208,11 +238,10 @@
                     type: "POST",
                     data: updateModel,
                     success: function(response) {
-                        console.log(response);
                         $.notify("Update Stock Successfully", "success", { position: "right" });
                         disabledButton(false);
 
-                        //updateStockDOM();
+                        updateStockDOM(response.Data);
                     },
                     error: function(err) {
                         console.log(err);
@@ -239,6 +268,8 @@
                     console.log(response);
                     $.notify("Add Stock Successfully", "success", { position: "right" });
                     disabledButton(false);
+
+                    AppendStockDOM(response.Data);
                 },
                 error: function(err) {
                     console.log(err);
@@ -316,11 +347,11 @@
 
         //update table stock value
         const tBody = document.querySelectorAll("#tBody tr");
-        const totalStock = document.querySelectorAll("#totalStock");
+        const totalStock = document.querySelector("#totalStock");
 
         //update stock on table
         function updateStockDOM(item) {
-            totalStock.textContent = `(${item.StockQuantity})`;
+            totalStock.innerText = `(${item.StockQuantity})`;
 
             tBody.forEach(tr => {
                 if (+tr.getAttribute("data-id") === item.ProductQuantitySetId) {
@@ -334,11 +365,28 @@
 
         //add stock row on table
         function AppendStockDOM(item) {
-            totalStock.textContent = `(${item.StockQuantity})`;
+            totalStock.innerText = `(${item.StockQuantity})`;
 
+            const attributeValue = item.QuantitySet.AttributesWithValue;
             const tr = document.createElement("tr");
 
-            tBody.appendChild(tr);
+            attributeValue.forEach(att => {
+                const td = document.createElement("td");
+                td.textContent = att.Value;
+                tr.appendChild(td);
+            });
+
+            const quantity = document.createElement("td");
+            quantity.textContent = item.QuantitySet.Quantity;
+            tr.appendChild(quantity);
+
+            const price = document.createElement("td");
+            price.textContent = item.QuantitySet.PriceAdjustment;
+            tr.appendChild(price);
+
+            tr.setAttribute("data-id", item.QuantitySet.ProductQuantitySetId);
+
+            document.getElementById("tBody").appendChild(tr);
         }
     </script>
 }
