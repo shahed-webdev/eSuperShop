@@ -132,7 +132,7 @@ namespace eSuperShop.Web.Controllers
         //*****SEO******
         public IActionResult GetSeo(int id)
         {
-            var response = _seo.Get(id);
+            var response = _product.Seo.Get(id);
             if (!response.IsSuccess) return UnprocessableEntity(response.Message);
 
             return Json(response);
@@ -141,7 +141,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult AddSeo(SeoAddModel model)
         {
-            var response = _seo.Post(model, User.Identity.Name);
+            var response = _product.Seo.Post(model, User.Identity.Name);
 
             if (!response.IsSuccess) return UnprocessableEntity(response.Message);
 
@@ -150,7 +150,7 @@ namespace eSuperShop.Web.Controllers
 
         public IActionResult DeleteSeo(int id)
         {
-            var response = _seo.Delete(id);
+            var response = _product.Seo.Delete(id);
             if (!response.IsSuccess) return UnprocessableEntity(response.Message);
 
             return Json(response);

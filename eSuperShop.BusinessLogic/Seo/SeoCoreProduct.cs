@@ -63,11 +63,13 @@ namespace eSuperShop.BusinessLogic
                 if (registrationId == 0) return new DbResponse(false, "Invalid User");
 
                 model.CreatedByRegistrationId = registrationId;
+                
                 if (_db.Product.IsNull(model.AssignTableId))
                     return new DbResponse(false, "Data not found");
 
                 _db.Product.PostSeo(model);
                 _db.SaveChanges();
+
                 return new DbResponse(true, "Success");
             }
             catch (Exception e)
