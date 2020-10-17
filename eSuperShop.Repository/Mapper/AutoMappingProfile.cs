@@ -74,16 +74,16 @@ namespace eSuperShop.Repository
             CreateMap<VendorProductCategoryList, VendorProductCategoryAssignModel>().ReverseMap();
 
             //Vendor Product Add
-            CreateMap<ProductBlob, ProductBlobAddModel>();
-            CreateMap<ProductSpecification, ProductSpecificationAddModel>();
-            CreateMap<ProductAttributeValue, ProductAttributeValueAddModel>();
+            CreateMap<ProductBlob, ProductBlobAddModel>().ReverseMap();
+            CreateMap<ProductSpecification, ProductSpecificationAddModel>().ReverseMap();
+            CreateMap<ProductAttributeValue, ProductAttributeValueAddModel>().ReverseMap();
             CreateMap<ProductAttribute, ProductAttributeAddModel>()
-                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductAttributeValue));
+                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductAttributeValue)).ReverseMap();
 
             CreateMap<Product, ProductAddModel>()
                 .ForMember(d => d.Attributes, opt => opt.MapFrom(c => c.ProductAttribute))
                 .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob))
-                .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification));
+                .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification)).ReverseMap();
 
 
             //Vendor Product show
