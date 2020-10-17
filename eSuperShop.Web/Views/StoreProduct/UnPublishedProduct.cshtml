@@ -13,23 +13,27 @@
         <table class="table table-md">
             <thead>
                 <tr>
-                    <th><strong>Category</strong></th>
                     <th><strong>Product</strong></th>
                     <th><strong>Brand</strong></th>
-                    <th class="text-right"><strong>Price</strong></th>
-                    <th class="text-center"><strong>Publish</strong></th>
+                    <th class="text-center"><strong>Price</strong></th>
+                    <th><strong>Publish</strong></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.CatalogName</td>
-                        <td>@item.Name</td>
+                        <td>
+                            <p class="mb-0">@item.Name</p>
+                            <small class="text-muted">@item.CatalogName</small>
+                        </td>
                         <td>@item.BrandName</td>
-                        <td class="text-right">@item.Price</td>
-                        <td class="text-center">
-                            <a class="blue-text" href="/StoreProduct/AddProductStock/@item.ProductId">Publish<i class="ml-1 far fa-long-arrow-alt-right"></i></a>
+                        <td class="text-center">@item.Price</td>
+                        <td>
+                            <a class="blue-text" href="/StoreProduct/AddProductStock/@item.ProductId">
+                                Details<i class="ml-1 far fa-long-arrow-alt-right"></i>
+                            </a>
+                            <em class="d-block">add stock, publish</em>
                         </td>
                     </tr>
                 }

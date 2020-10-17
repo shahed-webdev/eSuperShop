@@ -90,33 +90,38 @@
                         <input type="hidden" name="ProductId" value="@Model.ProductId">
                     </div>
                 </form>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            @foreach (var val in Model.QuantitySets.FirstOrDefault().AttributesWithValue)
-                            {
-                                <th><strong>@val.KeyName</strong></th>
-                            }
-                            <th><strong>Quantity</strong></th>
-                            <th><strong>Additional Price</strong></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var head in Model.QuantitySets)
-                        {
-                            <tr>
-                                @foreach (var val in head.AttributesWithValue)
+                @{
+                    if (Model.QuantitySets.Count > 0)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    @foreach (var val in Model.QuantitySets.FirstOrDefault().AttributesWithValue)
+                                    {
+                                        <th><strong>@val.KeyName</strong></th>
+                                    }
+                                    <th><strong>Quantity</strong></th>
+                                    <th><strong>Additional Price</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var head in Model.QuantitySets)
                                 {
-                                    <td>@val.Value</td>
+                                    <tr>
+                                        @foreach (var val in head.AttributesWithValue)
+                                        {
+                                            <td>@val.Value</td>
+                                        }
+                                        <td>@head.Quantity</td>
+                                        <td>৳@head.PriceAdjustment</td>
+                                    </tr>
                                 }
-                                <td>@head.Quantity</td>
-                                <td>৳@head.PriceAdjustment</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                            </tbody>
+                        </table>
+                    }
+                }
+
+            </div>  
 
             <div class="card card-body">
                 <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>

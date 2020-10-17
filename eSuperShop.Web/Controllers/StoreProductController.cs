@@ -66,7 +66,7 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> AddProduct(ProductAddModel model)
         {
             var response = await _product.AddProductAsync(model, User.Identity.Name);
-            if (response.IsSuccess) return RedirectToAction("ProductCategory");
+            if (response.IsSuccess) return Json(response.IsSuccess);
 
             return UnprocessableEntity(response.Message);
         }

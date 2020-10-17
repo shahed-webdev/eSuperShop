@@ -26,7 +26,7 @@
         <h5 id="categoryName" class="font-weight-bold">loading...</h5>
     </div>   
 
-    <form data-ajax-url="/StoreProduct/AddProduct" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onPostBegin" data-ajax-failure="onError" enctype="multipart/form-data">
+    <form data-ajax-url="/StoreProduct/AddProduct" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onPostBegin" data-ajax-failure="onError" data-ajax-success="onPostSuccess" enctype="multipart/form-data">
         <div class="row">
             <div class="col-xl-8 col-md-7 mb-3">
                 <div class="card card-body">
@@ -112,7 +112,7 @@
         </div>
 
         <div class="mt-3">
-            <input type="submit" value="Add Product" class="btn btn-danger">
+            <input id="btnSubmit" type="submit" value="Add Product" class="btn btn-danger">
             <input id="hiddenCatalogId" type="hidden" name="CatalogId">
 
             <strong id="imageError" class="field-validation-error"></strong>
@@ -140,6 +140,9 @@
 
         //check product image added
         const imageError = document.querySelector("#imageError");
+        const btnSubmit = document.getElementById("btnSubmit");
+
+        //check image is uploaded
         function validateImage() {
             const inp = document.getElementsByName("ProductImage")[0];
             imageError.textContent = "";
@@ -152,12 +155,33 @@
             return true;
         }
 
+        //post begin
         function onPostBegin() {
-            return validateImage();
+            const isValid = validateImage();;
+
+            if (isValid) {
+                btnSubmit.disabled = true;
+                btnSubmit.value = "Submitting..";
+            }
+
+            return isValid;
         }
 
+        //post error
         function onError(response) {
+            btnSubmit.disabled = false;
+            btnSubmit.value = "Add Product";
+
             imageError.textContent = response.responseText;
+        }
+
+        //post success
+        function onPostSuccess(response) {
+            btnSubmit.disabled = false;
+            btnSubmit.value = "Add Product";
+
+            if (response)
+                location.href = "/StoreProduct/ProductCategory";
         }
 
         //rich text editor
