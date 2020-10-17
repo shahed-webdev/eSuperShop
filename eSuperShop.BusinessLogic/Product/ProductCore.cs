@@ -209,6 +209,8 @@ namespace eSuperShop.BusinessLogic
                 _db.Product.QuantityAdd(model);
                 _db.SaveChanges();
 
+                _db.Product.UpdateMainQuantity(model.ProductId);
+
                 return new DbResponse(true, "Success");
             }
             catch (Exception e)
@@ -223,6 +225,9 @@ namespace eSuperShop.BusinessLogic
             {
                 _db.Product.QuantityUpdate(model);
                 _db.SaveChanges();
+
+                _db.Product.UpdateMainQuantity(model.ProductId);
+
                 return new DbResponse(true, "Success");
             }
             catch (Exception e)
