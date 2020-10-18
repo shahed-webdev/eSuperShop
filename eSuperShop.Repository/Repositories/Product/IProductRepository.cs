@@ -5,6 +5,7 @@ namespace eSuperShop.Repository
 {
     public interface IProductRepository : ISeoRepository
     {
+        Product Product { get; set; }
         ProductQuantitySet ProductQuantitySet { get; set; }
         void Add(ProductAddModel model);
         bool IsExistSlugUrl(string slugUrl);
