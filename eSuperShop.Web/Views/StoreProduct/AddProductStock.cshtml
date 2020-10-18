@@ -37,7 +37,11 @@
                 <hr />
                 <p>
                     <strong>Category: </strong>@Model.CatalogInfo.CatalogName,
-                    <strong>Brand: </strong>@Model.BrandInfo.Name,
+                    @if (Model.BrandInfo != null)
+                    {
+                        <strong>Brand: </strong>
+                        <span>@Model.BrandInfo.Name,</span>
+                    }
                     <strong>Slug Url: </strong>@Model.SlugUrl
                 </p>
 
@@ -87,38 +91,33 @@
                         <input type="hidden" name="ProductId" value="@Model.ProductId">
                     </div>
                 </form>
-                @{
-                    if (Model.QuantitySets.Count > 0)
-                    {
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    @foreach (var val in Model.QuantitySets.FirstOrDefault().AttributesWithValue)
-                                    {
-                                        <th><strong>@val.KeyName</strong></th>
-                                    }
-                                    <th><strong>Quantity</strong></th>
-                                    <th><strong>Additional Price</strong></th>
-                                </tr>
-                            </thead>
-                            <tbody id="tBody">
-                                @foreach (var head in Model.QuantitySets)
-                                {
-                                    <tr data-id="@head.ProductQuantitySetId">
-                                        @foreach (var val in head.AttributesWithValue)
-                                        {
-                                            <td>@val.Value</td>
-                                        }
-                                        <td>@head.Quantity</td>
-                                        <td>৳@head.PriceAdjustment</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                }
 
-            </div>  
+                <table class="table">
+                    <thead>
+                        <tr>
+                            @foreach (var val in Model.Attributes)
+                            {
+                                <th><strong>@val.KeyName</strong></th>
+                            }
+                            <th><strong>Quantity</strong></th>
+                            <th><strong>Additional Price</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tBody">
+                        @foreach (var head in Model.QuantitySets)
+                        {
+                            <tr data-id="@head.ProductQuantitySetId">
+                                @foreach (var val in head.AttributesWithValue)
+                                {
+                                    <td>@val.Value</td>
+                                }
+                                <td>@head.Quantity</td>
+                                <td>৳@head.PriceAdjustment</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>     
 
             <div class="card card-body">
                 <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
@@ -139,36 +138,6 @@
 
 @section Scripts{
     <script>
-        //var obj = {
-        //    "IsSuccess": true,
-        //    "Message": "Success",
-        //    "FieldName": null,
-        //    "Data": {
-        //        "StockQuantity": 220,
-        //        "QuantitySet": {
-        //            "ProductQuantitySetId": 8,
-        //            "Quantity": 120,
-        //            "PriceAdjustment": 1,
-        //            "AttributesWithValue": [
-        //                {
-        //                    "ProductQuantitySetAttributeId": 15,
-        //                    "AttributeId": 1,
-        //                    "KeyName": "colors",
-        //                    "ProductAttributeValueId": 10,
-        //                    "Value": "Print"
-        //                },
-        //                {
-        //                    "ProductQuantitySetAttributeId": 16,
-        //                    "AttributeId": 4,
-        //                    "KeyName": "size",
-        //                    "ProductAttributeValueId": 13,
-        //                    "Value": "L"
-        //                }
-        //            ]
-        //        }
-        //    }
-        //}
-
         //selectors
         const valueIds = document.getElementsByName("AttributeValueId");
         const attributeCard = document.getElementById("attributeCard");
@@ -270,6 +239,9 @@
                     disabledButton(false);
 
                     AppendStockDOM(response.Data);
+
+                    formAdd.Quantity.value = "";
+                    formAdd.PriceAdjustment.value = "";
                 },
                 error: function(err) {
                     console.log(err);
@@ -381,7 +353,7 @@
             tr.appendChild(quantity);
 
             const price = document.createElement("td");
-            price.textContent = item.QuantitySet.PriceAdjustment;
+            price.textContent = `৳${item.QuantitySet.PriceAdjustment}`;
             tr.appendChild(price);
 
             tr.setAttribute("data-id", item.QuantitySet.ProductQuantitySetId);

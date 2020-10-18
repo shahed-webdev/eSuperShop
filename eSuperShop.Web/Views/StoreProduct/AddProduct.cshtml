@@ -180,8 +180,8 @@
             btnSubmit.disabled = false;
             btnSubmit.value = "Add Product";
 
-            if (response)
-                location.href = "/StoreProduct/ProductCategory";
+            if (response.IsSuccess)
+                location.href = `/StoreProduct/AddProductStock/${response.Data}`;
         }
 
         //rich text editor
