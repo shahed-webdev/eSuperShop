@@ -38,28 +38,28 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public async Task<DbResponse> AddProductAsync(ProductAddModel model, string vendorUserName)
+        public async Task<DbResponse<int>> AddProductAsync(ProductAddModel model, string vendorUserName)
         {
             try
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
-                if (vendorId == 0) return new DbResponse(false, "Invalid User");
+                if (vendorId == 0) return new DbResponse<int>(false, "Invalid User");
 
                 model.VendorId = vendorId;
                 model.UpdatedOnUtc = DateTime.UtcNow;
 
                 if (!_db.Vendor.IsCatalogExist(vendorId, model.CatalogId))
-                    return new DbResponse(false, "Catalog Not Assign");
+                    return new DbResponse<int>(false, "Catalog Not Assign");
 
                 if (string.IsNullOrEmpty(model.Name))
-                    return new DbResponse(false, "Invalid Data");
+                    return new DbResponse<int>(false, "Invalid Data");
 
                 if (_db.Product.IsExistSlugUrl(model.SlugUrl))
-                    return new DbResponse(false, "SlugUrl already Exist");
+                    return new DbResponse<int>(false, "SlugUrl already Exist");
 
                 //add product image
                 if (model.ProductImage == null)
-                    return new DbResponse(false, "Product Image Required!");
+                    return new DbResponse<int>(false, "Product Image Required!");
 
                 var count = 1;
                 foreach (var img in model.ProductImage)
@@ -93,11 +93,11 @@ namespace eSuperShop.BusinessLogic
 
 
 
-                return new DbResponse(true, "Success");
+                return new DbResponse<int>(true, "Success", _db.Product.Product.ProductId);
             }
             catch (Exception e)
             {
-                return new DbResponse(false, e.Message);
+                return new DbResponse<int>(false, e.Message);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eSuperShop.Data;
+using System.Linq;
 
 namespace eSuperShop.Repository
 {
@@ -104,7 +105,7 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Attribute.KeyName))
                 .ReverseMap();
             CreateMap<Product, ProductDetailsModel>()
-                .ForMember(d => d.Attributes, opt => opt.MapFrom(c => c.ProductAttribute))
+                .ForMember(d => d.Attributes, opt => opt.MapFrom(c => c.ProductAttribute.OrderBy(p => p.Attribute.KeyName)))
                 .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob))
                 .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
                 .ForMember(d => d.BrandInfo, opt => opt.MapFrom(c => c.Brand))
@@ -123,7 +124,7 @@ namespace eSuperShop.Repository
             CreateMap<ProductQuantitySet, ProductQuantitySetUpdateReturnModel>().ReverseMap();
             CreateMap<ProductQuantityViewModel, ProductQuantitySetUpdateReturnModel>().ReverseMap();
             CreateMap<ProductQuantitySet, ProductQuantitySetViewModel>()
-                .ForMember(d => d.AttributesWithValue, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute));
+                .ForMember(d => d.AttributesWithValue, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute.OrderBy(p => p.ProductAttributeValue.ProductAttribute.Attribute.KeyName)));
 
             CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeViewModel>()
                 .ForMember(d => d.AttributeId,
