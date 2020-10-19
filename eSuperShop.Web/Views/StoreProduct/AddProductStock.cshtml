@@ -9,7 +9,7 @@
 @section Styles{
     <style>
         .productImage img { width: 100px; margin: 5px; border-radius: 3px; }
-        .row-updated { background-color: #ddd}
+        .row-updated { background-color: #ddd; }
     </style>
 }
 
@@ -111,8 +111,8 @@
                                 {
                                     <td>@val.Value</td>
                                 }
-                                <td>@head.Quantity</td>
-                                <td>৳@head.PriceAdjustment</td>
+                                <td class="quantity">@head.Quantity</td>
+                                <td class="adjustPrice">৳@head.PriceAdjustment</td>
                             </tr>
                         }
                     </tbody>
@@ -135,6 +135,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts{
     <script>
@@ -327,8 +328,8 @@
 
             tBody.forEach(tr => {
                 if (+tr.getAttribute("data-id") === item.ProductQuantitySetId) {
-                    tr.cells[2].innerText = item.Quantity;
-                    tr.cells[3].innerText = `৳${item.PriceAdjustment}`;
+                    tr.querySelector(".quantity").innerText = item.Quantity;
+                    tr.querySelector(".adjustPrice").innerText = `৳${item.PriceAdjustment}`;
                     tr.classList.add("row-updated");
                     return;
                 }
@@ -350,10 +351,12 @@
 
             const quantity = document.createElement("td");
             quantity.textContent = item.QuantitySet.Quantity;
+            quantity.classList.add("quantity");
             tr.appendChild(quantity);
 
             const price = document.createElement("td");
             price.textContent = `৳${item.QuantitySet.PriceAdjustment}`;
+            price.classList.add("adjustPrice");
             tr.appendChild(price);
 
             tr.setAttribute("data-id", item.QuantitySet.ProductQuantitySetId);
