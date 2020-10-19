@@ -1,4 +1,5 @@
-﻿using eSuperShop.Data;
+﻿using eSuperShop.BusinessLogic;
+using eSuperShop.Data;
 using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +15,13 @@ namespace eSuperShop.Web.Controllers
         private readonly IUnitOfWork _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-
-        public AccountController(IUnitOfWork db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly ICustomerCore _Customer;
+        public AccountController(IUnitOfWork db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ICustomerCore customer)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
+            _Customer = customer;
         }
 
         //GET: Admin/seller Login
@@ -150,7 +152,7 @@ namespace eSuperShop.Web.Controllers
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl});
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
 
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
@@ -196,6 +198,16 @@ namespace eSuperShop.Web.Controllers
 
                     if (user == null)
                     {
+                        var customerModel = new CustomerAddModel
+                        {
+                            UserName = email,
+                            Name = info.ProviderDisplayName,
+                            Email = email
+                        };
+                        var response = _Customer.Add(customerModel);
+                        if (!response.IsSuccess)
+                            return RedirectToAction("CustomerLogin", new { ReturnUrl = returnUrl });
+
                         user = new IdentityUser
                         {
                             UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
@@ -203,6 +215,8 @@ namespace eSuperShop.Web.Controllers
                         };
 
                         await _userManager.CreateAsync(user);
+                        await _userManager.AddToRoleAsync(user, UserType.Customer.ToString()).ConfigureAwait(false);
+
                     }
 
                     // Add a login (i.e insert a row for the user in AspNetUserLogins table)
@@ -214,7 +228,7 @@ namespace eSuperShop.Web.Controllers
 
                 // If we cannot find the user email we cannot continue
                 ViewBag.ErrorTitle = $"Email claim not received from: {info.LoginProvider}";
-                ViewBag.ErrorMessage = "Please contact support on Pragim@PragimTech.com";
+                ViewBag.ErrorMessage = "Please contact support on info@esupershop.com";
 
                 return View("Error");
             }

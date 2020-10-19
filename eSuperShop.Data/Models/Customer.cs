@@ -13,6 +13,8 @@ namespace eSuperShop.Data
 
         public int CustomerId { get; set; }
         public int RegistrationId { get; set; }
+        public decimal Point { get; set; }
+        public string VerifiedPhone { get; set; }
         public virtual Registration Registration { get; set; }
         public virtual ICollection<ProductReview> ProductReview { get; set; }
         public virtual ICollection<VendorFollower> VendorFollower { get; set; }

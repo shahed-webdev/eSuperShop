@@ -55,6 +55,7 @@ namespace eSuperShop.Web
 
             services.AddTransient<IAttributeCore, AttributeCore>();
             services.AddTransient<IBrandCore, BrandCore>();
+            services.AddTransient<ICustomerCore, CustomerCore>();
             services.AddTransient<ISpecificationCore, SpecificationCore>();
             services.AddTransient<ISliderCore, SliderCore>();
             services.AddTransient<ICatalogCore, CatalogCore>();

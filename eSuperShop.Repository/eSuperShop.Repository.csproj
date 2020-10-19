@@ -19,7 +19,6 @@
     <Folder Include="Repositories\CatalogBrand\" />
     <Folder Include="Repositories\CatalogShownPlace\" />
     <Folder Include="Repositories\CatalogSpecification\" />
-    <Folder Include="Repositories\Customer\" />
     <Folder Include="Repositories\VendorWarehouse\" />
     <Folder Include="Repositories\VendorReview\" />
     <Folder Include="Repositories\VendorFollower\" />
