@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eSuperShop.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin, sub-admin")]
     public class BrandController : Controller
     {
         private readonly IBrandCore _brand;

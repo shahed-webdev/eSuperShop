@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eSuperShop.Web.Controllers
 {
+    [Authorize(Roles = "admin, sub-admin")]
     public class SpecificationController : Controller
     {
         private readonly ISpecificationCore _specification;
