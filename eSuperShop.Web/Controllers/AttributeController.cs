@@ -7,11 +7,13 @@ using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eSuperShop.Web.Controllers
 {
+    [Authorize(Roles = "admin, sub-admin")]
     public class AttributeController : Controller
     {
         private readonly IAttributeCore _attribute;

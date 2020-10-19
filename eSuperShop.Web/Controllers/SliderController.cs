@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin, sub-admin")]
     public class SliderController : Controller
     {
         private readonly ISliderCore _slider;
