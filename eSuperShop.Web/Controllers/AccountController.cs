@@ -1,11 +1,10 @@
-﻿using System;
+﻿using eSuperShop.Data;
 using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using eSuperShop.Data;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -90,7 +89,7 @@ namespace eSuperShop.Web.Controllers
                 LocalRedirect(Url.Content("~/Dashboard/Index"));
 
             if (result.RequiresTwoFactor)
-                return RedirectToPage("./LoginWith2fa", new {ReturnUrl = returnUrl, model.RememberMe});
+                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, model.RememberMe });
 
             if (result.IsLockedOut)
                 return RedirectToPage("./Lockout");
@@ -143,6 +142,78 @@ namespace eSuperShop.Web.Controllers
             if (returnUrl != null) return LocalRedirect(returnUrl);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        //POST: ExternalLogin
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            // Request a redirect to the external login provider.
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account",
+                new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return new ChallengeResult(provider, properties);
+        }
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            if (remoteError != null)
+            {
+                return RedirectToAction("CustomerLogin", new { ReturnUrl = returnUrl });
+            }
+            // Get the login information about the user from the external login provider
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction("CustomerLogin", new { ReturnUrl = returnUrl });
+            }
+
+            // Sign in the user with this external login provider if the user already has a login.
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            if (result.IsLockedOut)
+            {
+                return RedirectToAction("Lockout");
+            }
+            else
+            {
+                // Get the email claim value
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+                if (email != null)
+                {
+                    // Create a new user without password if we do not have a user already
+                    var user = await _userManager.FindByEmailAsync(email);
+
+                    if (user == null)
+                    {
+                        user = new IdentityUser
+                        {
+                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        };
+
+                        await _userManager.CreateAsync(user);
+                    }
+
+                    // Add a login (i.e insert a row for the user in AspNetUserLogins table)
+                    await _userManager.AddLoginAsync(user, info);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return LocalRedirect(returnUrl);
+                }
+
+                // If we cannot find the user email we cannot continue
+                ViewBag.ErrorTitle = $"Email claim not received from: {info.LoginProvider}";
+                ViewBag.ErrorMessage = "Please contact support on Pragim@PragimTech.com";
+
+                return View("Error");
+            }
         }
     }
 }
