@@ -162,7 +162,7 @@ namespace eSuperShop.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Customer/Dashboard");
 
             if (remoteError != null)
             {
