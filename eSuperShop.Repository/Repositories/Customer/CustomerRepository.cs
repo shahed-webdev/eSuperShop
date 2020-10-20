@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eSuperShop.Data;
+using System.Linq;
 
 namespace eSuperShop.Repository
 {
@@ -31,11 +32,6 @@ namespace eSuperShop.Repository
         }
 
         public CustomerDashboardModel Dashboard(int customerId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool IsExistEmail(string email)
         {
             throw new System.NotImplementedException();
         }

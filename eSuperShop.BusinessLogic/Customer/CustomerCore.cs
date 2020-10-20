@@ -22,9 +22,6 @@ namespace eSuperShop.BusinessLogic
                 if (string.IsNullOrEmpty(model.UserName))
                     return new DbResponse(false, "Invalid Data");
 
-                if (_db.Customer.IsExistEmail(model.Email))
-                    return new DbResponse(false, "Email already Exist");
-
                 _db.Customer.Add(model);
                 _db.SaveChanges();
 
