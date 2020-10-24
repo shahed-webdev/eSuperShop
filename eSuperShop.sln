@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudStorage", "CloudStorag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JqueryDataTables.LoopsIT", "JqueryDataTables.LoopsIT\JqueryDataTables.LoopsIT.csproj", "{84F293EE-8170-443E-AF06-C68939BEF623}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.SMS", "Service.SMS\Service.SMS.csproj", "{D95A513C-B97C-4B27-AFCB-BB181B540617}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.SMS", "Service.SMS\Service.SMS.csproj", "{D95A513C-B97C-4B27-AFCB-BB181B540617}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paging.Infrastructure", "Paging.Infrastructure\Paging.Infrastructure.csproj", "{B767C037-FCF0-4D6D-818B-FA9D2D9D6EE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{D95A513C-B97C-4B27-AFCB-BB181B540617}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D95A513C-B97C-4B27-AFCB-BB181B540617}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D95A513C-B97C-4B27-AFCB-BB181B540617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B767C037-FCF0-4D6D-818B-FA9D2D9D6EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B767C037-FCF0-4D6D-818B-FA9D2D9D6EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B767C037-FCF0-4D6D-818B-FA9D2D9D6EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B767C037-FCF0-4D6D-818B-FA9D2D9D6EE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
 using Microsoft.EntityFrameworkCore;
+using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -259,6 +260,16 @@ namespace eSuperShop.Repository
                 .Where(c => c.VendorId == vendorId)
                 .ProjectTo<VendorStoreInfoUpdateModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefault();
+        }
+
+        public ICollection<StoreViewModel> TopStores(StoreFilterRequest request)
+        {
+            var stores = Db.Vendor
+                .Where(v => v.IsApproved)
+                .ProjectTo<StoreViewModel>(_mapper.ConfigurationProvider)
+                .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
+                .GetPaged(request.Page, request.PageSize);
+            return stores.Results;
         }
 
         string CatalogDllFunction(Catalog catalog, string cat)

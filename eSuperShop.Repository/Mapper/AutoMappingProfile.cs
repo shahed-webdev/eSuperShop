@@ -59,6 +59,12 @@ namespace eSuperShop.Repository
             CreateMap<Vendor, VendorInfoModel>().ReverseMap();
             CreateMap<Vendor, VendorStoreInfoUpdateModel>().ReverseMap();
 
+            //Vendor store Mapping
+            CreateMap<Vendor, StoreViewModel>()
+                .ForMember(d => d.ProductImageUrls, opt => opt.MapFrom(c => c.Product.SelectMany(p => p.ProductBlob.First().BlobUrl)))
+                .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.VendorReview.Count()))
+                .ForMember(d => d.Rating, opt => opt.MapFrom(c => c.VendorReview.Sum(r => r.Rating) / c.VendorReview.Count()))
+                .ReverseMap();
 
             //Vendor Slider Mapping
             CreateMap<VendorStoreSlider, VendorSliderModel>().ReverseMap();
