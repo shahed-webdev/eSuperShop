@@ -22,9 +22,12 @@
                data:[]
             }
         },
-        mounted() {
+        beforeMount() {
             axios.get('/home/GetCategory', { params: { place: "HomePageMain", numberOfData:12 } }).then(response => {
-                this.data = response.data.Data;
+                const { IsSuccess, Data } = response.data;
+                if (!IsSuccess) return;
+
+                this.data = Data;
             });
         }
     };

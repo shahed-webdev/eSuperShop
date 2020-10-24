@@ -27,9 +27,12 @@
                 mainSlider: []
             }
         },
-        mounted() {
+        beforeMount() {
             axios.get('/home/GetSliderData', { params: { place: "Main" } }).then(response => {
-                this.mainSlider = response.data.Data;
+                const { IsSuccess, Data } = response.data;
+                if (!IsSuccess) return;
+
+                this.mainSlider = Data;
             });
         }
     };

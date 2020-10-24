@@ -6,6 +6,7 @@ import HomeCategory from './catalog.vue';
 import QuickDelivery from './quickDelivery.vue';
 import TopCatalog from './topCatalog.vue';
 import FlashDeals from './flashDeals.vue';
+import TopRated from './topRated.vue';
 
 
 const vue = new Vue({
@@ -16,6 +17,7 @@ const vue = new Vue({
         HomeCategory,
         QuickDelivery,
         TopCatalog,
-        FlashDeals
+        FlashDeals,
+        TopRated
     }
 });

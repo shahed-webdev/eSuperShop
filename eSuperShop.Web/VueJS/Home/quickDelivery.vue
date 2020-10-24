@@ -28,9 +28,12 @@
                data:[]
             }
         },
-        mounted() {
+        beforeMount() {
             axios.get('/home/GetCategory', { params: { place: "HomePageQuickDelivery", numberOfData: 8} }).then(response => {
-                this.data = response.data.Data;
+                const { IsSuccess, Data } = response.data;
+                if (!IsSuccess) return;
+
+                this.data = Data;
             });
         }
     };

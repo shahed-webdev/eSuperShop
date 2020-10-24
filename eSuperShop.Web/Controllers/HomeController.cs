@@ -43,5 +43,12 @@ namespace eSuperShop.Web.Controllers
             var response = _product.GetFlashDeals(filter);
             return Json(response);
         }
+
+        //get TopRated
+        public IActionResult GetTopRated(ProductFilterRequest filter)
+        {
+            var response = _product.GetTopRated(filter);
+            return Json(response);
+        }
     }
 }

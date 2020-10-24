@@ -13,10 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eSuperShop.Web.Controllers
 {
-    [Authorize(Roles = "admin, sub-admin")]
     public class ProductController : Controller
     {
-        public IActionResult Index()
+        public IActionResult FlashDeals()
         {
             return View();
         }

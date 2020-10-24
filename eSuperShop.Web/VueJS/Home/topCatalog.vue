@@ -24,9 +24,12 @@
                data:[]
             }
         },
-        mounted() {
+        beforeMount() {
             axios.get('/home/GetCategory', { params: { place: "HomePageTopCatalog", numberOfData: 20} }).then(response => {
-                this.data = response.data.Data;
+                const { IsSuccess, Data } = response.data;
+                if (!IsSuccess) return;
+
+                this.data = Data;
             });
         }
     };

@@ -1,8 +1,8 @@
 ﻿<template>
     <div v-if="isData" class="mt-5">
         <div class="product-header">
-            <h3>Flash Deals</h3>
-            <a href="/Product/FlashDeals">View More<i class="far fa-eye ml-1"></i></a>
+            <h3>Top Rated</h3>
+            <a href="/Product/TopRated">View More<i class="far fa-eye ml-1"></i></a>
         </div>
     
         <div class="row">
@@ -45,7 +45,7 @@
             }
         },
         beforeMount() {
-            axios.get('/home/GetFlashDeals', { params: { Page: 1, PageSize: 4 } }).then(response => {
+            axios.get('/home/GetTopRated', { params: { Page: 1, PageSize: 4 } }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
 
