@@ -21,6 +21,9 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 var data = _db.Vendor.TopStores(model);
+                if (data == null)
+                    return new DbResponse<PagedResult<StoreViewModel>>(false, "No Data found");
+
                 return new DbResponse<PagedResult<StoreViewModel>>(true, "Success", data);
             }
             catch (Exception e)
