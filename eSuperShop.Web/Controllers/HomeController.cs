@@ -1,6 +1,7 @@
 ﻿
 using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
+using eSuperShop.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eSuperShop.Web.Controllers
@@ -9,11 +10,13 @@ namespace eSuperShop.Web.Controllers
     {
         private readonly ISliderCore _slider;
         private readonly ICatalogCore _catalog;
+        private readonly IProductCore _product;
 
-        public HomeController(ISliderCore slider, ICatalogCore catalog)
+        public HomeController(ISliderCore slider, ICatalogCore catalog, IProductCore product)
         {
             _slider = slider;
             _catalog = catalog;
+            _product = product;
         }
         public IActionResult Index()
         {
@@ -31,6 +34,13 @@ namespace eSuperShop.Web.Controllers
         public IActionResult GetCategory(CatalogDisplayPlace place, int numberOfData)
         {
             var response = _catalog.GetDisplayList(place, numberOfData);
+            return Json(response);
+        }
+        
+        //get FlashDeals
+        public IActionResult GetFlashDeals(ProductFilterRequest filter)
+        {
+            var response = _product.GetFlashDeals(filter);
             return Json(response);
         }
     }

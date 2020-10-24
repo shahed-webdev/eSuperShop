@@ -11,7 +11,8 @@ namespace eSuperShop.Repository
             //Slider Mapping
             CreateMap<Slider, SliderAddModel>().ReverseMap();
             CreateMap<Slider, SliderSlideModel>().ReverseMap();
-            CreateMap<Slider, SliderListModel>().ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
+            CreateMap<Slider, SliderListModel>()
+                .ForMember(d => d.CreatedBy, opt => opt.MapFrom(c => c.CreatedByRegistration.Name));
             CreateMap<SliderListModel, SliderSlideModel>().ReverseMap();
             //Catalog Mapping
             CreateMap<Catalog, CatalogAddModel>().ReverseMap();
@@ -61,9 +62,11 @@ namespace eSuperShop.Repository
 
             //Vendor store Mapping
             CreateMap<Vendor, StoreViewModel>()
-                .ForMember(d => d.ProductImageUrls, opt => opt.MapFrom(c => c.Product.SelectMany(p => p.ProductBlob.First().BlobUrl)))
+                .ForMember(d => d.ProductImageUrls,
+                    opt => opt.MapFrom(c => c.Product.SelectMany(p => p.ProductBlob.First().BlobUrl)))
                 .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.VendorReview.Count()))
-                .ForMember(d => d.Rating, opt => opt.MapFrom(c => c.VendorReview.Sum(r => r.Rating) / c.VendorReview.Count()))
+                .ForMember(d => d.Rating,
+                    opt => opt.MapFrom(c => c.VendorReview.Sum(r => r.Rating) / c.VendorReview.Count()))
                 .ReverseMap();
 
             //Vendor Slider Mapping
@@ -111,7 +114,8 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Attribute.KeyName))
                 .ReverseMap();
             CreateMap<Product, ProductDetailsModel>()
-                .ForMember(d => d.Attributes, opt => opt.MapFrom(c => c.ProductAttribute.OrderBy(p => p.Attribute.KeyName)))
+                .ForMember(d => d.Attributes,
+                    opt => opt.MapFrom(c => c.ProductAttribute.OrderBy(p => p.Attribute.KeyName)))
                 .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob))
                 .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
                 .ForMember(d => d.BrandInfo, opt => opt.MapFrom(c => c.Brand))
@@ -130,7 +134,10 @@ namespace eSuperShop.Repository
             CreateMap<ProductQuantitySet, ProductQuantitySetUpdateReturnModel>().ReverseMap();
             CreateMap<ProductQuantityViewModel, ProductQuantitySetUpdateReturnModel>().ReverseMap();
             CreateMap<ProductQuantitySet, ProductQuantitySetViewModel>()
-                .ForMember(d => d.AttributesWithValue, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute.OrderBy(p => p.ProductAttributeValue.ProductAttribute.Attribute.KeyName)));
+                .ForMember(d => d.AttributesWithValue,
+                    opt => opt.MapFrom(c =>
+                        c.ProductQuantitySetAttribute.OrderBy(p =>
+                            p.ProductAttributeValue.ProductAttribute.Attribute.KeyName)));
 
             CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeViewModel>()
                 .ForMember(d => d.AttributeId,
@@ -141,9 +148,9 @@ namespace eSuperShop.Repository
 
             //Product Show
             CreateMap<Product, ProductListViewModel>()
-                .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
-                .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
-                .ForMember(d => d.Rating, opt => opt.MapFrom(c => c.ProductReview.Sum(r => r.Rating) / c.ProductReview.Count()))
+                //.ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
+                //.ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
+                //.ForMember(d => d.Rating, opt => opt.MapFrom(c => c.ProductReview.Sum(r => r.Rating) / c.ProductReview.Count()))
                 .ReverseMap();
 
 

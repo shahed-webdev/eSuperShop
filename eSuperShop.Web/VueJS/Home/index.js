@@ -5,6 +5,7 @@ import SideSlider from './sideSlider.vue';
 import HomeCategory from './catalog.vue';
 import QuickDelivery from './quickDelivery.vue';
 import TopCatalog from './topCatalog.vue';
+import FlashDeals from './flashDeals.vue';
 
 
 const vue = new Vue({
@@ -14,6 +15,7 @@ const vue = new Vue({
         SideSlider,
         HomeCategory,
         QuickDelivery,
-        TopCatalog
+        TopCatalog,
+        FlashDeals
     }
 });
