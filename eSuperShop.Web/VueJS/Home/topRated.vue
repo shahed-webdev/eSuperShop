@@ -24,7 +24,7 @@
                             <div class="p-rating text-right">
                                 <div>
                                     <i :class="['fas', 'fa-star', { 'text-muted': !item.Rating}]"></i>
-                                    <span :class="['rating-count', { 'text-muted': !item.Rating}]">{{item.Rating}}</span>
+                                    <span :class="['rating-count', { 'text-muted': !item.RatingBy}]">{{item.RatingBy}}</span>
                                 </div>
                                 <span v-if="item.OldPrice" class="p-discount-percent">{{(100-((100*item.Price)/item.OldPrice)).toFixed(2)}}% off</span>
                             </div>

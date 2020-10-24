@@ -18,6 +18,11 @@ namespace eSuperShop.Web.Controllers
         public IActionResult FlashDeals()
         {
             return View();
+        } 
+        
+        public IActionResult TopRated()
+        {
+            return View();
         }
     }
 }
