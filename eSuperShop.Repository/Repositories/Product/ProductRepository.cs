@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using Microsoft.EntityFrameworkCore;
+using Paging.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -161,6 +162,36 @@ namespace eSuperShop.Repository
         public int GetStock(int productId)
         {
             return Db.Product.Find(productId).StockQuantity;
+        }
+
+        public ICollection<ProductListViewModel> GetFlashDeals(ProductFilterRequest request)
+        {
+            var stores = Db.Product
+                .Where(p => p.Published)
+                .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
+                .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
+                .GetPaged(request.Page, request.PageSize);
+            return stores.Results;
+        }
+
+        public ICollection<ProductListViewModel> GetTopRated(ProductFilterRequest request)
+        {
+            var stores = Db.Product
+                .Where(p => p.Published)
+                .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
+                .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
+                .GetPaged(request.Page, request.PageSize);
+            return stores.Results;
+        }
+
+        public ICollection<ProductListViewModel> GetMoreToLove(ProductFilterRequest request)
+        {
+            var stores = Db.Product
+                .Where(p => p.Published)
+                .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
+                .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
+                .GetPaged(request.Page, request.PageSize);
+            return stores.Results;
         }
 
         public SeoModel GetSeo(int id)

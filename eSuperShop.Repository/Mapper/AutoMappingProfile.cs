@@ -139,7 +139,12 @@ namespace eSuperShop.Repository
                     opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.Attribute.KeyName))
                 .ForMember(d => d.Value, opt => opt.MapFrom(c => c.ProductAttributeValue.Value));
 
-
+            //Product Show
+            CreateMap<Product, ProductListViewModel>()
+                .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
+                .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
+                .ForMember(d => d.Rating, opt => opt.MapFrom(c => c.ProductReview.Sum(r => r.Rating) / c.ProductReview.Count()))
+                .ReverseMap();
 
 
         }

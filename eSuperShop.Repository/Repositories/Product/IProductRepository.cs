@@ -28,6 +28,10 @@ namespace eSuperShop.Repository
         void PublishedUpdate(int productId, bool published);
         void UpdateMainQuantity(int productId);
         int GetStock(int productId);
+        ICollection<ProductListViewModel> GetFlashDeals(ProductFilterRequest request);
+        ICollection<ProductListViewModel> GetTopRated(ProductFilterRequest request);
+        ICollection<ProductListViewModel> GetMoreToLove(ProductFilterRequest request);
     }
+
 
 }

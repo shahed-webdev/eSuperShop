@@ -21,6 +21,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse<ProductQuantitySetUpdateReturnModel> QuantityUpdate(ProductQuantityViewModel model);
         DbResponse PublishedUpdate(int productId, bool published, string vendorUserName);
         DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName);
-
+        DbResponse<List<ProductListViewModel>> GetTopRated(ProductFilterRequest request);
+        DbResponse<List<ProductListViewModel>> GetFlashDeals(ProductFilterRequest request);
+        DbResponse<List<ProductListViewModel>> GetMoreToLove(ProductFilterRequest request);
     }
 }

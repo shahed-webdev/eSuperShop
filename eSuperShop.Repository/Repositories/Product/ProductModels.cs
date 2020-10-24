@@ -208,5 +208,25 @@ namespace eSuperShop.Repository
         public int ProductAttributeValueId { get; set; }
         public string Value { get; set; }
     }
+
+    public class ProductFilterRequest
+    {
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+    }
+
+    public class ProductListViewModel
+    {
+        public int ProductId { get; set; }
+        public string Name { get; set; }
+        public string SlugUrl { get; set; }
+        public string ShortDescription { get; set; }
+        public decimal Price { get; set; }
+        public decimal OldPrice { get; set; }
+        public string ImageUrl { get; set; }
+        public double Rating { get; set; }
+        public int RatingBy { get; set; }
+    }
+
 }
 
