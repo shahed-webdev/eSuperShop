@@ -1,5 +1,6 @@
 ﻿using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
+using Paging.Infrastructure;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,6 +37,6 @@ namespace eSuperShop.Repository
         void BanarUrlChange(int vendorId, string banarUrl);
         void StoreInfoUpdate(VendorStoreInfoUpdateModel model);
         VendorStoreInfoUpdateModel StoreDetails(int vendorId);
-        ICollection<StoreViewModel> TopStores(StoreFilterRequest request);
+        PagedResult<StoreViewModel> TopStores(StoreFilterRequest request);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CloudStorage;
 using eSuperShop.Repository;
+using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -292,42 +293,42 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<List<ProductListViewModel>> GetTopRated(ProductFilterRequest request)
+        public DbResponse<PagedResult<ProductListViewModel>> GetTopRated(ProductFilterRequest request)
         {
             try
             {
                 var data = _db.Product.GetTopRated(request);
-                return new DbResponse<List<ProductListViewModel>>(true, "Success", data.ToList());
+                return new DbResponse<PagedResult<ProductListViewModel>>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<List<ProductListViewModel>>(false, e.Message);
+                return new DbResponse<PagedResult<ProductListViewModel>>(false, e.Message);
             }
         }
 
-        public DbResponse<List<ProductListViewModel>> GetFlashDeals(ProductFilterRequest request)
+        public DbResponse<PagedResult<ProductListViewModel>> GetFlashDeals(ProductFilterRequest request)
         {
             try
             {
                 var data = _db.Product.GetFlashDeals(request);
-                return new DbResponse<List<ProductListViewModel>>(true, "Success", data.ToList());
+                return new DbResponse<PagedResult<ProductListViewModel>>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<List<ProductListViewModel>>(false, e.Message);
+                return new DbResponse<PagedResult<ProductListViewModel>>(false, e.Message);
             }
         }
 
-        public DbResponse<List<ProductListViewModel>> GetMoreToLove(ProductFilterRequest request)
+        public DbResponse<PagedResult<ProductListViewModel>> GetMoreToLove(ProductFilterRequest request)
         {
             try
             {
                 var data = _db.Product.GetMoreToLove(request);
-                return new DbResponse<List<ProductListViewModel>>(true, "Success", data.ToList());
+                return new DbResponse<PagedResult<ProductListViewModel>>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<List<ProductListViewModel>>(false, e.Message);
+                return new DbResponse<PagedResult<ProductListViewModel>>(false, e.Message);
             }
         }
     }

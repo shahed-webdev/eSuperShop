@@ -1,10 +1,10 @@
 ﻿using eSuperShop.Repository;
-using System.Collections.Generic;
+using Paging.Infrastructure;
 
 namespace eSuperShop.BusinessLogic
 {
     public interface IStoreCore
     {
-        DbResponse<List<StoreViewModel>> TopStores(StoreFilterRequest model);
+        DbResponse<PagedResult<StoreViewModel>> TopStores(StoreFilterRequest model);
     }
 }

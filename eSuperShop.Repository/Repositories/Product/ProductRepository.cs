@@ -164,34 +164,34 @@ namespace eSuperShop.Repository
             return Db.Product.Find(productId).StockQuantity;
         }
 
-        public ICollection<ProductListViewModel> GetFlashDeals(ProductFilterRequest request)
+        public PagedResult<ProductListViewModel> GetFlashDeals(ProductFilterRequest request)
         {
-            var stores = Db.Product
+            var products = Db.Product
                 .Where(p => p.Published)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
-            return stores.Results;
+            return products;
         }
 
-        public ICollection<ProductListViewModel> GetTopRated(ProductFilterRequest request)
+        public PagedResult<ProductListViewModel> GetTopRated(ProductFilterRequest request)
         {
-            var stores = Db.Product
+            var products = Db.Product
                 .Where(p => p.Published)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
-            return stores.Results;
+            return products;
         }
 
-        public ICollection<ProductListViewModel> GetMoreToLove(ProductFilterRequest request)
+        public PagedResult<ProductListViewModel> GetMoreToLove(ProductFilterRequest request)
         {
-            var stores = Db.Product
+            var products = Db.Product
                 .Where(p => p.Published)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
-            return stores.Results;
+            return products;
         }
 
         public SeoModel GetSeo(int id)

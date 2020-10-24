@@ -66,7 +66,7 @@ namespace eSuperShop.Repository
                     opt => opt.MapFrom(c => c.Product.SelectMany(p => p.ProductBlob.First().BlobUrl)))
                 .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.VendorReview.Count()))
                 .ForMember(d => d.Rating,
-                    opt => opt.MapFrom(c => c.VendorReview.Sum(r => r.Rating) / c.VendorReview.Count()))
+                    opt => opt.MapFrom(c => (double)c.VendorReview.Sum(r => r.Rating) / (double)c.VendorReview.Count()))
                 .ReverseMap();
 
             //Vendor Slider Mapping
@@ -148,9 +148,9 @@ namespace eSuperShop.Repository
 
             //Product Show
             CreateMap<Product, ProductListViewModel>()
-                //.ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
-                //.ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
-                //.ForMember(d => d.Rating, opt => opt.MapFrom(c => c.ProductReview.Sum(r => r.Rating) / c.ProductReview.Count()))
+                .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
+                .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
+                .ForMember(d => d.Rating, opt => opt.MapFrom(c => (double)c.ProductReview.Sum(r => r.Rating) / (double)c.ProductReview.Count()))
                 .ReverseMap();
 
 

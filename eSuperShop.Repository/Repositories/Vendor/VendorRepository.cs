@@ -262,14 +262,14 @@ namespace eSuperShop.Repository
                 .FirstOrDefault();
         }
 
-        public ICollection<StoreViewModel> TopStores(StoreFilterRequest request)
+        public PagedResult<StoreViewModel> TopStores(StoreFilterRequest request)
         {
             var stores = Db.Vendor
                 .Where(v => v.IsApproved)
                 .ProjectTo<StoreViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
-            return stores.Results;
+            return stores;
         }
 
         string CatalogDllFunction(Catalog catalog, string cat)

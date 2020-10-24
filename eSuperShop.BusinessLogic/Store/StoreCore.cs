@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using eSuperShop.Repository;
+using Paging.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -17,16 +16,16 @@ namespace eSuperShop.BusinessLogic
             _db = db;
         }
 
-        public DbResponse<List<StoreViewModel>> TopStores(StoreFilterRequest model)
+        public DbResponse<PagedResult<StoreViewModel>> TopStores(StoreFilterRequest model)
         {
             try
             {
                 var data = _db.Vendor.TopStores(model);
-                return new DbResponse<List<StoreViewModel>>(true, "Success", data.ToList());
+                return new DbResponse<PagedResult<StoreViewModel>>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<List<StoreViewModel>>(false, e.Message);
+                return new DbResponse<PagedResult<StoreViewModel>>(false, e.Message);
             }
         }
     }

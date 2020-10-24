@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Repository;
+using Paging.Infrastructure;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,8 +22,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse<ProductQuantitySetUpdateReturnModel> QuantityUpdate(ProductQuantityViewModel model);
         DbResponse PublishedUpdate(int productId, bool published, string vendorUserName);
         DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName);
-        DbResponse<List<ProductListViewModel>> GetTopRated(ProductFilterRequest request);
-        DbResponse<List<ProductListViewModel>> GetFlashDeals(ProductFilterRequest request);
-        DbResponse<List<ProductListViewModel>> GetMoreToLove(ProductFilterRequest request);
+        DbResponse<PagedResult<ProductListViewModel>> GetTopRated(ProductFilterRequest request);
+        DbResponse<PagedResult<ProductListViewModel>> GetFlashDeals(ProductFilterRequest request);
+        DbResponse<PagedResult<ProductListViewModel>> GetMoreToLove(ProductFilterRequest request);
     }
 }

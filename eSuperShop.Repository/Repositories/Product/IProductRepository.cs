@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Data;
+using Paging.Infrastructure;
 using System.Collections.Generic;
 
 namespace eSuperShop.Repository
@@ -28,9 +29,9 @@ namespace eSuperShop.Repository
         void PublishedUpdate(int productId, bool published);
         void UpdateMainQuantity(int productId);
         int GetStock(int productId);
-        ICollection<ProductListViewModel> GetFlashDeals(ProductFilterRequest request);
-        ICollection<ProductListViewModel> GetTopRated(ProductFilterRequest request);
-        ICollection<ProductListViewModel> GetMoreToLove(ProductFilterRequest request);
+        PagedResult<ProductListViewModel> GetFlashDeals(ProductFilterRequest request);
+        PagedResult<ProductListViewModel> GetTopRated(ProductFilterRequest request);
+        PagedResult<ProductListViewModel> GetMoreToLove(ProductFilterRequest request);
     }
 
 
