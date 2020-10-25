@@ -285,6 +285,23 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model)
+        {
+            try
+            {
+                var data = _db.Product.GetQuantitySet(model);
+
+                if (data == null)
+                    return new DbResponse<ProductQuantityViewModel>(false, "Quantity Not Found");
+
+                return new DbResponse<ProductQuantityViewModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<ProductQuantityViewModel>(false, e.Message);
+            }
+        }
+
         public DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName)
         {
             try
