@@ -183,7 +183,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Product.IsExistSlugUrl(slugUrl))
+                if (!_db.Product.IsExistSlugUrl(slugUrl))
                     return new DbResponse<ProductDetailsModel>(false, "Product Not Found");
 
                 var productId = _db.Product.ProductIdBySlugUrl(slugUrl);

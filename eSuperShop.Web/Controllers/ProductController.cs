@@ -15,6 +15,13 @@ namespace eSuperShop.Web.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly IProductCore _product;
+
+        public ProductController(IProductCore product)
+        {
+            _product = product;
+        }
+
         public IActionResult FlashDeals()
         {
             return View();
@@ -35,7 +42,18 @@ namespace eSuperShop.Web.Controllers
         [Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Item(string slugUrl)
         {
-            return View();
+            if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("Index", "Home");
+
+            var model = _product.DetailsBySlugUrl(slugUrl);
+            return View(model.Data);
+        }
+
+        //get stock
+        [HttpPost]
+        public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
+        {
+            var response = _product.GetQuantitySet(model, User.Identity.Name);
+            return Json(response);
         }
     }
 }

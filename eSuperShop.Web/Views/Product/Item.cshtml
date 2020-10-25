@@ -1,7 +1,8 @@
-﻿@model eSuperShop.Repository.ProductDetailsModel
+﻿@using eSuperShop.Data
+@model eSuperShop.Repository.ProductDetailsModel
 
 @{
-    ViewData["Title"] = "product"; //Model.Name;
+    ViewData["Title"] = Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,16 +11,176 @@
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-9 col-md-8">
-            <div class="row">
-                <div class="col-lg-4 col-md-5"></div>
-                <div class="col-lg-8 col-md-7"></div>
+    <div class="row my-4">
+        <div class="col-lg-9 col-md-7">
+            <div class="card card-body">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 mb-3">
+                        <div id="img-container" href="@Model.Blobs.First().BlobUrl">
+                            <img src="@Model.Blobs.First().BlobUrl" id="show-img" alt="" />
+                        </div>
+
+                        <div class="thumb-img-container">
+                            <img src="/lib/imageZoomer/img/next-icon.png" class="icon-left" alt="" id="prev-img" />
+                            <div class="small-container">
+                                <div id="small-img-roll">
+                                    @foreach (var img in Model.Blobs)
+                                    {
+                                        <img src="@img.BlobUrl" class="show-small-img" alt="" />
+                                    }
+                                </div>
+                            </div>
+                            <img src="/lib/imageZoomer/img/next-icon.png" class="icon-right" alt="" id="next-img" />
+                        </div>
+                    </div>
+
+                    <div class="col-xl-7 col-lg-6">
+                        <p class="mb-0">@Model.Name</p>
+                        <a class="blue-text font-small">Sold By: @Model.VendorInfo.StoreName</a>
+
+                        <form id="cartForm">
+                            <div class="my-3">
+                                <strong>৳@Model.Price</strong>
+                                @if (Model.OldPrice > 0)
+                                {
+                                    <span class="old-price">৳@Model.OldPrice</span>
+                                    <span class="p-discount-percent">
+                                        -@((100 - ((100 * Model.Price) / Model.OldPrice)).ToString("F"))%
+                                    </span>
+                                }
+                            </div>
+                            
+                            <div id="attribute">
+                                @foreach (var att in Model.Attributes)
+                                {
+                                    <p class="mb-0">@att.KeyName</p>
+                                    @if (att.DisplayType == ProductAttributeDisplay.Image)
+                                    {
+                                        <div class="d-flex align-items-center mb-3">
+                                            @foreach (var val in att.Values)
+                                            {
+                                                <label class="attribute-img">
+                                                    <input class="radio-attribute" required id="@val.ProductAttributeValueId" type="radio" name="@att.KeyName" value="@val.ProductAttributeValueId">
+                                                    <img for="@val.ProductAttributeValueId" src="@val.ImageUrl" alt="@val.Value" />
+                                                </label>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center mb-3">
+                                            @foreach (var val in att.Values)
+                                            {
+                                                <div class="attribute-text">
+                                                    <input class="radio-attribute" required id="@val.ProductAttributeValueId" type="radio" name="@att.KeyName" value="@val.ProductAttributeValueId">
+                                                    <label for="@val.ProductAttributeValueId">@val.Value</label>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+
+                                }
+                            </div>
+
+                            <div class="my-5">
+                                QTY: <input name="quantity" type="number" class="input-quantity" required value="1">
+                            </div>
+
+                            <div>
+                                <input class="btn btn-danger btn-md" type="submit" value="Add to Cart">
+                                <input class="btn btn-outline-danger btn-md" type="submit" value="Buy Now">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        
 
-        <div class="col-lg-3 col-md-4"></div>
+        <div class="col-lg-3 col-md-5">
+            <div class="card card-body text-center mb-3">
+                <h6 class="font-weight-bold deep-orange-text"><i class="far fa-truck mr-1"></i>DELIVERY</h6>
+
+                <p class="mb-0">Inside Dhaka 2 days</p>
+                <p class="mb-0">Outside Dhaka 5 days</p>
+            </div>
+
+            <div class="card card-body text-center">
+                <p class="mb-0">Recommended For You</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="classic-tabs mb-5">
+        <ul class="nav red darken-4" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link  waves-light active show" data-toggle="tab" href="#profile-classic-shadow"
+                   role="tab" aria-controls="profile-classic-shadow" aria-selected="true">DESCRIPTION</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" data-toggle="tab" href="#follow-classic-shadow"
+                   role="tab" aria-controls="follow-classic-shadow" aria-selected="false">SPECIFICATIONS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" data-toggle="tab" href="#contact-classic-shadow"
+                   role="tab" aria-controls="contact-classic-shadow" aria-selected="false">REVIEWS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-light" data-toggle="tab" href="#awesome-classic-shadow"
+                   role="tab" aria-controls="awesome-classic-shadow" aria-selected="false">RETURN POLICY</a>
+            </li>
+        </ul>
+
+        <div class="tab-content card">
+            <div class="tab-pane fade active show" id="profile-classic-shadow" role="tabpanel">
+                @Html.Raw(Model.FullDescription)
+            </div>
+            <div class="tab-pane fade" id="follow-classic-shadow" role="tabpanel">
+            </div>
+            <div class="tab-pane fade" id="contact-classic-shadow" role="tabpanel">
+            </div>
+            <div class="tab-pane fade" id="awesome-classic-shadow" role="tabpanel">
+            </div>
+        </div>
     </div>
 </div>
 
+@section Scripts{
+    <script src="~/lib/imageZoomer/zoom-image.js"></script>
+    <script src="~/lib/imageZoomer/main.js"></script>
+
+    <script>
+        const attribute = document.getElementById("attribute");
+
+        attribute.addEventListener("change", function(evt) {
+            const element = evt.target;
+
+            const onAttribute = element.classList.contains("radio-attribute");
+            if (!onAttribute) return;
+
+            const valueIds = document.querySelectorAll('input[type="radio"]:checked');
+            const AttributeValueId = [];
+
+            valueIds.forEach(id => {
+                if (id.value) AttributeValueId.push(+id.value);
+            });
+
+        
+            const model = {
+                ProductId: @Model.ProductId,
+                ProductAttributeValueIds: AttributeValueId
+            }
+            return;
+            $.ajax({
+                url: "/Product/GetInsertedStock",
+                type: "POST",
+                data: model,
+                success: function(response) {
+                    console.log(response)
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+    </script>
+}
