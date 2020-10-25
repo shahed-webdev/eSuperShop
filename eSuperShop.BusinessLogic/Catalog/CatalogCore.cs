@@ -250,7 +250,7 @@ namespace eSuperShop.BusinessLogic
                 data.Specifications = _db.Specification.CatalogWiseList(data.Breadcrumb.CatalogId);
                 data.Products = _db.Product.GetCatalogWiseList(data.Breadcrumb.CatalogId, new ProductFilterRequest
                 {
-                    Page = 0,
+                    Page = 1,
                     PageSize = 20
                 }).Results;
 
