@@ -39,9 +39,14 @@ namespace eSuperShop.Web.Controllers
         [Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
-            ViewBag.data = slugUrl;
+            ViewBag.slugUrl = slugUrl;
+            return View();
+        }
+
+        public IActionResult GetProducts(string slugUrl)
+        {
             var model = _catalog.ProductList(slugUrl);
-            return View(model.Data);
+            return Json(model.Data);
         }
 
         //Category list

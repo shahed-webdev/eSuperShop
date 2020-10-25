@@ -180,20 +180,16 @@
                 type: "POST",
                 data: model,
                 success: function(response) {
-                    if (!response.IsSuccess) {
+                    if (response.IsSuccess) {
                         availableQty.textContent = `${response.Data.Quantity} pieces available`;
-                        availableQty.style.color = "red";
+                        availableQty.style.color = "#212529";
 
-                        inputQuantity.setAttribute("min", 1);
                         inputQuantity.setAttribute("max", response.Data.Quantity);
-                        inputQuantity.setAttribute("disabled", false);
                     } else {
                         availableQty.textContent = `Product not available`;
                         availableQty.style.color = "red";
 
-                        inputQuantity.setAttribute("min", 0);
                         inputQuantity.setAttribute("max", 0);
-                        inputQuantity.setAttribute("disabled", true);
                     }
                 },
                 error: function(err) {
