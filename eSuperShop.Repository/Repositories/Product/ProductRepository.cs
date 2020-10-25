@@ -199,6 +199,16 @@ namespace eSuperShop.Repository
             return products;
         }
 
+        public PagedResult<ProductListViewModel> GetCatalogWiseList(int catalogId, ProductFilterRequest request)
+        {
+            var products = Db.Product
+                .Where(p => p.Published && p.CatalogId == catalogId)
+                .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
+                .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
+                .GetPaged(request.Page, request.PageSize);
+            return products;
+        }
+
         public SeoModel GetSeo(int id)
         {
             return Db.Product

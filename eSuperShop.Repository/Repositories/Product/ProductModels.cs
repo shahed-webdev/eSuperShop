@@ -224,7 +224,9 @@ namespace eSuperShop.Repository
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
         public string ImageUrl { get; set; }
+        public string StoreName { get; set; }
         public double Rating { get; set; }
+        public int Sold { get; set; }
         public int RatingBy { get; set; }
     }
 

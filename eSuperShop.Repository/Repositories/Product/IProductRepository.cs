@@ -33,6 +33,7 @@ namespace eSuperShop.Repository
         PagedResult<ProductListViewModel> GetFlashDeals(ProductFilterRequest request);
         PagedResult<ProductListViewModel> GetTopRated(ProductFilterRequest request);
         PagedResult<ProductListViewModel> GetMoreToLove(ProductFilterRequest request);
+        PagedResult<ProductListViewModel> GetCatalogWiseList(int catalogId, ProductFilterRequest request);
     }
 
 
