@@ -185,6 +185,15 @@ namespace eSuperShop.Repository
                 .FirstOrDefault();
         }
 
+        public CatalogHierarchyModel BreadcrumbBySlugUrl(string slugUrl)
+        {
+            return Db.Catalog
+                .Where(c => c.SlugUrl == slugUrl)
+                .ProjectTo<CatalogHierarchyModel>(_mapper.ConfigurationProvider)
+                .AsEnumerable()?
+                .FirstOrDefault();
+        }
+
         public CatalogDisplayModel Get(int id)
         {
             return Db.Catalog.ProjectTo<CatalogDisplayModel>(_mapper.ConfigurationProvider).FirstOrDefault(c => c.CatalogId == id);

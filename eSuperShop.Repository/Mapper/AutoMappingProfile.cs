@@ -17,6 +17,7 @@ namespace eSuperShop.Repository
             //Catalog Mapping
             CreateMap<Catalog, CatalogAddModel>().ReverseMap();
             CreateMap<Catalog, CatalogModel>().MaxDepth(10).ReverseMap();
+            CreateMap<Catalog, CatalogHierarchyModel>().MaxDepth(10).ReverseMap();
             CreateMap<Catalog, CatalogDisplayModel>().ReverseMap();
             //CatalogShownPlace Mapping
             CreateMap<CatalogShownPlace, CatalogAssignModel>().ReverseMap();
@@ -151,6 +152,7 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
                 .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
                 .ForMember(d => d.Rating, opt => opt.MapFrom(c => (double)c.ProductReview.Sum(r => r.Rating) / (double)c.ProductReview.Count()))
+                .ForMember(d => d.StoreName, opt => opt.MapFrom(c => c.Vendor.StoreName))
                 .ReverseMap();
 
 

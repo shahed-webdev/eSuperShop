@@ -20,6 +20,7 @@ namespace eSuperShop.BusinessLogic
         List<DDL> DisplayPlaceDdl();
         DbResponse<List<DDL>> ListDdl();
         DbResponse<CatalogDisplayModel> AssignPlace(CatalogAssignModel model, string userName);
+        DbResponse<CatalogProductListViewModel> ProductList(string slugUrl);
         DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace);
 
 

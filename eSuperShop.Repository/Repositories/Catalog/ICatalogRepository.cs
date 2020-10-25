@@ -27,6 +27,7 @@ namespace eSuperShop.Repository
         List<DDL> SliderPlaceDdl();
         List<DDL> ListDdl();
         string Breadcrumb(int id);
+        CatalogHierarchyModel BreadcrumbBySlugUrl(string slugUrl);
         CatalogDisplayModel Get(int id);
         void PlaceAssign(CatalogAssignModel model);
         bool IsPlaceAssign(int catalogId, CatalogDisplayPlace shownPlace);

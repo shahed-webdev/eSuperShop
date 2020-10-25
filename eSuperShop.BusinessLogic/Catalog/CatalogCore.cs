@@ -236,6 +236,33 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<CatalogProductListViewModel> ProductList(string slugUrl)
+        {
+            try
+            {
+                if (!_db.Catalog.IsExistSlugUrl(slugUrl))
+                    return new DbResponse<CatalogProductListViewModel>(false, "Invalid Catalog");
+
+                var data = new CatalogProductListViewModel();
+                data.Breadcrumb = _db.Catalog.BreadcrumbBySlugUrl(slugUrl);
+                data.SubCatalogs = _db.Catalog.DisplaySubCatalog(data.Breadcrumb.CatalogId, 15);
+                data.Brands = _db.Brand.CatalogWiseList(data.Breadcrumb.CatalogId);
+                data.Specifications = _db.Specification.CatalogWiseList(data.Breadcrumb.CatalogId);
+                data.Products = _db.Product.GetCatalogWiseList(data.Breadcrumb.CatalogId, new ProductFilterRequest
+                {
+                    Page = 0,
+                    PageSize = 20
+                }).Results;
+
+
+                return new DbResponse<CatalogProductListViewModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<CatalogProductListViewModel>(false, e.Message);
+            }
+        }
+
         public DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace)
         {
             try

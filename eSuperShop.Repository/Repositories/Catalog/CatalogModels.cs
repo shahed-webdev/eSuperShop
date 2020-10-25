@@ -154,12 +154,15 @@ namespace eSuperShop.Repository
         public CatalogProductListViewModel()
         {
             SubCatalogs = new HashSet<CatalogDisplayModel>();
+            Brands = new HashSet<BrandModel>();
+            Specifications = new HashSet<SpecificationModel>();
+            Products = new HashSet<ProductListViewModel>();
         }
 
-        private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
-        //private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
-        // private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
-        //private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
         public CatalogHierarchyModel Breadcrumb { get; set; }
+        public ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
+        public ICollection<BrandModel> Brands { get; set; }
+        public ICollection<SpecificationModel> Specifications { get; set; }
+        public ICollection<ProductListViewModel> Products { get; set; }
     }
 }
