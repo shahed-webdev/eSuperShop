@@ -11,12 +11,14 @@ namespace eSuperShop.Web.Controllers
         private readonly ISliderCore _slider;
         private readonly ICatalogCore _catalog;
         private readonly IProductCore _product;
+        private readonly IStoreCore _store;
 
-        public HomeController(ISliderCore slider, ICatalogCore catalog, IProductCore product)
+        public HomeController(ISliderCore slider, ICatalogCore catalog, IProductCore product, IStoreCore store)
         {
             _slider = slider;
             _catalog = catalog;
             _product = product;
+            _store = store;
         }
         public IActionResult Index()
         {
@@ -48,6 +50,20 @@ namespace eSuperShop.Web.Controllers
         public IActionResult GetTopRated(ProductFilterRequest filter)
         {
             var response = _product.GetTopRated(filter);
+            return Json(response);
+        }
+
+        //Get TopStore
+        public IActionResult GetTopStore(StoreFilterRequest filter)
+        {
+            var response = _store.TopStores(filter);
+            return Json(response);
+        }
+
+        //Get more to Love
+        public IActionResult GetMoreToLove(ProductFilterRequest filter)
+        {
+            var response = _product.GetMoreToLove(filter);
             return Json(response);
         }
     }
