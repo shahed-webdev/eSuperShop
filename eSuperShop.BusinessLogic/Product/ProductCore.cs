@@ -298,7 +298,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 var data = _db.Product.GetTopRated(request);
-                if (data == null)
+                if (data.Results == null)
                     return new DbResponse<PagedResult<ProductListViewModel>>(false, "No Data found");
 
                 return new DbResponse<PagedResult<ProductListViewModel>>(true, "Success", data);
@@ -314,7 +314,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 var data = _db.Product.GetFlashDeals(request);
-                if (data == null)
+                if (data.Results == null)
                     return new DbResponse<PagedResult<ProductListViewModel>>(false, "No Data found");
 
                 return new DbResponse<PagedResult<ProductListViewModel>>(true, "Success", data);
@@ -331,7 +331,7 @@ namespace eSuperShop.BusinessLogic
             {
                 var data = _db.Product.GetMoreToLove(request);
 
-                if (data == null)
+                if (data.Results == null)
                     return new DbResponse<PagedResult<ProductListViewModel>>(false, "No Data found");
 
                 return new DbResponse<PagedResult<ProductListViewModel>>(true, "Success", data);
