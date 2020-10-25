@@ -17,12 +17,12 @@ namespace eSuperShop.Web.Controllers
         private readonly IBrandCore _brand;
         private readonly IAttributeCore _attribute;
         private readonly ISpecificationCore _specification;
-         
+
         private readonly ICatalogCore _catalog;
         private readonly ICloudStorage _cloudStorage;
         private readonly ISeoCore _seo;
 
-        public CategoryController(IBrandCore brand, IAttributeCore attribute, ISpecificationCore specification,ICloudStorage cloudStorage, ICatalogCore catalog, IMapper mapper, IUnitOfWork db)
+        public CategoryController(IBrandCore brand, IAttributeCore attribute, ISpecificationCore specification, ICloudStorage cloudStorage, ICatalogCore catalog, IMapper mapper, IUnitOfWork db)
         {
             _brand = brand;
             _attribute = attribute;
@@ -40,7 +40,8 @@ namespace eSuperShop.Web.Controllers
         public IActionResult Products(string slugUrl)
         {
             ViewBag.data = slugUrl;
-            return View();
+            var model = _catalog.ProductList(slugUrl);
+            return View(model.Data);
         }
 
         //Category list
@@ -141,7 +142,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-    
+
         //*****SEO******
         public IActionResult GetSeo(int id)
         {
