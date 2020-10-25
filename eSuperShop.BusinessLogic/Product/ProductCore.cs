@@ -179,6 +179,23 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<ProductDetailsModel> DetailsBySlugUrl(string slugUrl)
+        {
+            try
+            {
+                if (_db.Product.IsExistSlugUrl(slugUrl))
+                    return new DbResponse<ProductDetailsModel>(false, "Product Not Found");
+
+                var productId = _db.Product.ProductIdBySlugUrl(slugUrl);
+                var data = _db.Product.Details(productId);
+                return new DbResponse<ProductDetailsModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<ProductDetailsModel>(false, e.Message);
+            }
+        }
+
         public DbResponse<List<ProductQuantitySetViewModel>> QuantitySetList(int productId, string vendorUserName)
         {
             try
