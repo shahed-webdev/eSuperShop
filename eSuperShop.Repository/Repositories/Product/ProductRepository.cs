@@ -28,6 +28,11 @@ namespace eSuperShop.Repository
             return Db.Product.Any(c => c.SlugUrl == slugUrl);
         }
 
+        public int ProductIdBySlugUrl(string slugUrl)
+        {
+            return Db.Product.FirstOrDefault(p => p.SlugUrl == slugUrl).ProductId;
+        }
+
         public bool IsExistSlugUrl(string slugUrl, int updateId)
         {
             return Db.Product.Any(c => c.SlugUrl == slugUrl && c.ProductId != updateId);

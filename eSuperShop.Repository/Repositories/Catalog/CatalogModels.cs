@@ -15,6 +15,13 @@ namespace eSuperShop.Repository
         public int CreatedByRegistrationId { get; set; }
     }
 
+    public class CatalogHierarchyModel
+    {
+        public int CatalogId { get; set; }
+        public string CatalogName { get; set; }
+        public string SlugUrl { get; set; }
+        public CatalogHierarchyModel ParentCatalog { get; set; }
+    }
     public class CatalogDisplayModel
     {
         public int CatalogId { get; set; }
@@ -140,5 +147,19 @@ namespace eSuperShop.Repository
         public ICollection<BrandModel> Brands { get; set; }
         public ICollection<SpecificationModel> Specifications { get; set; }
         public ICollection<AttributeModel> Attributes { get; set; }
+    }
+
+    public class CatalogProductListViewModel
+    {
+        public CatalogProductListViewModel()
+        {
+            SubCatalogs = new HashSet<CatalogDisplayModel>();
+        }
+
+        private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
+        //private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
+        // private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
+        //private ICollection<CatalogDisplayModel> SubCatalogs { get; set; }
+        public CatalogHierarchyModel Breadcrumb { get; set; }
     }
 }

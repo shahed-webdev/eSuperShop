@@ -10,6 +10,7 @@ namespace eSuperShop.Repository
         ProductQuantitySet ProductQuantitySet { get; set; }
         void Add(ProductAddModel model);
         bool IsExistSlugUrl(string slugUrl);
+        int ProductIdBySlugUrl(string slugUrl);
         bool IsExistSlugUrl(string slugUrl, int updateId);
         bool IsNull(int id);
         bool IsRelatedDataExist(int id);
