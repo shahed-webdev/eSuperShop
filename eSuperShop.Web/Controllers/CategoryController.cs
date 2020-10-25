@@ -39,7 +39,7 @@ namespace eSuperShop.Web.Controllers
         [Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
-            ViewBag.data = slugUrl;
+            ViewBag.slugUrl = slugUrl;
             return View();
         }
 

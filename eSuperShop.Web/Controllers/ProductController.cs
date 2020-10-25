@@ -52,7 +52,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
         {
-            var response = _product.GetQuantitySet(model, User.Identity.Name);
+            var response = _product.GetQuantitySet(model);
             return Json(response);
         }
     }

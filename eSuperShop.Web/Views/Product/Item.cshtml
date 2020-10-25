@@ -53,7 +53,7 @@
                             <div id="attribute">
                                 @foreach (var att in Model.Attributes)
                                 {
-                                    <p class="mb-0">@att.KeyName</p>
+                                    <p class="mb-0 key-name">@att.KeyName</p>
                                     @if (att.DisplayType == ProductAttributeDisplay.Image)
                                     {
                                         <div class="d-flex align-items-center mb-3">
@@ -78,12 +78,12 @@
                                             }
                                         </div>
                                     }
-
                                 }
                             </div>
 
                             <div class="my-5">
-                                QTY: <input name="quantity" type="number" class="input-quantity" required value="1">
+                                QTY: <input id="inputQuantity" min="1" type="number" class="input-quantity" required value="1">
+                                <span id="availableQty"></span>
                             </div>
 
                             <div>
@@ -158,24 +158,43 @@
             if (!onAttribute) return;
 
             const valueIds = document.querySelectorAll('input[type="radio"]:checked');
+            const keyNames = document.querySelectorAll(".key-name");
             const AttributeValueId = [];
 
             valueIds.forEach(id => {
                 if (id.value) AttributeValueId.push(+id.value);
             });
 
-        
+            if (keyNames.length !== AttributeValueId.length) return;
+
             const model = {
                 ProductId: @Model.ProductId,
                 ProductAttributeValueIds: AttributeValueId
             }
-            return;
+
+            const availableQty = document.getElementById("availableQty");
+            const inputQuantity = document.getElementById("inputQuantity");
+
             $.ajax({
                 url: "/Product/GetInsertedStock",
                 type: "POST",
                 data: model,
                 success: function(response) {
-                    console.log(response)
+                    if (!response.IsSuccess) {
+                        availableQty.textContent = `${response.Data.Quantity} pieces available`;
+                        availableQty.style.color = "red";
+
+                        inputQuantity.setAttribute("min", 1);
+                        inputQuantity.setAttribute("max", response.Data.Quantity);
+                        inputQuantity.setAttribute("disabled", false);
+                    } else {
+                        availableQty.textContent = `Product not available`;
+                        availableQty.style.color = "red";
+
+                        inputQuantity.setAttribute("min", 0);
+                        inputQuantity.setAttribute("max", 0);
+                        inputQuantity.setAttribute("disabled", true);
+                    }
                 },
                 error: function(err) {
                     console.log(err);
