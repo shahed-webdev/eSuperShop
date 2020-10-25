@@ -63,7 +63,7 @@ namespace eSuperShop.Repository
             //Vendor store Mapping
             CreateMap<Vendor, StoreViewModel>()
                 .ForMember(d => d.ProductImageUrls,
-                    opt => opt.MapFrom(c => c.Product.SelectMany(p => p.ProductBlob.First().BlobUrl)))
+                    opt => opt.MapFrom(c => c.Product.SelectMany(p => p.ProductBlob.First().BlobUrl).ToArray()))
                 .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.VendorReview.Count()))
                 .ForMember(d => d.Rating,
                     opt => opt.MapFrom(c => (double)c.VendorReview.Sum(r => r.Rating) / (double)c.VendorReview.Count()))
