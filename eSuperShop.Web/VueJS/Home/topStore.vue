@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div class="product-header">
+            <h3>Top Stores</h3>
+            <a href="/Product/AllStores">View More<i class="far fa-eye ml-1"></i></a>
+        </div>
         <div class="row">
             <div v-for="(item,i) in data" :key="i" class="col-lg-4 col-sm-6 mb-3">
                 <div class="card hoverable card-body">
@@ -14,20 +18,11 @@
                         <span>{{item.RatingBy}}</span>
                     </div>
 
-                    <!--<div class="photo-box">
-                        <div class="box">
-                            <img src="~/images/products/9.webp" alt="" />
-                        </div>
-                        <div class="box">
-                            <img src="~/images/products/8.webp" alt="" />
-                        </div>
-                        <div class="box">
-                            <img src="~/images/products/7.webp" alt="" />
-                        </div>
-                        <div class="box">
-                            <img src="~/images/products/6.webp" alt="" />
-                        </div>
-                    </div>-->
+                    <div class="photo-box">
+                    <div v-for="(imgUrl, i) in item.ProductImageUrls" :key="i" class="box">
+                        <img :src="imgUrl" alt="" />
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

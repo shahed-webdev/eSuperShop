@@ -24,5 +24,18 @@ namespace eSuperShop.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult AllStores()
+        {
+            return View();
+        }
+
+        //product details
+        [Route("[controller]/[action]")]
+        [Route("[controller]/[action]/{slugUrl}")]
+        public IActionResult Item(string slugUrl)
+        {
+            return View();
+        }
     }
 }

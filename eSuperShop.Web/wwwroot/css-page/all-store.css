@@ -1,0 +1,23 @@
+﻿
+
+/*features product*/
+.product-header { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center }
+.product-name { font-size: 13px; color: #565353; }
+
+.pricing-area { display: flex; justify-content: space-between; align-items: center; line-height: 27px; }
+.p-price span { font-weight: bold; font-size: 16px; color: #3E3E3E; }
+span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through; }
+
+.rating-count { background: #FFFFFF; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25); border-radius: 20px; padding: 4px; font-size: 13px; }
+.p-rating i { color: #F97700; font-size: 12px; }
+.p-discount-percent { color: #F47A5E; font-size: 14px; }
+
+/*top stores*/
+.shop-name { color: #312626; font-size: 16px; }
+.shop-description { font-style: italic; font-size: 13px; color: #676565; }
+.photo-box { display: grid; grid-gap: 10px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; grid-template-areas: ". ." ". ."; }
+.photo-box .box { border: 1px solid #E1E1E1; }
+.photo-box .box img { width: 100%; }
+
+.shop-rating i { color: #F97700; font-size: 12px; }
+.shop-rating span { color: #656262; font-size: 13px; }

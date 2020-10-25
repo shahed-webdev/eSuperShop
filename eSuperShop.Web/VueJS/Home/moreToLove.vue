@@ -1,17 +1,13 @@
 ﻿<template>
-    <div v-if="isData" class="mt-5">
-        <div class="product-header">
-            <h3>Flash Deals</h3>
-        </div>
-    
+    <div class="mt-5">
+        <h3 class="mb-3">More To Love</h3>
+
         <div class="row">
-            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-4">
+            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6">
                 <div class="card hoverable h-100">
                     <div class="view overlay">
                         <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
-                        <a>
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
+                        <a><div class="mask rgba-white-slight"></div></a>
                     </div>
                     <div class="card-body pb-1">
                         <p class="product-name">{{item.Name}}</p>
@@ -20,6 +16,12 @@
                                 <span>৳{{item.Price}}</span>
                                 <span v-if="item.OldPrice" class="p-discount d-block">৳{{item.OldPrice}}</span>
                             </div>
+
+                            <!--<div class="p-rating text-right">
+                                <span class="sold-count">500 sold</span>
+                                <span class="p-discount-percent">10% off</span>
+                            </div>-->
+
                             <div class="p-rating text-right">
                                 <div>
                                     <i :class="['fas', 'fa-star', { 'text-muted': !item.Rating}]"></i>
@@ -47,7 +49,7 @@
         },
         methods: {
             getData() {
-                axios.get('/home/GetFlashDeals', { params: { Page: 1, PageSize: 4 } }).then(response => {
+                axios.get('/home/GetMoreToLove', { params: { Page: 1, PageSize: 4 } }).then(response => {
                     const { IsSuccess, Data } = response.data;
                     if (!IsSuccess) return;
 
@@ -64,9 +66,8 @@
                     const bottomOfWindow = element.scrollTop + window.innerHeight === element.offsetHeight;
     
                     if (bottomOfWindow) {
-                        axios.get('/home/GetFlashDeals', { params }).then(response => {
+                        axios.get('/home/GetMoreToLove', { params }).then(response => {
                             const { IsSuccess, Data } = response.data;
-                            console.log(response)
                             this.isLastPage = IsSuccess;
 
                             if (!IsSuccess) return;
