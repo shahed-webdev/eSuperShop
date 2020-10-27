@@ -26,6 +26,7 @@ namespace eSuperShop.Repository
         void UnAssignCatalog(int attributeId, int catalogId);
         bool IsExistAttributeInCatalog(int attributeId, int catalogId);
         List<AttributeModel> CatalogWiseList(int catalogId);
+        List<AttributeFilterModel> CatalogsProductWiseList(List<int> catalogIds);
     }
 
 

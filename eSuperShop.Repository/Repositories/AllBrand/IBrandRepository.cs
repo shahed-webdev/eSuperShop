@@ -27,5 +27,6 @@ namespace eSuperShop.Repository
         void UnAssignCatalog(int brandId, int catalogId);
         bool IsExistBrandInCatalog(int brandId, int catalogId);
         List<BrandModel> CatalogWiseList(int catalogId);
+        List<BrandModel> CatalogsProductWiseList(List<int> catalogIds);
     }
 }

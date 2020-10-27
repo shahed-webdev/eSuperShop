@@ -40,6 +40,7 @@ namespace eSuperShop.Web.Controllers
         public IActionResult Products(string slugUrl)
         {
             ViewBag.slugUrl = slugUrl;
+            var model = _catalog.ProductList(slugUrl);
             return View();
         }
 

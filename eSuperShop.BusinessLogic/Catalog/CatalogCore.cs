@@ -244,11 +244,13 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<CatalogProductListViewModel>(false, "Invalid Catalog");
 
                 var data = new CatalogProductListViewModel();
+                data.CatalogIds = _db.Catalog.CatalogIdsBySlugUrl(slugUrl);
                 data.Breadcrumb = _db.Catalog.BreadcrumbBySlugUrl(slugUrl);
                 data.SubCatalogs = _db.Catalog.DisplaySubCatalog(data.Breadcrumb.CatalogId, 15);
-                data.Brands = _db.Brand.CatalogWiseList(data.Breadcrumb.CatalogId);
-                data.Specifications = _db.Specification.CatalogWiseList(data.Breadcrumb.CatalogId);
-                data.Products = _db.Product.GetCatalogWiseList(data.Breadcrumb.CatalogId, new ProductFilterRequest
+                data.Brands = _db.Brand.CatalogsProductWiseList(data.CatalogIds);
+                data.Attributes = _db.Attribute.CatalogsProductWiseList(data.CatalogIds);
+                data.Specifications = _db.Specification.CatalogsProductWiseList(data.CatalogIds);
+                data.Products = _db.Product.GetCatalogWiseList(data.CatalogIds, new ProductFilterRequest
                 {
                     Page = 1,
                     PageSize = 20

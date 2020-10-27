@@ -150,5 +150,29 @@ namespace eSuperShop.Repository
                 .ProjectTo<AttributeModel>(_mapper.ConfigurationProvider);
             return list.ToList();
         }
+
+        public List<AttributeFilterModel> CatalogsProductWiseList(List<int> catalogIds)
+        {
+            var list = Db.ProductAttributeValue
+                .Include(s => s.ProductAttribute)
+                .ThenInclude(a => a.Attribute)
+                .Where(p => p.ProductAttribute.Product.Published && p.ProductAttribute.Attribute.AllowFiltering && catalogIds.Contains(p.ProductAttribute.Product.CatalogId))
+                .Select(s => new
+                {
+                    Attribute = s.ProductAttribute.Attribute,
+                    Value = s.Value
+                }).ToList();
+
+            var attribute = list.GroupBy(
+                p => p.Attribute,
+                p => p.Value,
+                (s, g) => new AttributeFilterModel
+                {
+                    AttributeId = s.AttributeId,
+                    KeyName = s.KeyName,
+                    Values = g.Distinct().OrderBy(v => v).ToArray()
+                }).OrderBy(a => a.KeyName).ToList();
+            return attribute;
+        }
     }
 }

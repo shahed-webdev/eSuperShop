@@ -149,5 +149,16 @@ namespace eSuperShop.Repository
                   .ProjectTo<BrandModel>(_mapper.ConfigurationProvider);
             return list.ToList();
         }
+
+        public List<BrandModel> CatalogsProductWiseList(List<int> catalogIds)
+        {
+            var list = Db.Product
+                .Include(c => c.Brand)
+                .Where(p => p.Published && catalogIds.Contains(p.CatalogId))
+                .Select(c => c.Brand)
+                .Distinct()
+                .ProjectTo<BrandModel>(_mapper.ConfigurationProvider);
+            return list.ToList();
+        }
     }
 }

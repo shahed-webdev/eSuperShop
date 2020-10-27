@@ -151,5 +151,28 @@ namespace eSuperShop.Repository
                 .ProjectTo<SpecificationModel>(_mapper.ConfigurationProvider);
             return list.ToList();
         }
+
+        public List<SpecificationFilterModel> CatalogsProductWiseList(List<int> catalogIds)
+        {
+            var list = Db.ProductSpecification
+                .Include(s => s.Specification)
+                .Where(p => p.Product.Published && p.Specification.AllowFiltering && catalogIds.Contains(p.Product.CatalogId))
+                .Select(s => new
+                {
+                    Specification = s.Specification,
+                    Value = s.Value
+                }).OrderBy(s => s.Specification.KeyName).ToList();
+
+            var specifications = list.GroupBy(
+                    p => p.Specification,
+                    p => p.Value,
+                    (s, g) => new SpecificationFilterModel
+                    {
+                        SpecificationId = s.SpecificationId,
+                        KeyName = s.KeyName,
+                        Values = g.Distinct().OrderBy(v => v).ToArray()
+                    }).ToList();
+            return specifications;
+        }
     }
 }

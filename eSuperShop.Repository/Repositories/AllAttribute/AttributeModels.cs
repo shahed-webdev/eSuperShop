@@ -28,4 +28,11 @@
         public int[] AttributeIds { get; set; }
         public int AssignedByRegistrationId { get; set; }
     }
+
+    public class AttributeFilterModel
+    {
+        public int AttributeId { get; set; }
+        public string KeyName { get; set; }
+        public string[] Values { get; set; }
+    }
 }

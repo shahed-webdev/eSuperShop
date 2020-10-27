@@ -199,10 +199,10 @@ namespace eSuperShop.Repository
             return products;
         }
 
-        public PagedResult<ProductListViewModel> GetCatalogWiseList(int catalogId, ProductFilterRequest request)
+        public PagedResult<ProductListViewModel> GetCatalogWiseList(List<int> catalogIds, ProductFilterRequest request)
         {
             var products = Db.Product
-                .Where(p => p.Published && p.CatalogId == catalogId)
+                .Where(p => p.Published && catalogIds.Contains(p.CatalogId))
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);

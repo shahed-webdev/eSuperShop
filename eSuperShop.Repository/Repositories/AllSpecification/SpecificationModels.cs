@@ -27,4 +27,11 @@
         public int[] CatalogIds { get; set; }
         public int AssignedByRegistrationId { get; set; }
     }
+
+    public class SpecificationFilterModel
+    {
+        public int SpecificationId { get; set; }
+        public string KeyName { get; set; }
+        public string[] Values { get; set; }
+    }
 }

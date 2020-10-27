@@ -194,6 +194,21 @@ namespace eSuperShop.Repository
                 .FirstOrDefault();
         }
 
+        public List<int> CatalogIdsBySlugUrl(string slugUrl)
+        {
+            var Ids = new List<int>();
+            var cat = Db.Catalog
+                .Include(c => c.SubCatalog)
+                .Where(c => c.SlugUrl == slugUrl)
+                .AsEnumerable()?
+                .FirstOrDefault();
+
+            if (cat != null)
+                CatalogIdsFunction(cat.CatalogId, cat.SubCatalog, Ids);
+
+            return Ids;
+        }
+
         public CatalogDisplayModel Get(int id)
         {
             return Db.Catalog.ProjectTo<CatalogDisplayModel>(_mapper.ConfigurationProvider).FirstOrDefault(c => c.CatalogId == id);
@@ -273,6 +288,20 @@ namespace eSuperShop.Repository
                 cat = CatalogDllFunction(catalog.ParentCatalog, catalog.CatalogName) + ">" + cat;
             }
             return cat;
+        }
+
+
+        void CatalogIdsFunction(int catalogId, ICollection<Catalog> subCatalogs, List<int> ids)
+        {
+            ids.Add(catalogId);
+
+            foreach (var subCatalog in subCatalogs)
+            {
+                if (subCatalog.SubCatalog != null)
+                {
+                    CatalogIdsFunction(subCatalog.CatalogId, subCatalog.SubCatalog, ids);
+                }
+            }
         }
     }
 }
