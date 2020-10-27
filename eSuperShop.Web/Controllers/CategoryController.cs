@@ -39,11 +39,13 @@ namespace eSuperShop.Web.Controllers
         [Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
+            if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("Index", "Home");
+
             ViewBag.slugUrl = slugUrl;
-            var model = _catalog.ProductList(slugUrl);
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult GetProducts(string slugUrl)
         {
             var model = _catalog.ProductList(slugUrl);
