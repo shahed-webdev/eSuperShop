@@ -188,6 +188,7 @@ namespace eSuperShop.Repository
         public CatalogHierarchyModel BreadcrumbBySlugUrl(string slugUrl)
         {
             return Db.Catalog
+                .Include(c => c.ParentCatalog)
                 .Where(c => c.SlugUrl == slugUrl)
                 .ProjectTo<CatalogHierarchyModel>(_mapper.ConfigurationProvider)
                 .AsEnumerable()?
