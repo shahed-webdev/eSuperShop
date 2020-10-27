@@ -125,12 +125,12 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.QuantitySets, opt => opt.MapFrom(c => c.ProductQuantitySet));
 
 
-            //Vendor Product Quantity show
+            //Vendor Product Quantity show Mapping
 
             CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeModel>().ReverseMap();
             CreateMap<ProductQuantitySet, ProductQuantityAddModel>().ReverseMap();
 
-            //Product Quantity Set
+            //Product Quantity Set Mapping
             CreateMap<ProductQuantitySet, ProductQuantityViewModel>().ReverseMap();
             CreateMap<ProductQuantitySet, ProductQuantitySetUpdateReturnModel>().ReverseMap();
             CreateMap<ProductQuantityViewModel, ProductQuantitySetUpdateReturnModel>().ReverseMap();
@@ -147,7 +147,7 @@ namespace eSuperShop.Repository
                     opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.Attribute.KeyName))
                 .ForMember(d => d.Value, opt => opt.MapFrom(c => c.ProductAttributeValue.Value));
 
-            //Product Show
+            //Product Show Mapping
             CreateMap<Product, ProductListViewModel>()
                 .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
                 .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
@@ -155,7 +155,8 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.StoreName, opt => opt.MapFrom(c => c.Vendor.StoreName))
                 .ReverseMap();
 
-
+            // ProductReview Mapping
+            CreateMap<ProductReview, ProductReviewAddModel>().ReverseMap();
         }
     }
 }
