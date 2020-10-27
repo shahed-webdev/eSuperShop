@@ -27,5 +27,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse<PagedResult<ProductListViewModel>> GetTopRated(ProductFilterRequest request);
         DbResponse<PagedResult<ProductListViewModel>> GetFlashDeals(ProductFilterRequest request);
         DbResponse<PagedResult<ProductListViewModel>> GetMoreToLove(ProductFilterRequest request);
+
+
+        DbResponse AddProductReview(ProductReviewAddModel model);
     }
 }

@@ -375,5 +375,28 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<PagedResult<ProductListViewModel>>(false, e.Message);
             }
         }
+
+        public DbResponse AddProductReview(ProductReviewAddModel model)
+        {
+            try
+            {
+
+
+                if (!_db.ProductReview.IsReviewExist(model.ProductId, model.CustomerId))
+                    return new DbResponse(false, "Review already added");
+
+
+                _db.ProductReview.Add(model);
+                _db.SaveChanges();
+
+
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }

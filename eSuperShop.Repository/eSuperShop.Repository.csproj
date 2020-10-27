@@ -24,7 +24,6 @@
     <Folder Include="Repositories\VendorReview\" />
     <Folder Include="Repositories\VendorFollower\" />
     <Folder Include="Repositories\ProductSpecification\" />
-    <Folder Include="Repositories\ProductReview\" />
     <Folder Include="Repositories\ProductBlob\" />
     <Folder Include="Repositories\ProductAttributeSetList\" />
     <Folder Include="Repositories\ProductAttributeSet\" />
