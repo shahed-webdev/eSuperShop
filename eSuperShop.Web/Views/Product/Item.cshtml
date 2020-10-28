@@ -113,32 +113,36 @@
     <div class="classic-tabs mb-5">
         <ul class="nav red darken-4" role="tablist">
             <li class="nav-item">
-                <a class="nav-link  waves-light active show" data-toggle="tab" href="#profile-classic-shadow"
-                   role="tab" aria-controls="profile-classic-shadow" aria-selected="true">DESCRIPTION</a>
+                <a class="nav-link waves-light active show" data-toggle="tab" href="#description" role="tab" aria-selected="true">DESCRIPTION</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link waves-light" data-toggle="tab" href="#follow-classic-shadow"
-                   role="tab" aria-controls="follow-classic-shadow" aria-selected="false">SPECIFICATIONS</a>
+                <a class="nav-link waves-light" data-toggle="tab" href="#spesification" role="tab" aria-selected="false">SPECIFICATIONS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link waves-light" data-toggle="tab" href="#contact-classic-shadow"
-                   role="tab" aria-controls="contact-classic-shadow" aria-selected="false">REVIEWS</a>
+                <a class="nav-link waves-light" data-toggle="tab" href="#reviews" role="tab" aria-selected="false">REVIEWS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link waves-light" data-toggle="tab" href="#awesome-classic-shadow"
-                   role="tab" aria-controls="awesome-classic-shadow" aria-selected="false">RETURN POLICY</a>
+                <a class="nav-link waves-light" data-toggle="tab" href="#returnPolicy" role="tab" aria-selected="false">RETURN POLICY</a>
             </li>
         </ul>
 
         <div class="tab-content card">
-            <div class="tab-pane fade active show" id="profile-classic-shadow" role="tabpanel">
+            <div class="tab-pane fade active show" id="description" role="tabpanel">
                 @Html.Raw(Model.FullDescription)
             </div>
-            <div class="tab-pane fade" id="follow-classic-shadow" role="tabpanel">
+            <div class="tab-pane fade" id="spesification" role="tabpanel">
             </div>
-            <div class="tab-pane fade" id="contact-classic-shadow" role="tabpanel">
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h5>AVERAGE RATING</h5>
+                        <div class="fas fa-star fa-3x">4.5</div>
+                        <p>Based on 5 ratings</p>
+                    </div>
+                    <div class="col-lg-6"></div>
+                </div>
             </div>
-            <div class="tab-pane fade" id="awesome-classic-shadow" role="tabpanel">
+            <div class="tab-pane fade" id="returnPolicy" role="tabpanel">
             </div>
         </div>
     </div>

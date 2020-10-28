@@ -50,6 +50,14 @@ namespace eSuperShop.Web.Controllers
 
         //get stock
         [HttpPost]
+        public IActionResult GetReviews(ProductQuantityCheckModel model)
+        {
+            var response = _product.GetQuantitySet(model);
+            return Json(response);
+        }
+
+        //get stock
+        [HttpPost]
         public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
         {
             var response = _product.GetQuantitySet(model);

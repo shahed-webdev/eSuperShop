@@ -1,5 +1,5 @@
 ﻿<template>
-    <div v-if="data.length">
+    <div v-if="isDataFound">
         <ol class="breadcrumb grey lighten-3 mt-3">
             <li class="breadcrumb-item">
                 <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
@@ -102,7 +102,7 @@
         </div>
     </div>
     <div v-else class="loading-screen">
-        <ol class="breadcrumb loading grey lighten-3 mt-3 p-3"></ol>
+        <ol class="breadcrumb loading grey lighten-3 mt-3 py-4"></ol>
 
         <div class="row">
             <div class="col-lg-3 mb-3">
@@ -133,6 +133,7 @@
                 ParentCatalog: null,
 
                 data: [],
+                isDataFound: false,
                 params: { Page: 2, PageSize: 4 },
                 isLastPage: true,
                 SubCatalogs: [],
@@ -155,7 +156,9 @@
                     this.SubCatalogs = SubCatalogs.length ? SubCatalogs: [];
                     this.Brands = Brands.length ? Brands: [];
                     this.Attributes = Attributes.length ? Attributes: [];
-                    this.Specifications = Specifications.length ? Specifications: [];
+                    this.Specifications = Specifications.length ? Specifications : [];
+
+                    this.isDataFound = true;
                 });
             },
 
