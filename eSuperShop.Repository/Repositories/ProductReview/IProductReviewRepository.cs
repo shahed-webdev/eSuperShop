@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Data;
+using Paging.Infrastructure;
 
 namespace eSuperShop.Repository
 {
@@ -7,5 +8,11 @@ namespace eSuperShop.Repository
         ProductReview ProductReview { get; set; }
         void Add(ProductReviewAddModel model);
         bool IsReviewExist(int productId, int customerId);
+        ProductReviewEditModel Get(int productId, int customerId);
+        void Edit(ProductReviewEditModel model);
+        PagedResult<ProductReviewViewModel> ProductWiseList(ProductReviewFilerRequest request);
+        ProductReviewAverageModel AverageReview(int productId);
     }
+
+
 }

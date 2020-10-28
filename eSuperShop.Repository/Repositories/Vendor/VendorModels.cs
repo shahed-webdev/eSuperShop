@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Data;
+using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
 
@@ -94,10 +95,8 @@ namespace eSuperShop.Repository
         public string StoreTagLine { get; set; }
     }
 
-    public class StoreFilterRequest
+    public class StoreFilterRequest : PageRequest
     {
-        public int Page { get; set; }
-        public int PageSize { get; set; }
     }
     public class StoreViewModel
     {

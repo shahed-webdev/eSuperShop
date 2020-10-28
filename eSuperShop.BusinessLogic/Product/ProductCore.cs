@@ -376,7 +376,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse AddProductReview(ProductReviewAddModel model)
+        public DbResponse AddReview(ProductReviewAddModel model)
         {
             try
             {
@@ -398,5 +398,38 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse(false, e.Message);
             }
         }
+
+        public DbResponse<PagedResult<ProductReviewViewModel>> ReviewList(ProductReviewFilerRequest request)
+        {
+            try
+            {
+                var data = _db.ProductReview.ProductWiseList(request);
+
+                if (data.Results == null)
+                    return new DbResponse<PagedResult<ProductReviewViewModel>>(false, "No Data found");
+
+                return new DbResponse<PagedResult<ProductReviewViewModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<PagedResult<ProductReviewViewModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<ProductReviewAverageModel> AverageReview(int productId)
+        {
+            try
+            {
+                var data = _db.ProductReview.AverageReview(productId);
+
+
+                return new DbResponse<ProductReviewAverageModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<ProductReviewAverageModel>(false, e.Message);
+            }
+        }
+
     }
 }

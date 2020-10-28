@@ -179,8 +179,8 @@ namespace eSuperShop.Repository
         public string Breadcrumb(int id)
         {
             return Db.Catalog
-                .Where(c => c.CatalogId == id)
                 .AsEnumerable()?
+                .Where(c => c.CatalogId == id)
                 .Select(c => CatalogDllFunction(c.ParentCatalog, c.CatalogName))
                 .FirstOrDefault();
         }

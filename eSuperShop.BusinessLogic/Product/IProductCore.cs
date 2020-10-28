@@ -29,6 +29,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse<PagedResult<ProductListViewModel>> GetMoreToLove(ProductFilterRequest request);
 
 
-        DbResponse AddProductReview(ProductReviewAddModel model);
+        DbResponse AddReview(ProductReviewAddModel model);
+        DbResponse<PagedResult<ProductReviewViewModel>> ReviewList(ProductReviewFilerRequest request);
+        DbResponse<ProductReviewAverageModel> AverageReview(int productId);
     }
 }
