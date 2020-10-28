@@ -20,9 +20,17 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 #filter-side ul li a { color: #565353; font-size: 14px }
 #filter-side ul li a:hover { color: #ff0000;}
 
+.filter-price input[type="number"] { width: 93%; border: 1px solid #c8c8c8;text-align: center }
+.filter-price button { border: none; background-color: #ff2929; color: #fff; padding: 0px 11px; font-size: 18px; }
+
+.filter-rating span{ width: 40px;text-align: center}
+.filter-rating .custom-range::-moz-range-thumb { background-color: #ff2929; cursor: pointer }
+.filter-rating input[type=range]:focus { outline: none; }
+.filter-rating input[type=range]:focus::-webkit-slider-runnable-track { background: #ff2929; }
+
+
 /*reset container size*/
-@media (min-width: 1405px) {
-     .container { max-width: 1400px; }
+@media (min-width: 1405px) { .container { max-width: 1400px; }
 }
 
 @media (max-width: 767.98px) {

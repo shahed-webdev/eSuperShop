@@ -4,6 +4,7 @@
 
 @section Styles{
     <link href="~/css-page/products.css" rel="stylesheet" type="text/css"/>
+    <link href="~/css-page/loading-screen.css" rel="stylesheet" />
 }
 
 <div id="categoryProduct" class="container">
@@ -12,4 +13,15 @@
 
 @section Scripts{
     <script src="@Url.Content("~/bundle/Product-Catalog.js")"></script>
+    <script>
+        $(document).ready(function() {
+            const $valueSpan = $('.valueSpan');
+            const $value = $('#ratingSlider');
+
+            $valueSpan.html($value.val());
+            $value.on('input change', () => {
+                $valueSpan.html($value.val());
+            });
+        });
+    </script>
 }
