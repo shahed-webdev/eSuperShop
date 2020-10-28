@@ -4,8 +4,8 @@
             <li class="breadcrumb-item">
                 <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
             </li>
-            <li class="breadcrumb-item">
-                <a :href="'/Category/Products/'+SlugUrl" class="black-text">{{CatalogName}}</a><i class="fas fa-angle-double-right mx-2"></i>
+            <li v-if="ParentCatalog" class="breadcrumb-item">
+                <a :href="'/Category/Products/'+ParentCatalog.SlugUrl" class="black-text">{{ParentCatalog.CatalogName}}</a><i class="fas fa-angle-double-right mx-2"></i>
             </li>
             <li class="breadcrumb-item active">{{SlugUrl}}</li>
         </ol>
@@ -13,13 +13,35 @@
         <div class="row">
             <div class="col-lg-3 mb-3">
                 <div id="filter-side" class="card card-body h-100">
-                    <div v-if="SubCatalogs.length">
+                    <div v-if="SubCatalogs.length" class="mb-3">
                         <h5>Related Categories</h5>
                         <ul>
                             <li v-for="(item,i) in SubCatalogs" :key="i">
                                 <a :href="'/Category/Products/'+item.SlugUrl">{{item.CatalogName}}</a>
                             </li>
                         </ul>
+                    </div>
+
+                    <div class="filter-price my-3">
+                        <h5 class="mb-2">Price</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <input id="inputPriceMini" placeholder="Min" type="number" />
+                            </div>
+                            <div>
+                                <input id="inputPriceMax" placeholder="Max" type="number" />
+                            </div>
+                            <button id="btnPrice"><i class="fas fa-caret-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="filter-rating my-4">
+                        <h5 class="mb-2">Rating</h5>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span class="font-weight-bold text-danger">0</span>
+                            <input id="ratingSlider" class="custom-range" type="range" min="0" max="5" step="0.5" />
+                            <span class="font-weight-bold text-danger valueSpan"></span>
+                        </div>
                     </div>
 
                     <div v-if="Brands.length" class="my-3">
@@ -30,25 +52,19 @@
                         </div>
                     </div>
 
-                    <div v-if="Attributes.length" class="my-3">
-                        <h5 class="mb-0">Attribute</h5>
-                        <div v-for="item in Attributes" :key="item.AttributeId">
-                            <p class="mt-2 mb-0 pl-2">{{item.KeyName}}</p>
-                            <div v-for="(val, i) in item.Values" :key="i" class="form-check">
-                                <input :id="i" type="checkbox" class="form-check-input">
-                                <label :for="i" class="form-check-label">{{val}}</label>
-                            </div>
+                    <div v-if="Attributes.length" v-for="item in Attributes" :key="item.AttributeId" class="my-3">
+                        <h5 class="mb-2">{{item.KeyName}}</h5>
+                        <div v-for="(val, i) in item.Values" :key="i" class="form-check">
+                            <input :id="i+val" type="checkbox" class="form-check-input">
+                            <label :for="i+val" class="form-check-label">{{val}}</label>
                         </div>
                     </div>
 
-                    <div v-if="Specifications.length" class="my-3">
-                        <h5 class="mb-0">Specification</h5>
-                        <div v-for="item in Specifications" :key="item.SpecificationId">
-                            <p class="mt-2 mb-0 pl-2">{{item.KeyName}}</p>
-                            <div v-for="(val, i) in item.Values" :key="i" class="form-check">
-                                <input :id="i" type="checkbox" class="form-check-input">
-                                <label :for="i" class="form-check-label">{{val}}</label>
-                            </div>
+                    <div v-if="Specifications.length" v-for="item in Specifications" :key="item.SpecificationId" class="my-3">
+                        <h5 class="mb-2">{{item.KeyName}}</h5>
+                        <div v-for="(val, i) in item.Values" :key="i" class="form-check">
+                            <input :id="val+i" type="checkbox" class="form-check-input">
+                            <label :for="val+i" class="form-check-label">{{val}}</label>
                         </div>
                     </div>
                 </div>
@@ -60,13 +76,11 @@
                         <div class="card hoverable h-100">
                             <div class="view overlay">
                                 <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
-                                <a>
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
+                                <a :href="'/Product/Item/'+item.SlugUrl"><div class="mask rgba-white-slight"></div></a>
                             </div>
                             <div class="card-body pb-1">
                                 <p class="product-name">{{item.Name}}</p>
-          
+
                                 <div class="pricing-area">
                                     <div class="p-price">
                                         <span>৳{{item.Price}}</span>
@@ -85,7 +99,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 
@@ -146,6 +160,16 @@
                     }
                 };
             },
+
+            showProps(obj, objName) {
+                var result = ``;
+                for (var i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        result += `${objName}.${i} = ${obj[i]}\n`;
+                    }
+                }
+                return result;
+            }
         },
         beforeMount() {
             this.getData();

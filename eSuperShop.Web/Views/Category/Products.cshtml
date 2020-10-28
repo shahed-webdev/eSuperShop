@@ -12,4 +12,15 @@
 
 @section Scripts{
     <script src="@Url.Content("~/bundle/Product-Catalog.js")"></script>
+    <script>
+        $(document).ready(function() {
+            const $valueSpan = $('.valueSpan');
+            const $value = $('#ratingSlider');
+
+            $valueSpan.html($value.val());
+            $value.on('input change', () => {
+                $valueSpan.html($value.val());
+            });
+        });
+    </script>
 }
