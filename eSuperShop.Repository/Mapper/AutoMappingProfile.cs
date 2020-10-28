@@ -157,6 +157,10 @@ namespace eSuperShop.Repository
 
             // ProductReview Mapping
             CreateMap<ProductReview, ProductReviewAddModel>().ReverseMap();
+            CreateMap<ProductReview, ProductReviewEditModel>().ReverseMap();
+            CreateMap<ProductReview, ProductReviewViewModel>()
+                .ForMember(d => d.CustomerUserName, opt => opt.MapFrom(c => c.Customer.Registration.UserName))
+                .ReverseMap();
         }
     }
 }

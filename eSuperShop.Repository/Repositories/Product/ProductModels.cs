@@ -1,5 +1,6 @@
 ﻿using eSuperShop.Data;
 using Microsoft.AspNetCore.Http;
+using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
 
@@ -209,10 +210,8 @@ namespace eSuperShop.Repository
         public string Value { get; set; }
     }
 
-    public class ProductFilterRequest
+    public class ProductFilterRequest : PageRequest
     {
-        public int Page { get; set; }
-        public int PageSize { get; set; }
     }
 
     public class ProductListViewModel
