@@ -111,7 +111,7 @@
             <div class="col-lg-9">
                 <div class="row">
                     <div v-for="item in 8" class="col-xl-3 col-lg-4 col-sm-6">
-                        <div class="card">
+                        <div class="screen-card">
                             <div class="card__image loading"></div>
                             <div class="card__title loading"></div>
                             <div class="card__description loading"></div>

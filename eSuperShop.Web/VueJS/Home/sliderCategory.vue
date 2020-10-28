@@ -1,8 +1,8 @@
 <template>
     <div class="row">
         <div class="col-lg-3 mb-3">
-            <div class="category-container z-depth-1">
-                <div class="category-title">
+            <div :class="{loading: !catalog.length}" class="category-container z-depth-1">
+                <div v-if="catalog.length" class="category-title">
                     <i class="fas fa-list"></i>
                     <span>Categories</span>
                 </div>
@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-lg-6 mb-3 col-8">
-            <div id="main-slider" class="slider-container z-depth-1">
+            <div id="main-slider" class="slider-container z-depth-1" :class="{loading: !mainSlider.length}">
                 <div id="carousel-home" class="carousel slide carousel-fade" data-ride="carousel">
                     <!--540*400 px-->
                     <div class="carousel-inner" role="listbox">
@@ -40,7 +40,7 @@
         </div>
 
         <div class="col-lg-3 col-4">
-            <div class="slider-container z-depth-1">
+            <div class="slider-container z-depth-1" :class="{loading: !sideSlider.length}">
                 <div id="carousel-home2" class="carousel slide carousel-fade" data-ride="carousel">
                     <!--255*400 px-->
                     <div class="carousel-inner" role="listbox">
@@ -78,20 +78,20 @@
                 if (!IsSuccess) return;
 
                 this.catalog = Data;
-            });
+            }).then(() => {
+                axios.get('/home/GetSliderData', { params: { place: "Main" } }).then(response => {
+                    const { IsSuccess, Data } = response.data;
+                    if (!IsSuccess) return;
 
-            axios.get('/home/GetSliderData', { params: { place: "Main" } }).then(response => {
-                const { IsSuccess, Data } = response.data;
-                if (!IsSuccess) return;
+                    this.mainSlider = Data;
+                }).then(() => {
+                    axios.get('/home/GetSliderData', { params: { place: "Side" } }).then(response => {
+                        const { IsSuccess, Data } = response.data;
+                        if (!IsSuccess) return;
 
-                this.mainSlider = Data;
-            });
-
-            axios.get('/home/GetSliderData', { params: { place: "Side" } }).then(response => {
-                const { IsSuccess, Data } = response.data;
-                if (!IsSuccess) return;
-
-                this.sideSlider = Data;
+                        this.sideSlider = Data;
+                    })
+                })
             })
         }
     };

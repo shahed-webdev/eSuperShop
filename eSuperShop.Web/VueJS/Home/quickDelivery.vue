@@ -1,6 +1,6 @@
 <template>
-    <div class="card card-body py-4">
-        <div class="offer-header">
+    <div class="quick-delivery card card-body py-4" :class="{loading: !data.length}">
+        <div v-if="data.length" class="offer-header">
             <h4>Delivery in 24 hours</h4>
             <span>dhaka, narayanganj, chittagong, sylhet, and gazipur city</span>
         </div>
