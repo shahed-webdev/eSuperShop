@@ -56,7 +56,7 @@ namespace eSuperShop.Repository
                   .Where(p => p.ProductId == productId);
 
             review.TotalReview = average.Count();
-            review.AverageRating = (decimal)average.Sum(a => a.Rating) / (decimal)review.TotalReview;
+            review.AverageRating = review.TotalReview == 0 ? 0 : (decimal)average.Sum(a => a.Rating) / (decimal)review.TotalReview;
             review.Star1 = average.Count(a => a.Rating == 1);
             review.Star2 = average.Count(a => a.Rating == 2);
             review.Star3 = average.Count(a => a.Rating == 3);
