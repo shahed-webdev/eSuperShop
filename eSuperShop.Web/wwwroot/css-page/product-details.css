@@ -29,3 +29,13 @@
 .small-container div { width: 200%; /**change 800%**/ position: relative; }
 .small-container .show-small-img {height: 70px; margin-right: 6px; cursor: pointer; float: left; }
 .small-container .show-small-img:last-of-type { margin-right: 0; }
+
+
+/*review*/
+#review-avg { position: relative; background: url('../../images/ratingStar.svg') no-repeat; height:100px; width:78px; margin: auto; }
+#review-avg span { position: absolute; top: 40px; left: 24px; z-index: 9999; font-size: 15px; font-weight: bold; color: #fff; width: 30px; text-align: center; }
+.rating-title { width: 70px;}
+
+.review-name { margin-bottom: 0; font-weight: bold; color: #434040 }
+.review-time { color: #838383; margin-bottom: 16px; display: inline-block; }
+.review-text { color: #484848 }

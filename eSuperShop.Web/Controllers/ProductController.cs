@@ -48,13 +48,21 @@ namespace eSuperShop.Web.Controllers
             return View(model.Data);
         }
 
-        //get stock
+        //get customer comment
         [HttpPost]
-        public IActionResult GetReviews(ProductQuantityCheckModel model)
+        public IActionResult GetReviews(ProductReviewFilerRequest model)
         {
-            var response = _product.GetQuantitySet(model);
+            var response = _product.ReviewList(model);
             return Json(response);
         }
+
+        //get average review
+        public IActionResult GetAverageReviews(int productId)
+        {
+            var response = _product.AverageReview(productId);
+            return Json(response);
+        }
+
 
         //get stock
         [HttpPost]
