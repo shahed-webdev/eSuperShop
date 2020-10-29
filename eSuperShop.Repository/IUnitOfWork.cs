@@ -9,6 +9,7 @@ namespace eSuperShop.Repository
         ICustomerRepository Customer { get; }
         IProductRepository Product { get; }
         IProductReviewRepository ProductReview { get; }
+        IProductFaqRepository ProductFaq { get; }
         IRegistrationRepository Registration { get; }
         ISliderRepository Slider { get; }
         ISpecificationRepository Specification { get; }
