@@ -25,6 +25,7 @@ namespace eSuperShop.Data
         public virtual DbSet<ProductQuantitySet> ProductQuantitySet { get; set; }
         public virtual DbSet<ProductQuantitySetAttribute> ProductQuantitySetAttribute { get; set; }
         public virtual DbSet<ProductBlob> ProductBlob { get; set; }
+        public virtual DbSet<ProductFaq> ProductFaq { get; set; }
         public virtual DbSet<ProductReview> ProductReview { get; set; }
         public virtual DbSet<ProductSpecification> ProductSpecification { get; set; }
         public virtual DbSet<Registration> Registration { get; set; }
@@ -57,6 +58,7 @@ namespace eSuperShop.Data
             builder.ApplyConfiguration(new ProductQuantitySetAttributeConfiguration());
             builder.ApplyConfiguration(new ProductBlobConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new ProductFaqConfiguration());
             builder.ApplyConfiguration(new ProductReviewConfiguration());
             builder.ApplyConfiguration(new ProductSpecificationConfiguration());
             builder.ApplyConfiguration(new RegistrationConfiguration());
