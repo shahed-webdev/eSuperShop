@@ -12,22 +12,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
 {
-    [Authorize(Roles = "Seller")]
+
     public class StoreThemesController : Controller
     {
-        private readonly ICloudStorage _cloudStorage;
-        private readonly IVendorProductCategoryCore _category;
-        private readonly IVendorSliderCore _vendorSlider;
-        private readonly IVendorCore _vendor;
-
-        public StoreThemesController(ICloudStorage cloudStorage, IVendorProductCategoryCore category, IVendorSliderCore vendorSlider, IVendorCore vendor)
-        {
-            _cloudStorage = cloudStorage;
-            _category = category;
-            _vendorSlider = vendorSlider;
-            _vendor = vendor;
-        }
-
         //theme
         public IActionResult FullSlider()
         {

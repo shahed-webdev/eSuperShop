@@ -3,7 +3,7 @@
 .p-discount-percent { color: #ff5722 }
 
 .attribute-img {  margin-right: 10px;  }
-.attribute-img img{ width: 60px; border-radius: 5px; margin-right: 10px; border: 1px solid #ddd; }
+.attribute-img img{ width: 60px; border-radius: 5px; margin-right: 10px; border: 1px solid #ddd;}
 .attribute-img [type=radio] + img { cursor: pointer; }
 .attribute-img [type=radio]:checked + img { border: 1px solid #ff5722; }
 
@@ -16,7 +16,7 @@
 
 /**image zoomer**/
 #img-container{ width: 100%; }
-#img-container img { width: 100%; }
+#img-container img { width: 100%; border: 1px solid #ddd; border-radius: 3px; }
 
 .thumb-img-container { width: 100%; height: 70px; margin-top: 10px; position: relative; }
 .thumb-img-container .icon-left, .thumb-img-container .icon-right { width: 12px; height: 24px; cursor: pointer; position: absolute; top: 0; bottom: 0; margin: auto 0; }
@@ -33,8 +33,8 @@
 
 /*review*/
 #review-avg { position: relative; background: url('../../images/ratingStar.svg') no-repeat; height:100px; width:78px; margin: auto; }
-#review-avg span { position: absolute; top: 40px; left: 24px; z-index: 9999; font-size: 15px; font-weight: bold; color: #fff; width: 30px; text-align: center; }
-.rating-title { width: 70px;}
+#review-avg span { position: absolute; top: 42px; left: 24px; z-index: 9999; font-size: 15px; font-weight: bold; color: #fff; width: 30px; text-align: center; }
+.rating-title { width: 100px;}
 
 .review-name { margin-bottom: 0; font-weight: bold; color: #434040 }
 .review-time { color: #838383; margin-bottom: 16px; display: inline-block; }
