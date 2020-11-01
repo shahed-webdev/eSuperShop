@@ -33,6 +33,7 @@ namespace eSuperShop.Repository
         public ICollection<ProductSpecificationAddModel> Specifications { get; set; }
     }
 
+
     public class ProductAttributeAddModel
     {
         public ProductAttributeAddModel()
@@ -227,6 +228,14 @@ namespace eSuperShop.Repository
         public double Rating { get; set; }
         public int Sold { get; set; }
         public int RatingBy { get; set; }
+    }
+
+    public class ProductShortInfo
+    {
+        public int ProductId { get; set; }
+        public string Name { get; set; }
+        public string SlugUrl { get; set; }
+        public string ImageUrl { get; set; }
     }
 
 }

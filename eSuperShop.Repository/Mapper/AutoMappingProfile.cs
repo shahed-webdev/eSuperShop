@@ -155,10 +155,27 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.StoreName, opt => opt.MapFrom(c => c.Vendor.StoreName))
                 .ReverseMap();
 
+            CreateMap<Product, ProductShortInfo>()
+                .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
+                .ReverseMap();
+
             // ProductReview Mapping
             CreateMap<ProductReview, ProductReviewAddModel>().ReverseMap();
             CreateMap<ProductReview, ProductReviewEditModel>().ReverseMap();
             CreateMap<ProductReview, ProductReviewViewModel>()
+                .ForMember(d => d.CustomerUserName, opt => opt.MapFrom(c => c.Customer.Registration.UserName))
+                .ReverseMap();
+
+            //Product Faq Mapping
+            CreateMap<ProductFaq, ProductFaqAddModel>().ReverseMap();
+            CreateMap<ProductFaq, ProductFaqAnswerModel>()
+                .ForMember(d => d.CustomerUserName, opt => opt.MapFrom(c => c.Customer.Registration.UserName))
+                .ReverseMap();
+            CreateMap<ProductFaq, FaqCustomerWiseViewModel>().ReverseMap();
+            CreateMap<ProductFaq, FaqProductWiseViewModel>()
+                .ForMember(d => d.CustomerUserName, opt => opt.MapFrom(c => c.Customer.Registration.UserName))
+                .ReverseMap();
+            CreateMap<ProductFaq, FaqVendorWiseViewModel>()
                 .ForMember(d => d.CustomerUserName, opt => opt.MapFrom(c => c.Customer.Registration.UserName))
                 .ReverseMap();
         }

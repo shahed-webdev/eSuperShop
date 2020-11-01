@@ -32,5 +32,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse AddReview(ProductReviewAddModel model);
         DbResponse<PagedResult<ProductReviewViewModel>> ReviewList(ProductReviewFilerRequest request);
         DbResponse<ProductReviewAverageModel> AverageReview(int productId);
+
+
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using Paging.Infrastructure;
+using System.Linq;
 
 namespace eSuperShop.Repository
 {
@@ -12,37 +14,53 @@ namespace eSuperShop.Repository
 
         public void Add(ProductFaqAddModel model)
         {
-            throw new System.NotImplementedException();
+            var faq = _mapper.Map<ProductFaq>(model);
+            Db.ProductFaq.Add(faq);
         }
 
         public ProductFaqAnswerModel Details(int productFaqId)
         {
-            throw new System.NotImplementedException();
+            return Db.ProductFaq
+                .Where(p => p.ProductFaqId == productFaqId)
+                .ProjectTo<ProductFaqAnswerModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
         }
 
         public void Answer(ProductFaqAnswerModel model)
         {
-            throw new System.NotImplementedException();
+            var faq = _mapper.Map<ProductFaq>(model);
+            Db.ProductFaq.Update(faq);
         }
 
         public int TotalVisibleFaq(int productId)
         {
-            throw new System.NotImplementedException();
+            return Db.ProductFaq.Count(f => f.IsVisible);
         }
 
         public PagedResult<FaqProductWiseViewModel> ProductWiseList(ProductReviewFilerRequest request)
         {
-            throw new System.NotImplementedException();
+            return Db.ProductFaq
+                .Where(f => f.IsVisible && string.IsNullOrEmpty(f.Answer) && f.ProductId == request.ProductId)
+                .ProjectTo<FaqProductWiseViewModel>(_mapper.ConfigurationProvider)
+                .OrderByDescending(f => f.AnswerOnUtc)
+                .GetPaged(request.Page, request.PageSize);
         }
 
         public PagedResult<FaqCustomerWiseViewModel> CustomerWiseList(ProductReviewFilerRequest request)
         {
-            throw new System.NotImplementedException();
+            return Db.ProductFaq
+                .Where(f => f.ProductId == request.ProductId)
+                .ProjectTo<FaqCustomerWiseViewModel>(_mapper.ConfigurationProvider)
+                .OrderByDescending(f => f.AnswerOnUtc)
+                .GetPaged(request.Page, request.PageSize);
         }
 
         public PagedResult<FaqVendorWiseViewModel> VendorWiseList(ProductReviewFilerRequest request)
         {
-            throw new System.NotImplementedException();
+            return Db.ProductFaq
+                .Where(f => f.ProductId == request.ProductId)
+                .ProjectTo<FaqVendorWiseViewModel>(_mapper.ConfigurationProvider)
+                .GetPaged(request.Page, request.PageSize);
         }
     }
 }
