@@ -7,7 +7,8 @@
   },
   "dependencies": {
     "vue": "^2.6.11",
-    "vue-cookies": "^1.7.3"
+    "vue-cookies": "^1.7.3",
+    "vue-star-rating": "^1.7.0"
   },
   "devDependencies": {
     "axios": "^0.19.2",

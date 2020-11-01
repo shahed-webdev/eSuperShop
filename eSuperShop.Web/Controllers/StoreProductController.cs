@@ -11,12 +11,10 @@ namespace eSuperShop.Web.Controllers
     public class StoreProductController : Controller
     {
         private readonly IProductCore _product;
-        private readonly ICloudStorage _cloudStorage;
 
-        public StoreProductController(IProductCore product, ICloudStorage cloudStorage)
+        public StoreProductController(IProductCore product)
         {
             _product = product;
-            _cloudStorage = cloudStorage;
         }
 
         //Find Brand
@@ -154,6 +152,19 @@ namespace eSuperShop.Web.Controllers
             if (!response.IsSuccess) return UnprocessableEntity(response.Message);
 
             return Json(response);
+        }
+
+
+        //store theme
+        [AllowAnonymous]
+        [Route("[controller]/[action]")]
+        [Route("[controller]/[action]/{slugUrl}")]
+        public IActionResult Theme(string slugUrl)
+        {
+            if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
+
+            var model = _product.DetailsBySlugUrl(slugUrl);
+            return View(model.Data);
         }
     }
 }

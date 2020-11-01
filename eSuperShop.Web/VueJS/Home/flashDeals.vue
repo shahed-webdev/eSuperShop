@@ -20,8 +20,18 @@
                                 <span v-if="item.OldPrice" class="p-discount d-block">৳{{item.OldPrice}}</span>
                             </div>
                             <div class="p-rating text-right">
-                                <div>
-                                    <i :class="['fas', 'fa-star', { 'text-muted': !item.Rating}]"></i>
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-2">
+                                        <star-rating :max-rating="5"
+                                                     :rating="item.Rating"
+                                                     :increment="0.5"
+                                                     inactive-color="#bbb"
+                                                     active-color="#F97700"
+                                                     :star-size="14"
+                                                     :read-only= "true"
+                                                     :show-rating="false">
+                                        </star-rating>
+                                    </div>
                                     <span :class="['rating-count', { 'text-muted': !item.RatingBy}]">{{item.RatingBy}}</span>
                                 </div>
                                 <span v-if="item.OldPrice" class="p-discount-percent">{{(100-((100*item.Price)/item.OldPrice)).toFixed(2)}}% off</span>
@@ -35,7 +45,11 @@
 </template>
 
 <script>
+    import StarRating from 'vue-star-rating'
     export default {
+        components: {
+            StarRating
+        },
         data() {
             return {
                 data: [],
