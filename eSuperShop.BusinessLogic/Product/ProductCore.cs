@@ -431,5 +431,85 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse FaqAdd(ProductFaqAddModel model)
+        {
+            try
+            {
+                _db.ProductFaq.Add(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse FaqAnswerAdd(ProductFaqAnswerModel model)
+        {
+            try
+            {
+                _db.ProductFaq.Answer(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse<PagedResult<FaqProductWiseViewModel>> FaqProductWiseList(ProductReviewFilerRequest request)
+        {
+            try
+            {
+                var data = _db.ProductFaq.ProductWiseList(request);
+
+                if (data.Results == null)
+                    return new DbResponse<PagedResult<FaqProductWiseViewModel>>(false, "No Data found");
+
+                return new DbResponse<PagedResult<FaqProductWiseViewModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<PagedResult<FaqProductWiseViewModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<PagedResult<FaqCustomerWiseViewModel>> FaqCustomerWiseList(ProductReviewFilerRequest request)
+        {
+            try
+            {
+                var data = _db.ProductFaq.CustomerWiseList(request);
+
+                if (data.Results == null)
+                    return new DbResponse<PagedResult<FaqCustomerWiseViewModel>>(false, "No Data found");
+
+                return new DbResponse<PagedResult<FaqCustomerWiseViewModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<PagedResult<FaqCustomerWiseViewModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<PagedResult<FaqVendorWiseViewModel>> FaqVendorWiseList(ProductReviewFilerRequest request)
+        {
+            try
+            {
+                var data = _db.ProductFaq.VendorWiseList(request);
+
+                if (data.Results == null)
+                    return new DbResponse<PagedResult<FaqVendorWiseViewModel>>(false, "No Data found");
+
+                return new DbResponse<PagedResult<FaqVendorWiseViewModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<PagedResult<FaqVendorWiseViewModel>>(false, e.Message);
+            }
+        }
     }
 }

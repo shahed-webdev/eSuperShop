@@ -32,5 +32,12 @@ namespace eSuperShop.BusinessLogic
         DbResponse AddReview(ProductReviewAddModel model);
         DbResponse<PagedResult<ProductReviewViewModel>> ReviewList(ProductReviewFilerRequest request);
         DbResponse<ProductReviewAverageModel> AverageReview(int productId);
+
+
+        DbResponse FaqAdd(ProductFaqAddModel model);
+        DbResponse FaqAnswerAdd(ProductFaqAnswerModel model);
+        DbResponse<PagedResult<FaqProductWiseViewModel>> FaqProductWiseList(ProductReviewFilerRequest request);
+        DbResponse<PagedResult<FaqCustomerWiseViewModel>> FaqCustomerWiseList(ProductReviewFilerRequest request);
+        DbResponse<PagedResult<FaqVendorWiseViewModel>> FaqVendorWiseList(ProductReviewFilerRequest request);
     }
 }
