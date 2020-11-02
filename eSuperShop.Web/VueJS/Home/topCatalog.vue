@@ -6,7 +6,7 @@
                 <div class="card h-100">
                     <div class="view overlay h-100">
                         <img class="card-img-top" :src="item.ImageUrl" alt="">
-                        <a href="#!">
+                        <a :href="'/Category/Products/'+item.SlugUrl">
                             <div class="mask rgba-white-slight"></div>
                         </a>
                     </div>

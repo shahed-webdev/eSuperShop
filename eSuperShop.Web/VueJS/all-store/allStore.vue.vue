@@ -8,13 +8,17 @@
                 <div class="card hoverable card-body">
                     <div class="shop-name">{{item.StoreName}}</div>
                     <div class="shop-description">{{item.StoreTagLine}}</div>
-                    <div class="shop-rating mb-2">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <span>{{item.RatingBy}}</span>
+                    <div class="shop-rating mb-2 d-flex align-items-center">
+                        <star-rating :max-rating="5"
+                                     :rating="item.Rating"
+                                     :increment="0.5"
+                                     inactive-color="#bbb"
+                                     active-color="#F97700"
+                                     :star-size="14"
+                                     :read-only="true"
+                                     :show-rating="false">
+                        </star-rating>
+                        <span class="ml-2">{{item.RatingBy}}</span>
                     </div>
 
                     <div class="photo-box">
@@ -29,7 +33,11 @@
 </template>
 
 <script>
+    import StarRating from 'vue-star-rating';
     export default {
+        components: {
+            StarRating
+        },
         data() {
             return {
                 data: [],

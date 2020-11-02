@@ -7,7 +7,7 @@
             <li v-if="ParentCatalog" class="breadcrumb-item">
                 <a :href="'/Category/Products/'+ParentCatalog.SlugUrl" class="black-text">{{ParentCatalog.CatalogName}}</a><i class="fas fa-angle-double-right mx-2"></i>
             </li>
-            <li class="breadcrumb-item active">{{SlugUrl}}</li>
+            <li class="breadcrumb-item active">{{CatalogName}}</li>
         </ol>
 
         <div class="row">
