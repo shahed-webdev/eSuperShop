@@ -22,7 +22,7 @@ namespace eSuperShop.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
                 {
@@ -45,11 +45,14 @@ namespace eSuperShop.Web
                 config.LoginPath = "/Account/Login";
             });
 
-
+            // Dependency Injection
             services.AddDependencyInjection();
 
 
             services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+            //Mapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //google login
             services.AddAuthentication().AddGoogle(googleOptions =>
@@ -64,6 +67,8 @@ namespace eSuperShop.Web
                 facebookOptions.AppId = "422952768651477";
                 facebookOptions.AppSecret = "a2f2c1b1fb31c2dfd57a9f7be373e760";
             });
+
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
