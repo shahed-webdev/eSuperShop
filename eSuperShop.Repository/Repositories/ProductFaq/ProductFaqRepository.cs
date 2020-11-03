@@ -40,7 +40,7 @@ namespace eSuperShop.Repository
         public PagedResult<FaqProductWiseViewModel> ProductWiseList(ProductReviewFilerRequest request)
         {
             return Db.ProductFaq
-                .Where(f => f.IsVisible && string.IsNullOrEmpty(f.Answer) && f.ProductId == request.ProductId)
+                .Where(f => f.IsVisible && !string.IsNullOrEmpty(f.Answer) && f.ProductId == request.ProductId)
                 .ProjectTo<FaqProductWiseViewModel>(_mapper.ConfigurationProvider)
                 .OrderByDescending(f => f.AnswerOnUtc)
                 .GetPaged(request.Page, request.PageSize);

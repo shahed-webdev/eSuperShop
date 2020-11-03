@@ -75,6 +75,14 @@ namespace eSuperShop.Repository
                 .FirstOrDefault();
         }
 
+        public ProductDetailsViewModel DetailsView(int productId)
+        {
+            return Db.Product
+                .Where(p => p.ProductId == productId)
+                .ProjectTo<ProductDetailsViewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
         public bool IsProductExist(int vendorId, int productId)
         {
             return Db.Product.Any(p => p.ProductId == productId && p.VendorId == vendorId);
@@ -203,6 +211,16 @@ namespace eSuperShop.Repository
         {
             var products = Db.Product
                 .Where(p => p.Published && catalogIds.Contains(p.CatalogId))
+                .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
+                .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
+                .GetPaged(request.Page, request.PageSize);
+            return products;
+        }
+
+        public PagedResult<ProductListViewModel> GetVendorWiseList(int vendorId, ProductFilterRequest request)
+        {
+            var products = Db.Product
+                .Where(p => p.Published && p.VendorId == vendorId)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);

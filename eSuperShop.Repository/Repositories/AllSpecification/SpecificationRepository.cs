@@ -174,5 +174,28 @@ namespace eSuperShop.Repository
                     }).ToList();
             return specifications;
         }
+
+        public List<SpecificationFilterModel> ProductWiseList(int productId)
+        {
+            var list = Db.ProductSpecification
+                .Include(s => s.Specification)
+                .Where(p => p.ProductId == productId)
+                .Select(s => new
+                {
+                    Specification = s.Specification,
+                    Value = s.Value
+                }).OrderBy(s => s.Specification.KeyName).ToList();
+
+            var specifications = list.GroupBy(
+                p => p.Specification,
+                p => p.Value,
+                (s, g) => new SpecificationFilterModel
+                {
+                    SpecificationId = s.SpecificationId,
+                    KeyName = s.KeyName,
+                    Values = g.Distinct().OrderBy(v => v).ToArray()
+                }).ToList();
+            return specifications;
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace eSuperShop.Repository
         ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId);
         ICollection<ProductUnpublishedModel> PublishedList(int vendorId);
         ProductDetailsModel Details(int productId);
+        ProductDetailsViewModel DetailsView(int productId);
         bool IsProductExist(int vendorId, int productId);
         void QuantityAdd(ProductQuantityAddModel model);
         void QuantityUpdate(ProductQuantityViewModel model);
@@ -34,6 +35,7 @@ namespace eSuperShop.Repository
         PagedResult<ProductListViewModel> GetTopRated(ProductFilterRequest request);
         PagedResult<ProductListViewModel> GetMoreToLove(ProductFilterRequest request);
         PagedResult<ProductListViewModel> GetCatalogWiseList(List<int> catalogIds, ProductFilterRequest request);
+        PagedResult<ProductListViewModel> GetVendorWiseList(int vendorId, ProductFilterRequest request);
     }
 
 

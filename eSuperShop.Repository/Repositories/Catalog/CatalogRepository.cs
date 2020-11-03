@@ -194,6 +194,15 @@ namespace eSuperShop.Repository
                 .FirstOrDefault();
         }
 
+        public CatalogHierarchyModel BreadcrumbById(int catalogId)
+        {
+            return Db.Catalog
+                .AsEnumerable()?
+                .Where(c => c.CatalogId == catalogId)
+                .Select(c => _mapper.Map<CatalogHierarchyModel>(c))
+                .FirstOrDefault();
+        }
+
         public List<int> CatalogIdsBySlugUrl(string slugUrl)
         {
             var Ids = new List<int>();

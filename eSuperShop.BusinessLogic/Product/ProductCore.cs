@@ -179,20 +179,36 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<ProductDetailsModel> DetailsBySlugUrl(string slugUrl)
+        public DbResponse<ProductDetailsViewModel> DetailsBySlugUrl(string slugUrl)
         {
             try
             {
                 if (!_db.Product.IsExistSlugUrl(slugUrl))
-                    return new DbResponse<ProductDetailsModel>(false, "Product Not Found");
+                    return new DbResponse<ProductDetailsViewModel>(false, "Product Not Found");
 
                 var productId = _db.Product.ProductIdBySlugUrl(slugUrl);
-                var data = _db.Product.Details(productId);
-                return new DbResponse<ProductDetailsModel>(true, "Success", data);
+
+                var data = _db.Product.DetailsView(productId);
+
+                data.AverageReview = _db.ProductReview.AverageReview(productId);
+                data.CatalogBreadcrumb = _db.Catalog.BreadcrumbById(data.CatalogId);
+                //data.Faqs = _db.ProductFaq.ProductWiseList(new ProductReviewFilerRequest
+                //{
+                //    Page = 1,
+                //    PageSize = 10,
+                //    ProductId = data.ProductId
+                //}).Results;
+                data.TotalFaqs = data.Faqs.Count();
+                data.RecommendedProducts = _db.Product.GetCatalogWiseList(new List<int> { data.CatalogId },
+                    new ProductFilterRequest { Page = 1, PageSize = 3 }).Results;
+                data.VendorMoreProducts = _db.Product.GetVendorWiseList(data.VendorId,
+                    new ProductFilterRequest { Page = 1, PageSize = 3 }).Results;
+                data.Specifications = _db.Specification.ProductWiseList(data.ProductId);
+                return new DbResponse<ProductDetailsViewModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<ProductDetailsModel>(false, e.Message);
+                return new DbResponse<ProductDetailsViewModel>(false, e.Message);
             }
         }
 

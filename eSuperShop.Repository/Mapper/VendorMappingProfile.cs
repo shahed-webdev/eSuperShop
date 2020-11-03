@@ -37,53 +37,6 @@ namespace eSuperShop.Repository
 
             //Vendor ProductCategory Assign Mapping
             CreateMap<VendorProductCategoryList, VendorProductCategoryAssignModel>().ReverseMap();
-
-            //Vendor Product Add
-            CreateMap<ProductBlob, ProductBlobAddModel>().ReverseMap();
-            CreateMap<ProductSpecification, ProductSpecificationAddModel>().ReverseMap();
-            CreateMap<ProductAttributeValue, ProductAttributeValueAddModel>().ReverseMap();
-            CreateMap<ProductAttribute, ProductAttributeAddModel>()
-                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductAttributeValue))
-                .ReverseMap();
-
-            CreateMap<Product, ProductAddModel>()
-                .ForMember(d => d.Attributes, opt => opt.MapFrom(c => c.ProductAttribute))
-                .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob))
-                .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
-                .ReverseMap();
-
-
-            //Vendor Product show
-            CreateMap<Product, ProductUnpublishedModel>()
-                .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
-                .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName));
-
-
-            CreateMap<ProductBlob, ProductBlobViewModel>().ReverseMap();
-            CreateMap<ProductSpecification, ProductSpecificationViewModel>()
-                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName))
-                .ReverseMap();
-            CreateMap<ProductAttributeValue, ProductAttributeValueViewModel>().ReverseMap();
-            CreateMap<ProductAttribute, ProductAttributeViewModel>()
-                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductAttributeValue))
-                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Attribute.KeyName))
-                .ReverseMap();
-            CreateMap<Product, ProductDetailsModel>()
-                .ForMember(d => d.Attributes,
-                    opt => opt.MapFrom(c => c.ProductAttribute.OrderBy(p => p.Attribute.KeyName)))
-                .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob))
-                .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
-                .ForMember(d => d.BrandInfo, opt => opt.MapFrom(c => c.Brand))
-                .ForMember(d => d.CatalogInfo, opt => opt.MapFrom(c => c.Catalog))
-                .ForMember(d => d.VendorInfo, opt => opt.MapFrom(c => c.Vendor))
-                .ForMember(d => d.QuantitySets, opt => opt.MapFrom(c => c.ProductQuantitySet));
-
-
-            //Vendor Product Quantity show Mapping
-
-            CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeModel>().ReverseMap();
-            CreateMap<ProductQuantitySet, ProductQuantityAddModel>().ReverseMap();
-
         }
     }
 }
