@@ -88,7 +88,7 @@ namespace eSuperShop.Web.Controllers
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
             if (result.Succeeded)
-                LocalRedirect(Url.Content("~/Dashboard/Index"));
+                LocalRedirect(returnUrl ??= Url.Content("~/Customer/Dashboard"));
 
             if (result.RequiresTwoFactor)
                 return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, model.RememberMe });
@@ -100,7 +100,6 @@ namespace eSuperShop.Web.Controllers
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
         }
-
 
 
         // GET: ChangePassword

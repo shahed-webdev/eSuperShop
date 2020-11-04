@@ -43,20 +43,22 @@
                             <input id="inputSearch" type="text" placeholder="search products" class="input-home-search">
                             <button id="btn-find"><i class="fal fa-search"></i></button>
                             @*<select class="mdb-select category-select">
-                                <option value="" disabled selected>All Categories</option>
-                                <option value="2">category1</option>
-                                <option value="2">category2</option>
-                                <option value="2">category3</option>
-                                <option value="2">category4</option>
-                            </select>*@
+                                    <option value="" disabled selected>All Categories</option>
+                                    <option value="2">category1</option>
+                                    <option value="2">category2</option>
+                                    <option value="2">category3</option>
+                                    <option value="2">category4</option>
+                                </select>*@
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-3">
                         <div class="cart-area mt-4 mt-sm-0">
                             <div><i class="fal fa-heart"></i></div>
-                            <div>
+                            <div data-toggle="modal" data-target="#cartModal">
                                 <i class="fal fa-shopping-bag"></i>
-                                <span class="cart-product-count">0</span>
+                                <span class="cart-product-count">
+                                    <span class="total-count"></span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -196,6 +198,24 @@
         </div>
     </footer>
 
+    <!-- cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="show-cart table product-table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- JQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Bootstrap core JavaScript -->
@@ -206,6 +226,9 @@
     <script src="~/lib/api.axios.min.js"></script>
     <!-- VUE JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <!-- shopping cart -->
+    <script src="~/js/shopping-cart.js"></script>
 
     @await RenderSectionAsync("Scripts", false)
 
