@@ -12,3 +12,10 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 .p-rating i { color: #F97700; font-size: 12px; }
 .p-discount-percent { color: #F47A5E; font-size: 14px; }
 
+/*image max size*/
+#FlashDealsApp .card-img-top { max-height: 250px }
+
+
+@media (max-width: 767.98px) {
+    #FlashDealsApp .card-img-top { max-height: 100% }
+}

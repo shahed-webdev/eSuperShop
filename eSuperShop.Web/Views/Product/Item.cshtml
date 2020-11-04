@@ -7,11 +7,24 @@
 }
 
 @section Styles{
-    <link href="~/css-page/product-details.css" rel="stylesheet" />
+    <link href="~/css-page/product-details.css?v=2.1" rel="stylesheet" />
     <link href="~/lib/rating/star-rating-svg.css" rel="stylesheet" />
 }
 
 <div class="container">
+<ol class="breadcrumb grey lighten-3 mt-3">
+        <li class="breadcrumb-item">
+            <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
+        </li>
+        @if (Model.CatalogBreadcrumb.ParentCatalog != null)
+        {
+            <li class="breadcrumb-item">
+                <a :href="/Category/Products/@Model.CatalogBreadcrumb.ParentCatalog.SlugUrl" class="black-text">@Model.CatalogBreadcrumb.ParentCatalog.CatalogName</a><i class="fas fa-angle-double-right mx-2"></i>
+            </li>
+        }
+        <li class="breadcrumb-item active">@Model.CatalogBreadcrumb.CatalogName</li>
+    </ol>
+
     <div class="row my-4">
         <div class="col-lg-9 col-md-7">
             <div class="card card-body">
@@ -40,9 +53,9 @@
                         <a class="blue-text font-small">Sold By: @Model.StoreName</a>
 
                         <div class="d-flex align-items-center">
-                            <div class="total-rating mr-2" data-rating="4.5"></div>
-                            <span class="mr-3">4.5</span>
-                            <span class="text-muted">9 Reviews</span>
+                            <div class="total-rating mr-2" data-rating="@Model.AverageReview.AverageRating"></div>
+                            <span class="text-muted">@Model.AverageReview.TotalReview Reviews</span>
+                            <span class="text-muted ml-3">@Model.Sold Orders</span>
                         </div>
 
                         <form id="cartForm">
@@ -94,7 +107,7 @@
                             </div>
 
                             <div>
-                                <input class="btn btn-danger btn-md" type="submit" value="Add to Cart">
+                                <input data-name="@Model.Name" data-price="@Model.Price" class="btn btn-danger btn-md add-to-cart" type="submit" value="Add to Cart">
                                 <input class="btn btn-outline-danger btn-md" type="submit" value="Buy Now">
                             </div>
                         </form>
@@ -113,6 +126,16 @@
 
             <div class="card card-body text-center">
                 <p class="mb-0">Recommended For You</p>
+
+                @foreach (var rp in Model.RecommendedProducts)
+                {
+                    <div class="recomand-product">
+                        <a href="/Product/Item/@rp.SlugUrl">
+                            <img src="@rp.ImageUrl" alt="@rp.Name">
+                            <span class="price-tag">৳@rp.Price</span>
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -126,7 +149,7 @@
                 <a class="nav-link waves-light" data-toggle="tab" href="#spesification" role="tab" aria-selected="false">SPECIFICATIONS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link waves-light" data-toggle="tab" href="#reviews" role="tab" aria-selected="false">REVIEWS</a>
+                <a class="nav-link waves-light" data-toggle="tab" href="#reviews" role="tab" aria-selected="false">REVIEWS (@Model.AverageReview.TotalReview)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link waves-light" data-toggle="tab" href="#returnPolicy" role="tab" aria-selected="false">RETURN POLICY</a>
@@ -140,7 +163,7 @@
             <div class="tab-pane fade" id="spesification" role="tabpanel">
                 @foreach (var sp in Model.Specifications)
                 {
-                    <p><span class="text-muted">@sp.KeyName:</span> @string.Join(",", sp.Values)</p>
+                    <p><span class="text-muted">@sp.KeyName:</span> @string.Join(", ", sp.Values)</p>
                 }
             </div>
             <div class="tab-pane fade" id="reviews" role="tabpanel">
@@ -148,7 +171,9 @@
                     <div class="col-lg-6 text-center">
                         <h5>AVERAGE RATING</h5>
                         <div id="review-avg">
-                            <span id="review-count"></span>
+                            <span id="review-count">
+                                @Model.AverageReview.AverageRating
+                            </span>
                         </div>
                         <p>Based on 5 ratings</p>
                     </div>
@@ -156,40 +181,37 @@
                         <div class="d-flex justify-content-between align-items-center px-4">
                             <div class="rating-title">5 Stars</div>
                             <div class="progress md-progress mb-0">
-                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: @(Model.AverageReview.TotalReview > 0 ? (100 * Model.AverageReview.Star5) / Model.AverageReview.TotalReview : 0)%;" aria-valuenow="@Model.AverageReview.Star5" aria-valuemin="0" aria-valuemax="@Model.AverageReview.TotalReview"></div>
                             </div>
-                            <span class="rating-title text-center">(10)</span>
+                            <span class="rating-title text-center">(@Model.AverageReview.Star5)</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center px-4">
                             <div class="rating-title">4 Stars</div>
                             <div class="progress md-progress mb-0">
-                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: 40%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: @(Model.AverageReview.TotalReview > 0 ? (100 * Model.AverageReview.Star4) / Model.AverageReview.TotalReview : 0)%;" aria-valuenow="@Model.AverageReview.Star4" aria-valuemin="0" aria-valuemax="@Model.AverageReview.TotalReview"></div>
                             </div>
-                            <span class="rating-title text-center">(5)</span>
+                            <span class="rating-title text-center">(@Model.AverageReview.Star4)</span>
                         </div>
-
                         <div class="d-flex justify-content-between align-items-center px-4">
                             <div class="rating-title">3 Stars</div>
                             <div class="progress md-progress mb-0">
-                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: 40%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: @(Model.AverageReview.TotalReview > 0 ? (100 * Model.AverageReview.Star3) / Model.AverageReview.TotalReview : 0)%;" aria-valuenow="@Model.AverageReview.Star3" aria-valuemin="0" aria-valuemax="@Model.AverageReview.TotalReview"></div>
                             </div>
-                            <span class="rating-title text-center">(5)</span>
+                            <span class="rating-title text-center">(@Model.AverageReview.Star3)</span>
                         </div>
-
                         <div class="d-flex justify-content-between align-items-center px-4">
                             <div class="rating-title">2 Stars</div>
                             <div class="progress md-progress mb-0">
-                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: 40%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: @(Model.AverageReview.TotalReview > 0 ? (100 * Model.AverageReview.Star2) / Model.AverageReview.TotalReview : 0)%;" aria-valuenow="@Model.AverageReview.Star2" aria-valuemin="0" aria-valuemax="@Model.AverageReview.TotalReview"></div>
                             </div>
-                            <span class="rating-title text-center">(5)</span>
+                            <span class="rating-title text-center">(@Model.AverageReview.Star2)</span>
                         </div>
-
                         <div class="d-flex justify-content-between align-items-center px-4">
                             <div class="rating-title">1 Star</div>
                             <div class="progress md-progress mb-0">
-                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: 40%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar warning-color-dark" role="progressbar" style="width: @(Model.AverageReview.TotalReview > 0 ? (100 * Model.AverageReview.Star1) / Model.AverageReview.TotalReview : 0)%;" aria-valuenow="@Model.AverageReview.Star1" aria-valuemin="0" aria-valuemax="@Model.AverageReview.TotalReview"></div>
                             </div>
-                            <span class="rating-title text-center">(5)</span>
+                            <span class="rating-title text-center">(@Model.AverageReview.Star1)</span>
                         </div>
                     </div>
                 </div>
@@ -199,16 +221,105 @@
                         <h4 class="font-weight-bold">PRODUCT REVIEWS</h4>
                     </div>
 
-                    <p class="review-name">Jhon doe</p>
-                    <div class="user-rating" data-rating="2.5"></div>
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <p class="review-name">@review.CustomerUserName</p>
+                        <div class="user-rating" data-rating="@review.Rating"></div>
 
-                    <small class="review-time"><i class="fal fa-clock"></i> 29 oct 20</small>
-                    <p class="review-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+                        <small class="review-time"><i class="fal fa-clock"></i> @review.ReviewedOnUtc.ToShortDateString()</small>
+                        <p class="review-text">@review.Review</p>
+                    }
+
                 </div>
             </div>
             <div class="tab-pane fade" id="returnPolicy" role="tabpanel">
             </div>
         </div>
+    </div>
+
+
+    <div id="seller-recomnd" class="row">
+        @foreach (var product in Model.RecommendedProducts)
+        {
+            <div class="col-lg-3 col-sm-6 mb-3">
+                <div class="card hoverable h-100">
+                    <div class="view overlay">
+                        <img class="card-img-top" src="@product.ImageUrl" alt="@product.Name">
+                        <a href="/Product/Item/@product.SlugUrl">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+                    <div class="card-body pb-1">
+                        <p class="product-name">@product.Name</p>
+                        <div class="pricing-area">
+                            <div class="p-price">
+                                <span>৳@product.Price</span>
+                                @if (product.OldPrice > 0)
+                                {
+                                    <span class="p-discount d-block">৳@product.OldPrice</span>
+                                }
+                            </div>
+                            <div class="p-rating text-right">
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-2">
+                                        <div class="total-rating" data-rating="@product.Rating"></div>
+                                    </div>
+                                    <span :class="rating-count">@product.RatingBy</span>
+                                </div>
+                                @if (product.OldPrice > 0)
+                                {
+                                    <span class="p-discount-percent">@((100 - ((100 * product.Price) / product.OldPrice)).ToString("F")) % off</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <div class="card card-body mt-3" id="faq">
+        <div class="my-4 border-bottom pb-2">
+            <h4 class="font-weight-bold mb-1">QUESTIONS ABOUT THIS PRODUCT (@Model.TotalFaqs)</h4>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="text-muted">
+                    <a asp-controller="Account" asp-action="CustomerLogin" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Login</a>
+                    OR
+                    <a asp-controller="Account" asp-action="CustomerLogin" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Register</a>
+                    to ask questions
+                </div>
+            }
+            else
+            {
+                if (User.IsInRole("Customer"))
+                {
+                    <button id="btnAskQuestion" class="btn btn-deep-orange btn-md">Ask Question</button>
+                }
+            }
+        </div>
+
+        @foreach (var faq in Model.Faqs)
+        {
+            <div class="my-4 border-bottom pb-3">
+                <div class="d-flex align-items-start">
+                    <div class="questing-title">Question <i class="fal fa-caret-right"></i></div>
+                    <div class="text-container">
+                        <h6>@faq.Question</h6>
+                        <p>-@faq.CustomerUserName <small class="ml-2">@faq.QuestionOnUtc.ToShortDateString()</small></p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mt-4">
+                    <div class="answer-title">Answer <i class="fal fa-caret-right"></i></div>
+                    <div class="text-container">
+                        <h6>@faq.Answer</h6>
+                        <p>-Admin <small>@faq.AnswerOnUtc.ToShortDateString()</small></p>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
@@ -239,7 +350,11 @@
             });
         });
 
+        //selectors
+        const btnAskQuestion = document.getElementById("btnAskQuestion");
         const attribute = document.getElementById("attribute");
+
+        //event
         attribute.addEventListener("change", function(evt) {
             const element = evt.target;
 
@@ -287,7 +402,7 @@
             });
         });
 
-        const body = {
+        @*const body = {
             ProductId: @Model.ProductId
             //Page: 1,
             //PageSize:4
@@ -304,6 +419,6 @@
             error: function(err) {
                 console.log(err);
             }
-        });
+        });*@
     </script>
 }

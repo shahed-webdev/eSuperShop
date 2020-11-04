@@ -22,7 +22,7 @@
                         <strong class="dark-grey-text">Seller Login</strong>
                     </h5>
 
-                    <form class="form-signin" asp-controller="Account" asp-action="Login" method="post">
+                    <form asp-route-returnUrl="@ViewBag.ReturnUrl" class="form-signin" asp-controller="Account" asp-action="Login" method="post">
                         <div class="md-form mb-5">
                             <input asp-for="UserName" class="form-control">
                             <label asp-for="UserName"></label>

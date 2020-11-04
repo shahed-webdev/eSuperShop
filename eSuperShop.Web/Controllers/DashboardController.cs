@@ -8,6 +8,7 @@ using eSuperShop.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -46,5 +47,12 @@ namespace eSuperShop.Web.Controllers
             var model = _vendor.ThemeChange(vendorId, theme);
             return Json(model);
         }
+
+        //Login Info
+        //public string GetUserLoggedInInfo()
+        //{
+        //    var admin = _db.Registrations.GetAdminBasic(User.Identity.Name);
+        //    return JsonConvert.SerializeObject(admin); //Serialize for image binary data
+        //}
     }
 }

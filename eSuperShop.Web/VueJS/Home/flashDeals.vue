@@ -6,7 +6,7 @@
         </div>
     
         <div class="row">
-            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6">
+            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-4">
                 <div class="card hoverable h-100">
                     <div class="view overlay">
                         <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
