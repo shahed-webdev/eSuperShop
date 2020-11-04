@@ -18,5 +18,6 @@ namespace eSuperShop.Data
 
         public virtual Product Product { get; set; }
         public virtual ICollection<ProductQuantitySetAttribute> ProductQuantitySetAttribute { get; set; }
+        public virtual ICollection<OrderList> OrderList { get; set; }
     }
 }
