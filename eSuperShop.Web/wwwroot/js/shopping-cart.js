@@ -178,9 +178,9 @@ function displayCart() {
     for (let i in cartArray) {
         if (cartArray.hasOwnProperty(i)) {
             output +=`<tr>
-                    <td><strong>${cartArray[i].name}</strong></td>
+                    <td class="text-left"><strong>${cartArray[i].name}</strong></td>
                     <td>৳${cartArray[i].price}</td>
-                    <td class="text-center text-md-left">
+                    <td class="text-center text-lg-left">
                         <span class="qty">${cartArray[i].count}</span>
                         <div class="btn-group radio-group ml-2" data-toggle="buttons">
                             <label class="btn btn-sm btn-dark btn-rounded minus-item" data-name="${cartArray[i].name}">
@@ -199,19 +199,7 @@ function displayCart() {
         }
     }
 
-    output +=`<tr>
-                <td></td>
-                <td><h4 class="mt-2"><strong>Total</strong></h4></td>
-                <td class="text-right"><h4 class="mt-2"><strong class="total-cart">0</strong></h4></td>
-                <td colspan="2" class="text-right">
-                    <button type="button" class="btn btn-danger darken-2 btn-rounded px-4">
-                        Complete purchase <i class="fas fa-angle-right right"></i>
-                    </button>
-                </td>
-             </tr>`
-
-
-    $('.show-cart').html(output);
+    $('.show-cart tbody').html(output);
     $('.total-cart').html(shoppingCart.totalCart());
     $('.total-count').html(shoppingCart.totalCount());
 }
