@@ -40,7 +40,7 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 .shop-description { font-style: italic; font-size: 13px; color: #676565; }
 .photo-box { display: grid; grid-gap: 10px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; grid-template-areas: ". ." ". ."; }
 .photo-box .box { border: 1px solid #E1E1E1; }
-.photo-box .box img { width: 100%;}
+.photo-box .box img { width: 100%; height: 150px; }
 
 .shop-rating i{ color: #F97700; font-size: 12px; }
 .shop-rating span { color: #656262; font-size: 13px; }
@@ -48,7 +48,17 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 /*more product*/
 .sold-count { display: block; color: #443C3C; font-size: 12px}
 
+/*image max size*/
+#flash-deals .card-img-top,
+#top-rated .card-img-top,
+#top-store .card-img-top,
+#more-products .card-img-top { max-height: 250px}
+
 
 @media (max-width: 767.98px) {
     #topCategory h3 { font-size:23px; }
+    #flash-deals .card-img-top,
+    #top-rated .card-img-top,
+    #top-store .card-img-top,
+    #more-products .card-img-top { max-height: 100%}
 }
