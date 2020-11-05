@@ -20,9 +20,12 @@ namespace eSuperShop.Repository
         ProductDetailsViewModel DetailsView(int productId);
         bool IsProductExist(int vendorId, int productId);
         void QuantityAdd(ProductQuantityAddModel model);
+        void QuantitySale(int productQuantitySetId, int quantity);
+        void QuantityRestock(int productQuantitySetId, int quantity);
         void QuantityUpdate(ProductQuantityViewModel model);
-        ProductQuantityViewModel GetQuantitySet(ProductQuantityCheckModel model);
+        ProductQuantitySetViewModel GetQuantitySet(ProductQuantityCheckModel model);
         ProductQuantityViewModel GetQuantitySetById(int productQuantitySetId);
+        int GetQuantityBySetId(int productQuantitySetId);
 
         ICollection<ProductQuantitySetViewModel> GetQuantitySetList(int productId);
         ProductQuantitySetViewModel GetQuantitySetDetailsById(int productQuantitySetId);

@@ -21,6 +21,11 @@ namespace eSuperShop.Repository
             return Db.Vendor.FirstOrDefault(r => r.Registration.UserName == userName)?.VendorId ?? 0;
         }
 
+        public int CustomerIdByUserName(string userName)
+        {
+            return Db.Customer.FirstOrDefault(r => r.Registration.UserName == userName)?.CustomerId ?? 0;
+        }
+
         public UserType UserTypeByUserName(string userName)
         {
             return Db.Registration.FirstOrDefault(r => r.UserName == userName).Type;

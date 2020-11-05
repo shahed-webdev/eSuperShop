@@ -301,45 +301,60 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model)
+        public DbResponse<ProductQuantitySetViewModel> GetQuantitySet(ProductQuantityCheckModel model)
         {
             try
             {
                 var data = _db.Product.GetQuantitySet(model);
 
                 if (data == null)
-                    return new DbResponse<ProductQuantityViewModel>(false, "Quantity Not Found");
+                    return new DbResponse<ProductQuantitySetViewModel>(false, "Quantity Not Found");
 
-                return new DbResponse<ProductQuantityViewModel>(true, "Success", data);
+                return new DbResponse<ProductQuantitySetViewModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<ProductQuantityViewModel>(false, e.Message);
+                return new DbResponse<ProductQuantitySetViewModel>(false, e.Message);
             }
         }
 
-        public DbResponse<ProductQuantityViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName)
+        public DbResponse<int> GetQuantityBySetId(int productQuantitySetId)
+        {
+            try
+            {
+                var data = _db.Product.GetQuantityBySetId(productQuantitySetId);
+
+
+                return new DbResponse<int>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<int>(false, e.Message);
+            }
+        }
+
+        public DbResponse<ProductQuantitySetViewModel> GetQuantitySet(ProductQuantityCheckModel model, string vendorUserName)
         {
             try
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
 
                 if (vendorId == 0)
-                    return new DbResponse<ProductQuantityViewModel>(false, "Invalid User");
+                    return new DbResponse<ProductQuantitySetViewModel>(false, "Invalid User");
 
                 if (!_db.Product.IsProductExist(vendorId, model.ProductId))
-                    return new DbResponse<ProductQuantityViewModel>(false, "Product Not Found");
+                    return new DbResponse<ProductQuantitySetViewModel>(false, "Product Not Found");
 
                 var data = _db.Product.GetQuantitySet(model);
 
                 if (data == null)
-                    return new DbResponse<ProductQuantityViewModel>(false, "Quantity Not Found");
+                    return new DbResponse<ProductQuantitySetViewModel>(false, "Quantity Not Found");
 
-                return new DbResponse<ProductQuantityViewModel>(true, "Success", data);
+                return new DbResponse<ProductQuantitySetViewModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<ProductQuantityViewModel>(false, e.Message);
+                return new DbResponse<ProductQuantitySetViewModel>(false, e.Message);
             }
         }
 
