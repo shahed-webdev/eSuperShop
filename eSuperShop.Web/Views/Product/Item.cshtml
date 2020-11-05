@@ -12,7 +12,7 @@
 }
 
 <div class="container">
-<ol class="breadcrumb grey lighten-3 mt-3">
+    <ol class="breadcrumb grey lighten-3 mt-3">
         <li class="breadcrumb-item">
             <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
         </li>
@@ -47,7 +47,7 @@
                             <img src="/lib/imageZoomer/img/next-icon.png" class="icon-right" alt="" id="next-img" />
                         </div>
                     </div>
-
+                    
                     <div class="col-xl-7 col-lg-6">
                         <p class="mb-0">@Model.Name</p>
                         <a class="blue-text font-small">Sold By: @Model.StoreName</a>
@@ -61,7 +61,7 @@
                         <form id="cartForm">
                             <div class="my-3">
                                 <strong>৳<span id="productPrice">@Model.Price</span></strong>
-                               
+
                                 @if (Model.OldPrice > 0)
                                 {
                                     <span class="old-price">৳@Model.OldPrice</span>
@@ -100,11 +100,11 @@
                                         </div>
                                     }
                                 }
-                                
+
                                 <strong class="text-primary" id="additionalPrice"></strong>
                                 <input id="hiddenQuantitySetId" type="hidden">
                                 <input id="hiddenPriceAdjustment" type="hidden">
-                            </div>  
+                            </div>
 
                             <div class="my-5">
                                 QTY: <input id="inputQuantity" min="1" type="number" class="input-quantity mr-2" required value="1">
@@ -368,6 +368,7 @@
         const hiddenQuantitySetId = cartForm.hiddenQuantitySetId;
         const btnAddToCart = cartForm.btnAddToCart;
         const btnBuyNow = cartForm.btnBuyNow;
+        let attributesValue = null;
 
         const btnAskQuestion = document.getElementById("btnAskQuestion");
         const attribute = document.getElementById("attribute");
@@ -381,17 +382,17 @@
 
             const valueIds = document.querySelectorAll('input[type="radio"]:checked');
             const keyNames = document.querySelectorAll(".key-name");
-            const AttributeValueId = [];
+            const attributeValueId = [];
 
             valueIds.forEach(id => {
-                if (id.value) AttributeValueId.push(+id.value);
+                if (id.value) attributeValueId.push(+id.value);
             });
 
-            if (keyNames.length !== AttributeValueId.length) return;
+            if (keyNames.length !== attributeValueId.length) return;
 
             const model = {
                 ProductId: @Model.ProductId,
-                ProductAttributeValueIds: AttributeValueId
+                ProductAttributeValueIds: attributeValueId
             }
 
             const availableQty = document.getElementById("availableQty");
@@ -404,16 +405,23 @@
                 data: model,
                 success: function(response) {
                     if (response.IsSuccess) {
-                        const { Quantity, ProductQuantitySetId, PriceAdjustment } = response.Data;
+                        const { Quantity, ProductQuantitySetId, PriceAdjustment, AttributesWithValue } = response.Data;
+                        //global variable
+                        attributesValue = AttributesWithValue;
 
                         const isAdded = shoppingCart.getProduct(ProductQuantitySetId);
                         const newQuantity = isAdded ? (Quantity - isAdded.Quantity) : Quantity;
+
+                        if (isAdded) {
+                            $.notify("Product Already added", "success", { position: "right" });
+                        }
+
 
                         availableQty.textContent = `${newQuantity} pieces available`;
                         availableQty.style.color = "#212529";
 
                         inputQuantity.value = isAdded ? isAdded.Quantity : 1;
-                        inputQuantity.setAttribute("max", newQuantity);
+                        inputQuantity.setAttribute("max", Quantity);
 
                         productPrice.textContent = @Model.Price + PriceAdjustment;
                         hiddenQuantitySetId.value = ProductQuantitySetId;
@@ -449,11 +457,14 @@
                 Name: "@Model.Name",
                 Price: @Model.Price + extraPrice,
                 Quantity: +inputQuantity.value,
-                ProductQuantitySetId: +hiddenQuantitySetId.value
+                ProductQuantitySetId: +hiddenQuantitySetId.value,
+                attributesValue
             }
 
             shoppingCart.addItemToCart(obj);
             displayCart();
+
+            $.notify("Product added to Shopping Cart", "success", { position: "right" });
         });
 
         //buy now

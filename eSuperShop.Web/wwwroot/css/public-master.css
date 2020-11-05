@@ -38,3 +38,6 @@ input[type="checkbox"].input-validation-error { border: 0 none; }
 /*footer*/
 .footer-bg { background-color: #3E4551 }
 .footer-top { background-color: #e62e04; padding: 12px 0; }
+
+/*shopping cart quantity input*/
+.item-quantity {width: 100%; border: 1px solid #ddd; border-radius: 5px; text-align: center; padding: 3px 0; }

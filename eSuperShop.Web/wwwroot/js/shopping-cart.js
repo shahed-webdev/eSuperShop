@@ -37,10 +37,10 @@ const shoppingCart = (function () {
     }
 
     // input quantity
-    obj.inputQuantity = function (id,quantity) {
-        for (let i in cart) {
+    obj.inputQuantity = function (id, quantity) {
+        for (let item in cart) {
             if (cart[item].ProductQuantitySetId === id) {
-                cart[i].Quantity = quantity;
+                cart[item].Quantity = quantity;
                 break;
             }
         }
@@ -179,20 +179,12 @@ function displayCart() {
     var output = "";
     for (let i in cartArray) {
         output += `<tr>
-                    <td class="text-left"><strong>${cartArray[i].Name}</strong></td>
+                    <td class="text-left">${cartArray[i].Name}</td>
                     <td>৳${cartArray[i].Price}</td>
                     <td class="text-center">
-                        <span class="qty">${cartArray[i].Quantity}</span>
-                        <div class="btn-group radio-group ml-2" data-toggle="buttons">
-                            <label class="btn btn-sm btn-elegant btn-rounded minus-item" data-id="${cartArray[i].ProductQuantitySetId}">
-                                <input type="radio" name="radio-quantity">&mdash;
-                            </label>
-                            <label class="btn btn-sm btn-elegant btn-rounded plus-item" data-id="${cartArray[i].ProductQuantitySetId}">
-                                <input type="radio" name="radio-quantity">+
-                            </label>
-                        </div>
+                     <input class="item-quantity" data-id="${cartArray[i].ProductQuantitySetId}" value="${cartArray[i].Quantity}" min="0" type="number">
                     </td>
-                    <td class="font-weight-bold"><strong>৳${cartArray[i].total}</strong></td>
+                    <td>৳${cartArray[i].total}</td>
                     <td class="text-right">
                         <button data-id="${cartArray[i].ProductQuantitySetId}" type="button" class="btn btn-sm btn-danger delete-item" data-toggle="tooltip" data-placement="top" title="Remove item">X</button>
                     </td>
@@ -200,8 +192,17 @@ function displayCart() {
     }
 
     $('.show-cart tbody').html(output);
-    $('.total-cart').html(shoppingCart.totalCart());
-    $('.total-count').html(shoppingCart.totalCount());
+    $('.grand-total-amount').html(shoppingCart.totalCart());
+    $('.total-cart-count').html(shoppingCart.totalCount());
+
+    //<div class="btn-group radio-group ml-2" data-toggle="buttons">
+    //    <label class="btn btn-sm btn-elegant btn-rounded minus-item" data-id="${cartArray[i].ProductQuantitySetId}">
+    //        <input type="radio" name="radio-quantity">&mdash;
+    //    </label>
+    //    <label class="btn btn-sm btn-elegant btn-rounded plus-item" data-id="${cartArray[i].ProductQuantitySetId}">
+    //        <input type="radio" name="radio-quantity">+
+    //    </label>
+    //</div>
 }
 
 // Delete item button
@@ -232,13 +233,16 @@ $('.show-cart').on("click", ".plus-item", function (event) {
 
 
 // Item quantity input
-//$('.show-cart').on("change", ".item-count", function (event) {
-//    const id = $(this).data('id');
-//    const count = Number($(this).val());
+$('.show-cart').on("change", ".item-quantity", function (event) {
+    const id = $(this).data('id');
 
-//    shoppingCart.inputQuantity(id, count);
-//    displayCart();
-//});
+    if (isNaN($(this).val())) return;
+
+    const quantity = Number($(this).val());
+
+    shoppingCart.inputQuantity(id, quantity);
+    displayCart();
+});
 
 
 displayCart();

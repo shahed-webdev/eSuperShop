@@ -81,14 +81,14 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.AttributesWithValue,
                     opt => opt.MapFrom(c =>
                         c.ProductQuantitySetAttribute.OrderBy(p =>
-                            p.ProductAttributeValue.ProductAttribute.Attribute.KeyName)));
+                            p.ProductAttributeValue.ProductAttribute.Attribute.KeyName))).ReverseMap();
 
             CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeViewModel>()
                 .ForMember(d => d.AttributeId,
                     opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.AttributeId))
                 .ForMember(d => d.KeyName,
                     opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.Attribute.KeyName))
-                .ForMember(d => d.Value, opt => opt.MapFrom(c => c.ProductAttributeValue.Value));
+                .ForMember(d => d.Value, opt => opt.MapFrom(c => c.ProductAttributeValue.Value)).ReverseMap();
 
             //Product Show Mapping
             CreateMap<Product, ProductListViewModel>()

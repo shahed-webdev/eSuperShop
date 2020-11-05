@@ -129,6 +129,7 @@ namespace eSuperShop.Repository
         {
             var setList = Db.ProductQuantitySet
                 .Include(p => p.ProductQuantitySetAttribute)
+                .ThenInclude(a=> a.ProductAttributeValue.ProductAttribute.Attribute)
                 .Where(p =>
                  p.ProductId == model.ProductId &&
                  p.ProductQuantitySetAttribute.Count == model.ProductAttributeValueIds.Length)
