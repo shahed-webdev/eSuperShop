@@ -6,6 +6,7 @@ namespace eSuperShop.Repository
     {
         int GetRegID_ByUserName(string userName);
         int VendorIdByUserName(string userName);
+        int CustomerIdByUserName(string userName);
         UserType UserTypeByUserName(string userName);
     }
 }
