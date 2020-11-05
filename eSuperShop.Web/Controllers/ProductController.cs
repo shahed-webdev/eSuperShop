@@ -48,13 +48,18 @@ namespace eSuperShop.Web.Controllers
             return View(model.Data);
         }
 
-
         //get stock
         [HttpPost]
         public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
         {
             var response = _product.GetQuantitySet(model);
             return Json(response);
+        }
+
+        //cart product List
+        public IActionResult CartProduct()
+        {
+            return View();
         }
     }
 }

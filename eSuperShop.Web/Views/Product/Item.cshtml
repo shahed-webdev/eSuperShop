@@ -60,7 +60,8 @@
 
                         <form id="cartForm">
                             <div class="my-3">
-                                <strong>৳@Model.Price</strong>
+                                <strong>৳<span id="productPrice">@Model.Price</span></strong>
+                               
                                 @if (Model.OldPrice > 0)
                                 {
                                     <span class="old-price">৳@Model.OldPrice</span>
@@ -99,16 +100,20 @@
                                         </div>
                                     }
                                 }
-                            </div>
+                                
+                                <strong class="text-primary" id="additionalPrice"></strong>
+                                <input id="hiddenQuantitySetId" type="hidden">
+                                <input id="hiddenPriceAdjustment" type="hidden">
+                            </div>  
 
                             <div class="my-5">
-                                QTY: <input id="inputQuantity" min="1" type="number" class="input-quantity" required value="1">
+                                QTY: <input id="inputQuantity" min="1" type="number" class="input-quantity mr-2" required value="1">
                                 <span id="availableQty"></span>
                             </div>
 
                             <div>
-                                <input data-name="@Model.Name" data-price="@Model.Price" class="btn btn-danger btn-md add-to-cart" type="submit" value="Add to Cart">
-                                <input class="btn btn-outline-danger btn-md" type="submit" value="Buy Now">
+                                <input id="btnAddToCart" class="btn btn-danger btn-md" type="submit" value="Add to Cart">
+                                <input id="btnBuyNow" class="btn btn-outline-danger btn-md" type="submit" value="Buy Now">
                             </div>
                         </form>
                     </div>
@@ -229,11 +234,9 @@
                         <small class="review-time"><i class="fal fa-clock"></i> @review.ReviewedOnUtc.ToShortDateString()</small>
                         <p class="review-text">@review.Review</p>
                     }
-
                 </div>
             </div>
-            <div class="tab-pane fade" id="returnPolicy" role="tabpanel">
-            </div>
+            <div class="tab-pane fade" id="returnPolicy" role="tabpanel"></div>
         </div>
     </div>
 
@@ -348,9 +351,24 @@
                 useGradient: false,
                 readOnly: true
             });
+
+            //uncheck radio button
+            const inp = document.getElementsByTagName('input');
+            for (let i = inp.length - 1; i >= 0; i--) {
+                if (inp[i].type === 'radio')
+                    inp[i].checked = false;
+            }
         });
 
         //selectors
+        const cartForm = document.getElementById("cartForm");
+        const productPrice = cartForm.querySelector("#productPrice");
+        const hiddenPriceAdjustment = cartForm.hiddenPriceAdjustment;
+        const inputQuantity = cartForm.inputQuantity;
+        const hiddenQuantitySetId = cartForm.hiddenQuantitySetId;
+        const btnAddToCart = cartForm.btnAddToCart;
+        const btnBuyNow = cartForm.btnBuyNow;
+
         const btnAskQuestion = document.getElementById("btnAskQuestion");
         const attribute = document.getElementById("attribute");
 
@@ -377,7 +395,8 @@
             }
 
             const availableQty = document.getElementById("availableQty");
-            const inputQuantity = document.getElementById("inputQuantity");
+
+            showLoader(true);
 
             $.ajax({
                 url: "/Product/GetInsertedStock",
@@ -385,22 +404,70 @@
                 data: model,
                 success: function(response) {
                     if (response.IsSuccess) {
-                        availableQty.textContent = `${response.Data.Quantity} pieces available`;
+                        const { Quantity, ProductQuantitySetId, PriceAdjustment } = response.Data;
+
+                        const isAdded = shoppingCart.getProduct(ProductQuantitySetId);
+                        const newQuantity = isAdded ? (Quantity - isAdded.Quantity) : Quantity;
+
+                        availableQty.textContent = `${newQuantity} pieces available`;
                         availableQty.style.color = "#212529";
 
-                        inputQuantity.setAttribute("max", response.Data.Quantity);
+                        inputQuantity.value = isAdded ? isAdded.Quantity : 1;
+                        inputQuantity.setAttribute("max", newQuantity);
+
+                        productPrice.textContent = @Model.Price + PriceAdjustment;
+                        hiddenQuantitySetId.value = ProductQuantitySetId;
+                        hiddenPriceAdjustment.value = PriceAdjustment;
                     } else {
                         availableQty.textContent = `Product not available`;
                         availableQty.style.color = "red";
 
                         inputQuantity.setAttribute("max", 0);
+
+                        productPrice.textContent = @Model.Price;
+                        hiddenQuantitySetId.value = "";
+                        hiddenPriceAdjustment.value = 0;
                     }
+
+                    showLoader(false);
                 },
                 error: function(err) {
                     console.log(err);
+                    showLoader(false);
                 }
             });
         });
+
+        //add to cart
+        cartForm.addEventListener("submit", function(evt) {
+            evt.preventDefault();
+
+            const extraPrice = +hiddenPriceAdjustment.value || 0;
+
+            const obj = {
+                ProductId: @Model.ProductId,
+                Name: "@Model.Name",
+                Price: @Model.Price + extraPrice,
+                Quantity: +inputQuantity.value,
+                ProductQuantitySetId: +hiddenQuantitySetId.value
+            }
+
+            shoppingCart.addItemToCart(obj);
+            displayCart();
+        });
+
+        //buy now
+        btnBuyNow.addEventListener("submit", function(evt) {
+            evt.preventDefault();
+
+        });
+
+
+        //loader
+        function showLoader(status) {
+            btnAddToCart.disabled = status;
+            btnBuyNow.disabled = status;
+        }
 
         @*const body = {
             ProductId: @Model.ProductId

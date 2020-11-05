@@ -1,13 +1,6 @@
 ﻿
-var shoppingCart = (function () {
+const shoppingCart = (function () {
    let cart = [];
-
-    // Constructor
-    function Item(name, price, count) {
-        this.name = name;
-        this.price = price;
-        this.count = count;
-    }
 
     // Save cart
     function saveCart() {
@@ -30,59 +23,61 @@ var shoppingCart = (function () {
     const obj = {};
 
     // Add to cart
-    obj.addItemToCart = function (name, price, count) {
-        var item;
-        for (item in cart) {
-            if (cart.hasOwnProperty(item)) {
-                if (cart[item].name === name) {
-                    cart[item].count++;
-                    saveCart();
-                    return;
-                }
+    obj.addItemToCart = function (product) {
+        for (let item in cart) {
+            if (cart[item].ProductQuantitySetId === product.ProductQuantitySetId) {
+                cart[item].Quantity = product.Quantity;
+                saveCart();
+                return;
             }
         }
 
-        item = new Item(name, price, count);
-        cart.push(item);
+        cart.push(product);
         saveCart();
     }
 
-    // Set count from item
-    obj.setCountForItem = function (name, count) {
+    // input quantity
+    obj.inputQuantity = function (id,quantity) {
         for (let i in cart) {
-            if (cart.hasOwnProperty(i)) {
-                if (cart[i].name === name) {
-                    cart[i].count = count;
-                    break;
-                }
+            if (cart[item].ProductQuantitySetId === id) {
+                cart[i].Quantity = quantity;
+                break;
             }
         }
     };
 
-    // Remove item from cart
-    obj.removeItemFromCart = function (name) {
+    // increase quantity
+    obj.increaseQuantity = function (id) {
         for (let item in cart) {
-            if (cart.hasOwnProperty(item)) {
-                if (cart[item].name === name) {
-                    cart[item].count--;
-                    if (cart[item].count === 0) {
-                        cart.splice(item, 1);
-                    }
-                    break;
-                }
+            if (cart[item].ProductQuantitySetId === id) {
+                cart[item].Quantity++;
+                saveCart();
+                return;
             }
         }
+    }
+
+    // decrease quantity
+    obj.decreaseQuantity = function (id) {
+        for (let item in cart) {
+            if (cart[item].ProductQuantitySetId === id) {
+                cart[item].Quantity--;
+                if (cart[item].Quantity === 0) {
+                    cart.splice(item, 1);
+                }
+                break;
+            }
+        }
+
         saveCart();
     }
 
-    // Remove all items from cart
-    obj.removeItemFromCartAll = function (name) {
+    // Remove product from cart
+    obj.removeProduct = function (id) {
         for (let item in cart) {
-            if (cart.hasOwnProperty(item)) {
-                if (cart[item].name === name) {
-                    cart.splice(item, 1);
-                    break;
-                }
+            if (cart[item].ProductQuantitySetId === id) {
+                cart.splice(item, 1);
+                break;
             }
         }
         saveCart();
@@ -99,7 +94,7 @@ var shoppingCart = (function () {
         var totalCount = 0;
         for (let item in cart) {
             if (cart.hasOwnProperty(item)) {
-                totalCount += cart[item].count;
+                totalCount += cart[item].Quantity;
             }
         }
         return totalCount;
@@ -110,7 +105,7 @@ var shoppingCart = (function () {
         let totalCart = 0;
         for (let item in cart) {
             if (cart.hasOwnProperty(item)) {
-                totalCart += cart[item].price * cart[item].count;
+                totalCart += cart[item].Price * cart[item].Quantity;
             }
         }
         return Number(totalCart.toFixed(2));
@@ -120,21 +115,28 @@ var shoppingCart = (function () {
     obj.listCart = function () {
         const cartCopy = [];
         for (let i in cart) {
-            if (cart.hasOwnProperty(i)) {
-               const item = cart[i];
-                const itemCopy = {};
-                for (let p in item) {
-                    if (item.hasOwnProperty(p)) {
-                        itemCopy[p] = item[p];
-                    }
-                }
-
-                itemCopy.total = Number(item.price * item.count).toFixed(2);
-                cartCopy.push(itemCopy)
+            const item = cart[i];
+            const itemCopy = {};
+            for (let p in item) {
+                itemCopy[p] = item[p];
             }
+
+            itemCopy.total = Number(item.Price * item.Quantity).toFixed(2);
+            cartCopy.push(itemCopy)
         }
         return cartCopy;
     }
+
+    // get added product
+    obj.getProduct = function (id) {
+        for (let i in cart) {
+            if (cart[i].ProductQuantitySetId === id) {
+               return cart[i];
+            }
+        }
+        return null;
+    };
+
 
     // cart : Array
     // Item : Object/Class
@@ -155,48 +157,46 @@ var shoppingCart = (function () {
 // Triggers / Events
 // ***************************************** 
 // Add item
-$('.add-to-cart').click(function (event) {
-    event.preventDefault();
+//$('.add-to-cart').click(function (event) {
+//    event.preventDefault();
 
-    const name = $(this).data('name');
-    const price = Number($(this).data('price'));
+//    const name = $(this).data('name');
+//    const price = Number($(this).data('price'));
 
-    shoppingCart.addItemToCart(name, price, 1);
-    displayCart();
-});
+//    shoppingCart.addItemToCart(name, price, 1);
+//    displayCart();
+//});
 
 // Clear items
-$('.clear-cart').click(function () {
-    shoppingCart.clearCart();
-    displayCart();
-});
+//$('.clear-cart').click(function () {
+//    shoppingCart.clearCart();
+//    displayCart();
+//});
 
 
 function displayCart() {
     const cartArray = shoppingCart.listCart();
     var output = "";
     for (let i in cartArray) {
-        if (cartArray.hasOwnProperty(i)) {
-            output +=`<tr>
-                    <td class="text-left"><strong>${cartArray[i].name}</strong></td>
-                    <td>৳${cartArray[i].price}</td>
-                    <td class="text-center text-lg-left">
-                        <span class="qty">${cartArray[i].count}</span>
+        output += `<tr>
+                    <td class="text-left"><strong>${cartArray[i].Name}</strong></td>
+                    <td>৳${cartArray[i].Price}</td>
+                    <td class="text-center">
+                        <span class="qty">${cartArray[i].Quantity}</span>
                         <div class="btn-group radio-group ml-2" data-toggle="buttons">
-                            <label class="btn btn-sm btn-dark btn-rounded minus-item" data-name="${cartArray[i].name}">
+                            <label class="btn btn-sm btn-elegant btn-rounded minus-item" data-id="${cartArray[i].ProductQuantitySetId}">
                                 <input type="radio" name="radio-quantity">&mdash;
                             </label>
-                            <label class="btn btn-sm btn-dark btn-rounded plus-item" data-name="${cartArray[i].name}">
+                            <label class="btn btn-sm btn-elegant btn-rounded plus-item" data-id="${cartArray[i].ProductQuantitySetId}">
                                 <input type="radio" name="radio-quantity">+
                             </label>
                         </div>
                     </td>
                     <td class="font-weight-bold"><strong>৳${cartArray[i].total}</strong></td>
                     <td class="text-right">
-                        <button data-name="${cartArray[i].name}" type="button" class="btn btn-sm btn-danger delete-item" data-toggle="tooltip" data-placement="top" title="Remove item">X</button>
+                        <button data-id="${cartArray[i].ProductQuantitySetId}" type="button" class="btn btn-sm btn-danger delete-item" data-toggle="tooltip" data-placement="top" title="Remove item">X</button>
                     </td>
                 </tr>`
-        }
     }
 
     $('.show-cart tbody').html(output);
@@ -206,35 +206,37 @@ function displayCart() {
 
 // Delete item button
 $('.show-cart').on("click", ".delete-item", function (event) {
-    const name = $(this).data('name');
+    const id = $(this).data('id');
 
-    shoppingCart.removeItemFromCartAll(name);
+    shoppingCart.removeProduct(id);
     displayCart();
 })
 
 
 // -1
 $('.show-cart').on("click", ".minus-item", function (event) {
-    const name = $(this).data('name');
-    shoppingCart.removeItemFromCart(name);
+    const id = $(this).data('id');
+    shoppingCart.decreaseQuantity(id);
 
     displayCart();
 })
+
 
 // +1
 $('.show-cart').on("click", ".plus-item", function (event) {
-    const name = $(this).data('name');
+    const id = $(this).data('id');
 
-    shoppingCart.addItemToCart(name);
+    shoppingCart.increaseQuantity(id);
     displayCart();
 })
 
-// Item count input
+
+// Item quantity input
 //$('.show-cart').on("change", ".item-count", function (event) {
-//    const name = $(this).data('name');
+//    const id = $(this).data('id');
 //    const count = Number($(this).val());
 
-//    shoppingCart.setCountForItem(name, count);
+//    shoppingCart.inputQuantity(id, count);
 //    displayCart();
 //});
 
