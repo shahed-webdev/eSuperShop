@@ -4,15 +4,15 @@ const shoppingCart = (function () {
 
     // Save cart
     function saveCart() {
-        sessionStorage.setItem('shoppingCart', JSON.stringify(cart));
+        localStorage.setItem('shoppingCart', JSON.stringify(cart));
     }
 
     // Load cart
     function loadCart() {
-        cart = JSON.parse(sessionStorage.getItem('shoppingCart'));
+        cart = JSON.parse(localStorage.getItem('shoppingCart'));
     }
 
-    if (sessionStorage.getItem("shoppingCart") != null) {
+    if (localStorage.getItem("shoppingCart") != null) {
         loadCart();
     }
 
@@ -137,18 +137,6 @@ const shoppingCart = (function () {
         return null;
     };
 
-
-    // cart : Array
-    // Item : Object/Class
-    // addItemToCart : Function
-    // removeItemFromCart : Function
-    // removeItemFromCartAll : Function
-    // clearCart : Function
-    // countCart : Function
-    // totalCart : Function
-    // listCart : Function
-    // saveCart : Function
-    // loadCart : Function
     return obj;
 })();
 
@@ -156,54 +144,67 @@ const shoppingCart = (function () {
 // *****************************************
 // Triggers / Events
 // ***************************************** 
-// Add item
-//$('.add-to-cart').click(function (event) {
-//    event.preventDefault();
-
-//    const name = $(this).data('name');
-//    const price = Number($(this).data('price'));
-
-//    shoppingCart.addItemToCart(name, price, 1);
-//    displayCart();
-//});
-
-// Clear items
-//$('.clear-cart').click(function () {
-//    shoppingCart.clearCart();
-//    displayCart();
-//});
-
 
 function displayCart() {
     const cartArray = shoppingCart.listCart();
     var output = "";
     for (let i in cartArray) {
         output += `<tr>
-                    <td class="text-left">${cartArray[i].Name}</td>
+                    <td class="text-left">
+                     <p class="mb-0">${cartArray[i].Name}</p>
+                      <h5 class="mb-0">${addAttribute(cartArray[i].attributesValue)}</h5>
+                    </td>
                     <td>৳${cartArray[i].Price}</td>
                     <td class="text-center">
-                     <input class="item-quantity" data-id="${cartArray[i].ProductQuantitySetId}" value="${cartArray[i].Quantity}" min="0" type="number">
+                     <input class="item-quantity" data-id="${cartArray[i].ProductQuantitySetId}" value="${cartArray[i].Quantity}" min="1" type="number">
                     </td>
                     <td>৳${cartArray[i].total}</td>
                     <td class="text-right">
-                        <button data-id="${cartArray[i].ProductQuantitySetId}" type="button" class="btn btn-sm btn-danger delete-item" data-toggle="tooltip" data-placement="top" title="Remove item">X</button>
+                        <button data-id="${cartArray[i].ProductQuantitySetId}" type="button" class="btn btn-sm grey darken-3 text-white delete-item" data-toggle="tooltip" data-placement="top" title="Remove item">X</button>
                     </td>
                 </tr>`
     }
 
-    $('.show-cart tbody').html(output);
+    const emptyRow = `<tr><td colspan="5" class="alert alert-danger">No Product Added</td></tr>`;
+    $('.show-cart tbody').html(shoppingCart.totalCount() ? output : emptyRow);
     $('.grand-total-amount').html(shoppingCart.totalCart());
     $('.total-cart-count').html(shoppingCart.totalCount());
 
-    //<div class="btn-group radio-group ml-2" data-toggle="buttons">
-    //    <label class="btn btn-sm btn-elegant btn-rounded minus-item" data-id="${cartArray[i].ProductQuantitySetId}">
-    //        <input type="radio" name="radio-quantity">&mdash;
-    //    </label>
-    //    <label class="btn btn-sm btn-elegant btn-rounded plus-item" data-id="${cartArray[i].ProductQuantitySetId}">
-    //        <input type="radio" name="radio-quantity">+
-    //    </label>
-    //</div>
+    shoppingCart.totalCount() ? $('.modal-footer').show() : $('.modal-footer').hide();
 }
+
+function addAttribute(attributes) {
+    let attr = "";
+    attributes.forEach(att => {
+        attr += `<span class="badge badge-pill grey darken-3 mr-2">${att.KeyName}: ${att.Value}</span>`;
+    })
+    return attr;
+}
+
+// Item quantity input
+$('.show-cart').on("change", ".item-quantity", function (event) {
+    const self = $(this);
+    const id = self.data('id');
+    const quantity = Number($(this).val());
+
+    $.ajax({
+        url: "/Product/GetAvailableQuantity",
+        data: { quantitySetId: id },
+        success: function (response) {
+            if (response.IsSuccess) {
+                self.attr("max", response.Data);
+                if (response.Data < quantity) return;
+
+                shoppingCart.inputQuantity(id, quantity);
+                displayCart();
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    })
+});
+
 
 // Delete item button
 $('.show-cart').on("click", ".delete-item", function (event) {
@@ -230,19 +231,6 @@ $('.show-cart').on("click", ".plus-item", function (event) {
     shoppingCart.increaseQuantity(id);
     displayCart();
 })
-
-
-// Item quantity input
-$('.show-cart').on("change", ".item-quantity", function (event) {
-    const id = $(this).data('id');
-
-    if (isNaN($(this).val())) return;
-
-    const quantity = Number($(this).val());
-
-    shoppingCart.inputQuantity(id, quantity);
-    displayCart();
-});
 
 
 displayCart();

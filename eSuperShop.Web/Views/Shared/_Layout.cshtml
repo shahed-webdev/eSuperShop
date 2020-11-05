@@ -202,33 +202,36 @@
     <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-notify modal-danger modal-lg" role="document">
             <div class="modal-content text-center">
-                <div class="modal-header d-flex justify-content-center">
-                    <p class="heading">Shopping Cart</p>
+                <div class="modal-header">
+                    <p class="heading mb-0"><strong>Shopping Cart</strong></p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <table class="show-cart table product-table">
-                        <thead>
-                            <tr>
-                                <th class="text-left"><strong>Product</strong></th>
-                                <th><strong>Price</strong></th>
-                                <th class="text-center"><strong>Quantity</strong></th>
-                                <th><strong>Line Total</strong></th>
-                                <th class="text-right"><strong>Remove</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    <div class="text-right mt-3">
-                        <h4>Total: <strong class="grand-total-amount">0</strong>/-</h4>
+                <form asp-action="Checkout" asp-controller="Product">
+                    <div class="modal-body">
+                        <table class="show-cart table product-table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left"><strong>Product</strong></th>
+                                    <th><strong>Price</strong></th>
+                                    <th class="text-center"><strong>Quantity</strong></th>
+                                    <th><strong>Line Total</strong></th>
+                                    <th class="text-right"><strong>Remove</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
-                </div>
-                <div class="modal-footer flex-center">
-                    <button type="button" class="btn btn-outline-danger btn-rounded" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger btn-rounded">Complete purchase <i class="fas fa-angle-right right"></i></button>
-                </div>
+                    <div class="modal-footer flex-end">
+                        <h5 class="mb-0 font-weight-bold">Total: ৳<strong class="grand-total-amount">0</strong></h5>
+                        <button type="submit" class="btn btn-danger btn-rounded">Checkout <i class="fas fa-angle-right right"></i></button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
 
     <!-- JQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -237,9 +240,9 @@
     <!-- MDB core JavaScript -->
     <script src="~/mdb/js/mdb-admin.min.js"></script>
     <!-- axios -->
-<script src="~/lib/api.axios.min.js"></script>
-<!--notify js-->
-<script src="~/js/notify.min.js"></script>
+    <script src="~/lib/api.axios.min.js"></script>
+    <!--notify js-->
+    <script src="~/js/notify.min.js"></script>
     <!-- VUE JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 

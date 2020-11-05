@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Cart Product";
+}
+
+
+<div class="container">
+    <div class="card card-body mt-4">
+        <table class="show-cart table product-table">
+            <thead>
+                <tr>
+                    <th class="text-left"><strong>Product</strong></th>
+                    <th><strong>Price</strong></th>
+                    <th class="text-center"><strong>Quantity</strong></th>
+                    <th><strong>Line Total</strong></th>
+                    <th class="text-right"><strong>Remove</strong></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="text-right mt-3">
+            <span class=" font-weight-bold mb-0">Total: <span class="grand-total-amount">0</span>/-</span>
+            <button type="button" class="btn btn-danger btn-rounded">Complete purchase <i class="fas fa-angle-right right"></i></button>
+        </div>
+    </div>
+</div>
+

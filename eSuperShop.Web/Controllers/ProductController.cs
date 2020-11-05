@@ -56,8 +56,17 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
+       //get available quantity
+        public IActionResult GetAvailableQuantity(int quantitySetId)
+        {
+            var response = _product.GetQuantityBySetId(quantitySetId);
+            return Json(response);
+        }
+
+
         //cart product List
-        public IActionResult CartProduct()
+        [Authorize(Roles = "Customer")]
+        public IActionResult Checkout()
         {
             return View();
         }
