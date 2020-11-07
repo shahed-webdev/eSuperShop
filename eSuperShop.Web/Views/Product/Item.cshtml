@@ -298,7 +298,13 @@
             {
                 if (User.IsInRole("Customer"))
                 {
-                    <button id="btnAskQuestion" class="btn btn-deep-orange btn-md">Ask Question</button>
+                    <form id="formFaq">
+                        <div class="d-flex align-items-center">
+                            <input type="text" placeholder="Your Question" name="inputQuestion" class="form-control w-75" required>
+                            <button id="btnAskQuestion" type="submit" class="btn btn-dark btn-md font-weight-bold">Ask</button>
+                        </div>
+                    </form>
+                   
                 }
             }
         </div>
@@ -369,9 +375,11 @@
         const btnAddToCart = cartForm.btnAddToCart;
         const btnBuyNow = cartForm.btnBuyNow;
         let attributesValue = null;
-
-        const btnAskQuestion = document.getElementById("btnAskQuestion");
         const attribute = document.getElementById("attribute");
+
+        //form faq
+        const formFaq = document.getElementById("formFaq");
+        const btnAskQuestion = formFaq.btnAskQuestion;
 
         //event
         attribute.addEventListener("change", function(evt) {
@@ -473,31 +481,54 @@
 
         });
 
+        //post faq
+        formFaq.addEventListener("submit", function(evt) {
+            evt.preventDefault();
+
+            const body = {
+                ProductId: @Model.ProductId,
+                CustomerId: "",
+                Question: this.inputQuestion
+            }
+
+            $.ajax({
+                url: "/Product/PostFaq",
+                type: "POST",
+                data: body,
+                success: function(response) {
+                    if (response.IsSuccess) {
+                        //appendFaq(question);
+
+                        $.notify("Question sent to seller", "success", { position: "right" });
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        //append faq to dom
+        function appendFaq(question) {
+            const faq = document.getElementById("faq");
+
+            const parentDiv = document.createElement("div");
+            parentDiv.className = "my-4 border-bottom pb-3";
+            parentDiv.innerHTML = `<div class="d-flex align-items-start">
+                                     <div class="questing-title">Question <i class="fal fa-caret-right"></i></div>
+                                     <div class="text-container">
+                                         <h6>Question</h6>
+                                         <p>-shahedloopsit@gmail.com <small class="ml-2">28-Oct-2020</small></p>
+                                     </div>
+                                 </div>`;
+
+            faq.appendChild(parentDiv);
+        }
 
         //loader
         function showLoader(status) {
             btnAddToCart.disabled = status;
             btnBuyNow.disabled = status;
         }
-
-
-        @*const body = {
-            ProductId: @Model.ProductId
-            //Page: 1,
-            //PageSize:4
-        };
-
-        $.ajax({
-            //url: "/Product/GetReviews",
-            url: "/Product/GetAverageReviews",
-            data: body,
-            success: function(response) {
-                console.log(response);
-                document.getElementById("review-count").textContent = response.Data.AverageRating;
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });*@
     </script>
 }

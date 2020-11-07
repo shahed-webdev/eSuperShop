@@ -5,23 +5,68 @@
 
 
 <div class="container">
-    <div class="card card-body mt-4">
-        <table class="show-cart table product-table">
-            <thead>
-                <tr>
-                    <th class="text-left"><strong>Product</strong></th>
-                    <th><strong>Price</strong></th>
-                    <th class="text-center"><strong>Quantity</strong></th>
-                    <th><strong>Line Total</strong></th>
-                    <th class="text-right"><strong>Remove</strong></th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <div class="text-right mt-3">
-            <span class=" font-weight-bold mb-0">Total: <span class="grand-total-amount">0</span>/-</span>
-            <button type="button" class="btn btn-danger btn-rounded">Complete purchase <i class="fas fa-angle-right right"></i></button>
+    <div class="row">
+        <div class="col-lg-7 col-md-6 mt-4">
+            <div class="card card-body">
+                <table class="show-cart table product-table">
+                    <thead>
+                        <tr>
+                            <th class="text-left"><strong>Product</strong></th>
+                            <th><strong>Price</strong></th>
+                            <th class="text-center"><strong>Quantity</strong></th>
+                            <th><strong>Line Total</strong></th>
+                            <th class="text-right"><strong>Remove</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="text-right mt-3">
+                    <span class=" font-weight-bold">Total: ৳<span class="grand-total-amount">0</span></span>
+                    <button type="button" class="btn btn-danger btn-rounded">Complete purchase <i class="fas fa-angle-right right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-6 mt-4">
+            <div class="card card-body">
+                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalShippingForm">add shipping Address</a>
+            </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="modalShippingForm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Add Shipping Address</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <input type="text" id="inputName" class="form-control validate" required>
+                        <label for="inputName">Your name</label>
+                    </div>
+                    <div class="md-form mb-5">
+                        <input type="text" id="inputPhone" class="form-control validate" required>
+                        <label for="inputPhone">Phone</label>
+                    </div>
+                    <div class="md-form mb-5">
+                        <input type="text" id="inputEmail" class="form-control validate">
+                        <label for="inputEmail">Email</label>
+                    </div>
+                    <div class="md-form">
+                        <textarea type="text" id="inputAddress" class="md-textarea form-control" rows="1" required></textarea>
+                        <label for="inputAddress">Address</label>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger">Add Address <i class="fas fa-paper-plane-o ml-1"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
