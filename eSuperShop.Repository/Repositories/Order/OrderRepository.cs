@@ -28,6 +28,13 @@ namespace eSuperShop.Repository
         {
             var order = _mapper.Map<Order>(model);
             order.OrderSn = GetNewSn();
+            foreach (var item in order.OrderList)
+            {
+                item.CommissionPercentage = (from v in Db.VendorCatalog
+                                             join p in Db.Product on new { v.CatalogId, v.VendorId } equals new { p.CatalogId, p.VendorId }
+                                             where p.ProductId == item.ProductId
+                                             select v.CommissionPercentage).FirstOrDefault();
+            }
             Db.Order.Add(order);
         }
 
