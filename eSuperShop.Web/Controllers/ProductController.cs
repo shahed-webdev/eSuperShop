@@ -55,7 +55,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult PostFaq(ProductFaqAddModel model)
         {
-            var response = _product.FaqAdd(model);
+            var response = _product.FaqAdd(model, User.Identity.Name);
             return Json(response);
         }
 
