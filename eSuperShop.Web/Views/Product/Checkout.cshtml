@@ -3,10 +3,56 @@
     ViewData["Title"] = "Cart Product";
 }
 
+@section Styles
+{
+    <style>
+        .default-address { border: 1px solid #00ff00}
+    </style>
+}
 
-<div class="container">
+<div class="container mb-5">
     <div class="row">
         <div class="col-lg-7 col-md-6 mt-4">
+            <div class="card card-body mb-4">
+                <div class="border-bottom pb-2 mb-3">
+                    <h4 class="font-weight-bold mb-1">Shipping Address</h4>
+                    <a href="" data-toggle="modal" data-target="#modalShippingForm">Add New Address</a>
+                </div>
+
+                <fieldset class="border rounded px-3 mb-3 border-primary">
+                    <legend class="w-auto mb-0">
+                        <input type="checkbox" class="form-check-input" checked id="1">
+                        <label class="form-check-label pl-3" for="1"></label>
+                    </legend>
+
+                    <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> Muhebollah</h6>
+                    <p class="mb-2"><i class="fas fa-phone"></i> 01680964257</p>
+                    <p><i class="fas fa-map-marker-alt"></i> GF, House # 328, East Nakhal Para, Tejgaon, Dhaka</p>
+                </fieldset>
+
+                <fieldset class="border rounded px-3 mb-3">
+                    <legend class="w-auto mb-0">
+                        <input type="checkbox" class="form-check-input" id="2">
+                        <label class="form-check-label pl-3" for="2"></label>
+                    </legend>
+
+                    <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> Muhebollah</h6>
+                    <p class="mb-2"><i class="fas fa-phone"></i> 01680964257</p>
+                    <p><i class="fas fa-map-marker-alt"></i> GF, House # 328, East Nakhal Para, Tejgaon, Dhaka</p>
+                </fieldset>
+
+                <fieldset class="border rounded px-3 mb-3">
+                    <legend class="w-auto mb-0">
+                        <input type="checkbox" class="form-check-input" id="2">
+                        <label class="form-check-label pl-3" for="2"></label>
+                    </legend>
+
+                    <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> Muhebollah</h6>
+                    <p class="mb-2"><i class="fas fa-phone"></i> 01680964257</p>
+                    <p><i class="fas fa-map-marker-alt"></i> GF, House # 328, East Nakhal Para, Tejgaon, Dhaka</p>
+                </fieldset>
+            </div>
+
             <div class="card card-body">
                 <table class="show-cart table product-table">
                     <thead>
@@ -20,17 +66,29 @@
                     </thead>
                     <tbody></tbody>
                 </table>
-                <div class="text-right mt-3">
-                    <span class=" font-weight-bold">Total: ৳<span class="grand-total-amount">0</span></span>
-                    <button type="button" class="btn btn-danger btn-rounded">Complete purchase <i class="fas fa-angle-right right"></i></button>
-                </div>
             </div>
         </div>
         <div class="col-lg-5 col-md-6 mt-4">
             <div class="card card-body">
-                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalShippingForm">add shipping Address</a>
+                <h4 class="font-weight-bold border-bottom pb-3 mb-3">Order Summary</h4>
+                <ul class="list-group mb-3">
+                    <li class="d-flex justify-content-between align-items-center">
+                        <div>Cart Subtotal</div>
+                        <div>৳<span class="grand-total-amount">0</span></div>
+                    </li>
+                    <li class="d-flex justify-content-between align-items-center border-bottom my-2 pb-3">
+                        <div>Shipping</div>
+                        <div>৳<span class="shipping-amount">0</span></div>
+                    </li>
+                    <li class="d-flex justify-content-between align-items-center">
+                        <h5 class="font-weight-bold">Order Total</h5>
+                        <h5 class="font-weight-bold">৳2,200</h5>
+                    </li>
+                </ul>
+                
+                <button type="button" class="btn btn-danger btn-rounded mt-2">Complete purchase <i class="fas fa-angle-right right"></i></button>
             </div>
-        </div>
+        </div> 
     </div>
 </div>
 
@@ -45,15 +103,15 @@
                     </button>
                 </div>
                 <div class="modal-body mx-3">
-                    <div class="md-form mb-5">
+                    <div class="md-form">
                         <input type="text" id="inputName" class="form-control validate" required>
                         <label for="inputName">Your name</label>
                     </div>
-                    <div class="md-form mb-5">
+                    <div class="md-form">
                         <input type="text" id="inputPhone" class="form-control validate" required>
                         <label for="inputPhone">Phone</label>
                     </div>
-                    <div class="md-form mb-5">
+                    <div class="md-form">
                         <input type="text" id="inputEmail" class="form-control validate">
                         <label for="inputEmail">Email</label>
                     </div>
