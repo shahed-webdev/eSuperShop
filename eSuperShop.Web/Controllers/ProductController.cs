@@ -16,10 +16,12 @@ namespace eSuperShop.Web.Controllers
     public class ProductController : Controller
     {
         private readonly IProductCore _product;
+        private readonly IOrderCore _order;
 
-        public ProductController(IProductCore product)
+        public ProductController(IProductCore product, IOrderCore order)
         {
             _product = product;
+            _order = order;
         }
 
         public IActionResult FlashDeals()
@@ -48,6 +50,15 @@ namespace eSuperShop.Web.Controllers
             return View(model.Data);
         }
 
+        //post FAQ
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult PostFaq(ProductFaqAddModel model)
+        {
+            var response = _product.FaqAdd(model);
+            return Json(response);
+        }
+
         //get stock
         [HttpPost]
         public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
@@ -69,6 +80,16 @@ namespace eSuperShop.Web.Controllers
         public IActionResult Checkout()
         {
             return View();
+        }
+
+
+        //place order
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult PlaceOrder(OrderPlaceModel model, string userName)
+        {
+            var response = _order.OrderPlace(model, userName);
+            return Json(response);
         }
     }
 }
