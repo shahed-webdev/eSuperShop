@@ -462,10 +462,16 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse FaqAdd(ProductFaqAddModel model)
+        public DbResponse FaqAdd(ProductFaqAddModel model, string customerUserName)
         {
             try
             {
+                var customerId = _db.Registration.CustomerIdByUserName(customerUserName);
+
+                if (customerId == 0)
+                    return new DbResponse(false, "Invalid User");
+                model.CustomerId = customerId;
+
                 _db.ProductFaq.Add(model);
                 _db.SaveChanges();
 

@@ -15,6 +15,7 @@ namespace eSuperShop.Data
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
+        public bool IsDefault { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual ICollection<Order> Order { get; set; }
