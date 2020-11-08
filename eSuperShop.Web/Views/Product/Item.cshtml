@@ -484,46 +484,32 @@
         //post faq
         formFaq.addEventListener("submit", function(evt) {
             evt.preventDefault();
+            this.btnAskQuestion.disabled = true;
 
             const body = {
                 ProductId: @Model.ProductId,
-                CustomerId: "",
-                Question: this.inputQuestion
+                Question: this.inputQuestion.value
             }
 
             $.ajax({
                 url: "/Product/PostFaq",
                 type: "POST",
                 data: body,
-                success: function(response) {
+                success: response=> {
+                    console.log(response)
                     if (response.IsSuccess) {
-                        //appendFaq(question);
-
-                        $.notify("Question sent to seller", "success", { position: "right" });
+                        $.notify("Question sent, seller will answer you soon, ", "success", { position: "right" });
                     }
+
+                    this.inputQuestion.value = "";
+                    this.btnAskQuestion.disabled = false;
                 },
-                error: function(err) {
+                error: err=> {
                     console.log(err);
+                    this.btnAskQuestion.disabled = false;
                 }
             });
         });
-
-        //append faq to dom
-        function appendFaq(question) {
-            const faq = document.getElementById("faq");
-
-            const parentDiv = document.createElement("div");
-            parentDiv.className = "my-4 border-bottom pb-3";
-            parentDiv.innerHTML = `<div class="d-flex align-items-start">
-                                     <div class="questing-title">Question <i class="fal fa-caret-right"></i></div>
-                                     <div class="text-container">
-                                         <h6>Question</h6>
-                                         <p>-shahedloopsit@gmail.com <small class="ml-2">28-Oct-2020</small></p>
-                                     </div>
-                                 </div>`;
-
-            faq.appendChild(parentDiv);
-        }
 
         //loader
         function showLoader(status) {
