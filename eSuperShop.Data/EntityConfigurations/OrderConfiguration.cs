@@ -37,12 +37,6 @@ namespace eSuperShop.Data
                 .HasColumnType("datetime");
 
 
-            builder.HasOne(o => o.OrderShippingAddress)
-                .WithMany(a => a.Order)
-                .HasForeignKey(o => o.OrderShippingAddressId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .HasConstraintName("FK_Order_OrderShippingAddress");
-
             builder.HasOne(o => o.Customer)
                 .WithMany(c => c.Order)
                 .HasForeignKey(d => d.CustomerId)

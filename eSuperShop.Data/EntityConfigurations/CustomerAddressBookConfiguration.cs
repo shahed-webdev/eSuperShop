@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eSuperShop.Data
 {
-    public class OrderShippingAddressConfiguration : IEntityTypeConfiguration<OrderShippingAddress>
+    public class CustomerAddressBookConfiguration : IEntityTypeConfiguration<CustomerAddressBook>
     {
-        public void Configure(EntityTypeBuilder<OrderShippingAddress> builder)
+        public void Configure(EntityTypeBuilder<CustomerAddressBook> builder)
         {
             builder.Property(p => p.Address)
                 .HasMaxLength(2000)
@@ -22,11 +22,12 @@ namespace eSuperShop.Data
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getutcdate())");
 
-            builder.HasOne(s => s.Order)
-                .WithOne(c => c.OrderShippingAddress)
-                .HasForeignKey<OrderShippingAddress>(s => s.OrderId)
+            builder.HasOne(s => s.Customer)
+                .WithMany(c => c.CustomerAddressBook)
+                .HasForeignKey(s => s.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_OrderShippingAddress_Order");
+                .HasConstraintName("FK_CustomerAddressBook_Customer");
+
         }
     }
 }

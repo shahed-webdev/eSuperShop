@@ -10,9 +10,11 @@ namespace eSuperShop.Repository
         }
 
         public OrderShippingAddress OrderShippingAddress { get; set; }
+
         public void Add(OrderShippingAddressAddModel model)
         {
-            throw new System.NotImplementedException();
+            var address = _mapper.Map<OrderShippingAddress>(model);
+            Db.OrderShippingAddress.Add(address);
         }
     }
 }

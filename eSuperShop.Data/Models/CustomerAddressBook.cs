@@ -2,16 +2,17 @@
 
 namespace eSuperShop.Data
 {
-    public class OrderShippingAddress
+    public class CustomerAddressBook
     {
-        public int OrderShippingAddressId { get; set; }
-        public int OrderId { get; set; }
+        public int CustomerAddressBookId { get; set; }
+        public int CustomerId { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public string AlternativePhone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
+        public bool IsDefault { get; set; }
         public DateTime CreatedOnUtc { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

@@ -13,7 +13,6 @@ namespace eSuperShop.Data
         public int CustomerId { get; set; }
         public int OrderSn { get; set; }
         public string PaymentMethod { get; set; }
-        public int OrderShippingAddressId { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public DateTime ConfirmedOnUtc { get; set; }
         public DateTime DeliveredOnUtc { get; set; }

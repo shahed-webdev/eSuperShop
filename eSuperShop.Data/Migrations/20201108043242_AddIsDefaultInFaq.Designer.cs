@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eSuperShop.Data;
 
 namespace eSuperShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201108043242_AddIsDefaultInFaq")]
+    partial class AddIsDefaultInFaq
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -575,51 +577,6 @@ namespace eSuperShop.Data.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("eSuperShop.Data.CustomerAddressBook", b =>
-                {
-                    b.Property<int>("CustomerAddressBookId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(2000)")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("AlternativePhone")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<DateTime>("CreatedOnUtc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getutcdate())");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("CustomerAddressBookId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("CustomerAddressBook");
-                });
-
             modelBuilder.Entity("eSuperShop.Data.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -658,6 +615,9 @@ namespace eSuperShop.Data.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasComputedColumnSql("(([TotalAmount]-[Discount])+[ShippingCost])");
 
+                    b.Property<int>("OrderShippingAddressId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderSn")
                         .HasColumnName("OrderSN")
                         .HasColumnType("int");
@@ -675,6 +635,8 @@ namespace eSuperShop.Data.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("OrderShippingAddressId");
 
                     b.ToTable("Order");
                 });
@@ -737,23 +699,22 @@ namespace eSuperShop.Data.Migrations
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
 
-                    b.Property<string>("AlternativePhone")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<DateTime>("CreatedOnUtc")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getutcdate())");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -762,8 +723,7 @@ namespace eSuperShop.Data.Migrations
 
                     b.HasKey("OrderShippingAddressId");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("OrderShippingAddress");
                 });
@@ -1793,16 +1753,6 @@ namespace eSuperShop.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("eSuperShop.Data.CustomerAddressBook", b =>
-                {
-                    b.HasOne("eSuperShop.Data.Customer", "Customer")
-                        .WithMany("CustomerAddressBook")
-                        .HasForeignKey("CustomerId")
-                        .HasConstraintName("FK_CustomerAddressBook_Customer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("eSuperShop.Data.Order", b =>
                 {
                     b.HasOne("eSuperShop.Data.Customer", "Customer")
@@ -1810,6 +1760,13 @@ namespace eSuperShop.Data.Migrations
                         .HasForeignKey("CustomerId")
                         .HasConstraintName("FK_Order_Customer")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("eSuperShop.Data.OrderShippingAddress", "OrderShippingAddress")
+                        .WithMany("Order")
+                        .HasForeignKey("OrderShippingAddressId")
+                        .HasConstraintName("FK_Order_OrderShippingAddress")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -1839,10 +1796,10 @@ namespace eSuperShop.Data.Migrations
 
             modelBuilder.Entity("eSuperShop.Data.OrderShippingAddress", b =>
                 {
-                    b.HasOne("eSuperShop.Data.Order", "Order")
-                        .WithOne("OrderShippingAddress")
-                        .HasForeignKey("eSuperShop.Data.OrderShippingAddress", "OrderId")
-                        .HasConstraintName("FK_OrderShippingAddress_Order")
+                    b.HasOne("eSuperShop.Data.Customer", "Customer")
+                        .WithMany("OrderShippingAddress")
+                        .HasForeignKey("CustomerId")
+                        .HasConstraintName("FK_OrderShippingAddress_Customer")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
