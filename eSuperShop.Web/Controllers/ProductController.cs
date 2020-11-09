@@ -76,9 +76,14 @@ namespace eSuperShop.Web.Controllers
 
 
         //cart product List
-        [Authorize(Roles = "Customer")]
         public IActionResult Checkout()
         {
+            if (!User.Identity.IsAuthenticated)
+                return Redirect("/Account/CustomerLogin/?returnUrl=/Product/Checkout");
+
+            if (!User.IsInRole("Customer"))
+                return Redirect("/Home/Index");
+
             return View();
         }
 

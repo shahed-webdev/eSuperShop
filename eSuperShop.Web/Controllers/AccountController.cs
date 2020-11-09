@@ -15,13 +15,13 @@ namespace eSuperShop.Web.Controllers
         private readonly IUnitOfWork _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ICustomerCore _Customer;
+        private readonly ICustomerCore _customer;
         public AccountController(IUnitOfWork db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ICustomerCore customer)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
-            _Customer = customer;
+            _customer = customer;
         }
 
         //GET: Admin/seller Login
@@ -203,7 +203,7 @@ namespace eSuperShop.Web.Controllers
                             Name = info.ProviderDisplayName,
                             Email = email
                         };
-                        var response = _Customer.Add(customerModel);
+                        var response = _customer.Add(customerModel);
                         if (!response.IsSuccess)
                             return RedirectToAction("CustomerLogin", new { ReturnUrl = returnUrl });
 
