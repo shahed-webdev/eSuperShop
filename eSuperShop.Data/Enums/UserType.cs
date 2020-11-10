@@ -6,10 +6,13 @@ namespace eSuperShop.Data
     {
         [Description("Admin")]
         Admin,
+
         [Description("Sub-Admin")]
         SubAdmin,
-        [Description("Customer")]
+
+        [Description("Customer")] 
         Customer,
+
         [Description("Seller")]
         Seller
     }

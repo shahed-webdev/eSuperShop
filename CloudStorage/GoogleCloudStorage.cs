@@ -24,7 +24,7 @@ namespace CloudStorage
             await using var memoryStream = new MemoryStream();
             await imageFile.CopyToAsync(memoryStream);
 
-            var dataObject = await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, null, memoryStream);
+            var dataObject = await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, imageFile.ContentType, memoryStream);
             return dataObject.MediaLink;
         }
    

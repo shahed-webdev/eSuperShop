@@ -36,11 +36,15 @@
                     </div>
 
                     <div class="filter-rating my-4">
-                        <h5 class="mb-2">Rating</h5>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="font-weight-bold text-danger">0</span>
-                            <input id="ratingSlider" class="custom-range" type="range" min="0" max="5" step="0.5" />
-                            <span class="font-weight-bold text-danger valueSpan"></span>
+                        <div class="d-flex mb-2">
+                            <h5 class="mb-0 mr-3">Rating:</h5>
+                            <star-rating :max-rating="5"
+                                         :increment="0.5"
+                                         inactive-color="#bbb"
+                                         active-color="#F97700"
+                                         :star-size="18"
+                                         :show-rating="false">
+                            </star-rating>
                         </div>
                     </div>
 
@@ -124,7 +128,11 @@
 </template>
 
 <script>
+    import StarRating from 'vue-star-rating';
     export default {
+        components: {
+            StarRating
+        },
         props: ['slugUrl'],
         data() {
             return {
@@ -139,7 +147,7 @@
                 SubCatalogs: [],
                 Brands: [],
                 Attributes: [],
-                Specifications:[]
+                Specifications: []
             }
         },
         methods: {
@@ -147,15 +155,15 @@
                 axios.get('/Category/GetProducts', { params: { slugUrl: this.slugUrl } }).then(response => {
                     console.log(response.data)
                     const { Breadcrumb, SubCatalogs, Products, Brands, Attributes, Specifications } = response.data;
-                 
+
                     this.CatalogName = Breadcrumb.CatalogName;
                     this.SlugUrl = Breadcrumb.SlugUrl;
                     this.ParentCatalog = Breadcrumb.ParentCatalog;
 
                     this.data = Products;
-                    this.SubCatalogs = SubCatalogs.length ? SubCatalogs: [];
-                    this.Brands = Brands.length ? Brands: [];
-                    this.Attributes = Attributes.length ? Attributes: [];
+                    this.SubCatalogs = SubCatalogs.length ? SubCatalogs : [];
+                    this.Brands = Brands.length ? Brands : [];
+                    this.Attributes = Attributes.length ? Attributes : [];
                     this.Specifications = Specifications.length ? Specifications : [];
 
                     this.isDataFound = true;
@@ -168,7 +176,7 @@
 
                     const element = document.documentElement;
                     const bottomOfWindow = element.scrollTop + window.innerHeight === element.offsetHeight;
-    
+
                     if (bottomOfWindow) {
                         axios.get('/Category/GetProducts', { params }).then(response => {
                             const { IsSuccess, Data } = response.data;
