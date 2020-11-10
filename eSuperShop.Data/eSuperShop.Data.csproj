@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20201029042017_AddProductFaq.Designer.cs" />
     <Compile Remove="Migrations\20201029042640_AddProductFaq.cs" />
     <Compile Remove="Migrations\20201029042640_AddProductFaq.Designer.cs" />
+    <Compile Remove="Migrations\20201109033022_AddCustomerAddressTable.cs" />
+    <Compile Remove="Migrations\20201109033022_AddCustomerAddressTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

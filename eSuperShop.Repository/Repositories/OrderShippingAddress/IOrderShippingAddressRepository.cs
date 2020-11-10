@@ -8,6 +8,8 @@ namespace eSuperShop.Repository
 
         void Add(OrderShippingAddressAddModel model);
 
+        //bool IsExist(int customerId);
 
+        //void AssignAsDefault(int orderShippingAddressId);
     }
 }

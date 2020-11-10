@@ -19,6 +19,7 @@ namespace eSuperShop.Data
         public virtual DbSet<CatalogShownPlace> CatalogShownPlace { get; set; }
         public virtual DbSet<CatalogSpecification> CatalogSpecification { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<CustomerAddressBook> CustomerAddressBook { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderList> OrderList { get; set; }
         public virtual DbSet<OrderShippingAddress> OrderShippingAddress { get; set; }
@@ -55,6 +56,7 @@ namespace eSuperShop.Data
             builder.ApplyConfiguration(new CatalogShownPlaceConfiguration());
             builder.ApplyConfiguration(new CatalogSpecificationConfiguration());
             builder.ApplyConfiguration(new CustomerConfiguration());
+            builder.ApplyConfiguration(new CustomerAddressBookConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
             builder.ApplyConfiguration(new OrderListConfiguration());
             builder.ApplyConfiguration(new OrderShippingAddressConfiguration());

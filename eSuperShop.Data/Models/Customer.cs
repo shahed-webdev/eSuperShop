@@ -11,7 +11,7 @@ namespace eSuperShop.Data
             VendorFollower = new HashSet<VendorFollower>();
             VendorReview = new HashSet<VendorReview>();
             Order = new HashSet<Order>();
-            OrderShippingAddress = new HashSet<OrderShippingAddress>();
+            CustomerAddressBook = new HashSet<CustomerAddressBook>();
         }
 
         public int CustomerId { get; set; }
@@ -24,6 +24,6 @@ namespace eSuperShop.Data
         public virtual ICollection<VendorFollower> VendorFollower { get; set; }
         public virtual ICollection<VendorReview> VendorReview { get; set; }
         public virtual ICollection<Order> Order { get; set; }
-        public virtual ICollection<OrderShippingAddress> OrderShippingAddress { get; set; }
+        public virtual ICollection<CustomerAddressBook> CustomerAddressBook { get; set; }
     }
 }
