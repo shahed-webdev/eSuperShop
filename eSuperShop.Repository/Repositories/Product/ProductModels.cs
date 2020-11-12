@@ -251,6 +251,7 @@ namespace eSuperShop.Repository
 
     public class ProductFilterRequest : PageRequest
     {
+        public string SlugUrl { get; set; }
     }
 
     public class ProductListViewModel

@@ -76,7 +76,7 @@
 
             <div class="col-lg-9">
                 <div class="row">
-                    <div v-for="(item,i) in data" :key="i" class="col-xl-3 col-lg-4 col-sm-6">
+                    <div v-for="(item,i) in data" :key="i" class="col-xl-3 col-lg-4 col-sm-6 mb-3">
                         <div class="card hoverable h-100">
                             <div class="view overlay">
                                 <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
@@ -104,7 +104,12 @@
                 </div>
             </div>
         </div>
+
+        <div class="loader-style" v-if="isLoading">
+            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+        </div>
     </div>
+
     <div v-else class="loading-screen">
         <ol class="breadcrumb loading grey lighten-3 mt-3 py-4"></ol>
 
@@ -137,12 +142,13 @@
         data() {
             return {
                 CatalogName: "loading..",
-                SlugUrl: "loading..",
+                SlugUrl: "loading.. ",
                 ParentCatalog: null,
 
                 data: [],
                 isDataFound: false,
-                params: { Page: 2, PageSize: 4 },
+                isLoading:false,
+                params: { SlugUrl: this.slugUrl, Page: 2, PageSize: 2 },
                 isLastPage: true,
                 SubCatalogs: [],
                 Brands: [],
@@ -152,8 +158,7 @@
         },
         methods: {
             getData() {
-                axios.get('/Category/GetProducts', { params: { slugUrl: this.slugUrl } }).then(response => {
-                    console.log(response.data)
+                axios.get('/Category/GetProducts', { params: { slugUrl: this.slugUrl, pageSize: 2 } }).then(response => {
                     const { Breadcrumb, SubCatalogs, Products, Brands, Attributes, Specifications } = response.data;
 
                     this.CatalogName = Breadcrumb.CatalogName;
@@ -167,46 +172,47 @@
                     this.Specifications = Specifications.length ? Specifications : [];
 
                     this.isDataFound = true;
-                });
+                }).catch(err => {
+                    console, log(err);
+                    this.isDataFound = true;
+                })
             },
 
             getDataOnDemand(params) {
                 window.onscroll = () => {
+                    if (!this.data.length) return;
+
                     if (!this.isLastPage) return;
 
                     const element = document.documentElement;
                     const bottomOfWindow = element.scrollTop + window.innerHeight === element.offsetHeight;
 
                     if (bottomOfWindow) {
-                        axios.get('/Category/GetProducts', { params }).then(response => {
+                        this.isLoading = true;
+
+                        axios.get('/Category/GetProductsOnDemand', { params }).then(response => {
                             const { IsSuccess, Data } = response.data;
-                            console.log(response)
-                            this.isLastPage = IsSuccess;
+
+                            this.isLastPage = Data.Results.length ? true : false;
+                            this.isLoading = false;
 
                             if (!IsSuccess) return;
 
                             this.data.push(...Data.Results);
                             this.params.Page++;
-                        });
+                        }).catch(err => {
+                            console, log(err);
+                            this.isLoading = false;
+                        })
                     }
                 };
             },
-
-            showProps(obj, objName) {
-                var result = ``;
-                for (var i in obj) {
-                    if (obj.hasOwnProperty(i)) {
-                        result += `${objName}.${i} = ${obj[i]}\n`;
-                    }
-                }
-                return result;
-            }
         },
         beforeMount() {
             this.getData();
         },
         mounted() {
-            //this.getDataOnDemand(this.params);
+            this.getDataOnDemand(this.params);
         }
     }
 </script>

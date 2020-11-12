@@ -41,3 +41,7 @@ input[type="checkbox"].input-validation-error { border: 0 none; }
 
 /*shopping cart quantity input*/
 .item-quantity {width: 100%; border: 1px solid #ddd; border-radius: 5px; text-align: center; padding: 3px 0; }
+
+/*lading animation*/
+.loader-style { text-align: center; margin: 15px 0}
+.loader-style i { color: #4f4f4f }

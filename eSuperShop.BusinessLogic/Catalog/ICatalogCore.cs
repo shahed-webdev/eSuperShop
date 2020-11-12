@@ -1,6 +1,7 @@
 ﻿using eSuperShop.Data;
 using eSuperShop.Repository;
 using System.Collections.Generic;
+using Paging.Infrastructure;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -20,7 +21,8 @@ namespace eSuperShop.BusinessLogic
         List<DDL> DisplayPlaceDdl();
         DbResponse<List<DDL>> ListDdl();
         DbResponse<CatalogDisplayModel> AssignPlace(CatalogAssignModel model, string userName);
-        DbResponse<CatalogProductListViewModel> ProductList(string slugUrl);
+        DbResponse<CatalogProductListViewModel> ProductListPageData(string slugUrl, int pageSize);
+        DbResponse<PagedResult<ProductListViewModel>> GetCatalogWiseList(string slugUrl, ProductFilterRequest request);
         DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace);
 
 

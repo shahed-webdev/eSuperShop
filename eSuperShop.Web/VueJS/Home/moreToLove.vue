@@ -44,6 +44,10 @@
                 </div>
             </div>
         </div>
+
+        <div class="loader-style" v-if="isLoading">
+            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+        </div>
     </div>
 </template>
 
@@ -58,7 +62,8 @@
                 data: [],
                 isData: false,
                 params: { Page: 2, PageSize: 4 },
-                isLastPage: true
+                isLastPage: true,
+                isLoading: false
             }
         },
         methods: {
@@ -80,14 +85,20 @@
                     const bottomOfWindow = element.scrollTop + window.innerHeight === element.offsetHeight;
     
                     if (bottomOfWindow) {
+                        this.isLoading = true;
+
                         axios.get('/home/GetMoreToLove', { params }).then(response => {
                             const { IsSuccess, Data } = response.data;
-                            this.isLastPage = IsSuccess;
+                            this.isLastPage = Data.Results.length;
+                            this.isLoading = false;
 
                             if (!IsSuccess) return;
 
                             this.data.push(...Data.Results);
                             this.params.Page++;
+                        }).catch(err => {
+                            console.log(err);
+                            this.isLoading = false;
                         });
                     }
                 };

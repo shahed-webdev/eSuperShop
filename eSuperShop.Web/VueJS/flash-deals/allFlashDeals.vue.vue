@@ -3,7 +3,7 @@
         <div class="product-header">
             <h3>Flash Deals</h3>
         </div>
-    
+
         <div class="row">
             <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-4">
                 <div class="card hoverable h-100">
@@ -42,6 +42,10 @@
                 </div>
             </div>
         </div>
+
+        <div class="loader-style" v-if="isLoading">
+            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+        </div>
     </div>
 </template>
 
@@ -56,7 +60,8 @@
                 data: [],
                 isData: false,
                 params: { Page: 2, PageSize: 4 },
-                isLastPage: true
+                isLastPage: true,
+                isLoading: false
             }
         },
         methods: {
@@ -78,10 +83,13 @@
                     const bottomOfWindow = element.scrollTop + window.innerHeight === element.offsetHeight;
     
                     if (bottomOfWindow) {
+                        this.isLoading = true;
+
                         axios.get('/home/GetFlashDeals', { params }).then(response => {
                             const { IsSuccess, Data } = response.data;
-                            console.log(response)
-                            this.isLastPage = IsSuccess;
+
+                            this.isLastPage = Data.Results.length;
+                            this.isLoading = false;
 
                             if (!IsSuccess) return;
 

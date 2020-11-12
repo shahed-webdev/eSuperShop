@@ -4,6 +4,7 @@ using eSuperShop.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Paging.Infrastructure;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -236,7 +237,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<CatalogProductListViewModel> ProductList(string slugUrl)
+        public DbResponse<CatalogProductListViewModel> ProductListPageData(string slugUrl, int pageSize)
         {
             try
             {
@@ -253,7 +254,7 @@ namespace eSuperShop.BusinessLogic
                 data.Products = _db.Product.GetCatalogWiseList(data.CatalogIds, new ProductFilterRequest
                 {
                     Page = 1,
-                    PageSize = 20
+                    PageSize =pageSize
                 }).Results;
 
 
@@ -262,6 +263,27 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse<CatalogProductListViewModel>(false, e.Message);
+            }
+        }
+
+        public DbResponse<PagedResult<ProductListViewModel>> GetCatalogWiseList(string slugUrl,
+            ProductFilterRequest request)
+        {
+            try
+            {
+                if (!_db.Catalog.IsExistSlugUrl(slugUrl))
+                    return new DbResponse<PagedResult<ProductListViewModel>>(false, "Invalid Catalog");
+
+                var catalogIds = _db.Catalog.CatalogIdsBySlugUrl(slugUrl);
+
+                var data = _db.Product.GetCatalogWiseList(catalogIds, request);
+
+
+                return new DbResponse<PagedResult<ProductListViewModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<PagedResult<ProductListViewModel>>(false, e.Message);
             }
         }
 

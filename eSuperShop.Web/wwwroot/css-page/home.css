@@ -48,11 +48,13 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 /*more product*/
 .sold-count { display: block; color: #443C3C; font-size: 12px}
 
+
+
 /*image max size*/
 #flash-deals .card-img-top,
 #top-rated .card-img-top,
 #top-store .card-img-top,
-#more-products .card-img-top { max-height: 250px}
+#more-products .card-img-top { max-height: 250px }
 
 
 @media (max-width: 767.98px) {

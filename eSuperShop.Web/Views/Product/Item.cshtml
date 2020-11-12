@@ -377,10 +377,6 @@
         let attributesValue = null;
         const attribute = document.getElementById("attribute");
 
-        //form faq
-        const formFaq = document.getElementById("formFaq");
-        const btnAskQuestion = formFaq.btnAskQuestion;
-
         //event
         attribute.addEventListener("change", function(evt) {
             const element = evt.target;
@@ -482,34 +478,37 @@
         });
 
         //post faq
-        formFaq.addEventListener("submit", function(evt) {
-            evt.preventDefault();
-            this.btnAskQuestion.disabled = true;
+        const formFaq = document.getElementById("formFaq");
+        if (formFaq) {
+            formFaq.addEventListener("submit", function(evt) {
+                evt.preventDefault();
+                this.btnAskQuestion.disabled = true;
 
-            const body = {
-                ProductId: @Model.ProductId,
-                Question: this.inputQuestion.value
-            }
-
-            $.ajax({
-                url: "/Product/PostFaq",
-                type: "POST",
-                data: body,
-                success: response=> {
-                    console.log(response)
-                    if (response.IsSuccess) {
-                        $.notify("Question sent, seller will answer you soon", "success", { position: "right" });
-                    }
-
-                    this.inputQuestion.value = "";
-                    this.btnAskQuestion.disabled = false;
-                },
-                error: err=> {
-                    console.log(err);
-                    this.btnAskQuestion.disabled = false;
+                const body = {
+                    ProductId: @Model.ProductId,
+                    Question: this.inputQuestion.value
                 }
+
+                $.ajax({
+                    url: "/Product/PostFaq",
+                    type: "POST",
+                    data: body,
+                    success: response => {
+                        console.log(response)
+                        if (response.IsSuccess) {
+                            $.notify("Question sent, seller will answer you soon", "success", { position: "right" });
+                        }
+
+                        this.inputQuestion.value = "";
+                        this.btnAskQuestion.disabled = false;
+                    },
+                    error: err => {
+                        console.log(err);
+                        this.btnAskQuestion.disabled = false;
+                    }
+                });
             });
-        });
+        }
 
         //loader
         function showLoader(status) {

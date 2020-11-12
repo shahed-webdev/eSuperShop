@@ -45,11 +45,20 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
+        //get data on page load
         [AllowAnonymous]
-        public IActionResult GetProducts(string slugUrl)
+        public IActionResult GetProducts(string slugUrl, int pageSize)
         {
-            var model = _catalog.ProductList(slugUrl);
+            var model = _catalog.ProductListPageData(slugUrl, pageSize);
             return Json(model.Data);
+        }  
+        
+        //get data on scroll
+        [AllowAnonymous]
+        public IActionResult GetProductsOnDemand(ProductFilterRequest filter)
+        {
+            var model = _catalog.GetCatalogWiseList(filter.SlugUrl, filter);
+            return Json(model);
         }
 
         //Category list
