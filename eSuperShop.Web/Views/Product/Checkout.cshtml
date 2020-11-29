@@ -18,38 +18,25 @@
                     <a href="" data-toggle="modal" data-target="#modalShippingForm">Add New Address</a>
                 </div>
 
-                <fieldset class="border rounded px-3 mb-3 border-primary">
-                    <legend class="w-auto mb-0">
-                        <input type="checkbox" class="form-check-input" checked id="1">
-                        <label class="form-check-label pl-3" for="1"></label>
-                    </legend>
+                @foreach (var item in Model)
+                {
+                    <fieldset class="border rounded px-3 mb-3 border-primary">
+                        <legend class="w-auto mb-0">
+                            <input type="checkbox" class="form-check-input" checked id="@item.CustomerAddressBookId">
+                            <label class="form-check-label pl-3" for="@item.CustomerAddressBookId"></label>
+                        </legend>
 
-                    <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> Muhebollah</h6>
-                    <p class="mb-2"><i class="fas fa-phone"></i> 01680964257</p>
-                    <p><i class="fas fa-map-marker-alt"></i> GF, House # 328, East Nakhal Para, Tejgaon, Dhaka</p>
-                </fieldset>
-
-                <fieldset class="border rounded px-3 mb-3">
-                    <legend class="w-auto mb-0">
-                        <input type="checkbox" class="form-check-input" id="2">
-                        <label class="form-check-label pl-3" for="2"></label>
-                    </legend>
-
-                    <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> Muhebollah</h6>
-                    <p class="mb-2"><i class="fas fa-phone"></i> 01680964257</p>
-                    <p><i class="fas fa-map-marker-alt"></i> GF, House # 328, East Nakhal Para, Tejgaon, Dhaka</p>
-                </fieldset>
-
-                <fieldset class="border rounded px-3 mb-3">
-                    <legend class="w-auto mb-0">
-                        <input type="checkbox" class="form-check-input" id="2">
-                        <label class="form-check-label pl-3" for="2"></label>
-                    </legend>
-
-                    <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> Muhebollah</h6>
-                    <p class="mb-2"><i class="fas fa-phone"></i> 01680964257</p>
-                    <p><i class="fas fa-map-marker-alt"></i> GF, House # 328, East Nakhal Para, Tejgaon, Dhaka</p>
-                </fieldset>
+                        <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> @item.Name</h6>
+                        <p class="mb-2">
+                            <i class="fas fa-phone"></i> @item.Phone 
+                            @if (!string.IsNullOrEmpty(item.AlternativePhone))
+                            {
+                                <span>,@item.AlternativePhone</span>
+                            }
+                        </p>
+                        <p><i class="fas fa-map-marker-alt"></i> @item.Address</p>
+                    </fieldset>
+                }
             </div>
 
             <div class="card card-body">
@@ -86,7 +73,7 @@
                 </ul>
 
                 <button id="btnPurchase" type="button" class="btn btn-danger btn-rounded mt-2">Complete purchase <i class="fas fa-angle-right right"></i></button>
-                <p id="purchaseError" class="red-text text-center">the error</p>
+                <p id="purchaseError" class="red-text text-center"></p>
             </div>
         </div>
     </div>
@@ -141,7 +128,7 @@
     <script>
         //add address
         const formAdd = document.getElementById("formAdd");
-        formAdd.addEventListener("click", function (evt) {
+        formAdd.addEventListener("submit", function (evt) {
             evt.preventDefault();
 
             const model = {
@@ -159,9 +146,9 @@
                 success: function (response) {
                     if (response.IsSuccess) {
                         $.notify("Address added successfully!", "success", { position: "right" });
+                        location.reload();
                     } else {
                         $.notify(response.Message, "error", { position: "right" });
-                        console.log(response);
                     }
                 },
                 error: function (err) {
@@ -171,5 +158,10 @@
         });
 
         //place order
+        const purchaseError = document.getElementById("purchaseError");
+        const btnPurchase = document.getElementById("btnPurchase");
+        btnPurchase.addEventListener("click", function () {
+
+        });
     </script>
 }

@@ -86,16 +86,16 @@ namespace eSuperShop.Web.Controllers
             if (!User.IsInRole("Customer"))
                 return Redirect("/Home/Index");
 
-            //var response = _customer.AddressList();
+            var response = _customer.AddressList(User.Identity.Name);
 
-            return View();
+            return View(response.Data);
         }
 
         //add shipping address
         [HttpPost]
         public IActionResult PostShippingAddress(CustomerAddressBookModel model)
         {
-            var response = _customer.AddressAdd(model);
+            var response = _customer.AddressAdd(model, User.Identity.Name);
             return Json(response);
         }
 
