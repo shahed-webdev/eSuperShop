@@ -1,12 +1,11 @@
-﻿
+﻿@model IEnumerable<CustomerAddressBookModel>
 @{
     ViewData["Title"] = "Cart Product";
 }
 
-@section Styles
-{
+@section Styles{
     <style>
-        .default-address { border: 1px solid #00ff00}
+        .default-address { border: 1px solid #00ff00 }
     </style>
 }
 
@@ -85,24 +84,27 @@
                         <h5 class="font-weight-bold">৳2,200</h5>
                     </li>
                 </ul>
-                
-                <button type="button" class="btn btn-danger btn-rounded mt-2">Complete purchase <i class="fas fa-angle-right right"></i></button>
+
+                <button id="btnPurchase" type="button" class="btn btn-danger btn-rounded mt-2">Complete purchase <i class="fas fa-angle-right right"></i></button>
+                <p id="purchaseError" class="red-text text-center">the error</p>
             </div>
-        </div> 
+        </div>
     </div>
 </div>
 
+<!--shipping address-->
 <div class="modal fade" id="modalShippingForm" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form>
-                <div class="modal-header text-center">
-                    <h4 class="modal-title w-100 font-weight-bold">Add Shipping Address</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body mx-3">
+
+            <div class="modal-header text-center red lighten-1 text-white">
+                <h4 class="modal-title w-100 font-weight-bold">Add Shipping Address</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body mx-3">
+                <form id="formAdd">
                     <div class="md-form">
                         <input type="text" id="inputName" class="form-control validate" required>
                         <label for="inputName">Your name</label>
@@ -112,7 +114,11 @@
                         <label for="inputPhone">Phone</label>
                     </div>
                     <div class="md-form">
-                        <input type="text" id="inputEmail" class="form-control validate">
+                        <input type="text" id="inputAlternativePhone" class="form-control validate">
+                        <label for="inputAlternativePhone">Alternative Phone</label>
+                    </div>
+                    <div class="md-form">
+                        <input type="email" id="inputEmail" class="form-control validate">
                         <label for="inputEmail">Email</label>
                     </div>
                     <div class="md-form">
@@ -123,8 +129,47 @@
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-danger">Add Address <i class="fas fa-paper-plane-o ml-1"></i></button>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+
+
+@section Scripts{
+    <script>
+        //add address
+        const formAdd = document.getElementById("formAdd");
+        formAdd.addEventListener("click", function (evt) {
+            evt.preventDefault();
+
+            const model = {
+                Name: this.inputName.value,
+                Phone: this.inputPhone.value,
+                AlternativePhone: this.inputAlternativePhone.value,
+                Email: this.inputEmail.value,
+                Address: this.inputAddress.value
+            }
+
+            $.ajax({
+                url: "/Product/PostShippingAddress",
+                type: "POST",
+                data: model,
+                success: function (response) {
+                    if (response.IsSuccess) {
+                        $.notify("Address added successfully!", "success", { position: "right" });
+                    } else {
+                        $.notify(response.Message, "error", { position: "right" });
+                        console.log(response);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        //place order
+    </script>
+}

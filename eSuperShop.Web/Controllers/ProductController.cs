@@ -17,11 +17,13 @@ namespace eSuperShop.Web.Controllers
     {
         private readonly IProductCore _product;
         private readonly IOrderCore _order;
+        private readonly ICustomerCore _customer;
 
-        public ProductController(IProductCore product, IOrderCore order)
+        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer)
         {
             _product = product;
             _order = order;
+            _customer = customer;
         }
 
         public IActionResult FlashDeals()
@@ -84,16 +86,25 @@ namespace eSuperShop.Web.Controllers
             if (!User.IsInRole("Customer"))
                 return Redirect("/Home/Index");
 
+            //var response = _customer.AddressList();
+
             return View();
         }
 
+        //add shipping address
+        [HttpPost]
+        public IActionResult PostShippingAddress(CustomerAddressBookModel model)
+        {
+            var response = _customer.AddressAdd(model);
+            return Json(response);
+        }
 
         //place order
         [Authorize(Roles = "Customer")]
         [HttpPost]
-        public IActionResult PlaceOrder(OrderPlaceModel model, string userName)
+        public IActionResult PlaceOrder(OrderPlaceModel model)
         {
-            var response = _order.OrderPlace(model, userName);
+            var response = _order.OrderPlace(model, User.Identity.Name);
             return Json(response);
         }
     }
