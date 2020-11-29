@@ -9,9 +9,8 @@ namespace eSuperShop.Repository
             OrderList = new HashSet<OrderListModel>();
         }
         public int CustomerId { get; set; }
-        public int OrderSn { get; set; }
         public string PaymentMethod { get; set; }
-        public int OrderShippingAddressId { get; set; }
+        public OrderShippingAddressAddModel OrderShippingAddress { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal ShippingCost { get; set; }
