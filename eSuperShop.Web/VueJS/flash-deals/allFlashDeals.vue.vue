@@ -46,6 +46,9 @@
         <div class="loader-style" v-if="isLoading">
             <i class="fas fa-circle-notch fa-spin fa-3x"></i>
         </div>
+        <div v-if="!isLastPage" class="d-flex justify-content-center mt-4">
+            <button @click="loadMore" :disabled="isLoading" class="btn btn-danger">{{isLoading? "loading..":" Load More"}}</button>
+        </div>
     </div>
 </template>
 
@@ -58,9 +61,9 @@
         data() {
             return {
                 data: [],
-                isData: false,
+                isData:false,
                 params: { Page: 2, PageSize: 4 },
-                isLastPage: true,
+                isLastPage: false,
                 isLoading: false
             }
         },
@@ -75,36 +78,25 @@
                 });
             },
 
-            getDataOnDemand(params) {
-                window.onscroll = () => {
-                    if (!this.isLastPage) return;
+            loadMore() {
+                if (this.isLastPage) return;
+                this.isLoading = true;
 
-                    const element = document.documentElement;
-                    const bottomOfWindow = element.scrollTop + window.innerHeight === element.offsetHeight;
-    
-                    if (bottomOfWindow) {
-                        this.isLoading = true;
+                axios.get('/home/GetFlashDeals', { params: this.params }).then(response => {
+                    const { IsSuccess, Data } = response.data;
 
-                        axios.get('/home/GetFlashDeals', { params }).then(response => {
-                            const { IsSuccess, Data } = response.data;
+                    this.isLastPage = Data.Results.length ? false : true;
+                    this.isLoading = false;
 
-                            this.isLastPage = Data.Results.length;
-                            this.isLoading = false;
+                    if (!IsSuccess) return;
 
-                            if (!IsSuccess) return;
-
-                            this.data.push(...Data.Results);
-                            this.params.Page++;
-                        });
-                    }
-                };
-            },
+                    this.data.push(...Data.Results);
+                    this.params.Page++;
+                });
+            }
         },
         beforeMount() {
             this.getData();
-        },
-        mounted() {
-            this.getDataOnDemand(this.params);
         }
     }
 </script>

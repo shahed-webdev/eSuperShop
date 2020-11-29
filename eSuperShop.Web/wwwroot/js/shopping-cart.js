@@ -165,12 +165,21 @@ function displayCart() {
                 </tr>`
     }
 
-    const emptyRow = `<tr><td colspan="5" class="alert alert-danger">No Product Added</td></tr>`;
-    $('.show-cart tbody').html(shoppingCart.totalCount() ? output : emptyRow);
     $('.grand-total-amount').html(shoppingCart.totalCart());
     $('.total-cart-count').html(shoppingCart.totalCount());
 
-    shoppingCart.totalCount() ? $('.modal-footer').show() : $('.modal-footer').hide();
+    if (!shoppingCart.totalCount()) {
+        const emptyRow = `<tr><td colspan="5" class="alert alert-danger">No Product Added</td></tr>`;
+        $('.show-cart tbody').html(emptyRow);
+
+        $('.show-cart thead').hide();
+        $('.modal-footer').hide();
+
+        return;
+    }
+
+    $('.modal-footer').show();
+    $('.show-cart tbody').html(output);
 }
 
 function addAttribute(attributes) {

@@ -103,10 +103,13 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="loader-style" v-if="isLoading">
-            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+            <div class="loader-style" v-if="isLoading">
+                <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+            </div>
+            <div v-if="!isLastPage" class="d-flex justify-content-center mt-4">
+                <button @click="loadMore" :disabled="isLoading" class="btn btn-danger">{{isLoading? "loading..":" Load More"}}</button>
+            </div>
         </div>
     </div>
 
@@ -147,9 +150,10 @@
 
                 data: [],
                 isDataFound: false,
-                isLoading:false,
-                params: { SlugUrl: this.slugUrl, Page: 2, PageSize: 2 },
-                isLastPage: true,
+                isLoading: false,
+                isLastPage: false,
+
+                params: { SlugUrl: this.slugUrl, Page: 2, PageSize: 20 },
                 SubCatalogs: [],
                 Brands: [],
                 Attributes: [],
@@ -158,7 +162,7 @@
         },
         methods: {
             getData() {
-                axios.get('/Category/GetProducts', { params: { slugUrl: this.slugUrl, pageSize: 2 } }).then(response => {
+                axios.get('/Category/GetProducts', { params: { slugUrl: this.slugUrl, pageSize: 20 } }).then(response => {
                     const { Breadcrumb, SubCatalogs, Products, Brands, Attributes, Specifications } = response.data;
 
                     this.CatalogName = Breadcrumb.CatalogName;
@@ -178,41 +182,28 @@
                 })
             },
 
-            getDataOnDemand(params) {
-                window.onscroll = () => {
-                    if (!this.data.length) return;
+            loadMore() {
+                if (this.isLastPage) return;
+                this.isLoading = true;
 
-                    if (!this.isLastPage) return;
+                axios.get('/Category/GetProductsOnDemand', { params: this.params }).then(response => {
+                    const { IsSuccess, Data } = response.data;
 
-                    const element = document.documentElement;
-                    const bottomOfWindow = element.scrollTop + window.innerHeight === element.offsetHeight;
+                    this.isLastPage = Data.Results.length ? false : true;
+                    this.isLoading = false;
 
-                    if (bottomOfWindow) {
-                        this.isLoading = true;
+                    if (!IsSuccess) return;
 
-                        axios.get('/Category/GetProductsOnDemand', { params }).then(response => {
-                            const { IsSuccess, Data } = response.data;
-
-                            this.isLastPage = Data.Results.length ? true : false;
-                            this.isLoading = false;
-
-                            if (!IsSuccess) return;
-
-                            this.data.push(...Data.Results);
-                            this.params.Page++;
-                        }).catch(err => {
-                            console, log(err);
-                            this.isLoading = false;
-                        })
-                    }
-                };
-            },
+                    this.data.push(...Data.Results);
+                    this.params.Page++;
+                }).catch(err => {
+                    console, log(err);
+                    this.isLoading = false;
+                })
+            }
         },
         beforeMount() {
             this.getData();
-        },
-        mounted() {
-            this.getDataOnDemand(this.params);
         }
     }
 </script>
