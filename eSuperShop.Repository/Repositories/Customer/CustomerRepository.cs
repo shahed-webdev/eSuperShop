@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace eSuperShop.Repository
@@ -34,6 +36,28 @@ namespace eSuperShop.Repository
         public CustomerDashboardModel Dashboard(int customerId)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void AddressAdd(CustomerAddressBookModel model)
+        {
+            var address = _mapper.Map<CustomerAddressBook>(model);
+            Db.CustomerAddressBook.Add(address);
+        }
+
+        public bool IsThreeAddressSaved(int customerId)
+        {
+            var count = Db.CustomerAddressBook.Count(a => a.CustomerId == customerId);
+            return count >= 3;
+        }
+
+
+        public List<CustomerAddressBookModel> AddressList(int customerId)
+        {
+            var list = Db.CustomerAddressBook
+                .Where(a => a.CustomerId == customerId)
+                .ProjectTo<CustomerAddressBookModel>(_mapper.ConfigurationProvider)
+                .ToList();
+            return list;
         }
     }
 }
