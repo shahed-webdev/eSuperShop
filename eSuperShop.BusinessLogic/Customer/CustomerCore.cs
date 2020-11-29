@@ -43,7 +43,11 @@ namespace eSuperShop.BusinessLogic
 
                 if (_db.Customer.IsThreeAddressSaved(model.CustomerId))
                     return new DbResponse(false, "Already three address added");
+
                 var customerId = _db.Registration.CustomerIdByUserName(userName);
+
+                if (customerId == 0)
+                    return new DbResponse(false, "Invalid User");
 
                 model.CustomerId = customerId;
                 _db.Customer.AddressAdd(model);
@@ -63,7 +67,12 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 var customerId = _db.Registration.CustomerIdByUserName(userName);
+
+                if (customerId == 0)
+                    return new DbResponse<List<CustomerAddressBookModel>>(false, "Invalid User");
+
                 var data = _db.Customer.AddressList(customerId);
+
                 return new DbResponse<List<CustomerAddressBookModel>>(true, "Success", data);
             }
             catch (Exception e)
