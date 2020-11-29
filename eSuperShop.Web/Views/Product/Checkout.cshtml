@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CustomerAddressBookModel>
+﻿@using Newtonsoft.Json
+@model IEnumerable<CustomerAddressBookModel>
 @{
     ViewData["Title"] = "Cart Product";
 }
@@ -15,23 +16,28 @@
             <div class="card card-body mb-4">
                 <div class="border-bottom pb-2 mb-3">
                     <h4 class="font-weight-bold mb-1">Shipping Address</h4>
-                    <a href="" data-toggle="modal" data-target="#modalShippingForm">Add New Address</a>
+                    @if (Model.Count() < 4)
+                    {
+                        <a href="" data-toggle="modal" data-target="#modalShippingForm">
+                            <i class="far fa-address-book mr-1"></i>Add New Address
+                        </a>
+                    }
                 </div>
 
                 @foreach (var item in Model)
                 {
-                    <fieldset class="border rounded px-3 mb-3 border-primary">
+                    <fieldset class="border rounded px-3 mb-3 @(item.IsDefault ? "border-primary" : "")">
                         <legend class="w-auto mb-0">
-                            <input type="checkbox" class="form-check-input" checked id="@item.CustomerAddressBookId">
+                            <input type="checkbox" data-name="@item.Name" data-phone="@item.Phone" data-altp="@item.AlternativePhone" data-address="@item.Address" data-email="@item.Email" class="form-check-input address-check" id="@item.CustomerAddressBookId">
                             <label class="form-check-label pl-3" for="@item.CustomerAddressBookId"></label>
                         </legend>
 
                         <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> @item.Name</h6>
                         <p class="mb-2">
-                            <i class="fas fa-phone"></i> @item.Phone 
+                            <i class="fas fa-phone"></i> @item.Phone
                             @if (!string.IsNullOrEmpty(item.AlternativePhone))
                             {
-                                <span>,@item.AlternativePhone</span>
+                                <span>, @item.AlternativePhone</span>
                             }
                         </p>
                         <p><i class="fas fa-map-marker-alt"></i> @item.Address</p>
@@ -126,9 +132,23 @@
 
 @section Scripts{
     <script>
+        $(function() {
+            $(".address-check").change(function() {
+                $(".address-check").not(this).prop('checked', false);
+
+                $(".address-check").each(function() {
+                    if ($(this).prop('checked') === true)
+                        $(this).parent().parent().addClass('border-primary');
+                    else
+                        $(this).parent().parent().removeClass('border-primary');
+                });
+            });
+        });
+
+
         //add address
         const formAdd = document.getElementById("formAdd");
-        formAdd.addEventListener("submit", function (evt) {
+        formAdd.addEventListener("submit", function(evt) {
             evt.preventDefault();
 
             const model = {
@@ -143,7 +163,7 @@
                 url: "/Product/PostShippingAddress",
                 type: "POST",
                 data: model,
-                success: function (response) {
+                success: function(response) {
                     if (response.IsSuccess) {
                         $.notify("Address added successfully!", "success", { position: "right" });
                         location.reload();
@@ -151,7 +171,7 @@
                         $.notify(response.Message, "error", { position: "right" });
                     }
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                 }
             });
@@ -160,8 +180,33 @@
         //place order
         const purchaseError = document.getElementById("purchaseError");
         const btnPurchase = document.getElementById("btnPurchase");
-        btnPurchase.addEventListener("click", function () {
+        btnPurchase.addEventListener("click", function() {
+            let address = null;
+            purchaseError.textContent = "";
 
+            $(".address-check").each(function() {
+                if ($(this).prop('checked') === true) {
+                    address = {
+                        Name: $(this).data("name"),
+                        Phone: $(this).data("phone"),
+                        AlternativePhone: $(this).data("altp"),
+                        Email: $(this).data("email"),
+                        Address: $(this).data("address")
+                    }
+                }
+            });
+
+            if (!address) {
+                purchaseError.textContent = "Select Shipping Address";
+                return;
+            }
+
+            const model = {
+                PaymentMethod,
+                OrderShippingAddress: address,
+                TotalAmount,
+                OrderList: []
+            }
         });
     </script>
 }
