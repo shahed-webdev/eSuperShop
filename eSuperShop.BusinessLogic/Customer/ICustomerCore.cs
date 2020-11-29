@@ -6,7 +6,7 @@ namespace eSuperShop.BusinessLogic
     public interface ICustomerCore
     {
         DbResponse Add(CustomerAddModel model);
-        DbResponse AddressAdd(CustomerAddressBookModel model);
-        DbResponse<List<CustomerAddressBookModel>> AddressList(int customerId);
+        DbResponse AddressAdd(CustomerAddressBookModel model, string userName);
+        DbResponse<List<CustomerAddressBookModel>> AddressList(string userName);
     }
 }
