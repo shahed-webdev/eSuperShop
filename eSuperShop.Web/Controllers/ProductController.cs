@@ -107,5 +107,14 @@ namespace eSuperShop.Web.Controllers
             var response = _order.OrderPlace(model, User.Identity.Name);
             return Json(response);
         }
+
+        [Authorize(Roles = "Customer")]
+        public IActionResult OrderSuccess(int? id)
+        {
+            if(!id.HasValue) return RedirectToAction("Index", "Home");
+            ViewBag.OrderNo = id;
+
+            return View();
+        }
     }
 }

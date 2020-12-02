@@ -44,7 +44,7 @@ namespace eSuperShop.BusinessLogic
 
                 _db.SaveChanges();
 
-                return new DbResponse<int>(true, "Success", _db.Order.Order.OrderId);
+                return new DbResponse<int>(true, "Success", _db.Order.Order.OrderSn);
             }
             catch (Exception e)
             {

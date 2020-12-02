@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = Model.Name;
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
@@ -417,7 +416,7 @@
                         const newQuantity = isAdded ? (Quantity - isAdded.Quantity) : Quantity;
 
                         if (isAdded) {
-                            $.notify("Product Already added", "success", { position: "right" });
+                            $.notify("Product Already added", "error", { position: "right" });
                         }
 
 
@@ -454,12 +453,12 @@
         cartForm.addEventListener("submit", function(evt) {
             evt.preventDefault();
 
-            const extraPrice = +hiddenPriceAdjustment.value || 0;
+            const extraPrice = +hiddenPriceAdjustment.value;
 
             const obj = {
                 ProductId: @Model.ProductId,
                 Name: "@Model.Name",
-                Price: @Model.Price + extraPrice,
+                UnitPrice: @Model.Price + extraPrice,
                 Quantity: +inputQuantity.value,
                 ProductQuantitySetId: +hiddenQuantitySetId.value,
                 attributesValue
@@ -468,14 +467,14 @@
             shoppingCart.addItemToCart(obj);
             displayCart();
 
+            if (document.activeElement.id === "btnBuyNow") {
+                location.href = "/Product/Checkout";
+                return;
+            }
+
             $.notify("Product added to Shopping Cart", "success", { position: "right" });
         });
 
-        //buy now
-        btnBuyNow.addEventListener("submit", function(evt) {
-            evt.preventDefault();
-
-        });
 
         //post faq
         const formFaq = document.getElementById("formFaq");

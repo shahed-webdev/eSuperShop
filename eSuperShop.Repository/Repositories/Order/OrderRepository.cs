@@ -25,17 +25,17 @@ namespace eSuperShop.Repository
         }
 
         public void PlaceAnOrder(OrderPlaceModel model)
-        {
-            var order = _mapper.Map<Order>(model);
-            order.OrderSn = GetNewSn();
-            foreach (var item in order.OrderList)
+        { 
+            Order = _mapper.Map<Order>(model);
+            Order.OrderSn = GetNewSn();
+            foreach (var item in Order.OrderList)
             {
                 item.CommissionPercentage = (from v in Db.VendorCatalog
                                              join p in Db.Product on new { v.CatalogId, v.VendorId } equals new { p.CatalogId, p.VendorId }
                                              where p.ProductId == item.ProductId
                                              select v.CommissionPercentage).FirstOrDefault();
             }
-            Db.Order.Add(order);
+            Db.Order.Add(Order);
         }
 
         public OrderReceiptModel OrderReceipt(int orderId)

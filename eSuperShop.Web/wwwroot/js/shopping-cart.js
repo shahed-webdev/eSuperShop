@@ -1,6 +1,6 @@
 ﻿
-const shoppingCart = (function () {
-   let cart = [];
+const shoppingCart = (function() {
+    let cart = [];
 
     // Save cart
     function saveCart() {
@@ -21,6 +21,11 @@ const shoppingCart = (function () {
     // Public methods and properties
     // =============================
     const obj = {};
+
+    // get cart
+    obj.getCart = function() {
+        return {shoppingList: cart, cartTotal: obj.totalCart()}
+    }
 
     // Add to cart
     obj.addItemToCart = function (product) {
@@ -44,6 +49,7 @@ const shoppingCart = (function () {
                 break;
             }
         }
+        saveCart();
     };
 
     // increase quantity
@@ -100,12 +106,12 @@ const shoppingCart = (function () {
         return totalCount;
     }
 
-    // Total cart
+    // Total amount cart
     obj.totalCart = function () {
         let totalCart = 0;
         for (let item in cart) {
             if (cart.hasOwnProperty(item)) {
-                totalCart += cart[item].Price * cart[item].Quantity;
+                totalCart += cart[item].UnitPrice * cart[item].Quantity;
             }
         }
         return Number(totalCart.toFixed(2));
@@ -121,7 +127,7 @@ const shoppingCart = (function () {
                 itemCopy[p] = item[p];
             }
 
-            itemCopy.total = Number(item.Price * item.Quantity).toFixed(2);
+            itemCopy.total = Number(item.UnitPrice * item.Quantity).toFixed(2);
             cartCopy.push(itemCopy)
         }
         return cartCopy;
@@ -154,7 +160,7 @@ function displayCart() {
                      <p class="mb-0">${cartArray[i].Name}</p>
                       <h5 class="mb-0">${addAttribute(cartArray[i].attributesValue)}</h5>
                     </td>
-                    <td>৳${cartArray[i].Price}</td>
+                    <td>৳${cartArray[i].UnitPrice}</td>
                     <td class="text-center">
                      <input class="item-quantity" data-id="${cartArray[i].ProductQuantitySetId}" value="${cartArray[i].Quantity}" min="1" type="number">
                     </td>
@@ -165,8 +171,10 @@ function displayCart() {
                 </tr>`
     }
 
-    $('.grand-total-amount').html(shoppingCart.totalCart());
     $('.total-cart-count').html(shoppingCart.totalCount());
+    //total amount
+    $('.grand-total-amount').html(shoppingCart.totalCart());
+    $('#orderTotal').html(shoppingCart.totalCart());
 
     if (!shoppingCart.totalCount()) {
         const emptyRow = `<tr><td colspan="5" class="alert alert-danger">No Product Added</td></tr>`;
@@ -191,10 +199,12 @@ function addAttribute(attributes) {
 }
 
 // Item quantity input
-$('.show-cart').on("change", ".item-quantity", function (event) {
+$('.show-cart').on("input", ".item-quantity", function (event) {
     const self = $(this);
     const id = self.data('id');
     const quantity = Number($(this).val());
+
+    if (quantity < 1) return;
 
     $.ajax({
         url: "/Product/GetAvailableQuantity",
@@ -205,8 +215,9 @@ $('.show-cart').on("change", ".item-quantity", function (event) {
                 if (response.Data < quantity) return;
 
                 shoppingCart.inputQuantity(id, quantity);
-                displayCart();
             }
+
+            displayCart();
         },
         error: function (err) {
             console.log(err);

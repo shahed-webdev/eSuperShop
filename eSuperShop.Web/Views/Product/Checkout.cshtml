@@ -1,5 +1,4 @@
-﻿@using Newtonsoft.Json
-@model IEnumerable<CustomerAddressBookModel>
+﻿@model IEnumerable<CustomerAddressBookModel>
 @{
     ViewData["Title"] = "Cart Product";
 }
@@ -11,78 +10,91 @@
 }
 
 <div class="container mb-5">
-    <div class="row">
-        <div class="col-lg-7 col-md-6 mt-4">
-            <div class="card card-body mb-4">
-                <div class="border-bottom pb-2 mb-3">
-                    <h4 class="font-weight-bold mb-1">Shipping Address</h4>
-                    @if (Model.Count() < 4)
+    <form id="formPurchase">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 mt-4">
+                <div class="card card-body mb-4">
+                    <div class="border-bottom pb-2 mb-3">
+                        <h4 class="font-weight-bold mb-1">Shipping Address</h4>
+                        @if (Model.Count() < 3)
+                        {
+                            <a href="" data-toggle="modal" data-target="#modalShippingForm">
+                                <i class="far fa-address-book mr-1"></i>Add New Address
+                            </a>
+                        }
+                    </div>
+
+                    @foreach (var item in Model)
                     {
-                        <a href="" data-toggle="modal" data-target="#modalShippingForm">
-                            <i class="far fa-address-book mr-1"></i>Add New Address
-                        </a>
+                        <fieldset class="border rounded px-3 mb-3 @(item.IsDefault ? "border-primary" : "")">
+                            <legend class="w-auto mb-0">
+                                <input type="checkbox" data-name="@item.Name" data-phone="@item.Phone" data-altp="@item.AlternativePhone" data-address="@item.Address" data-email="@item.Email" class="form-check-input address-check" id="@item.CustomerAddressBookId">
+                                <label class="form-check-label pl-3" for="@item.CustomerAddressBookId"></label>
+                            </legend>
+
+                            <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> @item.Name</h6>
+                            <p class="mb-2">
+                                <i class="fas fa-phone"></i> @item.Phone
+                                @if (!string.IsNullOrEmpty(item.AlternativePhone))
+                                {
+                                    <span>, @item.AlternativePhone</span>
+                                }
+                            </p>
+                            <p><i class="fas fa-map-marker-alt"></i> @item.Address</p>
+                        </fieldset>
                     }
                 </div>
 
-                @foreach (var item in Model)
-                {
-                    <fieldset class="border rounded px-3 mb-3 @(item.IsDefault ? "border-primary" : "")">
-                        <legend class="w-auto mb-0">
-                            <input type="checkbox" data-name="@item.Name" data-phone="@item.Phone" data-altp="@item.AlternativePhone" data-address="@item.Address" data-email="@item.Email" class="form-check-input address-check" id="@item.CustomerAddressBookId">
-                            <label class="form-check-label pl-3" for="@item.CustomerAddressBookId"></label>
-                        </legend>
-
-                        <h6 class="font-weight-bold mb-1"><i class="fas fa-user"></i> @item.Name</h6>
-                        <p class="mb-2">
-                            <i class="fas fa-phone"></i> @item.Phone
-                            @if (!string.IsNullOrEmpty(item.AlternativePhone))
-                            {
-                                <span>, @item.AlternativePhone</span>
-                            }
-                        </p>
-                        <p><i class="fas fa-map-marker-alt"></i> @item.Address</p>
-                    </fieldset>
-                }
+                <div class="card card-body">
+                    <table class="show-cart table product-table">
+                        <thead>
+                            <tr>
+                                <th class="text-left"><strong>Product</strong></th>
+                                <th><strong>Price</strong></th>
+                                <th class="text-center"><strong>Quantity</strong></th>
+                                <th><strong>Line Total</strong></th>
+                                <th class="text-right"><strong>Remove</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="card card-body">
-                <table class="show-cart table product-table">
-                    <thead>
-                        <tr>
-                            <th class="text-left"><strong>Product</strong></th>
-                            <th><strong>Price</strong></th>
-                            <th class="text-center"><strong>Quantity</strong></th>
-                            <th><strong>Line Total</strong></th>
-                            <th class="text-right"><strong>Remove</strong></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-lg-5 col-md-6 mt-4">
-            <div class="card card-body">
-                <h4 class="font-weight-bold border-bottom pb-3 mb-3">Order Summary</h4>
-                <ul class="list-group mb-3">
-                    <li class="d-flex justify-content-between align-items-center">
-                        <div>Cart Subtotal</div>
-                        <div>৳<span class="grand-total-amount">0</span></div>
-                    </li>
-                    <li class="d-flex justify-content-between align-items-center border-bottom my-2 pb-3">
-                        <div>Shipping</div>
-                        <div>৳<span class="shipping-amount">0</span></div>
-                    </li>
-                    <li class="d-flex justify-content-between align-items-center">
-                        <h5 class="font-weight-bold">Order Total</h5>
-                        <h5 class="font-weight-bold">৳2,200</h5>
-                    </li>
-                </ul>
+            <div class="col-lg-5 col-md-6 mt-4">
+                <div class="card card-body mb-4">
+                    <h4 class="font-weight-bold border-bottom pb-3 mb-3">Payment Method</h4>
+                    <div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="1" value="Cash On Delivery" name="paymentMethod" checked>
+                            <label class="custom-control-label" for="1">Cash On Delivery</label>
+                        </div>
+                    </div>
+                </div>
 
-                <button id="btnPurchase" type="button" class="btn btn-danger btn-rounded mt-2">Complete purchase <i class="fas fa-angle-right right"></i></button>
-                <p id="purchaseError" class="red-text text-center"></p>
+                <div class="card card-body">
+                    <h4 class="font-weight-bold border-bottom pb-3 mb-3">Order Summary</h4>
+                    <ul class="list-group mb-3">
+                        <li class="d-flex justify-content-between align-items-center">
+                            <div>Cart Subtotal</div>
+                            <div>৳<span class="grand-total-amount">0</span></div>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center border-bottom my-2 pb-3">
+                            <div>Shipping Cost</div>
+                            <div>৳<span class="shipping-amount">0</span></div>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center">
+                            <h5 class="font-weight-bold">Order Total</h5>
+                            <h5 class="font-weight-bold">৳<span id="orderTotal"></span></h5>
+                        </li>
+                    </ul>
+
+                    <button id="btnPurchase" type="submit" class="btn btn-danger btn-rounded mt-2">Complete purchase <i class="fas fa-angle-right right"></i></button>
+                    <p id="purchaseError" class="red-text text-center"></p>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <!--shipping address-->
@@ -132,11 +144,11 @@
 
 @section Scripts{
     <script>
-        $(function() {
-            $(".address-check").change(function() {
+        $(function () {
+            $(".address-check").change(function () {
                 $(".address-check").not(this).prop('checked', false);
 
-                $(".address-check").each(function() {
+                $(".address-check").each(function () {
                     if ($(this).prop('checked') === true)
                         $(this).parent().parent().addClass('border-primary');
                     else
@@ -148,7 +160,7 @@
 
         //add address
         const formAdd = document.getElementById("formAdd");
-        formAdd.addEventListener("submit", function(evt) {
+        formAdd.addEventListener("submit", function (evt) {
             evt.preventDefault();
 
             const model = {
@@ -163,7 +175,7 @@
                 url: "/Product/PostShippingAddress",
                 type: "POST",
                 data: model,
-                success: function(response) {
+                success: function (response) {
                     if (response.IsSuccess) {
                         $.notify("Address added successfully!", "success", { position: "right" });
                         location.reload();
@@ -171,7 +183,7 @@
                         $.notify(response.Message, "error", { position: "right" });
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                 }
             });
@@ -179,12 +191,13 @@
 
         //place order
         const purchaseError = document.getElementById("purchaseError");
-        const btnPurchase = document.getElementById("btnPurchase");
-        btnPurchase.addEventListener("click", function() {
-            let address = null;
+        const formPurchase = document.getElementById("formPurchase");
+        formPurchase.addEventListener("submit", function (evt) {
+            evt.preventDefault();
             purchaseError.textContent = "";
 
-            $(".address-check").each(function() {
+            let address = null;
+            $(".address-check").each(function () {
                 if ($(this).prop('checked') === true) {
                     address = {
                         Name: $(this).data("name"),
@@ -196,17 +209,48 @@
                 }
             });
 
+            const { shoppingList, cartTotal } = shoppingCart.getCart();
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            if (!shoppingList.length) {
+                purchaseError.textContent = "Add product to purchase";
+                return;
+            }
+
             if (!address) {
                 purchaseError.textContent = "Select Shipping Address";
                 return;
             }
 
             const model = {
-                PaymentMethod,
+                PaymentMethod: paymentMethod,
                 OrderShippingAddress: address,
-                TotalAmount,
-                OrderList: []
+                TotalAmount: cartTotal,
+                OrderList: shoppingList,
+                ShippingCost: 0
             }
-        });
+
+            this.btnPurchase.disabled = true;
+
+            $.ajax({
+                url: "/Product/PlaceOrder",
+                type: "POST",
+                data: model,
+                success: response => {
+                    this.btnPurchase.disabled = false;
+
+                    if (response.IsSuccess) {
+                        shoppingCart.clearCart();
+                        location.href = `/Product/OrderSuccess/${response.Data}`;
+                        return;
+                    }
+                    $.notify(response.Message, "error", { position: "right" });
+                },
+                error: err => {
+                    console.log(err);
+                    this.btnPurchase.disabled = false;
+                }
+            });
+        })
     </script>
 }

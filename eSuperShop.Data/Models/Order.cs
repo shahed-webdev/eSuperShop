@@ -14,8 +14,8 @@ namespace eSuperShop.Data
         public int OrderSn { get; set; }
         public string PaymentMethod { get; set; }
         public DateTime CreatedOnUtc { get; set; }
-        public DateTime ConfirmedOnUtc { get; set; }
-        public DateTime DeliveredOnUtc { get; set; }
+        public DateTime? ConfirmedOnUtc { get; set; }
+        public DateTime? DeliveredOnUtc { get; set; }
         public bool IsConfirmed { get; set; }
         public bool IsPaid { get; set; }
         public bool IsDelivered { get; set; }
