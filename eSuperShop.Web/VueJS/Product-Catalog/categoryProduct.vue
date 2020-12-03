@@ -1,5 +1,5 @@
 ﻿<template>
-    <div v-if="isDataFound">
+    <div v-if="loadingScreen">
         <ol class="breadcrumb grey lighten-3 mt-3">
             <li class="breadcrumb-item">
                 <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
@@ -10,7 +10,7 @@
             <li class="breadcrumb-item active">{{CatalogName}}</li>
         </ol>
 
-        <div class="row">
+        <div class="row" v-if="isDataFound">
             <div class="col-lg-3 mb-3">
                 <div id="filter-side" class="card card-body h-100">
                     <div v-if="SubCatalogs.length" class="mb-3">
@@ -102,13 +102,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="loader-style" v-if="isLoading">
-                <i class="fas fa-circle-notch fa-spin fa-3x"></i>
-            </div>
-            <div v-if="!isLastPage" class="d-flex justify-content-center mt-4">
-                <button @click="loadMore" :disabled="isLoading" class="btn btn-danger">{{isLoading? "loading..":" Load More"}}</button>
+                <div class="loader-style" v-if="isLoading">
+                    <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+                </div>
+                <div v-if="!isLastPage" class="d-flex justify-content-center mt-4">
+                    <button @click="loadMore" :disabled="isLoading" class="btn btn-danger">{{isLoading? "loading..":" Load More"}}</button>
+                </div>
             </div>
         </div>
     </div>
@@ -132,7 +132,7 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 </template>
 
 <script>
@@ -149,6 +149,7 @@
                 ParentCatalog: null,
 
                 data: [],
+                loadingScreen: false,
                 isDataFound: false,
                 isLoading: false,
                 isLastPage: false,
@@ -175,13 +176,15 @@
                     this.Attributes = Attributes.length ? Attributes : [];
                     this.Specifications = Specifications.length ? Specifications : [];
 
-                    this.isDataFound = true;
+                    this.isDataFound = Products.length ? true : false;
+                    this.loadingScreen = true;
                 }).catch(err => {
                     console, log(err);
                     this.isDataFound = true;
                 })
             },
 
+            //on click load button
             loadMore() {
                 if (this.isLastPage) return;
                 this.isLoading = true;

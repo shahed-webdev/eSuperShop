@@ -1,5 +1,6 @@
 ﻿
-const shoppingCart = (function() {
+const shoppingCart = (function () {
+    // Private methods
     let cart = [];
 
     // Save cart
@@ -17,9 +18,7 @@ const shoppingCart = (function() {
     }
 
 
-    // =============================
     // Public methods and properties
-    // =============================
     const obj = {};
 
     // get cart
