@@ -39,5 +39,8 @@ namespace eSuperShop.Repository
         VendorStoreInfoUpdateModel StoreDetails(int vendorId);
         PagedResult<StoreViewModel> TopStores(StoreFilterRequest request);
         StoreThemeViewModel StoreThemeDetails(string storeSlugUrl);
+
+
+
     }
 }

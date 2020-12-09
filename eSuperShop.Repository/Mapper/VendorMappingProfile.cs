@@ -15,6 +15,8 @@ namespace eSuperShop.Repository
             CreateMap<Vendor, VendorInfoModel>().ReverseMap();
             CreateMap<Vendor, VendorStoreInfoUpdateModel>().ReverseMap();
 
+
+            CreateMap<VendorStoreSlider, VendorStoreSliderViewModel>().ReverseMap();
             //Vendor store Mapping
             CreateMap<Vendor, StoreViewModel>()
                 .ForMember(d => d.ProductImageUrls,
@@ -24,7 +26,11 @@ namespace eSuperShop.Repository
                     opt => opt.MapFrom(c => (double)c.VendorReview.Sum(r => r.Rating) / (double)c.VendorReview.Count()))
                 .ReverseMap();
 
-            CreateMap<Vendor, StoreThemeViewModel>().ReverseMap();
+            CreateMap<Vendor, StoreThemeViewModel>()
+                .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.VendorReview.Count()))
+                .ForMember(d => d.Rating,
+                    opt => opt.MapFrom(c => (double)c.VendorReview.Sum(r => r.Rating) / (double)c.VendorReview.Count()))
+                .ReverseMap();
 
             //Vendor Slider Mapping
             CreateMap<VendorStoreSlider, VendorSliderModel>().ReverseMap();
