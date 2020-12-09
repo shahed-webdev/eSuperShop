@@ -19,13 +19,15 @@ namespace eSuperShop.Web.Controllers
         private readonly IVendorProductCategoryCore _category;
         private readonly IVendorSliderCore _vendorSlider;
         private readonly IVendorCore _vendor;
+        private readonly IStoreCore _store;
 
-        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category, IVendorSliderCore vendorSlider, IVendorCore vendor)
+        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category, IVendorSliderCore vendorSlider, IVendorCore vendor, IStoreCore store)
         {
             _cloudStorage = cloudStorage;
             _category = category;
             _vendorSlider = vendorSlider;
             _vendor = vendor;
+            _store = store;
         }
 
         //theme
@@ -174,9 +176,9 @@ namespace eSuperShop.Web.Controllers
         [Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Theme(string slugUrl)
         {
-            //if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
+            if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
 
-            // var model = _product.DetailsBySlugUrl(slugUrl);
+            var store = _store.StoreThemeDetails(slugUrl);
 
             //Only Category (pink color)
             const string defaults = "../StoreThemes/Defaults";
@@ -190,6 +192,7 @@ namespace eSuperShop.Web.Controllers
             //Full Banner image (gray color)
             const string bannerImage = "../StoreThemes/BannerImage";
 
+            if(store. ===)
             return View(bannerImage);
         }
     }
