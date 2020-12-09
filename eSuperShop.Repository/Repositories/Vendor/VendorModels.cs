@@ -117,5 +117,6 @@ namespace eSuperShop.Repository
         public int VendorId { get; set; }
         public string StoreName { get; set; }
         public string StoreSlugUrl { get; set; }
+        public StoreTheme StoreTheme { get; set; }
     }
 }
