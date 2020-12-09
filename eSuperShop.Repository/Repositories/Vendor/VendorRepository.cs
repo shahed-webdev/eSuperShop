@@ -272,6 +272,14 @@ namespace eSuperShop.Repository
             return stores;
         }
 
+        public StoreThemeViewModel StoreThemeDetails(string storeSlugUrl)
+        {
+            return Db.Vendor
+                .Where(c => c.StoreSlugUrl == storeSlugUrl)
+                .ProjectTo<StoreThemeViewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 
