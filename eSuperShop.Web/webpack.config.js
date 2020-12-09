@@ -12,7 +12,7 @@ const jsEntries = {}; // listing to compile
 // We search for js files inside basePath folder and make those as entries
 fs.readdirSync(appBasePath).forEach(function(name) {
     // assumption: modules are located in separate directory and each module component is imported to index.js of particular module
-    const indexFile = appBasePath + name + '/index.js';
+    const indexFile = `${appBasePath + name}/index.js`;
     if (fs.existsSync(indexFile)) {
         jsEntries[name] = indexFile
     }

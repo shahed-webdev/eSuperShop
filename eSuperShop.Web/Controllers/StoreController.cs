@@ -166,5 +166,31 @@ namespace eSuperShop.Web.Controllers
 
             return RedirectToAction("Seller", "Dashboard");
         }
+
+
+        //store theme
+        [AllowAnonymous]
+        [Route("[controller]/[action]")]
+        [Route("[controller]/[action]/{slugUrl}")]
+        public IActionResult Theme(string slugUrl)
+        {
+            //if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
+
+            // var model = _product.DetailsBySlugUrl(slugUrl);
+
+            //Only Category (pink color)
+            const string defaults = "../StoreThemes/Defaults";
+
+            //Full Slider (black color)
+            const string fullSlider = "../StoreThemes/FullSlider";
+
+            //Half Slider (blue color)
+            const string HalfSlider = "../StoreThemes/HalfSlider";
+
+            //Full Banner image (gray color)
+            const string bannerImage = "../StoreThemes/BannerImage";
+
+            return View(bannerImage);
+        }
     }
 }

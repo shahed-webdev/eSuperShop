@@ -153,18 +153,5 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
-
-
-        //store theme
-        [AllowAnonymous]
-        [Route("[controller]/[action]")]
-        [Route("[controller]/[action]/{slugUrl}")]
-        public IActionResult Theme(string slugUrl)
-        {
-            if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
-
-            var model = _product.DetailsBySlugUrl(slugUrl);
-            return View(model.Data);
-        }
     }
 }
