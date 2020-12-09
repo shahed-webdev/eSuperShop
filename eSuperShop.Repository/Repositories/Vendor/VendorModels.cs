@@ -111,4 +111,11 @@ namespace eSuperShop.Repository
 
         public string[] ProductImageUrls { get; set; }
     }
+
+    public class StoreThemeViewModel
+    {
+        public int VendorId { get; set; }
+        public string StoreName { get; set; }
+        public string StoreSlugUrl { get; set; }
+    }
 }

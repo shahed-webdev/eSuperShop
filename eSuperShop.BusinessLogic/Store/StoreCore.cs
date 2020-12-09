@@ -31,5 +31,24 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<PagedResult<StoreViewModel>>(false, e.Message);
             }
         }
+
+        public DbResponse<StoreThemeViewModel> StoreThemeDetails(string storeSlugUrl)
+        {
+            try
+            {
+                if (!_db.Vendor.IsExistSlugUrl(storeSlugUrl))
+                    return new DbResponse<StoreThemeViewModel>(false, "Invalid SlugUrl");
+
+                var data = _db.Vendor.StoreThemeDetails(storeSlugUrl);
+                if (data == null)
+                    return new DbResponse<StoreThemeViewModel>(false, "No Data found");
+
+                return new DbResponse<StoreThemeViewModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<StoreThemeViewModel>(false, e.Message);
+            }
+        }
     }
 }
