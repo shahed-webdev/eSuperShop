@@ -22,7 +22,8 @@ namespace eSuperShop.Web.Controllers
         private readonly IVendorCore _vendor;
         private readonly IStoreCore _store;
 
-        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category, IVendorSliderCore vendorSlider, IVendorCore vendor, IStoreCore store)
+        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category,
+            IVendorSliderCore vendorSlider, IVendorCore vendor, IStoreCore store)
         {
             _cloudStorage = cloudStorage;
             _category = category;
@@ -44,8 +45,8 @@ namespace eSuperShop.Web.Controllers
         {
             var fileName = FileBuilder.FileNameImage("store", image.FileName);
             model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
-  
-            var response = _vendorSlider.Add(model,User.Identity.Name);
+
+            var response = _vendorSlider.Add(model, User.Identity.Name);
             return Json(response);
         }
 
@@ -58,7 +59,7 @@ namespace eSuperShop.Web.Controllers
 
             if (response.IsSuccess)
                 await _cloudStorage.DeleteFileAsync(fileName);
-            
+
             return Json(response);
         }
 
@@ -68,7 +69,7 @@ namespace eSuperShop.Web.Controllers
             var response = _category.DisplayList(User.Identity.Name);
             return View(response.Data);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> AddCategory(VendorProductCategoryAddModel model, IFormFile image)
         {
@@ -98,7 +99,7 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
-      
+
         //update category
         [HttpPost]
         public async Task<IActionResult> UpdateCategory(VendorProductCategoryUpdateModel model, IFormFile image)
@@ -129,7 +130,8 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateStore(VendorStoreInfoUpdateModel model, IFormFile logo, IFormFile bannerImage)
+        public async Task<IActionResult> UpdateStore(VendorStoreInfoUpdateModel model, IFormFile logo,
+            IFormFile bannerImage)
         {
             if (logo != null)
             {
@@ -155,8 +157,8 @@ namespace eSuperShop.Web.Controllers
                 model.StoreBannerUrl = await _cloudStorage.UploadFileAsync(bannerImage, fileName);
             }
 
-            var response = _vendor.StoreUpdate(model,User.Identity.Name);
-            
+            var response = _vendor.StoreUpdate(model, User.Identity.Name);
+
             if (!response.IsSuccess)
                 ModelState.AddModelError(response.FieldName, response.Message);
 
@@ -176,31 +178,10 @@ namespace eSuperShop.Web.Controllers
 
             var store = _store.StoreThemeDetails(slugUrl);
 
-            //Only Category (pink color)
-            const string defaults = "../StoreThemes/Defaults";
+            if (store.IsSuccess)
+                return View($"../StoreThemes/{store.Data.StoreTheme}",store.Data);
 
-            //Full Slider (black color)
-            const string fullSlider = "../StoreThemes/FullSlider";
-
-            //Half Slider (blue color)
-            const string halfSlider = "../StoreThemes/HalfSlider";
-
-            //Full Banner image (gray color)
-            const string bannerImage = "../StoreThemes/BannerImage";
-
-            switch (store.Data.StoreTheme)
-            {
-                case StoreTheme.Default:
-                    return View(defaults);
-                case StoreTheme.FullSlider:
-                    return View(fullSlider);
-                case StoreTheme.HalfSlider:
-                    return View(halfSlider);
-                case StoreTheme.BannerImage:
-                    return View(bannerImage);
-                default:
-                    return RedirectToAction("AllStores", "Product");
-            }
+            return RedirectToAction("AllStores", "Product");
         }
     }
 }

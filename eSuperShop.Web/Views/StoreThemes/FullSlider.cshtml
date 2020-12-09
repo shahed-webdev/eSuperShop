@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Store Theme";
+﻿@model StoreThemeViewModel
+@{
+    ViewData["Title"] = Model.StoreName;
 }
 
 @section Styles{
@@ -25,17 +26,17 @@
         .btn:active,
         .btn.active { outline: 0 !important; -webkit-appearance: none; box-shadow: none !important; }
 
-        .category-title { font-size: 25px; font-weight: bold;}
-        
-        .product-name { text-align: center; padding: 1rem 0;}
-        .product-name p{ margin-bottom: 0; font-size: 15px}
+        .category-title { font-size: 25px; font-weight: bold; }
+
+        .product-name { text-align: center; padding: 1rem 0; }
+        .product-name p { margin-bottom: 0; font-size: 15px }
     </style>
 }
 
 <div class="container">
     <div class="row my-4">
         <div class="col-lg-6">
-            <h4 id="store-name">The Store Name</h4>
+            <h4 id="store-name">@Model.StoreName</h4>
         </div>
         <div class="col-lg-6 text-right">
             <form id="formFind">
@@ -67,7 +68,7 @@
         <div class="carousel-item">
             <img class="d-block w-100" src="/images/fullSlider/4.jpg" alt="Second slide">
         </div>
-  
+
         <div class="carousel-item">
             <img class="d-block w-100" src="/images/fullSlider/3.jpg" alt="Third slide">
         </div>

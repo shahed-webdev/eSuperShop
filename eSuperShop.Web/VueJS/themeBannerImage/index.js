@@ -1,10 +1,10 @@
 ﻿
 import Vue from 'vue';
-import Home from './home';
+import StoreProduct from './storeProducts';
 
 const vue = new Vue({
     el: "#bannerImageApp",
     components: {
-        Home
+        StoreProduct
     }
 });
