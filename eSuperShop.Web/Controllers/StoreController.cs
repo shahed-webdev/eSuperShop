@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using CloudStorage;
+using eSuperShop.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -30,11 +31,6 @@ namespace eSuperShop.Web.Controllers
             _store = store;
         }
 
-        //theme
-        public IActionResult Theme()
-        {
-            return View();
-        }
 
         //Image Slider
         public IActionResult ImageSlider()
@@ -174,7 +170,7 @@ namespace eSuperShop.Web.Controllers
         [AllowAnonymous]
         [Route("[controller]/[action]")]
         [Route("[controller]/[action]/{slugUrl}")]
-        public IActionResult Theme(string slugUrl)
+        public IActionResult Profile(string slugUrl)
         {
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
 
@@ -187,13 +183,24 @@ namespace eSuperShop.Web.Controllers
             const string fullSlider = "../StoreThemes/FullSlider";
 
             //Half Slider (blue color)
-            const string HalfSlider = "../StoreThemes/HalfSlider";
+            const string halfSlider = "../StoreThemes/HalfSlider";
 
             //Full Banner image (gray color)
             const string bannerImage = "../StoreThemes/BannerImage";
 
-            if(store. ===)
-            return View(bannerImage);
+            switch (store.Data.StoreTheme)
+            {
+                case StoreTheme.Default:
+                    return View(defaults);
+                case StoreTheme.FullSlider:
+                    return View(fullSlider);
+                case StoreTheme.HalfSlider:
+                    return View(halfSlider);
+                case StoreTheme.BannerImage:
+                    return View(bannerImage);
+                default:
+                    return RedirectToAction("AllStores", "Product");
+            }
         }
     }
 }
