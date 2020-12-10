@@ -280,6 +280,15 @@ namespace eSuperShop.Repository
                 .FirstOrDefault();
         }
 
+        public PagedResult<StoreProductViewModel> StoreProductList(StoreProductFilterRequest request)
+        {
+            return Db.VendorProductCategory
+                .Where(c => c.VendorId == request.VendorId && c.IsActive)
+                .OrderBy(c => c.DisplayOrder)
+                .ProjectTo<StoreProductViewModel>(_mapper.ConfigurationProvider)
+                .GetPaged(request.Page, request.PageSize);
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 

@@ -32,6 +32,11 @@ namespace eSuperShop.Repository
                     opt => opt.MapFrom(c => (double)c.VendorReview.Sum(r => r.Rating) / (double)c.VendorReview.Count()))
                 .ReverseMap();
 
+            //vendor VendorProductCategory Mapping
+            CreateMap<VendorProductCategory, StoreProductViewModel>()
+                .ForMember(d => d.Products, opt => opt.MapFrom(c => c.VendorProductCategoryList.Select(p => p.Product).ToList()))
+                .ReverseMap();
+
             //Vendor Slider Mapping
             CreateMap<VendorStoreSlider, VendorSliderModel>().ReverseMap();
             CreateMap<VendorStoreSlider, VendorSliderSlideModel>().ReverseMap();

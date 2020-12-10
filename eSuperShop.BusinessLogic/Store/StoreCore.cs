@@ -50,5 +50,21 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse<StoreThemeViewModel>(false, e.Message);
             }
         }
+
+        public DbResponse<PagedResult<StoreProductViewModel>> StoreProductList(StoreProductFilterRequest request)
+        {
+            try
+            {
+                var data = _db.Vendor.StoreProductList(request);
+                if (data.Results == null)
+                    return new DbResponse<PagedResult<StoreProductViewModel>>(false, "No Data found");
+
+                return new DbResponse<PagedResult<StoreProductViewModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<PagedResult<StoreProductViewModel>>(false, e.Message);
+            }
+        }
     }
 }

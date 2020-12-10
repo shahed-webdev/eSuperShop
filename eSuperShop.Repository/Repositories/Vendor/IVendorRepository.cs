@@ -41,6 +41,8 @@ namespace eSuperShop.Repository
         StoreThemeViewModel StoreThemeDetails(string storeSlugUrl);
 
 
-
+        PagedResult<StoreProductViewModel> StoreProductList(StoreProductFilterRequest request);
     }
+
+
 }

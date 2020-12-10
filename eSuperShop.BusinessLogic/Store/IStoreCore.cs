@@ -7,5 +7,7 @@ namespace eSuperShop.BusinessLogic
     {
         DbResponse<PagedResult<StoreViewModel>> TopStores(StoreFilterRequest model);
         DbResponse<StoreThemeViewModel> StoreThemeDetails(string storeSlugUrl);
+
+        DbResponse<PagedResult<StoreProductViewModel>> StoreProductList(StoreProductFilterRequest request);
     }
 }
