@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace eSuperShop.Repository
 {
@@ -13,8 +14,25 @@ namespace eSuperShop.Repository
         public decimal Discount { get; set; }
         public decimal ShippingCost { get; set; }
         public decimal NetAmount { get; set; }
-
         public OrderShippingAddressViewModel OrderShippingAddress { get; set; }
+        public ICollection<OrderListViewModel> OrderList { get; set; }
+    }
+
+    public class OrderListViewModel
+    {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalPrice { get; set; }
+        public ICollection<QuantitySetAttributeValueModel> AttributeValues { get; set; }
+
+    }
+
+    public class QuantitySetAttributeValueModel
+    {
+        public string KeyName { get; set; }
+        public string Value { get; set; }
     }
 
     public class OrderShippingAddressViewModel
