@@ -11,7 +11,8 @@ namespace eSuperShop.Repository
         OrderReceiptModel OrderReceipt(int orderId);
         void ConfirmOrder(OrderConfirmModel model);
         void CancelOrder(OrderCancelModel model);
+        DataResult<OrderAdminWiseListModel> AdminWiseList(DataRequest request);
         DataResult<OrderVendorWiseListModel> VendorWiseList(int vendorId);
-        DataResult<OrderCustomerWistListModel> CustomerWistList(int vendorId);
+        DataResult<OrderCustomerWistListModel> CustomerWistList(DataRequest request);
     }
 }

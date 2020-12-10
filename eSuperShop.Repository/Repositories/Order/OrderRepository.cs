@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace eSuperShop.Repository
         }
 
         public void PlaceAnOrder(OrderPlaceModel model)
-        { 
+        {
             Order = _mapper.Map<Order>(model);
             Order.OrderSn = GetNewSn();
             foreach (var item in Order.OrderList)
@@ -53,12 +54,19 @@ namespace eSuperShop.Repository
             throw new System.NotImplementedException();
         }
 
+        public DataResult<OrderAdminWiseListModel> AdminWiseList(DataRequest request)
+        {
+            return Db.Order
+                .ProjectTo<OrderAdminWiseListModel>(_mapper.ConfigurationProvider)
+                .ToDataResult(request);
+        }
+
         public DataResult<OrderVendorWiseListModel> VendorWiseList(int vendorId)
         {
             throw new System.NotImplementedException();
         }
 
-        public DataResult<OrderCustomerWistListModel> CustomerWistList(int vendorId)
+        public DataResult<OrderCustomerWistListModel> CustomerWistList(DataRequest request)
         {
             throw new System.NotImplementedException();
         }
