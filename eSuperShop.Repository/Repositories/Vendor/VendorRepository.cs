@@ -283,6 +283,8 @@ namespace eSuperShop.Repository
         public PagedResult<StoreProductViewModel> StoreProductList(StoreProductFilterRequest request)
         {
             return Db.VendorProductCategory
+                .Include(v => v.VendorProductCategoryList)
+                .ThenInclude(l => l.Product)
                 .Where(c => c.VendorId == request.VendorId && c.IsActive)
                 .OrderBy(c => c.DisplayOrder)
                 .ProjectTo<StoreProductViewModel>(_mapper.ConfigurationProvider)

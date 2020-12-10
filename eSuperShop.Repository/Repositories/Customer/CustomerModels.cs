@@ -9,9 +9,14 @@ namespace eSuperShop.Repository
         public string Email { get; set; }
     }
 
-    public class CustomerinfoModel
+    public class CustomerInfoModel
     {
-
+        public int CustomerId { get; set; }
+        public string UserName { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public decimal Point { get; set; }
+        public string VerifiedPhone { get; set; }
     }
 
     public class CustomerDashboardModel

@@ -28,7 +28,7 @@ namespace eSuperShop.Repository
             Db.Customer.Add(customer);
         }
 
-        public CustomerinfoModel Get(int customerId)
+        public CustomerInfoModel Get(int customerId)
         {
             throw new System.NotImplementedException();
         }
