@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eSuperShop.Repository;
+using JqueryDataTables.LoopsIT;
 using System;
 using System.Linq;
 
@@ -49,6 +50,20 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse<int>(false, e.Message);
+            }
+        }
+
+        public DbResponse<DataResult<OrderAdminWiseListModel>> AdminWiseList(DataRequest request)
+        {
+            try
+            {
+                var data = _db.Order.AdminWiseList(request);
+
+                return new DbResponse<DataResult<OrderAdminWiseListModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<DataResult<OrderAdminWiseListModel>>(false, e.Message);
             }
         }
     }

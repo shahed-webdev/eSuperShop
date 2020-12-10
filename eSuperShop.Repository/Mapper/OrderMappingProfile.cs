@@ -10,6 +10,11 @@ namespace eSuperShop.Repository
             CreateMap<Order, OrderPlaceModel>().ReverseMap();
 
             CreateMap<OrderList, OrderListModel>().ReverseMap();
+
+            CreateMap<Order, OrderAdminWiseListModel>()
+                .ForMember(d => d.CustomerName, opt => opt.MapFrom(c => c.Customer.Registration.Name))
+                .ForMember(d => d.CustomerVerifiedPhone, opt => opt.MapFrom(c => c.Customer.VerifiedPhone))
+                .ReverseMap();
         }
     }
 }
