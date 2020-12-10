@@ -11,13 +11,12 @@
         <table id="data-table" class="table table-sm table-bordered">
             <thead>
             <tr>
-                <th><strong>Authorized Person</strong></th>
-                <th><strong>Verified Phone</strong></th>
-                <th><strong>Email</strong></th>
-                <th><strong>Store Name</strong></th>
-                <th><strong>Store Address</strong></th>
-                <th style="width: 35px"><strong>Approve</strong></th>
-                <th style="width: 35px"><strong>Delete</strong></th>
+                <th><strong>Order No.</strong></th>
+                <th><strong>Customer Name</strong></th>
+                <th><strong>Phone</strong></th>
+                <th><strong>Amount</strong></th>
+                <th><strong>Discount</strong></th>
+                <th><strong>Net Amount</strong></th>
             </tr>
             </thead>
         </table>
@@ -28,40 +27,32 @@
     <script>
         $(function() {
             dataTable.getData();
+            dataTable.filter.push({ Field: "", Value: "", Operand: dataTable.operand.Equal });
         });
 
         //get data
         var dataTable = {
             table: null,
+            filter: [],
             init: function() {
                 dataTable.table = $("#data-table").DataTable({
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "/Seller/SellerList",
-                        type: "POST"
+                        url: "/Order/GetOrderListData",
+                        type: "POST",
+                        data: function (d) {
+                            d.filters = dataTable.filter;
+                        }
                     },
                     columns:
                     [
-                        {
-                            data: "AuthorizedPerson", "render": function(data, type, row, meta) {
-                                return `<a class="blue-text" href="/Seller/AssignCatalog/${row.VendorId}">${data}</a>`;
-                            }
-                        },
-                        { data: "VerifiedPhone" },
-                        { data: "Email" },
-                        { data: "StoreName" },
-                        { data: "StoreAddress" },
-                        {
-                            data: "IsApproved", "render": function(data, type, row, meta) {
-                                return `<input id="${row.VendorId}" type="checkbox" ${data ? "disabled" : ""} ${data ? "checked" : ""} class="form-check-input"><label class="approve form-check-label" for="${row.VendorId}"></label>`;
-                            }
-                        },
-                        {
-                            data: "VendorId", "render": function(data, type, row, meta) {
-                                return `<a id="${row.VendorId}" class="delete fas fa-trash red-text" data-url="/Seller/DeleteVendor/${data}"></a>`;
-                            }
-                        }
+                        { data: "OrderSn" },
+                        { data: "CustomerName" },
+                        { data: "CustomerVerifiedPhone" },
+                        { data: "TotalAmount" },
+                        { data: "Discount" },
+                        { data: "NetAmount" }
                     ],
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
@@ -86,6 +77,8 @@
             },
             addSign: function(data) { return `${data}/-` }
         }
+
+
 
         //const onTable = document.getElementById("data-table");
         //onTable.addEventListener("click", function(evt) {
