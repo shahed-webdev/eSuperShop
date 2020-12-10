@@ -101,18 +101,20 @@
 
 <script>
     export default {
+        props: ['vendorId'],
         data() {
             return {
                 data: [],
-                params: { Page: 2, PageSize: 4 },
+                params: { Page: 2, PageSize: 2, VendorId: +this.vendorId },
                 isLastPage: false,
                 isLoading: false
             }
         },
         methods: {
             getData() {
-                axios.get('/home/GetMoreToLove', { params: { Page: 1, PageSize: 4 } }).then(response => {
+                axios.get('/Store/GetCategoryProduct', { params: { Page: 1, PageSize: 2, VendorId: +this.vendorId } }).then(response => {
                     const { IsSuccess, Data } = response.data;
+                    console.log(Data)
                     if (!IsSuccess) return;
 
                     this.data = Data.Results;
@@ -123,9 +125,9 @@
                 if (this.isLastPage) return;
                 this.isLoading = true;
 
-                axios.get('/home/GetMoreToLove', { params: this.params }).then(response => {
+                axios.get('/Store/GetCategoryProduct', { params: this.params }).then(response => {
                     const { IsSuccess, Data } = response.data;
-
+                    console.log(Data)
                     this.isLastPage = Data.Results.length? false : true;
                     this.isLoading = false;
 
@@ -140,7 +142,7 @@
             },
         },
         beforeMount() {
-            //this.getData();
+            this.getData();
         }
     }
 </script>

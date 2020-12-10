@@ -130,8 +130,7 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateStore(VendorStoreInfoUpdateModel model, IFormFile logo,
-            IFormFile bannerImage)
+        public async Task<IActionResult> UpdateStore(VendorStoreInfoUpdateModel model, IFormFile logo, IFormFile bannerImage)
         {
             if (logo != null)
             {
@@ -182,6 +181,14 @@ namespace eSuperShop.Web.Controllers
                 return View($"../StoreThemes/{store.Data.StoreTheme}",store.Data);
 
             return RedirectToAction("AllStores", "Product");
+        }
+
+        //get category product
+        [AllowAnonymous]
+        public IActionResult GetCategoryProduct(StoreProductFilterRequest filter)
+        {
+            var response = _store.StoreProductList(filter);
+            return Json(response);
         }
     }
 }
