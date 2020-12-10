@@ -21,10 +21,4 @@
     <ProjectReference Include="..\eSuperShop.BusinessLogic\eSuperShop.BusinessLogic.csproj" />
     <ProjectReference Include="..\eSuperShop.Repository\eSuperShop.Repository.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="VueJS\themeDefaults\" />
-    <Folder Include="VueJS\themeFullSlider\" />
-    <Folder Include="VueJS\themeHalfSlider\" />
-  </ItemGroup>
 </Project>

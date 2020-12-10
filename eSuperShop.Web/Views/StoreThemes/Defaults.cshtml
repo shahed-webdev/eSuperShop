@@ -23,11 +23,12 @@
         .btn:active,
         .btn.active { outline: 0 !important; -webkit-appearance: none; box-shadow: none !important; }
 
-        #products .card { box-shadow: 0 2px 5px 0 rgba(244, 49, 108,.16),0 2px 10px 0 rgba(244, 49, 108,.12); }
+        #defaultApp .card { box-shadow: 0 2px 5px 0 rgba(244, 49, 108,.16),0 2px 10px 0 rgba(244, 49, 108,.12); }
         .category-title { color: #F4316C; font-size: 25px; font-weight: bold; text-align: center; }
 
         .product-name { color: #F4316C; text-align: center; padding: 1rem 5px; }
         .product-name p { margin-bottom: 0; font-size: 15px }
+        span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through; }
     </style>
 }
 
@@ -53,122 +54,11 @@
     </div>
 </div>
 
-<section id="products" class="container mt-5">
-    <h4 class="category-title mb-4">THE CATEGORY</h4>
-
-    <div class="row">
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/1.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/2.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/3.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/4.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/7.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/6.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/5.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-6 mb-4">
-            <div class="card">
-                <div class="view overlay">
-                    <img class="card-img-top" src="/images/kids/1.webp" alt="">
-                    <a href="#!"><div class="mask rgba-white-slight"></div></a>
-                </div>
-
-                <div class="product-name">
-                    <p class="mb-0">Name of the product</p>
-                    <strong>৳500</strong>
-                </div>
-            </div>
-        </div>
-    </div>
+<section id="defaultApp" class="container mt-5">
+    <store-product vendor-id="@Model.VendorId" />
 </section>
 
 
 @section Scripts{
-    <script>
-    </script>
+    <script src="@Url.Content("~/bundle/themeDefaults.js")"></script>
 }

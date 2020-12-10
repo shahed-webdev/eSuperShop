@@ -4,7 +4,7 @@
             <h4 class="category-title mb-4">{{category.Name}}</h4>
 
             <div class="row">
-                <div v-for="product in category.Products" :key="product.ProductId" class="col-lg-4 col-6 mb-4">
+                <div class="col-lg-3 col-6 mb-4" v-for="product in category.Products" :key="product.ProductId">
                     <div class="card">
                         <div class="view overlay">
                             <img class="card-img-top" :src="product.ImageUrl" :alt="product.Name">
@@ -47,7 +47,7 @@
             getData() {
                 axios.get('/Store/GetCategoryProduct', { params: { Page: 1, PageSize: 2, VendorId: +this.vendorId } }).then(response => {
                     const { IsSuccess, Data } = response.data;
-              
+                   
                     if (!IsSuccess) return;
 
                     this.data = Data.Results;
@@ -60,7 +60,7 @@
 
                 axios.get('/Store/GetCategoryProduct', { params: this.params }).then(response => {
                     const { IsSuccess, Data } = response.data;
-                
+                 
                     this.isLastPage = Data.Results.length ? false : true;
                     this.isLoading = false;
 
