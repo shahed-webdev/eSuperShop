@@ -46,7 +46,7 @@
                             <img src="/lib/imageZoomer/img/next-icon.png" class="icon-right" alt="" id="next-img" />
                         </div>
                     </div>
-                    
+
                     <div class="col-xl-7 col-lg-6">
                         <p class="mb-0">@Model.Name</p>
                         <a class="blue-text font-small">Sold By: @Model.StoreName</a>
@@ -73,29 +73,35 @@
                             <div id="attribute">
                                 @foreach (var att in Model.Attributes)
                                 {
-                                    <p class="mb-0 key-name">@att.KeyName</p>
+
                                     @if (att.DisplayType == ProductAttributeDisplay.Image)
                                     {
-                                        <div class="d-flex align-items-center mb-3">
-                                            @foreach (var val in att.Values)
-                                            {
-                                                <label class="attribute-img">
-                                                    <input class="radio-attribute" required id="@val.ProductAttributeValueId" type="radio" name="@att.KeyName" value="@val.ProductAttributeValueId">
-                                                    <img for="@val.ProductAttributeValueId" src="@val.ImageUrl" alt="@val.Value" />
-                                                </label>
-                                            }
+                                        <div>
+                                            <p class="mb-1 key-name">@att.KeyName<span class="att-value"></span></p>
+                                            <div class="d-flex align-items-center mb-3">
+                                                @foreach (var val in att.Values)
+                                                {
+                                                    <label class="attribute-img">
+                                                        <input class="radio-attribute" required id="@val.ProductAttributeValueId" type="radio" name="@att.KeyName" att-val="@val.Value" value="@val.ProductAttributeValueId">
+                                                        <img for="@val.ProductAttributeValueId" src="@val.ImageUrl" alt="@val.Value" title="@val.Value" />
+                                                    </label>
+                                                }
+                                            </div>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="d-flex align-items-center mb-3">
-                                            @foreach (var val in att.Values)
-                                            {
-                                                <div class="attribute-text">
-                                                    <input class="radio-attribute" required id="@val.ProductAttributeValueId" type="radio" name="@att.KeyName" value="@val.ProductAttributeValueId">
-                                                    <label for="@val.ProductAttributeValueId">@val.Value</label>
-                                                </div>
-                                            }
+                                        <div>
+                                            <p class="mb-1 key-name">@att.KeyName<span class="att-value"></span></p>
+                                            <div class="d-flex align-items-center mb-3">
+                                                @foreach (var val in att.Values)
+                                                {
+                                                    <div class="attribute-text">
+                                                        <input class="radio-attribute" required id="@val.ProductAttributeValueId" type="radio" name="@att.KeyName" att-val="@val.Value" value="@val.ProductAttributeValueId">
+                                                        <label for="@val.ProductAttributeValueId">@val.Value</label>
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
                                     }
                                 }
@@ -303,7 +309,7 @@
                             <button id="btnAskQuestion" type="submit" class="btn btn-dark btn-md font-weight-bold">Ask</button>
                         </div>
                     </form>
-                   
+
                 }
             }
         </div>
@@ -382,6 +388,18 @@
 
             const onAttribute = element.classList.contains("radio-attribute");
             if (!onAttribute) return;
+
+            //set selected value
+            const setValue = element.parentElement.parentElement.parentElement.querySelector(".att-value");
+            setValue.textContent = ` :${element.getAttribute("att-val")}`
+
+            //set selected image in big image
+            const image = element.nextElementSibling;
+            const showImg = document.getElementById("show-img");
+
+            if (image.tagName === "IMG") {
+                showImg.setAttribute("src", image.getAttribute("src"));
+            }
 
             const valueIds = document.querySelectorAll('input[type="radio"]:checked');
             const keyNames = document.querySelectorAll(".key-name");

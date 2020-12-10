@@ -49,7 +49,7 @@ let linkData = [{
                 "Action": "Add",
                 "Title": "Add",
                 "IconClass": null
-            },{
+            }, {
                 "LinkID": 6,
                 "SN": 2,
                 "Controller": "Brand",
@@ -116,8 +116,37 @@ let linkData = [{
                 "Title": "List",
                 "IconClass": null
             }]
-    }
-];
+    },
+    {
+        "LinkCategoryID": 3,
+        "SN": 7,
+        "Category": "Order",
+        "IconClass": "fas fa-luggage-cart",
+        "links": [
+            {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Order",
+                "Action": "PendingList",
+                "Title": "Pending List",
+                "IconClass": null
+            },
+            {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Order",
+                "Action": "ConfirmedList",
+                "Title": "Confirmed List",
+                "IconClass": null
+            }, {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Order",
+                "Action": "DeliveredList",
+                "Title": "Delivered List",
+                "IconClass": null
+            }]
+    }];
 
 //selectors
 const menuItem = document.getElementById("menuItem")
@@ -166,7 +195,7 @@ const linkCategory = function (category, iconCss, links) {
     const strong = document.createElement('strong');
     strong.appendChild(span)
     strong.appendChild(ico)
-    strong.appendChild(document.createTextNode(category))  
+    strong.appendChild(document.createTextNode(category))
 
     const ul = document.createElement('ul');
     ul.classList.add('sub-menu')
@@ -180,7 +209,7 @@ const linkCategory = function (category, iconCss, links) {
 }
 
 //append link to DOM
-const appendMenuDOM = function (/*linkData*/) { 
+const appendMenuDOM = function (/*linkData*/) {
     const fragment = document.createDocumentFragment();
 
     const span = document.createElement('span');
@@ -199,7 +228,7 @@ const appendMenuDOM = function (/*linkData*/) {
     li.appendChild(strong)
 
     fragment.appendChild(li)
-    
+
     linkData.forEach(item => {
         const link = linkCategory(item.Category, item.IconClass, createLinks(item.links))
         fragment.appendChild(link)
