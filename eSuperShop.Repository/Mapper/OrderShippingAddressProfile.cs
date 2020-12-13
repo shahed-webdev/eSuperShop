@@ -7,7 +7,9 @@ namespace eSuperShop.Repository
     {
         public OrderShippingAddressProfile()
         {
+
             CreateMap<OrderShippingAddress, OrderShippingAddressAddModel>().ReverseMap();
+            CreateMap<OrderShippingAddress, OrderShippingAddressViewModel>().ReverseMap();
         }
     }
 }

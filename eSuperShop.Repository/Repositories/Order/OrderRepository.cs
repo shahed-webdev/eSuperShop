@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace eSuperShop.Repository
@@ -41,12 +43,21 @@ namespace eSuperShop.Repository
 
         public OrderReceiptModel OrderReceipt(int orderId)
         {
-            throw new System.NotImplementedException();
+            return Db.Order
+                .Include(o => o.Customer)
+                .Include(o => o.OrderShippingAddress)
+                .Include(o => o.OrderList)
+                .Where(o => o.OrderId == orderId)
+                .ProjectTo<OrderReceiptModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
         }
 
-        public void ConfirmOrder(OrderConfirmModel model)
+        public void ConfirmOrder(int orderId)
         {
-            throw new System.NotImplementedException();
+            var order = Db.Order.Find(orderId);
+            order.IsConfirmed = true;
+            order.ConfirmedOnUtc = DateTime.UtcNow;
+            Db.Order.Update(order);
         }
 
         public void CancelOrder(OrderCancelModel model)

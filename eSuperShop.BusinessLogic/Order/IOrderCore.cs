@@ -6,7 +6,8 @@ namespace eSuperShop.BusinessLogic
     public interface IOrderCore
     {
         DbResponse<int> OrderPlace(OrderPlaceModel model, string customerUserName);
-
+        DbResponse ConfirmOrder(int orderId);
         DbResponse<DataResult<OrderAdminWiseListModel>> AdminWiseList(DataRequest request);
+        DbResponse<OrderReceiptModel> OrderReceipt(int orderId);
     }
 }

@@ -72,7 +72,15 @@ namespace eSuperShop.Repository
             //Vendor Product Quantity show Mapping
 
             CreateMap<ProductQuantitySetAttribute, ProductQuantitySetAttributeModel>().ReverseMap();
+            CreateMap<ProductQuantitySetAttribute, QuantitySetAttributeValueModel>()
+                .ForMember(d => d.KeyName,
+                    opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.Attribute.KeyName))
+                .ForMember(d => d.Value,
+                    opt => opt.MapFrom(c => c.ProductAttributeValue.Value))
+                .ReverseMap();
             CreateMap<ProductQuantitySet, ProductQuantityAddModel>().ReverseMap();
+
+
             //Product Quantity Set Mapping
             CreateMap<ProductQuantitySet, ProductQuantityViewModel>().ReverseMap();
             CreateMap<ProductQuantitySet, ProductQuantitySetUpdateReturnModel>().ReverseMap();
