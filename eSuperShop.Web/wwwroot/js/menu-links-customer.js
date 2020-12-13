@@ -101,7 +101,7 @@ const appendMenuDOM = function (/*linkData*/) {
 
     const anchor = document.createElement('a');
     anchor.classList.add('links')
-    anchor.href = '/Dashboard/Seller'
+    anchor.href = '/Customer/Dashboard'
     anchor.textContent = 'Dashboard'
 
     const strong = document.createElement('strong');
