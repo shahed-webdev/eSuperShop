@@ -62,7 +62,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult DeleteOrder(int? id)
         {
-            var response = _order.ConfirmOrder(id.GetValueOrDefault());
+            var response = _order.CancelOrder(id.GetValueOrDefault());
             return Json(response);
         }
 

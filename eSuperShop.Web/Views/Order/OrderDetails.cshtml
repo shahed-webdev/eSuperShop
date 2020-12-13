@@ -97,7 +97,7 @@
             evt.preventDefault();
 
             this.disabled = true;
-            this.value = "submitting...";
+            this.textContent = "submitting...";
 
             $.ajax({
                 type: "POST",
@@ -105,7 +105,7 @@
                 data: {id: @Model.OrderId},
                 success: response => {
                     this.disabled = false;
-                    this.value = "Confirm";
+                    this.textContent = "Confirm";
 
                     if (response.IsSuccess) {
                         location.href = "/Order/ConfirmedList";
@@ -117,7 +117,7 @@
                 error: err => {
                     console.log(err);
                     this.disabled = false;
-                    this.value = "Confirm";
+                    this.textContent = "Confirm";
                 }
             });
         });
@@ -128,7 +128,7 @@
             evt.preventDefault();
 
             this.disabled = true;
-            this.value = "submitting...";
+            this.textContent = "submitting...";
 
 
             $.ajax({
@@ -137,7 +137,7 @@
                 data:  {id: @Model.OrderId},
                 success: response => {
                     this.disabled = false;
-                    this.value = "Delete";
+                    this.textContent = "Delete";
 
                     if (response.IsSuccess) {
                         location.href = "/Order/PendingList";
@@ -149,7 +149,7 @@
                 error: err => {
                     console.log(err);
                     this.disabled = false;
-                    this.value = "Confirm";
+                    this.textContent = "Confirm";
                 }
             });
         });
