@@ -45,7 +45,8 @@ namespace eSuperShop.Web.Controllers
         {
             if (!id.HasValue) return RedirectToAction("PendingList");
 
-            return View();
+            var response = _order.OrderReceipt(id.GetValueOrDefault());
+            return View(response.Data);
         }
 
 
@@ -53,7 +54,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult ConfirmOrder(int? id)
         {
-            var response = _order.OrderPlace();
+            var response = _order.ConfirmOrder(id.GetValueOrDefault());
             return Json(response);
         }
 
@@ -61,7 +62,8 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult DeleteOrder(int? id)
         {
-            return View();
+            var response = _order.ConfirmOrder(id.GetValueOrDefault());
+            return Json(response);
         }
 
 
