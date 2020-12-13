@@ -60,9 +60,25 @@ namespace eSuperShop.Repository
             Db.Order.Update(order);
         }
 
-        public void CancelOrder(OrderCancelModel model)
+        public void CancelOrder(int orderId)
         {
-            throw new System.NotImplementedException();
+            var order = Db.Order
+                .Include(o => o.OrderList)
+                .Include(o => o.OrderShippingAddress)
+                .FirstOrDefault(o => o.OrderId == orderId);
+            foreach (var orderList in order.OrderList)
+            {
+                var productQuantitySet = Db.ProductQuantitySet
+                    .FirstOrDefault(p => p.ProductQuantitySetId == orderList.ProductQuantitySetId);
+                productQuantitySet.Quantity += orderList.Quantity;
+                Db.ProductQuantitySet.Update(productQuantitySet);
+            }
+            Db.Order.Remove(order);
+        }
+
+        public bool IsExist(int orderId)
+        {
+            return Db.Order.Any(o => o.OrderId == orderId);
         }
 
         public DataResult<OrderAdminWiseListModel> AdminWiseList(DataRequest request)

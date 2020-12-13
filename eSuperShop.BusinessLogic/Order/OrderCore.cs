@@ -57,7 +57,27 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (!_db.Order.IsExist(orderId))
+                    return new DbResponse(false, "No Product Found");
                 _db.Order.ConfirmOrder(orderId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse CancelOrder(int orderId)
+        {
+            try
+            {
+                if (_db.Order.IsExist(orderId))
+                    return new DbResponse(false, "No Product Found");
+
+                _db.Order.CancelOrder(orderId);
                 _db.SaveChanges();
 
                 return new DbResponse(true, "Success");
