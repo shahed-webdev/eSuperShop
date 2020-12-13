@@ -10,7 +10,8 @@ namespace eSuperShop.Repository
         void PlaceAnOrder(OrderPlaceModel model);
         OrderReceiptModel OrderReceipt(int orderId);
         void ConfirmOrder(int orderId);
-        void CancelOrder(OrderCancelModel model);
+        void CancelOrder(int orderId);
+        bool IsExist(int orderId);
         DataResult<OrderAdminWiseListModel> AdminWiseList(DataRequest request);
         DataResult<OrderVendorWiseListModel> VendorWiseList(int vendorId);
         DataResult<OrderCustomerWistListModel> CustomerWistList(DataRequest request);
