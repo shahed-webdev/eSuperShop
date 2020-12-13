@@ -53,6 +53,21 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse ConfirmOrder(int orderId)
+        {
+            try
+            {
+                _db.Order.ConfirmOrder(orderId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
         public DbResponse<DataResult<OrderAdminWiseListModel>> AdminWiseList(DataRequest request)
         {
             try
@@ -64,6 +79,20 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse<DataResult<OrderAdminWiseListModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<OrderReceiptModel> OrderReceipt(int orderId)
+        {
+            try
+            {
+                var data = _db.Order.OrderReceipt(orderId);
+
+                return new DbResponse<OrderReceiptModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<OrderReceiptModel>(false, e.Message);
             }
         }
     }

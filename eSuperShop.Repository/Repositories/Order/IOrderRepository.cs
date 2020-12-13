@@ -9,7 +9,7 @@ namespace eSuperShop.Repository
         int GetNewSn();
         void PlaceAnOrder(OrderPlaceModel model);
         OrderReceiptModel OrderReceipt(int orderId);
-        void ConfirmOrder(OrderConfirmModel model);
+        void ConfirmOrder(int orderId);
         void CancelOrder(OrderCancelModel model);
         DataResult<OrderAdminWiseListModel> AdminWiseList(DataRequest request);
         DataResult<OrderVendorWiseListModel> VendorWiseList(int vendorId);
