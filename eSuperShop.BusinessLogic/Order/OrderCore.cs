@@ -102,6 +102,20 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<DataResult<OrderCustomerWistListModel>> CustomerWiseList(int customerId, DataRequest request)
+        {
+            try
+            {
+                var data = _db.Order.CustomerWistList(customerId, request);
+
+                return new DbResponse<DataResult<OrderCustomerWistListModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<DataResult<OrderCustomerWistListModel>>(false, e.Message);
+            }
+        }
+
         public DbResponse<OrderReceiptModel> OrderReceipt(int orderId)
         {
             try

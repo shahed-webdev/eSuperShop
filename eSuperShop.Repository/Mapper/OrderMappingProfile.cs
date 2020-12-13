@@ -19,7 +19,10 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.CustomerName, opt => opt.MapFrom(c => c.Customer.Registration.Name))
                 .ForMember(d => d.CustomerVerifiedPhone, opt => opt.MapFrom(c => c.Customer.VerifiedPhone))
                 .ReverseMap();
-
+            CreateMap<Order, OrderCustomerWistListModel>()
+                .ForMember(d => d.CustomerName, opt => opt.MapFrom(c => c.Customer.Registration.Name))
+                .ForMember(d => d.CustomerVerifiedPhone, opt => opt.MapFrom(c => c.Customer.VerifiedPhone))
+                .ReverseMap();
 
             CreateMap<Order, OrderReceiptModel>()
                 .ForMember(d => d.CustomerInfo, opt => opt.MapFrom(c => c.Customer))

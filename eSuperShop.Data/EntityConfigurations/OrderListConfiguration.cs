@@ -22,7 +22,7 @@ namespace eSuperShop.Data
             builder.HasOne(o => o.Order)
                 .WithMany(o => o.OrderList)
                 .HasForeignKey(o => o.OrderId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_OrderList_Order");
 
             builder.HasOne(o => o.Product)

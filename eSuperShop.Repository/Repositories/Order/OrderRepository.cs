@@ -93,9 +93,12 @@ namespace eSuperShop.Repository
             throw new System.NotImplementedException();
         }
 
-        public DataResult<OrderCustomerWistListModel> CustomerWistList(DataRequest request)
+        public DataResult<OrderCustomerWistListModel> CustomerWistList(int customerId, DataRequest request)
         {
-            throw new System.NotImplementedException();
+            return Db.Order
+                .Where(o => o.CustomerId == customerId)
+                .ProjectTo<OrderCustomerWistListModel>(_mapper.ConfigurationProvider)
+                .ToDataResult(request);
         }
     }
 }

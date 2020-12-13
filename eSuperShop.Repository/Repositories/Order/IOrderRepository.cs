@@ -14,6 +14,6 @@ namespace eSuperShop.Repository
         bool IsExist(int orderId);
         DataResult<OrderAdminWiseListModel> AdminWiseList(DataRequest request);
         DataResult<OrderVendorWiseListModel> VendorWiseList(int vendorId);
-        DataResult<OrderCustomerWistListModel> CustomerWistList(DataRequest request);
+        DataResult<OrderCustomerWistListModel> CustomerWistList(int customerId, DataRequest request);
     }
 }
