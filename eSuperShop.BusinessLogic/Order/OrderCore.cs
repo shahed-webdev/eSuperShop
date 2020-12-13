@@ -102,10 +102,13 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<DataResult<OrderCustomerWistListModel>> CustomerWiseList(int customerId, DataRequest request)
+        public DbResponse<DataResult<OrderCustomerWistListModel>> CustomerWiseList(string customerUserName, DataRequest request)
         {
             try
             {
+                var customerId = _db.Registration.CustomerIdByUserName(customerUserName);
+                if (customerId == 0) return new DbResponse<DataResult<OrderCustomerWistListModel>>(false, "Invalid User");
+
                 var data = _db.Order.CustomerWistList(customerId, request);
 
                 return new DbResponse<DataResult<OrderCustomerWistListModel>>(true, "Success", data);
