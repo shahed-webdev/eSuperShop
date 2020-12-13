@@ -74,7 +74,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Order.IsExist(orderId))
+                if (!_db.Order.IsExist(orderId))
                     return new DbResponse(false, "No Product Found");
 
                 _db.Order.CancelOrder(orderId);

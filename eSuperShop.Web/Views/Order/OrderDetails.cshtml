@@ -1,0 +1,157 @@
+﻿@model OrderReceiptModel
+@{
+    ViewData["Title"] = "Order Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="container">
+    <h4 class="page-header">ORDER NO.#@Model.OrderSn</h4>
+    <p>Order Date: @Model.CreatedOnUtc</p>
+
+    <div class="card card-body">
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <h5 class="mb-3 font-weight-bold">Customer Info</h5>
+
+                <p class="mb-1">
+                    <i class="fas fa-user"></i>
+                    @Model.CustomerInfo.Name
+                </p>
+                <p class="mb-1">
+                    <i class="fas fa-phone"></i>
+                    @Model.CustomerInfo.VerifiedPhone
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i>
+                    @Model.CustomerInfo.Email
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <h5 class="mb-3 font-weight-bold">Shipping Address</h5>
+
+                <p class="mb-1">
+                    <i class="fas fa-user"></i>
+                    @Model.OrderShippingAddress.Name
+                </p>
+                <p class="mb-1">
+                    <i class="fas fa-phone"></i>
+                    @Model.OrderShippingAddress.Phone, @Model.OrderShippingAddress.AlternativePhone
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i>
+                    @Model.OrderShippingAddress.Email
+                </p>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th><strong>Product</strong></th>
+                    <th><strong>Quantity</strong></th>
+                    <th><strong>Details</strong></th>
+                    <th class="text-right"><strong>Unit Price</strong></th>
+                    <th class="text-right"><strong>Line Total</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderList)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>
+                            @foreach (var att in item.AttributeValues)
+                            {
+                                <span>@att.KeyName: @att.Value</span>
+                            }
+                        </td>
+                        <td class="text-right">@item.UnitPrice</td>
+                        <td class="text-right">@item.TotalPrice</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <p>Order Total: @Model.TotalAmount</p>
+            <p>Discount: @Model.Discount</p>
+            <p>Shipping Cost: @Model.ShippingCost</p>
+            <p><strong>Grand Total: @Model.NetAmount</strong></p>
+        </div>
+
+        <div class="mt-3 text-right">
+            <button id="btnDelete" class="btn btn-danger">Delete</button>
+            <button id="btnConfirm" class="btn btn-success">Confirm</button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        //confirm Order
+        const btnConfirm = document.getElementById("btnConfirm");
+        btnConfirm.addEventListener("click", function(evt) {
+            evt.preventDefault();
+
+            this.disabled = true;
+            this.textContent = "submitting...";
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/ConfirmOrder",
+                data: {id: @Model.OrderId},
+                success: response => {
+                    this.disabled = false;
+                    this.textContent = "Confirm";
+
+                    if (response.IsSuccess) {
+                        location.href = "/Order/ConfirmedList";
+                        return;
+                    }
+
+                    $.notify(response.Message, "error", { position: "right" });
+                },
+                error: err => {
+                    console.log(err);
+                    this.disabled = false;
+                    this.textContent = "Confirm";
+                }
+            });
+        });
+
+        //delete Order
+        const btnDelete = document.getElementById("btnDelete");
+        btnDelete.addEventListener("click", function(evt) {
+            evt.preventDefault();
+
+            this.disabled = true;
+            this.textContent = "submitting...";
+
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/DeleteOrder",
+                data:  {id: @Model.OrderId},
+                success: response => {
+                    this.disabled = false;
+                    this.textContent = "Delete";
+
+                    if (response.IsSuccess) {
+                        location.href = "/Order/PendingList";
+                        return;
+                    }
+
+                    $.notify(response.Message, "error", { position: "right" });
+                },
+                error: err => {
+                    console.log(err);
+                    this.disabled = false;
+                    this.textContent = "Confirm";
+                }
+            });
+        });
+    </script>
+}
