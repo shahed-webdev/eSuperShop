@@ -1,0 +1,140 @@
+﻿@model OrderReceiptModel
+@{
+    ViewData["Title"] = "Order Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="container">
+    <h4 class="page-header">ORDER NO.#@Model.OrderSn</h4>
+    <p>Order Date: @Model.CreatedOnUtc</p>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h5>Customer Info</h5>
+
+            <h6>@Model.CustomerInfo.Name</h6>
+            <p>@Model.CustomerInfo.VerifiedPhone</p>
+            <p>@Model.CustomerInfo.Email</p>
+        </div>
+        <div class="col-lg-6">
+            <h5>Shipping Address</h5>
+
+            <h6>@Model.OrderShippingAddress.Name</h6>
+            <p>@Model.OrderShippingAddress.Phone</p>
+            <p>@Model.OrderShippingAddress.AlternativePhone</p>
+            <p>@Model.OrderShippingAddress.Email</p>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-sm">
+        <thead>
+            <tr>
+                <th><strong>Product</strong></th>
+                <th><strong>Quantity</strong></th>
+                <th><strong>Details</strong></th>
+                <th class="text-right"><strong>Unit Price</strong></th>
+                <th class="text-right"><strong>Line Total</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderList)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>
+                        @foreach (var att in item.AttributeValues)
+                        {
+                            <span>@att.KeyName: @att.Value</span>
+                        }
+                    </td>
+                    <td class="text-right">@item.UnitPrice</td>
+                    <td class="text-right">@item.TotalPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-right">
+        <p>Order Total: @Model.TotalAmount</p>
+        <p>Discount: @Model.Discount</p>
+        <p>Shipping Cost: @Model.ShippingCost</p>
+        <p>Grand Total: @Model.NetAmount</p>
+    </div>
+
+    <div class="mt-3">
+        <button id="btnDelete" class="btn btn-danger">Delete</button>
+        <button id="btnConfirm" class="btn btn-success">Confirm</button>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        //confirm Order
+        const btnConfirm = document.getElementById("btnConfirm");
+        btnConfirm.addEventListener("click", function(evt) {
+            evt.preventDefault();
+
+            this.btnSubmit.disabled = true;
+            this.btnSubmit.value = "submitting...";
+
+            const model = {}
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/ConfirmOrder",
+                data: model,
+                success: response => {
+                    this.btnSubmit.disabled = false;
+                    this.btnSubmit.value = "Confirm";
+
+                    if (response.IsSuccess) {
+                        location.href = "/Order/ConfirmedList";
+                        return;
+                    }
+
+                    $.notify(response.Message, "error", { position: "right" });
+                },
+                error: err => {
+                    console.log(err);
+                    this.btnSubmit.disabled = false;
+                    this.btnSubmit.value = "Confirm";
+                }
+            });
+        });
+
+        //delete Order
+        const btnDelete = document.getElementById("btnDelete");
+        btnDelete.addEventListener("click", function (evt) {
+            evt.preventDefault();
+
+            this.btnSubmit.disabled = true;
+            this.btnSubmit.value = "submitting...";
+
+            const model = {}
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/DeleteOrder",
+                data: model,
+                success: response => {
+                    this.btnSubmit.disabled = false;
+                    this.btnSubmit.value = "Delete";
+
+                    if (response.IsSuccess) {
+                        location.href = "/Order/PendingList";
+                        return;
+                    }
+
+                    $.notify(response.Message, "error", { position: "right" });
+                },
+                error: err => {
+                    console.log(err);
+                    this.btnSubmit.disabled = false;
+                    this.btnSubmit.value = "Confirm";
+                }
+            });
+        });
+    </script>
+}

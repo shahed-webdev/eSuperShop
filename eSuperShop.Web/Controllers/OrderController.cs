@@ -39,8 +39,34 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
+        //order details
+        [Authorize(Roles = "admin, sub-admin")]
+        public IActionResult OrderDetails(int? id)
+        {
+            if (!id.HasValue) return RedirectToAction("PendingList");
+
+            return View();
+        }
+
+
+        [Authorize(Roles = "admin, sub-admin")]
+        [HttpPost]
+        public IActionResult ConfirmOrder(int? id)
+        {
+            var response = _order.OrderPlace();
+            return Json(response);
+        }
+
+        [Authorize(Roles = "admin, sub-admin")]
+        [HttpPost]
+        public IActionResult DeleteOrder(int? id)
+        {
+            return View();
+        }
+
+
         //data-table
-         [Authorize(Roles = "admin, sub-admin")]
+        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult GetOrderListData(DataRequest request)
         {
             var response = _order.AdminWiseList(request);

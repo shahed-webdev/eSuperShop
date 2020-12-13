@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="m-3">
+<div class="m-md-3">
     <h4 class="page-header mb-3">Pending Order List</h4>
 
     <div class="card card-body">
@@ -17,6 +17,7 @@
                 <th><strong>Amount</strong></th>
                 <th><strong>Discount</strong></th>
                 <th><strong>Net Amount</strong></th>
+                <th><strong>Details</strong></th>
             </tr>
             </thead>
         </table>
@@ -26,8 +27,8 @@
 @section Scripts{
     <script>
         $(function() {
+            dataTable.filter.push({ Field: "IsConfirmed", Value: false, Operand: dataTable.operand.Equal });
             dataTable.getData();
-            dataTable.filter.push({ Field: "", Value: "", Operand: dataTable.operand.Equal });
         });
 
         //get data
@@ -57,7 +58,7 @@
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
                         //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-center", "targets": [1] }
+                        { 'className': "text-right", "targets": [3,4,5] }
                     ]
                 });
             },
