@@ -14,6 +14,7 @@ namespace eSuperShop.Web.Controllers
     public class CustomerController : Controller
     {
         private readonly IOrderCore _order;
+   
 
         public CustomerController(IOrderCore order)
         {
@@ -32,7 +33,7 @@ namespace eSuperShop.Web.Controllers
 
         public IActionResult GetOrderListData(DataRequest request)
         {
-            var response = _order.AdminWiseList(request);
+            var response = _order.CustomerWiseList(User.Identity.Name, request);
             return Json(response.Data);
         }
     }
