@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Data;
+using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
 
 namespace eSuperShop.Repository
@@ -20,7 +21,7 @@ namespace eSuperShop.Repository
         VendorProductCategoryUpdateModel Get(int vendorProductCategoryId);
 
 
-        ICollection<ProductListVendorCategoryWiseModel> ProductList(int vendorId, int vendorProductCategoryId);
+        DataResult<ProductListVendorCategoryWiseModel> ProductList(DataRequest request, int vendorId, int vendorProductCategoryId);
 
         void PlaceAssign(VendorProductCategoryAssignModel model);
         bool IsPlaceAssign(VendorProductCategoryAssignModel model);
