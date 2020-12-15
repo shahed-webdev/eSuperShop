@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -88,11 +89,12 @@ namespace eSuperShop.Repository
                 .FirstOrDefault(c => c.VendorProductCategoryId == vendorProductCategoryId);
         }
 
-        public ICollection<ProductListVendorCategoryWiseModel> ProductList(int vendorId, int vendorProductCategoryId)
+        public DataResult<ProductListVendorCategoryWiseModel> ProductList(DataRequest request, int vendorId, int vendorProductCategoryId)
         {
             return (from p in Db.Product
                     join c in Db.VendorProductCategoryList on p.ProductId equals c.ProductId into pc
                     from m in pc.DefaultIfEmpty()
+                    where p.VendorId == vendorId && m.VendorProductCategoryId == vendorProductCategoryId
                     select new ProductListVendorCategoryWiseModel
                     {
                         ProductId = p.ProductId,
@@ -109,7 +111,7 @@ namespace eSuperShop.Repository
                         IsAssign = m != null
                     })
                 .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
-                .ToList(); ;
+                .ToDataResult(request);
         }
 
         public void PlaceAssign(VendorProductCategoryAssignModel model)

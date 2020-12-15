@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Repository;
+using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
 
 namespace eSuperShop.BusinessLogic
@@ -14,6 +15,6 @@ namespace eSuperShop.BusinessLogic
         DbResponse PlaceAssign(VendorProductCategoryAssignModel model);
         DbResponse PlaceDelete(VendorProductCategoryAssignModel model);
 
-        DbResponse<ICollection<ProductListVendorCategoryWiseModel>> ProductList(string vendorUserName, int vendorProductCategoryId);
+        DbResponse<DataResult<ProductListVendorCategoryWiseModel>> ProductList(DataRequest request, string vendorUserName, int vendorProductCategoryId);
     }
 }

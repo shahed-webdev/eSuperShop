@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eSuperShop.Repository;
+using JqueryDataTables.LoopsIT;
 using System;
 using System.Collections.Generic;
 
@@ -172,23 +173,22 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<ICollection<ProductListVendorCategoryWiseModel>> ProductList(string vendorUserName,
-            int vendorProductCategoryId)
+        public DbResponse<DataResult<ProductListVendorCategoryWiseModel>> ProductList(DataRequest request, string vendorUserName, int vendorProductCategoryId)
         {
             try
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0)
-                    return new DbResponse<ICollection<ProductListVendorCategoryWiseModel>>(false, "Invalid User");
+                    return new DbResponse<DataResult<ProductListVendorCategoryWiseModel>>(false, "Invalid User");
 
 
-                var data = _db.VendorProductCategory.ProductList(vendorId, vendorProductCategoryId);
+                var data = _db.VendorProductCategory.ProductList(request, vendorId, vendorProductCategoryId);
 
-                return new DbResponse<ICollection<ProductListVendorCategoryWiseModel>>(true, "Success", data);
+                return new DbResponse<DataResult<ProductListVendorCategoryWiseModel>>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<ICollection<ProductListVendorCategoryWiseModel>>(false, e.Message);
+                return new DbResponse<DataResult<ProductListVendorCategoryWiseModel>>(false, e.Message);
             }
         }
     }
