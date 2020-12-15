@@ -137,7 +137,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult PostAssignCategory(VendorProductCategoryAssignModel model)
         {
-            var response = _category.PlaceAssign(model);
+            var response = _category.AssignToggle(model);
             return Json(response);
         }
 

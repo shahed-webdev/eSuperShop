@@ -10,7 +10,7 @@
     <h4 class="page-header mb-3">Assign Category In Product</h4>
 
     <div class="card card-body mb-3">
-        <select id="selectCategory" asp-items="ViewBag.StoreCategory" class="mdb-select md-form mb-1">
+        <select id="selectCategory" asp-items="ViewBag.StoreCategory" class="mdb-select md-form">
             <option value="" disabled selected>Select Category</option>
         </select>
 
@@ -110,14 +110,18 @@
 
             const model = { VendorProductCategoryId: selectCategory.value, ProductId: id }
 
+            $(this).prop("disabled", true);
+
             $.ajax({
                 type: "POST",
                 url: "/Store/PostAssignCategory",
                 data: model,
                 success: response => {
-                    $.notify(response.Message, $(this).is(':checked') ? "success" : "error");
+                    $(this).prop("disabled", false);
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
                 },
-                error: function(err) {
+                error: function (err) {
+                    $(this).prop("disabled", false);
                     console.log(err);
                 }
             });
