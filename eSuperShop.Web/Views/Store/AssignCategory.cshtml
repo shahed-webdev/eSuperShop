@@ -6,7 +6,7 @@
 
 
 
-<div class="container">
+<div class="mb-3">
     <h4 class="page-header mb-3">Assign Category In Product</h4>
 
     <div class="card card-body mb-3">
@@ -20,12 +20,11 @@
                     <th><strong>Category</strong></th>
                     <th><strong>Brand Name</strong></th>
                     <th><strong>Product Name</strong></th>
+                    <th><strong>Price</strong></th>
                     <th><strong>Assign</strong></th>
                 </tr>
             </thead>
         </table>
-
-        <button id="btnAssign" class="btn btn-danger">Assign</button>
     </div>
 </div>
 
@@ -68,10 +67,12 @@
                         { data: "CatalogName" },
                         { data: "BrandName" },
                         { data: "Name" },
+                        { data: "Price" },
                         {
                             data: "ProductId", "render": function(data, type, row, meta) {
+                                const isChecked = row.IsAssign ? "checked" : "";
                                 return `<div class="custom-control custom-checkbox">
-                                           <input type="checkbox" class="custom-control-input btnAssign" id="${data}">
+                                           <input type="checkbox" class="custom-control-input btnAssign" id="${data}" ${isChecked}>
                                            <label class="custom-control-label" for="${data}"></label>
                                         </div>`;
                             }
@@ -101,29 +102,23 @@
             addSign: function(data) { return `${data}/-` }
         }
 
-        //submit assign
-        const btnAssign = document.getElementById("btnAssign");
-        btnAssign.addEventListener('click', function(evt) {
-            if (!selectCategory.value) return;
 
-            @*const model = { vendorId: @Model.VendorInfo.VendorId, theme: selectTheme.value };*@
-            this.disabled = true;
+        //submit assign
+        $('#data-table').on("click", ".btnAssign", function() {
+            const id = $(this).attr("id");
+            if (!id) return;
+
+            const model = { VendorProductCategoryId: selectCategory.value, ProductId: id }
 
             $.ajax({
                 type: "POST",
                 url: "/Store/PostAssignCategory",
-                data: "",
+                data: model,
                 success: response => {
-                    this.disabled = false;
-
-                    if (response.IsSuccess)
-                        alert("Assign successfully!");
-                    else
-                        alert(response.Message);
+                    $.notify(response.Message, $(this).is(':checked') ? "success" : "error");
                 },
-                error: err => {
+                error: function(err) {
                     console.log(err);
-                    this.disabled = false;
                 }
             });
         });

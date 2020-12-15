@@ -135,9 +135,10 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostAssignCategory()
+        public IActionResult PostAssignCategory(VendorProductCategoryAssignModel model)
         {
-            return View();
+            var response = _category.PlaceAssign(model);
+            return Json(response);
         }
 
 
