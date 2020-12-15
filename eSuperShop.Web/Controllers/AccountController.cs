@@ -119,6 +119,7 @@ namespace eSuperShop.Web.Controllers
             if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+           
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)
@@ -131,7 +132,7 @@ namespace eSuperShop.Web.Controllers
 
             await _signInManager.RefreshSignInAsync(user);
 
-            return RedirectToAction("Index", "Dashboard", new { Message = "Your password has been changed." });
+            return RedirectToAction("ChangePassword", "Account", new { Message = "Your password has been changed." });
         }
 
         //POST: logout

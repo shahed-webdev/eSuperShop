@@ -21,6 +21,15 @@ let linkData = [
                 "Title": "Add Category",
                 "IconClass": null
             },
+            ,
+            {
+                "LinkID": 4,
+                "SN": 0,
+                "Controller": "Store",
+                "Action": "AssignCategory",
+                "Title": "Assign Category",
+                "IconClass": null
+            },
             {
                 "LinkID": 3,
                 "SN": 0,

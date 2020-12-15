@@ -20,7 +20,7 @@
         <div class="col-xl-7 mb-3">
             <div class="card card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
+                    <div class="w-75">
                         <h4 class="font-weight-bold mb-0">
                             @Model.Name
                             <small class="text-muted" style="text-decoration: line-through">৳@Model.OldPrice</small>
@@ -29,10 +29,12 @@
                         <p class="mb-0">@Model.ShortDescription</p>
                     </div>
 
-                    <button id="btnPublish" data-publish="@Model.Published" type="button" class="btn btn-outline-@(Model.Published ? "success" : "danger") btn-rounded">
-                        <i class="fas mr-1 fa-@(Model.Published ? "check" : "ban")"></i>
-                        @(Model.Published ? "Published" : "Un-Published")
-                    </button>
+                    <div>
+                        <button id="btnPublish" data-publish="@Model.Published" type="button" class="btn btn-outline-@(Model.Published ? "success" : "danger") btn-rounded">
+                            <i class="fas mr-1 fa-@(Model.Published ? "check" : "ban")"></i>
+                            @(Model.Published ? "Published" : "Un-Published")
+                        </button>
+                    </div>
                 </div>
                 <hr />
                 <p>
