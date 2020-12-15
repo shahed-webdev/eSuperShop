@@ -72,6 +72,7 @@ namespace eSuperShop.Repository
         public List<DDL> ListDdl(int vendorId)
         {
             var ddl = Db.VendorProductCategory
+                .Where(v => v.VendorId == vendorId)
                 .ToList().OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name)
                 .Select(c => new DDL
                 {
@@ -92,9 +93,9 @@ namespace eSuperShop.Repository
         public DataResult<ProductListVendorCategoryWiseModel> ProductList(DataRequest request, int vendorId, int vendorProductCategoryId)
         {
             return (from p in Db.Product
-                    join c in Db.VendorProductCategoryList on p.ProductId equals c.ProductId into pc
+                    join c in Db.VendorProductCategoryList.Where(c => c.VendorProductCategoryId == vendorProductCategoryId) on p.ProductId equals c.ProductId into pc
                     from m in pc.DefaultIfEmpty()
-                    where p.VendorId == vendorId && m.VendorProductCategoryId == vendorProductCategoryId
+                    where p.VendorId == vendorId
                     select new ProductListVendorCategoryWiseModel
                     {
                         ProductId = p.ProductId,
