@@ -13,5 +13,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<VendorProductCategoryUpdateModel> Get(int id);
         DbResponse PlaceAssign(VendorProductCategoryAssignModel model);
         DbResponse PlaceDelete(VendorProductCategoryAssignModel model);
+
+        DbResponse<ICollection<ProductListVendorCategoryWiseModel>> ProductList(string vendorUserName, int vendorProductCategoryId);
     }
 }

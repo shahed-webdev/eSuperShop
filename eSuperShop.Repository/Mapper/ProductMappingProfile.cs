@@ -29,6 +29,13 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName));
 
 
+            //Vendor Product show
+            CreateMap<Product, ProductListVendorCategoryWiseModel>()
+                .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
+                .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName));
+
+
+
             CreateMap<ProductBlob, ProductBlobViewModel>().ReverseMap();
             CreateMap<ProductSpecification, ProductSpecificationViewModel>()
                 .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName))

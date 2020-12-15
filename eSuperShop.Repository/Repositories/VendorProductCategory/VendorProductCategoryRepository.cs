@@ -88,6 +88,30 @@ namespace eSuperShop.Repository
                 .FirstOrDefault(c => c.VendorProductCategoryId == vendorProductCategoryId);
         }
 
+        public ICollection<ProductListVendorCategoryWiseModel> ProductList(int vendorId, int vendorProductCategoryId)
+        {
+            return (from p in Db.Product
+                    join c in Db.VendorProductCategoryList on p.ProductId equals c.ProductId into pc
+                    from m in pc.DefaultIfEmpty()
+                    select new ProductListVendorCategoryWiseModel
+                    {
+                        ProductId = p.ProductId,
+                        CatalogId = p.CatalogId,
+                        CatalogName = p.Catalog.CatalogName,
+                        BrandId = p.BrandId,
+                        BrandName = p.Brand.Name,
+                        Name = p.Name,
+                        SlugUrl = p.SlugUrl,
+                        Price = p.Price,
+                        OldPrice = p.OldPrice,
+                        StockQuantity = p.StockQuantity,
+                        UpdatedOnUtc = p.UpdatedOnUtc,
+                        IsAssign = m != null
+                    })
+                .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
+                .ToList(); ;
+        }
+
         public void PlaceAssign(VendorProductCategoryAssignModel model)
         {
             if (IsPlaceAssign(model)) return;

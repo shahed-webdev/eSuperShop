@@ -18,6 +18,10 @@ namespace eSuperShop.Repository
 
         List<DDL> ListDdl(int vendorId);
         VendorProductCategoryUpdateModel Get(int vendorProductCategoryId);
+
+
+        ICollection<ProductListVendorCategoryWiseModel> ProductList(int vendorId, int vendorProductCategoryId);
+
         void PlaceAssign(VendorProductCategoryAssignModel model);
         bool IsPlaceAssign(VendorProductCategoryAssignModel model);
         void PlaceDelete(VendorProductCategoryAssignModel model);

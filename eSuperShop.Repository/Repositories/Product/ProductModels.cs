@@ -185,6 +185,23 @@ namespace eSuperShop.Repository
         public DateTime UpdatedOnUtc { get; set; }
     }
 
+    public class ProductListVendorCategoryWiseModel
+    {
+        public int ProductId { get; set; }
+        public int CatalogId { get; set; }
+        public string CatalogName { get; set; }
+        public int? BrandId { get; set; }
+        public string BrandName { get; set; }
+        public string Name { get; set; }
+        public string SlugUrl { get; set; }
+        public decimal Price { get; set; }
+        public decimal OldPrice { get; set; }
+        public int StockQuantity { get; set; }
+        public DateTime UpdatedOnUtc { get; set; }
+        public bool IsAssign { get; set; }
+    }
+
+
     public class ProductQuantityAddModel
     {
         public ProductQuantityAddModel()

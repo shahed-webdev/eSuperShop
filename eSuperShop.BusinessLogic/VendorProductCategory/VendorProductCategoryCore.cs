@@ -20,7 +20,8 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (string.IsNullOrEmpty(model.Name)) return new DbResponse<VendorProductCategoryModel>(false, "Invalid Data");
+                if (string.IsNullOrEmpty(model.Name))
+                    return new DbResponse<VendorProductCategoryModel>(false, "Invalid Data");
 
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0)
@@ -168,6 +169,26 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse<ICollection<ProductListVendorCategoryWiseModel>> ProductList(string vendorUserName,
+            int vendorProductCategoryId)
+        {
+            try
+            {
+                var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
+                if (vendorId == 0)
+                    return new DbResponse<ICollection<ProductListVendorCategoryWiseModel>>(false, "Invalid User");
+
+
+                var data = _db.VendorProductCategory.ProductList(vendorId, vendorProductCategoryId);
+
+                return new DbResponse<ICollection<ProductListVendorCategoryWiseModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<ICollection<ProductListVendorCategoryWiseModel>>(false, e.Message);
             }
         }
     }
