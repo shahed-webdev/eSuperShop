@@ -49,7 +49,7 @@
 
                     <div class="col-xl-7 col-lg-6">
                         <p class="mb-0">@Model.Name</p>
-                        <a class="blue-text font-small">Sold By: @Model.StoreName</a>
+                        <a target="_blank" href="/Store/Profile/@Model.StoreSlugUrl" class="blue-text font-small">Sold By: @Model.StoreName</a>
 
                         <div class="d-flex align-items-center">
                             <div class="total-rating mr-2" data-rating="@Model.AverageReview.AverageRating"></div>
@@ -73,7 +73,6 @@
                             <div id="attribute">
                                 @foreach (var att in Model.Attributes)
                                 {
-
                                     @if (att.DisplayType == ProductAttributeDisplay.Image)
                                     {
                                         <div>
@@ -391,14 +390,16 @@
 
             //set selected value
             const setValue = element.parentElement.parentElement.parentElement.querySelector(".att-value");
-            setValue.textContent = ` :${element.getAttribute("att-val")}`
+            setValue.textContent = `: ${element.getAttribute("att-val")}`
 
             //set selected image in big image
             const image = element.nextElementSibling;
             const showImg = document.getElementById("show-img");
+            const bigImg = document.getElementById("big-img");
 
             if (image.tagName === "IMG") {
                 showImg.setAttribute("src", image.getAttribute("src"));
+                bigImg.setAttribute("src", image.getAttribute("src"));
             }
 
             const valueIds = document.querySelectorAll('input[type="radio"]:checked');

@@ -9,7 +9,7 @@
                 <div class="card hoverable h-100">
                     <div class="view overlay">
                         <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
-                        <a>
+                        <a :href="'/Product/Item/'+item.SlugUrl">
                             <div class="mask rgba-white-slight"></div>
                         </a>
                     </div>

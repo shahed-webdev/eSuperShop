@@ -5,7 +5,7 @@
 
             <div class="row">
                 <div class="col-lg-3 col-6 mb-4" v-for="product in category.Products" :key="product.ProductId">
-                    <div class="card">
+                    <div class="card hoverable h-100">
                         <div class="view overlay">
                             <img class="card-img-top" :src="product.ImageUrl" :alt="product.Name">
                             <a :href="'/Product/Item/'+product.SlugUrl">
