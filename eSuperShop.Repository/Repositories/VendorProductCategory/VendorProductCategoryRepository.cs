@@ -115,7 +115,7 @@ namespace eSuperShop.Repository
                 .ToDataResult(request);
         }
 
-        public void PlaceAssign(VendorProductCategoryAssignModel model)
+        public void Assign(VendorProductCategoryAssignModel model)
         {
             if (IsPlaceAssign(model)) return;
 
@@ -129,12 +129,11 @@ namespace eSuperShop.Repository
             return VendorProductCategoryList != null;
         }
 
-        public void PlaceDelete(VendorProductCategoryAssignModel model)
+        public void Unassigned(VendorProductCategoryAssignModel model)
         {
             VendorProductCategoryList = Db.VendorProductCategoryList.FirstOrDefault(c => c.VendorProductCategoryId == model.VendorProductCategoryId && c.ProductId == model.ProductId);
             Db.VendorProductCategoryList.Remove(VendorProductCategoryList);
         }
-
         public List<VendorCategoryProductsModel> Products(int vendorProductCategoryId)
         {
             throw new System.NotImplementedException();

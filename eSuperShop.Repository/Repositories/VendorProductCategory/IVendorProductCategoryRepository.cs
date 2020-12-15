@@ -23,10 +23,9 @@ namespace eSuperShop.Repository
 
         DataResult<ProductListVendorCategoryWiseModel> ProductList(DataRequest request, int vendorId, int vendorProductCategoryId);
 
-        void PlaceAssign(VendorProductCategoryAssignModel model);
+        void Assign(VendorProductCategoryAssignModel model);
         bool IsPlaceAssign(VendorProductCategoryAssignModel model);
-        void PlaceDelete(VendorProductCategoryAssignModel model);
-
+        void Unassigned(VendorProductCategoryAssignModel model);
         List<VendorCategoryProductsModel> Products(int vendorProductCategoryId);
     }
 
