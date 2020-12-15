@@ -22,8 +22,7 @@ namespace eSuperShop.Web.Controllers
         private readonly IVendorCore _vendor;
         private readonly IStoreCore _store;
 
-        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category,
-            IVendorSliderCore vendorSlider, IVendorCore vendor, IStoreCore store)
+        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category, IVendorSliderCore vendorSlider, IVendorCore vendor, IStoreCore store)
         {
             _cloudStorage = cloudStorage;
             _category = category;
@@ -84,7 +83,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-        //Delete category
+        //Delete Category
         public async Task<IActionResult> DeleteCategory(string imageUrl, int id)
         {
             var response = _category.Delete(id);
@@ -100,7 +99,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-        //update category
+        //Update Category
         [HttpPost]
         public async Task<IActionResult> UpdateCategory(VendorProductCategoryUpdateModel model, IFormFile image)
         {
@@ -119,6 +118,25 @@ namespace eSuperShop.Web.Controllers
             var response = _category.Update(model);
 
             return Json(response);
+        }
+
+
+        //Assign Category In Product
+        public IActionResult AssignCategory()
+        {
+            ViewBag.StoreCategory = new SelectList(_category.ListDdl(User.Identity.Name).Data, "value", "label");
+            return View();
+        }
+
+        public IActionResult GetCategory(DataRequest request, int categoryId)
+        {
+            return Json("");
+        }
+
+        [HttpPost]
+        public IActionResult PostAssignCategory()
+        {
+            return View();
         }
 
 
@@ -167,7 +185,7 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        //store theme
+        //Store Theme
         [AllowAnonymous]
         [Route("[controller]/[action]")]
         [Route("[controller]/[action]/{slugUrl}")]
@@ -183,7 +201,7 @@ namespace eSuperShop.Web.Controllers
             return RedirectToAction("AllStores", "Product");
         }
 
-        //get category product
+        //Get Category Product
         [AllowAnonymous]
         public IActionResult GetCategoryProduct(StoreProductFilterRequest filter)
         {

@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewData["Title"] = "Assign Category In Product";
+    Layout = "_SellerLayout";
+}
+
+
+
+<div class="container">
+    <h4 class="page-header">Assign Category In Product</h4>
+
+    <div class="card card-body mb-3">
+        <select id="selectCategory" asp-items="ViewBag.StoreCategory" class="mdb-select md-form mb-1">
+            <option value="" disabled selected>Select Category</option>
+        </select>
+        
+        <table id="data-table" class="table table-sm table-bordered">
+            <thead>
+            <tr>
+                <th><strong>Order No.</strong></th>
+                <th><strong>Amount</strong></th>
+                <th><strong>Discount</strong></th>
+                <th><strong>Net Amount</strong></th>
+                <th><strong>Details</strong></th>
+            </tr>
+            </thead>
+        </table>
+
+        <button id="btnAssign" class="btn btn-danger">Assign</button>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function() {
+            $(".mdb-select").materialSelect();
+        });
+
+
+        //on change select Category
+        const selectCategory = document.getElementById("selectCategory");
+        selectCategory.addEventListener('change', function(evt) {
+            if (!this.value) return;
+
+            dataTable.filter.push(this.value);
+            dataTable.getData();
+        });
+
+
+        //get data
+        var dataTable = {
+            table: null,
+            filter: [],
+            init: function() {
+                dataTable.table = $("#data-table").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/Store/GetCategory",
+                        type: "POST",
+                        data: function(d) {
+                            d.categoryId = filter.id;
+                        }
+                    },
+                    columns:
+                    [
+                        { data: "OrderSn" },
+                        { data: "TotalAmount" },
+                        { data: "Discount" },
+                        { data: "NetAmount" },
+                        //{
+                        //    data: "OrderId", "render": function(data, type, row, meta) {
+                        //        return `<div class="custom-control custom-checkbox">
+                        //<input type="checkbox" class="custom-control-input lockClick" id="${item.RegistrationID}" @(item.IsDeactivated ? "checked" : "")>
+                        // <label class="custom-control-label" for="${item.RegistrationID}"></label>
+                        // </div>`;
+                        //    }
+                        //}
+                    ],
+                    columnDefs: [
+                        //{ 'searchable': false, 'targets': [1, 2] },
+                        //{ 'sortable': false, 'targets': [1, 2] },
+                        { 'className': "text-right", "targets": [4] }
+                    ]
+                });
+            },
+            operand: {
+                Equal: 0,
+                NotEqual: 1,
+                GreaterThan: 2,
+                LessThan: 3,
+                GreaterThanOrEqual: 4,
+                LessThanOrEqual: 5,
+                Contains: 6,
+                StartsWith: 7,
+                EndsWith: 8
+            },
+            getData: function() {
+                dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
+            },
+            addSign: function(data) { return `${data}/-` }
+        }
+
+        //submit assign
+        const btnAssign = document.getElementById("btnAssign");
+        btnAssign.addEventListener('click', function(evt) {
+            if (!selectCategory.value) return;
+
+            @*const model = { vendorId: @Model.VendorInfo.VendorId, theme: selectTheme.value };*@
+            this.disabled = true;
+
+            $.ajax({
+                type: "POST",
+                url: "/Store/PostAssignCategory",
+                data: "",
+                success: response => {
+                    this.disabled = false;
+
+                    if (response.IsSuccess)
+                        alert("Assign successfully!");
+                    else
+                        alert(response.Message);
+                },
+                error: err => {
+                    console.log(err);
+                    this.disabled = false;
+                }
+            });
+        });
+    </script>
+}
