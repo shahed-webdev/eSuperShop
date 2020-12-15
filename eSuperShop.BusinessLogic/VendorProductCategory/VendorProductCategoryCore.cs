@@ -137,35 +137,23 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse PlaceAssign(VendorProductCategoryAssignModel model)
+        public DbResponse AssignToggle(VendorProductCategoryAssignModel model)
         {
             try
             {
                 if (_db.VendorProductCategory.IsPlaceAssign(model))
-                    return new DbResponse(false, "Already Assigned");
+                {
 
-                _db.VendorProductCategory.PlaceAssign(model);
-                _db.SaveChanges();
-
-                return new DbResponse(true, "Success");
-            }
-            catch (Exception e)
-            {
-                return new DbResponse(false, e.Message);
-            }
-        }
-
-        public DbResponse PlaceDelete(VendorProductCategoryAssignModel model)
-        {
-            try
-            {
-                if (!_db.VendorProductCategory.IsPlaceAssign(model))
-                    return new DbResponse(false, "Not Assigned");
-
-                _db.VendorProductCategory.PlaceDelete(model);
-                _db.SaveChanges();
-
-                return new DbResponse(true, "Success");
+                    _db.VendorProductCategory.Unassigned(model);
+                    _db.SaveChanges();
+                    return new DbResponse(true, "Unassigned Successfully");
+                }
+                else
+                {
+                    _db.VendorProductCategory.Assign(model);
+                    _db.SaveChanges();
+                    return new DbResponse(true, "Assigned Successfully");
+                }
             }
             catch (Exception e)
             {
