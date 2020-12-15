@@ -130,7 +130,8 @@ namespace eSuperShop.Web.Controllers
 
         public IActionResult GetCategory(DataRequest request, int categoryId)
         {
-            return Json("");
+            var response = _category.ProductList(request, User.Identity.Name, categoryId);
+            return Json(response.Data);
         }
 
         [HttpPost]

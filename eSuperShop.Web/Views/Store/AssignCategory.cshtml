@@ -7,22 +7,21 @@
 
 
 <div class="container">
-    <h4 class="page-header">Assign Category In Product</h4>
+    <h4 class="page-header mb-3">Assign Category In Product</h4>
 
     <div class="card card-body mb-3">
         <select id="selectCategory" asp-items="ViewBag.StoreCategory" class="mdb-select md-form mb-1">
             <option value="" disabled selected>Select Category</option>
         </select>
-        
+
         <table id="data-table" class="table table-sm table-bordered">
             <thead>
-            <tr>
-                <th><strong>Order No.</strong></th>
-                <th><strong>Amount</strong></th>
-                <th><strong>Discount</strong></th>
-                <th><strong>Net Amount</strong></th>
-                <th><strong>Details</strong></th>
-            </tr>
+                <tr>
+                    <th><strong>Category</strong></th>
+                    <th><strong>Brand Name</strong></th>
+                    <th><strong>Product Name</strong></th>
+                    <th><strong>Assign</strong></th>
+                </tr>
             </thead>
         </table>
 
@@ -44,7 +43,7 @@
         selectCategory.addEventListener('change', function(evt) {
             if (!this.value) return;
 
-            dataTable.filter.push(this.value);
+            dataTable.filter = +this.value;
             dataTable.getData();
         });
 
@@ -52,7 +51,7 @@
         //get data
         var dataTable = {
             table: null,
-            filter: [],
+            filter: 0,
             init: function() {
                 dataTable.table = $("#data-table").DataTable({
                     processing: true,
@@ -61,28 +60,27 @@
                         url: "/Store/GetCategory",
                         type: "POST",
                         data: function(d) {
-                            d.categoryId = filter.id;
+                            d.categoryId = dataTable.filter;
                         }
                     },
                     columns:
                     [
-                        { data: "OrderSn" },
-                        { data: "TotalAmount" },
-                        { data: "Discount" },
-                        { data: "NetAmount" },
-                        //{
-                        //    data: "OrderId", "render": function(data, type, row, meta) {
-                        //        return `<div class="custom-control custom-checkbox">
-                        //<input type="checkbox" class="custom-control-input lockClick" id="${item.RegistrationID}" @(item.IsDeactivated ? "checked" : "")>
-                        // <label class="custom-control-label" for="${item.RegistrationID}"></label>
-                        // </div>`;
-                        //    }
-                        //}
+                        { data: "CatalogName" },
+                        { data: "BrandName" },
+                        { data: "Name" },
+                        {
+                            data: "ProductId", "render": function(data, type, row, meta) {
+                                return `<div class="custom-control custom-checkbox">
+                                           <input type="checkbox" class="custom-control-input btnAssign" id="${data}">
+                                           <label class="custom-control-label" for="${data}"></label>
+                                        </div>`;
+                            }
+                        }
                     ],
                     columnDefs: [
-                        //{ 'searchable': false, 'targets': [1, 2] },
-                        //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-right", "targets": [4] }
+                        { 'searchable': false, 'targets': [3] },
+                        { 'sortable': false, 'targets': [3] },
+                        //{ 'className': "text-right", "targets": [4] }
                     ]
                 });
             },
