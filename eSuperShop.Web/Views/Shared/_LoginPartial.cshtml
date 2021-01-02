@@ -9,18 +9,16 @@
     <li class="nav-item">
         @if (User.IsInRole(UserType.Customer.GetDescription()))
         {
-            <a class="nav-link" href="/Customer/Dashboard" title="Dashboard">Hello @User.Identity.Name!</a>
+            <a class="nav-link" href="/Customer/Dashboard" title="Dashboard">Hello, @User.Identity.Name!</a>
         }
         else if (User.IsInRole(UserType.Seller.GetDescription()))
         {
-            <a class="nav-link" href="/Dashboard/Seller" title="Dashboard">Hello @User.Identity.Name!</a>
+            <a class="nav-link" href="/Dashboard/Seller" title="Dashboard">Hello, @User.Identity.Name!</a>
         }
         else
         {
-            <a class="nav-link" href="/Dashboard/Index" title="Dashboard">Hello @User.Identity.Name!</a>
+            <a class="nav-link" href="/Dashboard/Index" title="Dashboard">Hello, @User.Identity.Name!</a>
         }
-
-        
     </li>
     <li class="nav-item">
         <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">

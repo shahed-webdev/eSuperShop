@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace eSuperShop.Web
 {
@@ -22,8 +23,8 @@ namespace eSuperShop.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
+
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
                 {
                     config.Password = new PasswordOptions
@@ -67,8 +68,6 @@ namespace eSuperShop.Web
                 facebookOptions.AppId = "422952768651477";
                 facebookOptions.AppSecret = "a2f2c1b1fb31c2dfd57a9f7be373e760";
             });
-
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

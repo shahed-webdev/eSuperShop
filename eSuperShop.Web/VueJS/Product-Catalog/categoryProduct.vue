@@ -76,7 +76,7 @@
 
             <div class="col-lg-9">
                 <div class="row">
-                    <div v-for="(item,i) in data" :key="i" class="col-xl-3 col-lg-4 col-sm-6 mb-3">
+                    <div v-for="(item,i) in data" :key="i" class="col-xl-3 col-lg-4 col-sm-6 mb-4">
                         <div class="card hoverable h-100">
                             <div class="view overlay">
                                 <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
