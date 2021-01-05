@@ -18,16 +18,18 @@
         <div class="col-md-8 col-lg-7 mx-auto">
             <div class="card card-signin my-5">
                 <div class="card-body">
-                    <h5 class="card-title text-center">
+                    <h5 class="card-title text-center mb-1">
                         <strong class="dark-grey-text">Create Account</strong>
                     </h5>
+                    <p class="mb-4 text-center text-muted">Enter Our Platform As A Seller </p>
 
                     <form id="formRegistration">
                         <div class="md-form input-group mb-5">
-                            <input id="inputMobile" type="text" class="form-control" placeholder="Mobile Number" required>
+                            <input id="inputMobile" type="text" class="form-control" required>
                             <div class="input-group-append">
                                 <button id="btnSendCode" type="button" class="btn btn-danger btn-md m-0 px-3"><i class="fas fa-check mr-1"></i>Verify</button>
                             </div>
+                            <label for="inputMobile">Mobile Number</label>
                         </div>
                         <span id="mobileError" class="field-validation-error"></span>
 
@@ -126,8 +128,6 @@
                 url: "/Seller/SendCode",
                 data: { mobile: formRegistration.inputMobile.value, time },
                 success: function(response) {
-                    console.log(response);
-
                     if (response.IsSuccess) {
                         codeVerifyModal.modal('show');
                         btnSendCode.disabled = false;

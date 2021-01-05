@@ -8,6 +8,7 @@
     <link href="~/css-page/Login.css" rel="stylesheet" />
     <style>
         .serach-container { display: none; }
+        .send-btn { text-transform: none; font-size: 1rem; padding: .4rem 1.5rem; }
     </style>
 }
 
@@ -20,25 +21,30 @@
                         <strong class="dark-grey-text">Customer Registration</strong>
                     </h5>
 
-                    <form asp-route-returnUrl="@ViewBag.ReturnUrl" class="form-signin" asp-controller="Account" asp-action="CustomerLogin" method="post">
-                        <div class="md-form mb-5">
-                            <input asp-for="UserName" class="form-control">
-                            <label for="UserName">Mobile Number</label>
-                            <span asp-validation-for="UserName"></span>
+                    <form id="formRegistration">
+                        <div class="md-form input-group my-5">
+                            <input id="inputUserName" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <button id="btnSendCode" type="button" class="btn btn btn-primary btn-rounded m-0 send-btn">Send Code</button>
+                            </div>
+                            <label for="inputUserName">Mobile Number</label>
                         </div>
+                        <span id="mobileError" class="field-validation-error"></span>
+
+
                         <div class="md-form mb-5">
-                            <input asp-for="UserName" class="form-control">
-                            <label for="UserName">Verification Code</label>
-                            <span asp-validation-for="UserName"></span>
+                            <input id="inputCode" type="text" class="form-control" required>
+                            <label for="inputCode">Verification Code</label>
                         </div>
-                        <div class="md-form mb-0 pb-3">
-                            <input asp-for="Password" class="form-control" type="password">
-                            <label asp-for="Password"></label>
-                            <span asp-validation-for="Password"></span>
+                        <div class="text-center">
+                            <a id="btnResend" class="timerCount"></a>
+                        </div>
+                        <div class="md-form mt-5 mb-0">
+                            <input id="inputPassword" class="form-control" type="password" required>
+                            <label for="inputPassword">Password</label>
                         </div>
 
-                        <button class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3 mt-4" type="submit">SignUp</button>
-                        <div asp-validation-summary="All"></div>
+                        <button class="btn btn-block btn-rounded btn-danger z-depth-1a mt-5" type="submit">SignUp</button>
                     </form>
 
                     <p class="mt-3 text-muted text-center">Or Signup With</p>
@@ -54,3 +60,102 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        //registration form
+        const formRegistration = document.getElementById("formRegistration");
+        const mobileNumber = formRegistration.inputUserName;
+
+        const btnSendCode = document.getElementById("btnSendCode");
+        const btnResend = document.getElementById("btnResend");
+
+        const mobileError = document.getElementById("mobileError");
+
+        //send code
+        btnSendCode.addEventListener("click", function (evt) {
+            mobileError.textContent = "";
+            if (!mobileNumber.value) return;
+
+            btnDisabled(this, "Sending..", true);
+
+            const time = 60;
+            startTimer(time, this);
+
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Seller/SendCode",
+            //    data: { mobile: mobileNumber.value, time },
+            //    success: response => {
+            //        if (response.IsSuccess) {
+            //            startTimer(time);
+            //            return;
+            //        }
+
+            //        mobileError.textContent = response.Message;
+            //        btnDisabled(this, "Send Code", false);
+
+            //    },
+            //    error: err => {
+            //        console.log(err);
+            //        btnDisabled(this, "Send Code", false);
+            //    }
+            //});
+        });
+
+        //post registration
+        formRegistration.addEventListener('submit', function (evt) {
+            evt.preventDefault();
+
+            btnDisabled(this.btnSignUp, "submitting..", true);
+
+            const data = {
+                VerifiedPhone: mobileNumber.value,
+                StoreName: this.inputStoreName.value,
+                StoreAddress: this.inputStoreAddress.value
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Account/SignUp",
+                data,
+                success: response => {
+                    if (response.IsSuccess) {
+                        return;
+                    }
+
+                    accountError.textContent = response.Message;
+                    btnDisabled(this.btnSignUp, "Create account", false);
+                },
+                error: err=> {
+                    console.log(err);
+                    btnDisabled(this.btnSignUp, "Create account", false);
+                }
+            });
+        });
+
+        //count down
+        function startTimer(duration, btn) {
+            let seconds = 0;
+
+            const interval = setInterval(function () {
+                seconds = parseInt(duration % 60, 10);
+                seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+                btnDisabled(btn, `Resend after ${seconds}s`, true);
+
+                if (--duration < 0) {
+                    clearInterval(interval);
+                    btnDisabled(btn, "Resend Code", false);
+                }
+
+            }, 1000);
+        }
+
+        //button enable/disable
+        function btnDisabled(btn, text, isDisable) {
+            btn.disabled = isDisable;
+            btn.textContent = text;
+        }
+    </script>
+}
