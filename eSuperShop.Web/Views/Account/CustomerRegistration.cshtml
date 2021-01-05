@@ -3,7 +3,6 @@
     ViewData["Title"] = "Customer Registration";
 }
 
-
 @section Styles {
     <link href="~/css-page/Login.css" rel="stylesheet" />
     <style>
@@ -23,14 +22,13 @@
 
                     <form id="formRegistration">
                         <div class="md-form input-group my-5">
-                            <input id="inputUserName" type="number" class="form-control" required>
+                            <input id="inputMobileNumber" type="number" class="form-control pl-0" required>
                             <div class="input-group-append">
                                 <button id="btnSendCode" type="button" class="btn btn btn-primary btn-rounded m-0 send-btn">Send Code</button>
                             </div>
-                            <label for="inputUserName">Mobile Number</label>
+                            <label for="inputMobileNumber">Mobile Number</label>
                         </div>
                         <span id="mobileError" class="field-validation-error"></span>
-
 
                         <div class="md-form mb-5">
                             <input id="inputCode" type="text" class="form-control" required>
@@ -44,7 +42,10 @@
                             <label for="inputPassword">Password</label>
                         </div>
 
-                        <button class="btn btn-block btn-rounded btn-danger z-depth-1a mt-5" type="submit">SignUp</button>
+                        <button id="btnSignUp" type="submit" disabled class="btn btn-block btn-rounded btn-danger z-depth-1a mt-5">SignUp</button>
+                        <div>
+                            <span id="accountError" class="field-validation-error"></span>
+                        </div>
                     </form>
 
                     <p class="mt-3 text-muted text-center">Or Signup With</p>
@@ -65,11 +66,8 @@
     <script>
         //registration form
         const formRegistration = document.getElementById("formRegistration");
-        const mobileNumber = formRegistration.inputUserName;
-
+        const mobileNumber = formRegistration.inputMobileNumber;
         const btnSendCode = document.getElementById("btnSendCode");
-        const btnResend = document.getElementById("btnResend");
-
         const mobileError = document.getElementById("mobileError");
 
         //send code
@@ -79,57 +77,60 @@
 
             btnDisabled(this, "Sending..", true);
 
-            const time = 60;
+            const time = 300;
             startTimer(time, this);
 
-            //$.ajax({
-            //    type: "POST",
-            //    url: "/Seller/SendCode",
-            //    data: { mobile: mobileNumber.value, time },
-            //    success: response => {
-            //        if (response.IsSuccess) {
-            //            startTimer(time);
-            //            return;
-            //        }
+            $.ajax({
+                type: "POST",
+                url: "/Customer/SendCode",
+                data: { mobile: mobileNumber.value, time },
+                success: response => {
+                    if (response.IsSuccess) {
+                        startTimer(time, this);
+                        return;
+                    }
 
-            //        mobileError.textContent = response.Message;
-            //        btnDisabled(this, "Send Code", false);
-
-            //    },
-            //    error: err => {
-            //        console.log(err);
-            //        btnDisabled(this, "Send Code", false);
-            //    }
-            //});
+                    mobileError.textContent = response.Message;
+                    btnDisabled(this, "Send Code", false);
+                },
+                error: err => {
+                    console.log(err);
+                    btnDisabled(this, "Send Code", false);
+                }
+            });
         });
 
         //post registration
         formRegistration.addEventListener('submit', function (evt) {
             evt.preventDefault();
 
+            const accountError = document.getElementById("accountError");
+            accountError.textContent = "";
+
             btnDisabled(this.btnSignUp, "submitting..", true);
 
             const data = {
-                VerifiedPhone: mobileNumber.value,
-                StoreName: this.inputStoreName.value,
-                StoreAddress: this.inputStoreAddress.value
+                MobileNumber: mobileNumber.value,
+                Code: this.inputCode.value,
+                Password: this.inputPassword.value
             }
 
             $.ajax({
                 type: "POST",
-                url: "/Account/SignUp",
+                url: "/Customer/CustomerRegistration",
                 data,
                 success: response => {
                     if (response.IsSuccess) {
+                        location.href = "/Customer/Dashboard";
                         return;
                     }
 
                     accountError.textContent = response.Message;
-                    btnDisabled(this.btnSignUp, "Create account", false);
+                    btnDisabled(this.btnSignUp, "Signup", false);
                 },
-                error: err=> {
+                error: err => {
                     console.log(err);
-                    btnDisabled(this.btnSignUp, "Create account", false);
+                    btnDisabled(this.btnSignUp, "Signup", false);
                 }
             });
         });
@@ -137,6 +138,8 @@
         //count down
         function startTimer(duration, btn) {
             let seconds = 0;
+
+            btnDisabled(formRegistration.btnSignUp, "Signup", false);
 
             const interval = setInterval(function () {
                 seconds = parseInt(duration % 60, 10);
