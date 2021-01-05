@@ -93,7 +93,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_userManager.Users.Any(u => u.UserName == mobileNumber)) return new DbResponse(false, "Phone number already exist");
+                if (_userManager.Users.Any(u => u.UserName == mobileNumber)) return new DbResponse(false, "Phone number already exist");
 
                 OtpServiceSingleton.Instance.PhoneNunber = mobileNumber;
                 #region Generate Code
