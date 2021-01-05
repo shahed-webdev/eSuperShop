@@ -93,7 +93,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Vendor.IsExistPhone(mobileNumber)) return new DbResponse(false, "Phone number already exist");
+                if (!_userManager.Users.Any(u => u.UserName == mobileNumber)) return new DbResponse(false, "Phone number already exist");
 
                 OtpServiceSingleton.Instance.PhoneNunber = mobileNumber;
                 #region Generate Code
@@ -139,11 +139,6 @@ namespace eSuperShop.BusinessLogic
                 if (model.MobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
                 if (!verify) return new DbResponse(false, "Invalid Code");
 
-
-
-
-
-
                 //Identity Create
                 var user = new IdentityUser { UserName = model.MobileNumber };
                 var password = model.Password;
@@ -153,8 +148,12 @@ namespace eSuperShop.BusinessLogic
 
                 await _userManager.AddToRoleAsync(user, UserType.Customer.ToString()).ConfigureAwait(false);
 
-
-
+                var customer = new CustomerAddModel
+                {
+                    UserName = model.MobileNumber
+                };
+                _db.Customer.Add(customer);
+                _db.SaveChanges();
 
 
                 #region SMS Code
