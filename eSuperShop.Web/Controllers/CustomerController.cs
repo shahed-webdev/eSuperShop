@@ -14,11 +14,13 @@ namespace eSuperShop.Web.Controllers
     public class CustomerController : Controller
     {
         private readonly IOrderCore _order;
+        private readonly ICustomerCore _customer;
    
 
-        public CustomerController(IOrderCore order)
+        public CustomerController(IOrderCore order, ICustomerCore customer)
         {
             _order = order;
+            _customer = customer;
         }
 
         public IActionResult Dashboard()
@@ -35,6 +37,25 @@ namespace eSuperShop.Web.Controllers
         {
             var response = _order.CustomerWiseList(User.Identity.Name, request);
             return Json(response.Data);
+        }
+
+        //Send Code To Mobile
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult SendCode(string mobile, int time)
+        {
+            var response = _customer.SendCode(mobile, time);
+            return Json(response);
+        }
+
+
+        //POST: Customer Registration
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult CustomerRegistration(CustomerMobileSignUpModel model)
+        {
+            var response = _customer.MobileSignUpAsync(model);
+            return Json(response);
         }
     }
 }

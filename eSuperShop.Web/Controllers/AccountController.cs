@@ -16,6 +16,7 @@ namespace eSuperShop.Web.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ICustomerCore _customer;
+
         public AccountController(IUnitOfWork db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ICustomerCore customer)
         {
             _db = db;
@@ -74,31 +75,6 @@ namespace eSuperShop.Web.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
-        }
-
-
-        //POST: Customer Registration
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CustomerRegistration(LoginViewModel model, string returnUrl)
-        {
-            if (!ModelState.IsValid) return View(model);
-
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-
-            if (result.Succeeded)
-                LocalRedirect(returnUrl ??= Url.Content("~/Customer/Dashboard"));
-
-            if (result.RequiresTwoFactor)
-                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, model.RememberMe });
-
-            if (result.IsLockedOut)
-                return RedirectToPage("./Lockout");
-
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(model);
         }
 
 
