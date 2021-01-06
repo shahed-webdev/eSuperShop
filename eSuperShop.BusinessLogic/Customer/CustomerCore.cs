@@ -108,21 +108,21 @@ namespace eSuperShop.BusinessLogic
 
                 #region SMS Code
 
-                var massageLength = SmsValidator.MassageLength(textSms);
-                var smsCount = SmsValidator.TotalSmsCount(textSms);
+                //var massageLength = SmsValidator.MassageLength(textSms);
+                //var smsCount = SmsValidator.TotalSmsCount(textSms);
 
-                var smsProvider = new SmsProviderBuilder();
+                //var smsProvider = new SmsProviderBuilder();
 
-                var smsBalance = smsProvider.SmsBalance();
-                if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
+                //var smsBalance = smsProvider.SmsBalance();
+                //if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
 
-                var providerSendId = smsProvider.SendSms(textSms, mobileNumber);
+                //var providerSendId = smsProvider.SendSms(textSms, mobileNumber);
 
-                if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
+                //if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
 
                 #endregion
 
-                return new DbResponse(true, "Success");
+                return new DbResponse(true, $"Success {code}");
             }
             catch (Exception e)
             {
