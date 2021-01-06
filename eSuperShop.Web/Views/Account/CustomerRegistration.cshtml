@@ -86,7 +86,6 @@
                 url: "/Customer/SendCode",
                 data: { mobile: mobileNumber.value, time: 120 },
                 success: response => {
-                    console.log(response)
                     if (response.IsSuccess) {
                         startTimer(60, this);
                         return;

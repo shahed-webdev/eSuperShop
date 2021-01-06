@@ -108,17 +108,17 @@ namespace eSuperShop.BusinessLogic
 
                 #region SMS Code
 
-                //var massageLength = SmsValidator.MassageLength(textSms);
-                //var smsCount = SmsValidator.TotalSmsCount(textSms);
+                var massageLength = SmsValidator.MassageLength(textSms);
+                var smsCount = SmsValidator.TotalSmsCount(textSms);
 
-                //var smsProvider = new SmsProviderBuilder();
+                var smsProvider = new SmsProviderBuilder();
 
-                //var smsBalance = smsProvider.SmsBalance();
-                //if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
+                var smsBalance = smsProvider.SmsBalance();
+                if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
 
-                //var providerSendId = smsProvider.SendSms(textSms, mobileNumber);
+                var providerSendId = smsProvider.SendSms(textSms, mobileNumber);
 
-                //if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
+                if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
 
                 #endregion
 
@@ -134,10 +134,10 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                //long timeStepMatched;
-                //var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(model.Code, out timeStepMatched, window: null);
-                //if (model.MobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
-                //if (!verify) return new DbResponse(false, "Invalid Code");
+                long timeStepMatched;
+                var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(model.Code, out timeStepMatched, window: null);
+                if (model.MobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
+                if (!verify) return new DbResponse(false, "Invalid Code");
 
                 //Identity Create
                 var user = new IdentityUser { UserName = model.MobileNumber };
@@ -152,6 +152,7 @@ namespace eSuperShop.BusinessLogic
                 {
                     UserName = model.MobileNumber
                 };
+
                 _db.Customer.Add(customer);
                 _db.SaveChanges();
 
