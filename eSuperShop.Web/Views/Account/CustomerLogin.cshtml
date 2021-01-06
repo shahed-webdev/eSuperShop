@@ -21,12 +21,12 @@
                     </h5>
                     <form asp-route-returnUrl="@ViewBag.ReturnUrl" class="form-signin" asp-controller="Account" asp-action="CustomerLogin" method="post">
                         <div class="md-form mb-5">
-                            <input asp-for="UserName" class="form-control">
+                            <input asp-for="UserName" class="form-control" type="number" required>
                             <label for="UserName">Mobile Number</label>
                             <span asp-validation-for="UserName"></span>
                         </div>
                         <div class="md-form mb-0 pb-3">
-                            <input asp-for="Password" class="form-control" type="password">
+                            <input asp-for="Password" class="form-control" type="password" required>
                             <label asp-for="Password"></label>
                             <span asp-validation-for="Password"></span>
                         </div>
@@ -43,6 +43,10 @@
                             <button type="submit" name="provider" value="Google" class="btn btn-gplus btn-rounded" title="Log in using your Google account"><i class="fab fa-google pr-1"></i> Google</button>
                         </div>
                     </form>
+                    
+                    <div class="mt-5">
+                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Not have account? <a href="/Account/CustomerRegistration" class="blue-text ml-1">Register</a></p>
+                    </div>
                 </div>
             </div>
         </div>
