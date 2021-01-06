@@ -56,6 +56,10 @@
                             <button type="submit" name="provider" value="Google" class="btn btn-gplus btn-rounded" title="Log in using your Google account"><i class="fab fa-google pr-1"></i> Google</button>
                         </div>
                     </form>
+
+                    <div class="mt-5">
+                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Account/CustomerLogin" class="blue-text ml-1">Sign In</a></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,16 +81,14 @@
 
             btnDisabled(this, "Sending..", true);
 
-            const time = 300;
-            startTimer(time, this);
-
             $.ajax({
                 type: "POST",
                 url: "/Customer/SendCode",
-                data: { mobile: mobileNumber.value, time },
+                data: { mobile: mobileNumber.value, time: 120 },
                 success: response => {
+                    console.log(response)
                     if (response.IsSuccess) {
-                        startTimer(time, this);
+                        startTimer(60, this);
                         return;
                     }
 
@@ -137,17 +139,19 @@
 
         //count down
         function startTimer(duration, btn) {
+            let time = duration;
             let seconds = 0;
 
             btnDisabled(formRegistration.btnSignUp, "Signup", false);
+            btnSendCode.disabled = true;
 
             const interval = setInterval(function () {
-                seconds = parseInt(duration % 60, 10);
+                seconds = parseInt(time % 60, 10);
                 seconds = seconds < 10 ? `0${seconds}` : seconds;
 
-                btnDisabled(btn, `Resend after ${seconds}s`, true);
+                btnSendCode.textContent = `Resend after ${seconds}s`;
 
-                if (--duration < 0) {
+                if (--time < 0) {
                     clearInterval(interval);
                     btnDisabled(btn, "Resend Code", false);
                 }

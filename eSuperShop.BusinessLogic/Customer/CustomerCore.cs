@@ -134,10 +134,10 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                long timeStepMatched;
-                var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(model.Code, out timeStepMatched, window: null);
-                if (model.MobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
-                if (!verify) return new DbResponse(false, "Invalid Code");
+                //long timeStepMatched;
+                //var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(model.Code, out timeStepMatched, window: null);
+                //if (model.MobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
+                //if (!verify) return new DbResponse(false, "Invalid Code");
 
                 //Identity Create
                 var user = new IdentityUser { UserName = model.MobileNumber };
