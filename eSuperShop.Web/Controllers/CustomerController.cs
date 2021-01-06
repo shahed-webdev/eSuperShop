@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eSuperShop.BusinessLogic;
-using eSuperShop.Data;
+﻿using eSuperShop.BusinessLogic;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
-    [Authorize(Roles ="Customer")]
+    [Authorize(Roles = "Customer")]
     public class CustomerController : Controller
     {
         private readonly IOrderCore _order;
         private readonly ICustomerCore _customer;
-   
+
 
         public CustomerController(IOrderCore order, ICustomerCore customer)
         {
@@ -52,9 +48,9 @@ namespace eSuperShop.Web.Controllers
         //POST: Customer Registration
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult CustomerRegistration(CustomerMobileSignUpModel model)
+        public async Task<IActionResult> CustomerRegistration(CustomerMobileSignUpModel model)
         {
-            var response = _customer.MobileSignUpAsync(model);
+            var response = await _customer.MobileSignUpAsync(model);
             return Json(response);
         }
     }
