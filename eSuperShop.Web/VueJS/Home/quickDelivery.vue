@@ -6,7 +6,7 @@
         </div>
 
         <div class="row">
-            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 col-6 mb-4">
+            <div v-for="(item,i) in data" :key="i" class="col-lg-2 col-sm-6 col-6 mb-4">
                 <div class="card h-100">
                     <div class="view overlay h-100">
                         <img class="card-img-top" :src="item.ImageUrl" alt="">
@@ -29,7 +29,7 @@
             }
         },
         beforeMount() {
-            axios.get('/home/GetCategory', { params: { place: "HomePageQuickDelivery", numberOfData: 8} }).then(response => {
+            axios.get('/home/GetCategory', { params: { place: "HomePageQuickDelivery", numberOfData: 12} }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
 

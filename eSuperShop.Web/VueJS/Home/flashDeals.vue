@@ -5,8 +5,8 @@
             <a href="/Product/FlashDeals">View More<i class="far fa-eye ml-1"></i></a>
         </div>
     
-        <div class="row">
-            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-4">
+        <div v-for="i in Math.ceil(data.length / 5)" class="row fivecolumns">
+            <div v-for="(item,i) in data.slice((i - 1) * 5, i * 5)" :key="i" class="col-lg-2 col-md-4 mb-4">
                 <div class="card hoverable h-100">
                     <div class="view overlay">
                         <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
@@ -57,7 +57,7 @@
             }
         },
         beforeMount() {
-            axios.get('/home/GetFlashDeals', { params: { Page: 1, PageSize: 4 } }).then(response => {
+            axios.get('/home/GetFlashDeals', { params: { Page: 1, PageSize: 5 } }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
 

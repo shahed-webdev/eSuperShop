@@ -5,7 +5,7 @@
             <a href="/Product/AllStores">View More<i class="far fa-eye ml-1"></i></a>
         </div>
         <div class="row">
-            <div v-for="(item,i) in data" :key="i" class="col-lg-4 col-sm-6 mb-3">
+            <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-3">
                 <a :href="'/Store/Profile/'+item.StoreSlugUrl">
                     <div class="card hoverable card-body">
 
@@ -49,7 +49,7 @@
             }
         },
         beforeMount() {
-            axios.get('/home/GetTopStore', { params: { Page: 1, PageSize: 3 } }).then(response => {
+            axios.get('/home/GetTopStore', { params: { Page: 1, PageSize: 4 } }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
 

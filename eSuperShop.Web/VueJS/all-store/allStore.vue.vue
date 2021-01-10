@@ -53,14 +53,14 @@
             return {
                 data: [],
                 isData: false,
-                params: { Page: 2, PageSize: 4 },
+                params: { Page: 2, PageSize: 6 },
                 isLastPage: false,
                 isLoading: false
             }
         },
         methods: {
             getData() {
-                axios.get('/home/GetTopStore', { params: { Page: 1, PageSize: 4 } }).then(response => {
+                axios.get('/home/GetTopStore', { params: { Page: 1, PageSize: 6 } }).then(response => {
                     const { IsSuccess, Data } = response.data;
                     if (!IsSuccess) return;
 
