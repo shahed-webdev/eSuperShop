@@ -8,7 +8,7 @@
                 <a :href="'/Store/Profile/'+item.StoreSlugUrl">
                     <div class="card hoverable card-body">
 
-                        <div class="shop-name blue-text">{{item.StoreName}}</div>
+                        <div class="shop-name">{{item.StoreName}}</div>
                         <div class="shop-description">{{item.StoreTagLine}}</div>
 
                         <div class="shop-rating mb-2 d-flex align-items-center">

@@ -29,7 +29,7 @@
             }
         },
         beforeMount() {
-            axios.get('/home/GetCategory', { params: { place: "HomePageQuickDelivery", numberOfData: 12} }).then(response => {
+            axios.get('/home/GetCategory', { params: { place: "HomePageQuickDelivery", numberOfData: 6} }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
 

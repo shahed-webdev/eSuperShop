@@ -9,7 +9,7 @@
                         <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
                         <a :href="'/Product/Item/'+item.SlugUrl"><div class="mask rgba-white-slight"></div></a>
                     </div>
-                    <div class="card-body pb-1">
+                    <div class="card-body">
                         <p class="product-name">{{item.Name}}</p>
                         <div class="pricing-area">
                             <div class="p-price">
