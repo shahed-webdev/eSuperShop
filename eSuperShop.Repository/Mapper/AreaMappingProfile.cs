@@ -8,7 +8,9 @@ namespace eSuperShop.Repository
     {
         public AreaMappingProfile()
         {
-            CreateMap<AreaAddEditModel, Area>().ReverseMap();
+            CreateMap<Area, AreaAddEditModel>()
+                .ForMember(d => d.RegionName, opt => opt.MapFrom(c => c.Region.RegionName))
+                .ReverseMap();
         }
     }
 }

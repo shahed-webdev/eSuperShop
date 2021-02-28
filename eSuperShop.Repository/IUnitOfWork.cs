@@ -5,6 +5,7 @@ namespace eSuperShop.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
+        IAreaRepository Area { get; }
         IAttributeRepository Attribute { get; }
         IBrandRepository Brand { get; }
         ICustomerRepository Customer { get; }

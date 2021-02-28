@@ -1,21 +1,20 @@
-﻿using JqueryDataTables.LoopsIT;
+﻿using eSuperShop.Repository;
+using eSuperShop.Repository.Repositories;
+using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
 
-namespace eSuperShop.Repository.Repositories
+namespace eSuperShop.BusinessLogic
 {
-    public interface IAreaRepository
+    public interface IAreaCore
     {
         DbResponse<AreaAddEditModel> Add(AreaAddEditModel model);
         DbResponse Edit(AreaAddEditModel model);
         DbResponse Delete(int id);
         DbResponse<AreaAddEditModel> Get(int id);
-        bool IsExistName(string name);
-        bool IsExistName(string name, int updateId);
-        bool IsNull(int id);
-        bool IsRelatedDataExist(int id);
         DataResult<AreaAddEditModel> List(DataRequest request);
         List<DDL> ListDdl();
         List<DDL> ListDdlRegionWise(int regionId);
         List<AreaAddEditModel> GetRegionWiseArea(int regionId);
+
     }
 }
