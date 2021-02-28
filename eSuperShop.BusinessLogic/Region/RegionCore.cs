@@ -22,6 +22,12 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (string.IsNullOrEmpty(model.RegionName))
+                    return new DbResponse<RegionAddEditModel>(false, "Invalid Data");
+
+                if (_db.Region.IsExistName(model.RegionName))
+                    return new DbResponse<RegionAddEditModel>(false, $" {model.RegionName} already Exist");
+
                 return _db.Region.Add(model);
 
             }
@@ -35,6 +41,16 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (string.IsNullOrEmpty(model.RegionName))
+                    return new DbResponse(false, "Invalid Data");
+
+                if (_db.Region.IsNull(model.RegionId))
+                    return new DbResponse(false, "No data Found");
+
+                if (_db.Region.IsExistName(model.RegionName, model.RegionId))
+                    return new DbResponse(false, $" {model.RegionName} already Exist");
+
+
                 return _db.Region.Edit(model);
 
             }
@@ -48,6 +64,12 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (_db.Region.IsNull(id))
+                    return new DbResponse(false, "No data Found");
+
+                if (_db.Region.IsRelatedDataExist(id))
+                    return new DbResponse(false, "Failed, Area Exist in this region");
+
                 return _db.Region.Delete(id);
 
             }
@@ -61,6 +83,9 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (_db.Region.IsNull(id))
+                    return new DbResponse<RegionAddEditModel>(false, "No data Found");
+
                 return _db.Region.Get(id);
 
             }

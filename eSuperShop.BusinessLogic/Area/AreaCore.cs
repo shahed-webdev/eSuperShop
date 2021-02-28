@@ -21,6 +21,12 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (string.IsNullOrEmpty(model.AreaName))
+                    return new DbResponse<AreaAddEditModel>(false, "Invalid Data");
+
+                if (_db.Area.IsExistName(model.AreaName))
+                    return new DbResponse<AreaAddEditModel>(false, $" {model.AreaName} already Exist");
+
                 return _db.Area.Add(model);
 
             }
@@ -34,6 +40,15 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (string.IsNullOrEmpty(model.AreaName))
+                    return new DbResponse(false, "Invalid Data");
+
+                if (_db.Area.IsNull(model.AreaId))
+                    return new DbResponse(false, $"No data Found");
+
+                if (_db.Area.IsExistName(model.AreaName, model.AreaId))
+                    return new DbResponse(false, $" {model.AreaName} already Exist");
+
                 return _db.Area.Edit(model);
 
             }
@@ -47,6 +62,8 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (_db.Area.IsNull(id))
+                    return new DbResponse(false, $"No data Found");
                 return _db.Area.Delete(id);
 
             }
@@ -60,6 +77,8 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
+                if (_db.Area.IsNull(id))
+                    return new DbResponse<AreaAddEditModel>(false, $"No data Found");
                 return _db.Area.Get(id);
 
             }
