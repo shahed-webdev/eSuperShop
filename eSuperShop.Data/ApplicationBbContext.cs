@@ -10,6 +10,7 @@ namespace eSuperShop.Data
 
         }
 
+        public virtual DbSet<Area> Area { get; set; }
         public virtual DbSet<AllAttribute> AllAttribute { get; set; }
         public virtual DbSet<AllBrand> AllBrand { get; set; }
         public virtual DbSet<AllSpecification> AllSpecification { get; set; }
@@ -33,6 +34,7 @@ namespace eSuperShop.Data
         public virtual DbSet<ProductReview> ProductReview { get; set; }
         public virtual DbSet<ProductSpecification> ProductSpecification { get; set; }
         public virtual DbSet<Registration> Registration { get; set; }
+        public virtual DbSet<Region> Region { get; set; }
         public virtual DbSet<Seo> Seo { get; set; }
         public virtual DbSet<Slider> Slider { get; set; }
         public virtual DbSet<Vendor> Vendor { get; set; }
@@ -47,6 +49,7 @@ namespace eSuperShop.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new AreaConfiguration());
             builder.ApplyConfiguration(new AllAttributeConfiguration());
             builder.ApplyConfiguration(new AllBrandConfiguration());
             builder.ApplyConfiguration(new AllSpecificationConfiguration());
@@ -70,6 +73,7 @@ namespace eSuperShop.Data
             builder.ApplyConfiguration(new ProductReviewConfiguration());
             builder.ApplyConfiguration(new ProductSpecificationConfiguration());
             builder.ApplyConfiguration(new RegistrationConfiguration());
+            builder.ApplyConfiguration(new RegionConfiguration());
             builder.ApplyConfiguration(new SeoConfiguration());
             builder.ApplyConfiguration(new SliderConfiguration());
             builder.ApplyConfiguration(new VendorConfiguration());
