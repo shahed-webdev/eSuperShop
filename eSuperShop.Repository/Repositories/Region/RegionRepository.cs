@@ -66,7 +66,7 @@ namespace eSuperShop.Repository.Repositories
 
         public bool IsRelatedDataExist(int id)
         {
-            return false;
+            return Db.Area.Any(a => a.RegionId == id);
         }
 
         public DataResult<RegionAddEditModel> List(DataRequest request)
