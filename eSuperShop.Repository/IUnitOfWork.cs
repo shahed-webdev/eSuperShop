@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eSuperShop.Repository.Repositories;
+using System;
 
 namespace eSuperShop.Repository
 {
@@ -13,6 +14,7 @@ namespace eSuperShop.Repository
         IProductReviewRepository ProductReview { get; }
         IProductFaqRepository ProductFaq { get; }
         IRegistrationRepository Registration { get; }
+        IRegionRepository Region { get; }
         ISliderRepository Slider { get; }
         ISpecificationRepository Specification { get; }
         ICatalogRepository Catalog { get; }
