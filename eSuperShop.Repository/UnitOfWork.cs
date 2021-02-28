@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eSuperShop.Data;
+using eSuperShop.Repository.Repositories;
 
 namespace eSuperShop.Repository
 {
@@ -21,6 +22,7 @@ namespace eSuperShop.Repository
             ProductReview = new ProductReviewRepository(_db, _mapper);
             ProductFaq = new ProductFaqRepository(_db, _mapper);
             Registration = new RegistrationRepository(_db, _mapper);
+            Region = new RegionRepository(_db, _mapper);
             Slider = new SliderRepository(_db, _mapper);
             Specification = new SpecificationRepository(_db, _mapper);
             Catalog = new CatalogRepository(_db, _mapper);
@@ -39,6 +41,7 @@ namespace eSuperShop.Repository
         public IProductReviewRepository ProductReview { get; }
         public IProductFaqRepository ProductFaq { get; }
         public IRegistrationRepository Registration { get; }
+        public IRegionRepository Region { get; }
         public ISliderRepository Slider { get; }
         public ISpecificationRepository Specification { get; }
         public ICatalogRepository Catalog { get; }
