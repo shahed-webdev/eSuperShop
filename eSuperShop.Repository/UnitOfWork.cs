@@ -13,6 +13,7 @@ namespace eSuperShop.Repository
             _db = db;
             _mapper = mapper;
 
+            Area = new AreaRepository(_db, _mapper);
             Attribute = new AttributeRepository(_db, _mapper);
             Brand = new BrandRepository(_db, _mapper);
             Customer = new CustomerRepository(_db, _mapper);
@@ -32,6 +33,7 @@ namespace eSuperShop.Repository
             Warehouse = new WarehouseRepository(_db, _mapper);
         }
 
+        public IAreaRepository Area { get; }
         public IAttributeRepository Attribute { get; }
         public IBrandRepository Brand { get; }
         public ICustomerRepository Customer { get; }

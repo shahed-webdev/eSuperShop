@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace eSuperShop.Repository.Repositories
 {
@@ -12,56 +14,99 @@ namespace eSuperShop.Repository.Repositories
 
         }
 
-        public Area Area { get; set; }
-        public void Add(AreaAddEditModel model)
+
+        public DbResponse<AreaAddEditModel> Add(AreaAddEditModel model)
         {
-            Area = _mapper.Map<Area>(model);
-            Db.Area.Add(Area);
+            var area = _mapper.Map<Area>(model);
+            Db.Area.Add(area);
+            Db.SaveChanges();
+            model.AreaId = area.AreaId;
+
+            return new DbResponse<AreaAddEditModel>(true, $"{model.AreaName} Added Successfully", model);
         }
 
-        public void Delete(int id)
+        public DbResponse Edit(AreaAddEditModel model)
         {
-            throw new System.NotImplementedException();
+            var area = Db.Area.Find(model.AreaId);
+            area.RegionId = model.RegionId;
+            area.AreaName = model.AreaName;
+            Db.Area.Update(area);
+            return new DbResponse(true, $"{area.AreaName} Updated Successfully");
+
         }
 
-        public AreaAddEditModel Get(int id)
+        public DbResponse Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var area = Db.Area.Find(id);
+            Db.Area.Remove(area);
+            Db.SaveChanges();
+            return new DbResponse(true, $"{area.AreaName} Deleted Successfully");
+        }
+
+        public DbResponse<AreaAddEditModel> Get(int id)
+        {
+            var area = Db.Area.Where(r => r.AreaId == id)
+                .ProjectTo<AreaAddEditModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+            return new DbResponse<AreaAddEditModel>(true, $"{area.RegionName} Get Successfully", area);
         }
 
         public bool IsExistName(string name)
         {
-            throw new System.NotImplementedException();
+            return Db.Area.Any(r => r.AreaName == name);
         }
 
         public bool IsExistName(string name, int updateId)
         {
-            throw new System.NotImplementedException();
+            return Db.Area.Any(r => r.AreaName == name && r.RegionId != updateId);
         }
 
         public bool IsNull(int id)
         {
-            throw new System.NotImplementedException();
+            return Db.Area.Any(r => r.AreaId == id);
         }
 
         public bool IsRelatedDataExist(int id)
         {
-            throw new System.NotImplementedException();
+            return false;
         }
 
         public DataResult<AreaAddEditModel> List(DataRequest request)
         {
-            throw new System.NotImplementedException();
+            return Db.Area
+                .ProjectTo<AreaAddEditModel>(_mapper.ConfigurationProvider)
+                .OrderBy(a => a.RegionName)
+                .ThenBy(a => a.AreaName)
+                .ToDataResult(request);
         }
-
         public List<DDL> ListDdl()
         {
-            throw new System.NotImplementedException();
+            return Db.Area
+                .OrderBy(r => r.AreaName)
+                .Select(r => new DDL
+                {
+                    value = r.AreaId.ToString(),
+                    label = r.AreaName
+                }).ToList();
         }
-
-        public List<AreaAddEditModel> GetRegionWiseArea(List<int> regionIds)
+        public List<DDL> ListDdlRegionWise(int regionId)
         {
-            throw new System.NotImplementedException();
+            return Db.Area
+                .Where(r => r.RegionId == regionId)
+                .OrderBy(r => r.AreaName)
+                .Select(r => new DDL
+                {
+                    value = r.AreaId.ToString(),
+                    label = r.AreaName
+                }).ToList();
+        }
+        public List<AreaAddEditModel> GetRegionWiseArea(int regionId)
+        {
+            return Db.Area
+                .Where(r => r.RegionId == regionId)
+                .OrderBy(r => r.AreaName)
+                .ProjectTo<AreaAddEditModel>(_mapper.ConfigurationProvider)
+                .ToList();
         }
     }
 }

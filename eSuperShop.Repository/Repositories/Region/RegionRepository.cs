@@ -16,22 +16,12 @@ namespace eSuperShop.Repository.Repositories
 
         public DbResponse<RegionAddEditModel> Add(RegionAddEditModel model)
         {
-
-            //try
-            //{
             var region = _mapper.Map<Region>(model);
             Db.Region.Add(region);
             Db.SaveChanges();
             model.RegionId = region.RegionId;
 
-            return new DbResponse<RegionAddEditModel>(true, $"{model.RegionName} Add Successfully", model);
-            //}
-            //catch (Exception e)
-            //{
-            //    return new DbResponse<RegionAddEditModel>(false, $"{e.Message}. {e.InnerException?.Message ?? ""}");
-            //}
-
-
+            return new DbResponse<RegionAddEditModel>(true, $"{model.RegionName} Added Successfully", model);
         }
 
         public DbResponse Edit(RegionAddEditModel model)
