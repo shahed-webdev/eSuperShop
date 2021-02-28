@@ -30,7 +30,7 @@
             </div>
         </form>
 
-        <table class="table">
+        <table id="data-table" class="table">
             <thead>
                 <tr>
                     <th><strong>Area</strong></th>
@@ -38,13 +38,7 @@
                     <th style="width: 50px"><strong>Delete</strong></th>
                 </tr>
             </thead>
-            <tbody id="tBody">
-                <tr>
-                    <td>name</td>
-                    <td class="text-center"><i data-value="name" data-id="1" class="edit fas fa-edit"></i></td>
-                    <td class="text-center"><i data-id="1" class="delete fas fa-trash"></i></td>
-                </tr>
-            </tbody>
+            <tbody id="tBody"></tbody>
         </table>
     </div>
 </div>
@@ -75,6 +69,43 @@
 @section Scripts{
     <script>
         (function () {
+            //get data
+            var dataTable = {
+                table: null,
+                init: function () {
+                    dataTable.table = $("#data-table").DataTable({
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: "/BasicSetting/GetAreaData",
+                            type: "POST"
+                        },
+                        columns:
+                            [
+                                { data: "AreaName" },
+                                {
+                                    data: "AreaId", "render": function (data, type, row, meta) {
+                                        return `<i data-id="${data}" data-value="${row.AreaName}" class="edit fas fa-edit"></i>`;
+                                    }
+                                },
+                                {
+                                    data: "AreaId", "render": function (data, type, row, meta) {
+                                        return `<i data-id="${data}" class="delete fas fa-trash"></i>`;
+                                    }
+                                }
+                            ],
+                        columnDefs: [
+                            { 'searchable': false, 'targets': [1, 2] }
+                        ]
+                    });
+                },
+                getData: function () {
+                    dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
+                },
+                addSign: function (data) { return `${data}/-` }
+            }
+
+
             //get form data as object
             const serializeForm = function (form) {
                 const obj = {};
@@ -106,16 +137,6 @@
                     }
                 });
             });
-
-            //create table row
-            function createTableRow(data) {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `<td>${data.AreaName}</td>
-                              <td class="text-center"><i data-id="${data.AreaId}" data-value="${data.AreaName}" class="edit fas fa-edit"></i></td>
-                              <td class="text-center"><i data-id="${data.AreaId}" class="delete fas fa-trash"></i></td>`;
-
-                return tr;
-            }
 
             //on edit/delete
             tBody.addEventListener("click", function (evt) {
@@ -153,6 +174,19 @@
                     }
                 });
             });
+
+            //disable btn on click
+            function disabledBtn(selector, isLoading) {
+                selector.disabled = isLoading;
+            }
+
+            //disable icon on click
+            function disabledIcon(selector, isLoading) {
+                isLoading ? selector.classList.add("icon-disable") : selector.classList.remove("icon-disable");
+            }
+
+            //call function
+            dataTable.getData();
         })();
     </script>
 }

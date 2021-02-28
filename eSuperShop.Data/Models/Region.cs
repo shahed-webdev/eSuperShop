@@ -7,7 +7,6 @@ namespace eSuperShop.Data
         public Region()
         {
             Areas = new HashSet<Area>();
-
         }
 
         public int RegionId { get; set; }
