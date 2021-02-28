@@ -1,8 +1,8 @@
 ﻿
 /*home page*/
-.category-container.loading { height: 400px;}
-.slider-container.loading { height: 400px; }
-.quick-delivery.loading { height: 400px; }
+.category-container.loading { height: 500px;}
+.slider-container.loading { height: 500px; }
+.quick-delivery.loading { height: 500px; }
 
 /* category product */
 .loading-screen { overflow: hidden}

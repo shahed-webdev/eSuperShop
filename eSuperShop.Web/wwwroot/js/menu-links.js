@@ -1,25 +1,48 @@
 ﻿
-let linkData = [{
+let linkData = [
+    {
+        "LinkCategoryID": 1,
+        "SN": 1,
+        "Category": "Basic Setting",
+        "IconClass": "fas fa-cog",
+        "links": [{
+            "LinkID": 1,
+            "SN": 0,
+            "Controller": "BasicSetting",
+            "Action": "Region",
+            "Title": "Region",
+            "IconClass": null
+        },
+        {
+            "LinkID": 2,
+            "SN": 1,
+            "Controller": "BasicSetting",
+            "Action": "Area",
+            "Title": "Area",
+            "IconClass": null
+        }]
+    },
+    {
         "LinkCategoryID": 1,
         "SN": 1,
         "Category": "Category",
         "IconClass": "fas fa-list-ul",
         "links": [{
-                "LinkID": 3,
-                "SN": 0,
-                "Controller": "Category",
-                "Action": "Index",
-                "Title": "Category",
-                "IconClass": null
-            },
-            {
-                "LinkID": 1,
-                "SN": 7,
-                "Controller": "Category",
-                "Action": "Placement",
-                "Title": "Placement",
-                "IconClass": null
-            }]
+            "LinkID": 3,
+            "SN": 0,
+            "Controller": "Category",
+            "Action": "Index",
+            "Title": "Category",
+            "IconClass": null
+        },
+        {
+            "LinkID": 1,
+            "SN": 7,
+            "Controller": "Category",
+            "Action": "Placement",
+            "Title": "Placement",
+            "IconClass": null
+        }]
     },
     {
         "LinkCategoryID": 2,
@@ -250,9 +273,9 @@ function setNavigation() {
 
         if (path === href) {
             if (link.parentElement.nodeName !== "STRONG") {
-                const prentElement = link.parentElement.parentElement
-                prentElement.previousElementSibling.classList.add("open")
-                prentElement.classList.add("active")
+                const parentElement = link.parentElement.parentElement
+                parentElement.previousElementSibling.classList.add("open")
+                parentElement.classList.add("active")
             }
 
             link.classList.add('link-active')

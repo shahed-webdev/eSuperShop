@@ -42,9 +42,15 @@ input[type="checkbox"].input-validation-error { border: 0 none; }
 .footer-bg { background-color: #3E4551 }
 .footer-top { background-color: #e62e04; padding: 12px 0; }
 
-/*shopping cart quantity input*/
-.item-quantity {width: 100%; border: 1px solid #ddd; border-radius: 5px; text-align: center; padding: 3px 0; }
+
 
 /*lading animation*/
 .loader-style { text-align: center; margin: 15px 0}
 .loader-style i { color: #4f4f4f }
+
+/*shopping cart*/
+.product-table img { max-height: 60px; margin-right: 5px; min-width: 0; }
+.product-table td{ padding: 0 }
+
+/*shopping cart quantity input*/
+.item-quantity { max-width:52px; border: 1px solid #ddd; border-radius: 5px; text-align: center; padding: 3px 0; }

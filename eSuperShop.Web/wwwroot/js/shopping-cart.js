@@ -155,17 +155,20 @@ function displayCart() {
     var output = "";
     for (let i in cartArray) {
         output += `<tr>
-                    <td class="text-left">
-                     <p class="mb-0">${cartArray[i].Name}</p>
-                      <h5 class="mb-0">${addAttribute(cartArray[i].attributesValue)}</h5>
+                    <td class="d-flex align-items-center">
+                      <img src="${cartArray[i].ProductUrl}" alt="${cartArray[i].Name}"/>
+                      <div class="text-left">
+                       <p class="mb-0">${cartArray[i].Name}</p>
+                       <h5 class="mb-0">${addAttribute(cartArray[i].attributesValue)}</h5>
+                      </div>
                     </td>
                     <td>৳${cartArray[i].UnitPrice}</td>
                     <td class="text-center">
-                     <input class="item-quantity" data-id="${cartArray[i].ProductQuantitySetId}" value="${cartArray[i].Quantity}" min="1" type="number">
+                      <input class="item-quantity" data-id="${cartArray[i].ProductQuantitySetId}" value="${cartArray[i].Quantity}" min="1" type="number">
                     </td>
                     <td>৳${cartArray[i].total}</td>
                     <td class="text-right">
-                        <button data-id="${cartArray[i].ProductQuantitySetId}" type="button" class="btn btn-sm grey darken-3 text-white delete-item" data-toggle="tooltip" data-placement="top" title="Remove item">X</button>
+                      <button data-id="${cartArray[i].ProductQuantitySetId}" type="button" class="btn btn-sm grey darken-3 text-white delete-item" data-toggle="tooltip" data-placement="top" title="Remove item">X</button>
                     </td>
                 </tr>`
     }

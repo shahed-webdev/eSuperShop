@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewData["Title"] = "Area";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="card card-body mt-3">
+        <form id="formAdd">
+            <div class="row align-items-center">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="selectRegion">Region</label>
+                        <select id="selectRegion" name="RegionId" class="form-control" required>
+                            <option value="">SELECT REGION</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="inputArea">Area Name</label>
+                        <input id="inputArea" name="AreaName" type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group mb-n3">
+                        <input type="submit" class="btn btn-danger btn-md" value="Add">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><strong>Area</strong></th>
+                    <th style="width: 50px"><strong>Edit</strong></th>
+                    <th style="width: 50px"><strong>Delete</strong></th>
+                </tr>
+            </thead>
+            <tbody id="tBody">
+                <tr>
+                    <td>name</td>
+                    <td class="text-center"><i data-value="name" data-id="1" class="edit fas fa-edit"></i></td>
+                    <td class="text-center"><i data-id="1" class="delete fas fa-trash"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content form-elegant">
+            <div class="modal-body mx-4">
+                <form id="formUpdate">
+                    <div class="form-group">
+                        <label for="inputUpdatedField">Area Name</label>
+                        <input id="inputUpdatedField" name="AreaName" type="text" class="form-control" required>
+                        <input id="hiddenId" name="AreaId" type="hidden">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-danger btn-rounded z-depth-1a">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        (function () {
+            //get form data as object
+            const serializeForm = function (form) {
+                const obj = {};
+                const formData = new FormData(form);
+                for (let key of formData.keys()) {
+                    obj[key] = formData.get(key);
+                }
+                return obj;
+            };
+
+            //form selector
+            const formAdd = document.getElementById("formAdd");
+            const formUpdate = document.getElementById("formUpdate");
+            const tBody = document.getElementById("tBody");
+
+            //form submit
+            formAdd.addEventListener("submit", function (evt) {
+                evt.preventDefault();
+
+                $.ajax({
+                    url: "/BasicSetting/",
+                    type: "POST",
+                    data: serializeForm(this),
+                    success: response => {
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                    },
+                    error: error => {
+                        console.log(error);
+                    }
+                });
+            });
+
+            //create table row
+            function createTableRow(data) {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${data.AreaName}</td>
+                              <td class="text-center"><i data-id="${data.AreaId}" data-value="${data.AreaName}" class="edit fas fa-edit"></i></td>
+                              <td class="text-center"><i data-id="${data.AreaId}" class="delete fas fa-trash"></i></td>`;
+
+                return tr;
+            }
+
+            //on edit/delete
+            tBody.addEventListener("click", function (evt) {
+                evt.preventDefault();
+
+                const element = evt.target;
+                const onEdit = element.classList.contains("edit");
+                const onDelete = element.classList.contains("delete");
+                const id = element.getAttribute("data-id");
+
+                if (onEdit) {
+                    const value = element.getAttribute("data-value");
+                    formUpdate.inputUpdatedField.value = value;
+                    formUpdate.hiddenId.value = id;
+
+                    $("#updateModal").modal("show");
+                }
+
+                if (onDelete) {
+
+                }
+            });
+
+            //post update
+            formUpdate.addEventListener("submit", function (evt) {
+                evt.preventDefault();
+
+                $.ajax({
+                    url: "/BasicSetting/",
+                    type: "POST",
+                    data: serializeForm(this),
+                    success: response => { },
+                    error: error => {
+                        console.log(error);
+                    }
+                });
+            });
+        })();
+    </script>
+}
+

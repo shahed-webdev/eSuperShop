@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-xl-5 col-lg-6 mb-3">
                         <div id="img-container" href="@Model.Blobs[0]">
-                            <img src="@Model.Blobs[0]" id="show-img" alt="" />
+                            <img src="@Model.Blobs[0]" id="show-img" alt="@Model.Name" />
                         </div>
 
                         <div class="thumb-img-container">
@@ -285,7 +285,7 @@
         }
     </div>
 
-
+   
     <div class="card card-body mt-3" id="faq">
         <div class="my-4 border-bottom pb-2">
             <h4 class="font-weight-bold mb-1">QUESTIONS ABOUT THIS PRODUCT (@Model.TotalFaqs)</h4>
@@ -381,7 +381,7 @@
         let attributesValue = null;
         const attribute = document.getElementById("attribute");
 
-        //event
+        // attribute change event
         attribute.addEventListener("change", function(evt) {
             const element = evt.target;
 
@@ -473,9 +473,11 @@
             evt.preventDefault();
 
             const extraPrice = +hiddenPriceAdjustment.value;
+            const url = document.getElementById("show-img").src;
 
             const obj = {
                 ProductId: @Model.ProductId,
+                ProductUrl: url,
                 Name: "@Model.Name",
                 UnitPrice: @Model.Price + extraPrice,
                 Quantity: +inputQuantity.value,

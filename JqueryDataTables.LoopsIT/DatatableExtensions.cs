@@ -133,14 +133,7 @@ namespace JqueryDataTables.LoopsIT
                     {
                         foreach (var item in request.order)
                         {
-                            if (item.dir == "asc")
-                            {
-                                query = query.OrderBy(request.columns[item.column].data);
-                            }
-                            else
-                            {
-                                query = query.OrderByDescending(request.columns[item.column].data);
-                            }
+                            query = item.dir == "asc" ? query.OrderBy(request.columns[item.column].data) : query.OrderByDescending(request.columns[item.column].data);
                         }
                     }
 

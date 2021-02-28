@@ -20,7 +20,9 @@
 .data-table { text-align: center; background-color: #fff; }
 .data-table th { background-color: #777c84; color: #fff; }
 .data-table .error-color td { color: red; }
-.data-table .delete { color: #ff0000 }
+
+table tr td .edit { color: #333; cursor: pointer}
+table tr td .delete { color: #ef5350; cursor: pointer }
 
 /*print option*/
 #DataTable_length, .dt-buttons { float: left; }
