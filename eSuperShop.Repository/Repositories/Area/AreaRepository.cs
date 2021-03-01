@@ -31,6 +31,7 @@ namespace eSuperShop.Repository.Repositories
             area.RegionId = model.RegionId;
             area.AreaName = model.AreaName;
             Db.Area.Update(area);
+            Db.SaveChanges();
             return new DbResponse(true, $"{area.AreaName} Updated Successfully");
 
         }
@@ -51,14 +52,14 @@ namespace eSuperShop.Repository.Repositories
             return new DbResponse<AreaAddEditModel>(true, $"{area.RegionName} Get Successfully", area);
         }
 
-        public bool IsExistName(string name)
+        public bool IsExistName(string name, int regionId)
         {
-            return Db.Area.Any(r => r.AreaName == name);
+            return Db.Area.Any(r => r.AreaName == name && r.RegionId == regionId);
         }
 
-        public bool IsExistName(string name, int updateId)
+        public bool IsExistName(string name, int regionId, int updateId)
         {
-            return Db.Area.Any(r => r.AreaName == name && r.RegionId != updateId);
+            return Db.Area.Any(r => r.AreaName == name && r.RegionId == regionId && r.RegionId != updateId);
         }
 
         public bool IsNull(int id)

@@ -9,8 +9,8 @@ namespace eSuperShop.Repository.Repositories
         DbResponse Edit(AreaAddEditModel model);
         DbResponse Delete(int id);
         DbResponse<AreaAddEditModel> Get(int id);
-        bool IsExistName(string name);
-        bool IsExistName(string name, int updateId);
+        bool IsExistName(string name, int regionId);
+        bool IsExistName(string name, int regionId, int updateId);
         bool IsNull(int id);
         bool IsRelatedDataExist(int id);
         DataResult<AreaAddEditModel> List(DataRequest request);
