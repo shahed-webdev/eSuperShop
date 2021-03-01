@@ -5,7 +5,7 @@
                 <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
             </li>
             <li v-if="ParentCatalog" class="breadcrumb-item">
-                <a :href="'/Category/Products/'+ParentCatalog.SlugUrl" class="black-text">{{ParentCatalog.CatalogName}}</a><i class="fas fa-angle-double-right mx-2"></i>
+                <a :href="'/category/'+ParentCatalog.SlugUrl" class="black-text">{{ParentCatalog.CatalogName}}</a><i class="fas fa-angle-double-right mx-2"></i>
             </li>
             <li class="breadcrumb-item active">{{CatalogName}}</li>
         </ol>
