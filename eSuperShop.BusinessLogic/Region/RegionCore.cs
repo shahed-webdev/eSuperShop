@@ -68,7 +68,7 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse(false, "No data Found");
 
                 if (_db.Region.IsRelatedDataExist(id))
-                    return new DbResponse(false, "Failed, Area Exist in this region");
+                    return new DbResponse(false, "Failed, Area already exist in this region");
 
                 return _db.Region.Delete(id);
 

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using Microsoft.AspNetCore.Http;
 
 namespace eSuperShop.Web
 {
@@ -85,9 +84,22 @@ namespace eSuperShop.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                //endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    "Home",
+                    "",
+                    new { Controller = "Home", Action = "Index" }
+                );
+
+                endpoints.MapControllerRoute(
+                    "Default",
+                    "{controller}/{action}/{id?}"
+                );
+
+                endpoints.MapControllerRoute(
+                    "Store",
+                    "{slugUrl}",
+                    new { Controller = "Store", Action = "Profile" }
+                );
             });
         }
     }

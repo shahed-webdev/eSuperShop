@@ -35,8 +35,8 @@ namespace eSuperShop.Web.Controllers
 
         //Products
         [AllowAnonymous]
-        [Route("[controller]/[action]")]
-        [Route("[controller]/[action]/{slugUrl}")]
+        //[Route("[controller]/[action]")]
+        //[Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("Index", "Home");
@@ -51,8 +51,8 @@ namespace eSuperShop.Web.Controllers
         {
             var model = _catalog.ProductListPageData(slugUrl, pageSize);
             return Json(model.Data);
-        }  
-        
+        }
+
         //get data on scroll
         [AllowAnonymous]
         public IActionResult GetProductsOnDemand(ProductFilterRequest filter)

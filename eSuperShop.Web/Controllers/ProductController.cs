@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CloudStorage;
-using eSuperShop.BusinessLogic;
+﻿using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
-using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eSuperShop.Web.Controllers
@@ -29,8 +21,8 @@ namespace eSuperShop.Web.Controllers
         public IActionResult FlashDeals()
         {
             return View();
-        } 
-        
+        }
+
         public IActionResult TopRated()
         {
             return View();
@@ -42,8 +34,8 @@ namespace eSuperShop.Web.Controllers
         }
 
         //product details
-        [Route("[controller]/[action]")]
-        [Route("[controller]/[action]/{slugUrl}")]
+        //[Route("[controller]/[action]")]
+        //[Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Item(string slugUrl)
         {
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("Index", "Home");
@@ -69,7 +61,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-       //get available quantity
+        //get available quantity
         public IActionResult GetAvailableQuantity(int quantitySetId)
         {
             var response = _product.GetQuantityBySetId(quantitySetId);
@@ -111,7 +103,7 @@ namespace eSuperShop.Web.Controllers
         [Authorize(Roles = "Customer")]
         public IActionResult OrderSuccess(int? id)
         {
-            if(!id.HasValue) return RedirectToAction("Index", "Home");
+            if (!id.HasValue) return RedirectToAction("Index", "Home");
             ViewBag.OrderNo = id;
 
             return View();
