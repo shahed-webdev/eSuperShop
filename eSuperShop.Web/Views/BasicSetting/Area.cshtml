@@ -110,7 +110,7 @@
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
                         if (response.IsSuccess) {
-                            this.reset();
+                            this.inputArea.value = "";
                             disabledBtn(btn, false);
 
                             tBody.appendChild(createRow(response.Data));
