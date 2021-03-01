@@ -1,15 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using CloudStorage;
-using eSuperShop.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -189,8 +188,8 @@ namespace eSuperShop.Web.Controllers
 
         //Store Theme
         [AllowAnonymous]
-        [Route("[controller]/[action]")]
-        [Route("[controller]/[action]/{slugUrl}")]
+        //[Route("[controller]/[action]")]
+        //[Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Profile(string slugUrl)
         {
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
@@ -198,7 +197,7 @@ namespace eSuperShop.Web.Controllers
             var store = _store.StoreThemeDetails(slugUrl);
 
             if (store.IsSuccess)
-                return View($"../StoreThemes/{store.Data.StoreTheme}",store.Data);
+                return View($"../StoreThemes/{store.Data.StoreTheme}", store.Data);
 
             return RedirectToAction("AllStores", "Product");
         }
