@@ -96,6 +96,18 @@ namespace eSuperShop.Web
                 );
 
                 endpoints.MapControllerRoute(
+                    "Category",
+                    "category/{slugUrl}",
+                    new { Controller = "Category", Action = "Products" }
+                );
+
+                endpoints.MapControllerRoute(
+                    "Product Details",
+                    "item/{slugUrl}",
+                    new { Controller = "Product", Action = "Item" }
+                );
+
+                endpoints.MapControllerRoute(
                     "Store",
                     "{slugUrl}",
                     new { Controller = "Store", Action = "Profile" }

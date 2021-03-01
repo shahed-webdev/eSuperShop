@@ -188,8 +188,6 @@ namespace eSuperShop.Web.Controllers
 
         //Store Theme
         [AllowAnonymous]
-        //[Route("[controller]/[action]")]
-        //[Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Profile(string slugUrl)
         {
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("AllStores", "Product");
