@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+@section Styles{
+    <style>
+        .icon-disable { pointer-events: none }
+    </style>
+}
+
 <div class="container">
     <div class="card card-body mt-3">
         <form id="formAdd">
@@ -11,7 +17,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="selectRegion">Region</label>
-                        <select id="selectRegion" name="RegionId" class="form-control" required>
+                        <select id="selectRegion" asp-items="ViewBag.Regions" name="RegionId" class="form-control" required>
                             <option value="">SELECT REGION</option>
                         </select>
                     </div>
@@ -24,7 +30,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group mb-n3">
-                        <input type="submit" class="btn btn-danger btn-md" value="Add">
+                        <input id="btnAdd" type="submit" class="btn btn-danger btn-md" value="Add">
                     </div>
                 </div>
             </div>
@@ -56,7 +62,7 @@
                         <input id="hiddenId" name="AreaId" type="hidden">
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-danger btn-rounded z-depth-1a">Update</button>
+                        <button id="btnUpdate" type="submit" class="btn btn-danger btn-rounded z-depth-1a">Update</button>
                     </div>
                 </form>
             </div>
@@ -69,43 +75,6 @@
 @section Scripts{
     <script>
         (function () {
-            //get data
-            var dataTable = {
-                table: null,
-                init: function () {
-                    dataTable.table = $("#data-table").DataTable({
-                        processing: true,
-                        serverSide: true,
-                        ajax: {
-                            url: "/BasicSetting/GetAreaData",
-                            type: "POST"
-                        },
-                        columns:
-                            [
-                                { data: "AreaName" },
-                                {
-                                    data: "AreaId", "render": function (data, type, row, meta) {
-                                        return `<i data-id="${data}" data-value="${row.AreaName}" class="edit fas fa-edit"></i>`;
-                                    }
-                                },
-                                {
-                                    data: "AreaId", "render": function (data, type, row, meta) {
-                                        return `<i data-id="${data}" class="delete fas fa-trash"></i>`;
-                                    }
-                                }
-                            ],
-                        columnDefs: [
-                            { 'searchable': false, 'targets': [1, 2] }
-                        ]
-                    });
-                },
-                getData: function () {
-                    dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
-                },
-                addSign: function (data) { return `${data}/-` }
-            }
-
-
             //get form data as object
             const serializeForm = function (form) {
                 const obj = {};
@@ -121,19 +90,35 @@
             const formUpdate = document.getElementById("formUpdate");
             const tBody = document.getElementById("tBody");
 
+            //region change
+            formAdd.selectRegion.addEventListener("change", function (evt) {
+                getAreaData(this.value);
+            });
+
             //form submit
             formAdd.addEventListener("submit", function (evt) {
                 evt.preventDefault();
 
+                const btn = this.btnAdd;
+                disabledBtn(btn, true);
+
                 $.ajax({
-                    url: "/BasicSetting/",
+                    url: "/BasicSetting/PostArea",
                     type: "POST",
                     data: serializeForm(this),
                     success: response => {
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                        if (response.IsSuccess) {
+                            this.reset();
+                            disabledBtn(btn, false);
+
+                            tBody.appendChild(createRow(response.Data));
+                        }
                     },
                     error: error => {
                         console.log(error);
+                        disabledBtn(btn, false);
                     }
                 });
             });
@@ -156,7 +141,26 @@
                 }
 
                 if (onDelete) {
+                    disabledIcon(element, true);
 
+                    $.ajax({
+                        url: "/BasicSetting/DeleteArea",
+                        type: "POST",
+                        data: { id },
+                        success: response => {
+                            $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                            if (response.IsSuccess) {
+                                element.parentElement.parentElement.remove();
+                            }
+
+                            disabledIcon(element, false);
+                        },
+                        error: error => {
+                            console.log(error);
+                            disabledIcon(element, false);
+                        }
+                    });
                 }
             });
 
@@ -164,16 +168,55 @@
             formUpdate.addEventListener("submit", function (evt) {
                 evt.preventDefault();
 
+                const btn = this.btnUpdate;
+                disabledBtn(btn, true);
+
                 $.ajax({
-                    url: "/BasicSetting/",
+                    url: "/BasicSetting/UpdateArea",
                     type: "POST",
                     data: serializeForm(this),
-                    success: response => { },
+                    success: response => {
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                        if (response.IsSuccess) {
+                            $("#updateModal").modal("hide");
+                        }
+
+                        disabledBtn(btn, false);
+                    },
+                    error: error => {
+                        console.log(error);
+                        disabledBtn(btn, false);
+                    }
+                });
+            });
+
+            //create row
+            function createRow(data) {
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `<td>${data.AreaName}</td>
+                                        <td><i data-id="${data.AreaId}" data-value="${data.AreaName}" class="edit fas fa-edit"></i></td>
+                                        <td><i data-id="${data.AreaId}" class="delete fas fa-trash"></i></td>`;
+
+                return tr;
+            }
+
+            //get area data by region
+            function getAreaData(id) {
+                $.ajax({
+                    url: "/BasicSetting/GetAreaByRegion",
+                    data: { id },
+                    success: response => {
+                        response.forEach(item => {
+                            tBody.append(createRow(item));
+                        })
+                    },
                     error: error => {
                         console.log(error);
                     }
                 });
-            });
+            }
 
             //disable btn on click
             function disabledBtn(selector, isLoading) {
@@ -184,9 +227,6 @@
             function disabledIcon(selector, isLoading) {
                 isLoading ? selector.classList.add("icon-disable") : selector.classList.remove("icon-disable");
             }
-
-            //call function
-            dataTable.getData();
         })();
     </script>
 }

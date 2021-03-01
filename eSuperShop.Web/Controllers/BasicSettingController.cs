@@ -8,16 +8,21 @@ using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
 using eSuperShop.Repository.Repositories;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
 {
+    [Authorize(Roles = "admin, sub-admin")]
     public class BasicSettingController : Controller
     {
         private readonly IRegionCore _region;
+        private readonly IAreaCore _area;
 
-        public BasicSettingController(IRegionCore region)
+        public BasicSettingController(IRegionCore region, IAreaCore area)
         {
             _region = region;
+            _area = area;
         }
 
 
@@ -63,13 +68,14 @@ namespace eSuperShop.Web.Controllers
         //**** Area *****
         public IActionResult Area()
         {
+            ViewBag.Regions =  new SelectList(_region.ListDdl(), "value", "label");
             return View();
         }
 
-        //get data table
-        public IActionResult GetAreaData(DataRequest request)
+        //get data by region
+        public IActionResult GetAreaByRegion(int id)
         {
-            var response = _region.List(request);
+            var response = _area.GetRegionWiseArea(id);
             return Json(response);
         }
 
@@ -77,7 +83,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult PostArea(AreaAddEditModel model)
         {
-            var response = _region.Add(model);
+            var response = _area.Add(model);
             return Json(response);
         }
 
@@ -85,7 +91,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult UpdateArea(AreaAddEditModel model)
         {
-            var response = _region.Edit(model);
+            var response = _area.Edit(model);
             return Json(response);
         }
 
@@ -93,7 +99,7 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public IActionResult DeleteArea(int id)
         {
-            var response = _region.Delete(id);
+            var response = _area.Delete(id);
             return Json(response);
         }
     }
