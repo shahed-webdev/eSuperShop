@@ -102,5 +102,12 @@ namespace eSuperShop.Web.Controllers
             var response = _area.Delete(id);
             return Json(response);
         }
+
+
+        // ****Courier Service****
+        public IActionResult CourierService()
+        {
+            return View();
+        }
     }
 }

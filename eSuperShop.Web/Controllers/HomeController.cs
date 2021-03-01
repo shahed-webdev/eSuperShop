@@ -20,6 +20,7 @@ namespace eSuperShop.Web.Controllers
             _product = product;
             _store = store;
         }
+
         public IActionResult Index()
         {
             return View();

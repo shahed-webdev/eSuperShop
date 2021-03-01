@@ -20,6 +20,13 @@ let linkData = [
             "Action": "Area",
             "Title": "Area",
             "IconClass": null
+        }, {
+            "LinkID": 3,
+            "SN": 2,
+            "Controller": "BasicSetting",
+            "Action": "CourierService",
+            "Title": "Courier Service",
+            "IconClass": null
         }]
     },
     {

@@ -8,7 +8,7 @@
                 </div>
                 <ul>
                     <li v-for="(item,i) in catalog" :key="i">
-                        <a :href="'/Category/Products/'+item.SlugUrl">
+                        <a :href="'/category/'+item.SlugUrl">
                             <i class="fas fa-caret-right"></i>
                             {{item.CatalogName}}
                         </a>

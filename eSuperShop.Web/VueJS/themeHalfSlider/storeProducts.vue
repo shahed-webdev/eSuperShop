@@ -8,7 +8,7 @@
                     <div class="card hoverable h-100">
                         <div class="view overlay">
                             <img class="card-img-top" :src="product.ImageUrl" :alt="product.Name">
-                            <a :href="'/Product/Item/'+product.SlugUrl">
+                            <a :href="'/item/'+product.SlugUrl">
                                 <div class="mask rgba-white-slight"></div>
                             </a>
                         </div>
