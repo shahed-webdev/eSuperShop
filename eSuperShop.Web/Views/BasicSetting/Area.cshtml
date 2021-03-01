@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+@section Styles{
+    <style>
+        .icon-disable { pointer-events: none }
+    </style>
+}
+
 <div class="container">
     <div class="card card-body mt-3">
         <form id="formAdd">
@@ -86,18 +92,7 @@
 
             //region change
             formAdd.selectRegion.addEventListener("change", function (evt) {
-                $.ajax({
-                    url: "/BasicSetting/GetAreaByRegion",
-                    data: { id: this.value },
-                    success: response => {
-                        response.forEach(item => {
-                            tBody.append(createRow(item));
-                        })
-                    },
-                    error: error => {
-                        console.log(error);
-                    }
-                });
+                getAreaData(this.value);
             });
 
             //form submit
@@ -155,7 +150,9 @@
                         success: response => {
                             $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
-                            if (response.IsSuccess) { }
+                            if (response.IsSuccess) {
+                                element.parentElement.parentElement.remove();
+                            }
 
                             disabledIcon(element, false);
                         },
@@ -199,10 +196,26 @@
                 const tr = document.createElement("tr");
 
                 tr.innerHTML = `<td>${data.AreaName}</td>
-                                <td><i data-id="${data.AreaId}" data-value="${data.AreaName}" class="edit fas fa-edit"></i></td>
-                                <td><i data-id="${data.AreaId}" class="delete fas fa-trash"></i></td>`;
+                                        <td><i data-id="${data.AreaId}" data-value="${data.AreaName}" class="edit fas fa-edit"></i></td>
+                                        <td><i data-id="${data.AreaId}" class="delete fas fa-trash"></i></td>`;
 
                 return tr;
+            }
+
+            //get area data by region
+            function getAreaData(id) {
+                $.ajax({
+                    url: "/BasicSetting/GetAreaByRegion",
+                    data: { id },
+                    success: response => {
+                        response.forEach(item => {
+                            tBody.append(createRow(item));
+                        })
+                    },
+                    error: error => {
+                        console.log(error);
+                    }
+                });
             }
 
             //disable btn on click

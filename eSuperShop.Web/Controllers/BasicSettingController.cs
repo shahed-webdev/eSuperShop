@@ -8,10 +8,12 @@ using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
 using eSuperShop.Repository.Repositories;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
 {
+    [Authorize(Roles = "admin, sub-admin")]
     public class BasicSettingController : Controller
     {
         private readonly IRegionCore _region;
