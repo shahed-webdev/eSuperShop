@@ -180,6 +180,8 @@
 
                         if (response.IsSuccess) {
                             $("#updateModal").modal("hide");
+
+                            getAreaData(formAdd.selectRegion.value);
                         }
 
                         disabledBtn(btn, false);
@@ -204,6 +206,8 @@
 
             //get area data by region
             function getAreaData(id) {
+                tBody.innerHTML = "";
+
                 $.ajax({
                     url: "/BasicSetting/GetAreaByRegion",
                     data: { id },
