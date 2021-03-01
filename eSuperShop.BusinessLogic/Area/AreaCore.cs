@@ -24,7 +24,7 @@ namespace eSuperShop.BusinessLogic
                 if (string.IsNullOrEmpty(model.AreaName))
                     return new DbResponse<AreaAddEditModel>(false, "Invalid Data");
 
-                if (_db.Area.IsExistName(model.AreaName))
+                if (_db.Area.IsExistName(model.AreaName, model.RegionId))
                     return new DbResponse<AreaAddEditModel>(false, $" {model.AreaName} already Exist");
 
                 return _db.Area.Add(model);
@@ -46,7 +46,7 @@ namespace eSuperShop.BusinessLogic
                 if (_db.Area.IsNull(model.AreaId))
                     return new DbResponse(false, $"No data Found");
 
-                if (_db.Area.IsExistName(model.AreaName, model.AreaId))
+                if (_db.Area.IsExistName(model.AreaName, model.RegionId, model.AreaId))
                     return new DbResponse(false, $" {model.AreaName} already Exist");
 
                 return _db.Area.Edit(model);

@@ -61,7 +61,7 @@ namespace eSuperShop.Repository.Repositories
 
         public bool IsNull(int id)
         {
-            return Db.Region.Any(r => r.RegionId == id);
+            return !Db.Region.Any(r => r.RegionId == id);
         }
 
         public bool IsRelatedDataExist(int id)
