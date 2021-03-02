@@ -11,6 +11,18 @@
     <Compile Remove="Migrations\20201029042640_AddProductFaq.Designer.cs" />
     <Compile Remove="Migrations\20201109033022_AddCustomerAddressTable.cs" />
     <Compile Remove="Migrations\20201109033022_AddCustomerAddressTable.Designer.cs" />
+    <Compile Remove="Migrations\20210302094753_AddColumnVendorTable.cs" />
+    <Compile Remove="Migrations\20210302094753_AddColumnVendorTable.Designer.cs" />
+    <Compile Remove="Migrations\20210302095951_AddColumnVendorTable.cs" />
+    <Compile Remove="Migrations\20210302095951_AddColumnVendorTable.Designer.cs" />
+    <Compile Remove="Migrations\20210302101837_AddColumnVendorTable.cs" />
+    <Compile Remove="Migrations\20210302101837_AddColumnVendorTable.Designer.cs" />
+    <Compile Remove="Migrations\20210302102010_AddColumnVendorTable.cs" />
+    <Compile Remove="Migrations\20210302102010_AddColumnVendorTable.Designer.cs" />
+    <Compile Remove="Migrations\20210302103047_AddColumnVendorTable.cs" />
+    <Compile Remove="Migrations\20210302103047_AddColumnVendorTable.Designer.cs" />
+    <Compile Remove="Migrations\20210302103633_AddColumnVendorTable.cs" />
+    <Compile Remove="Migrations\20210302103633_AddColumnVendorTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
