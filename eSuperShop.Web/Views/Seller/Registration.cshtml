@@ -5,7 +5,7 @@
 }
 
 @section Styles {
-    <link href="~/css-page/Login.css" rel="stylesheet"/>
+    <link href="~/css-page/Login.css" rel="stylesheet" />
     <style>
         .serach-container, #othersInfo { display: none; }
         #btnResend { color: #1e90ff }
@@ -21,7 +21,7 @@
                     <h5 class="card-title text-center mb-1">
                         <strong class="dark-grey-text">Create Account</strong>
                     </h5>
-                    <p class="mb-4 text-center text-muted">Enter Our Platform As A Seller </p>
+                    <p class="mb-4 text-center text-muted">Enter our platform as a seller</p>
 
                     <form id="formRegistration">
                         <div class="md-form input-group mb-5">
@@ -37,7 +37,7 @@
                             <div class="md-form mb-5">
                                 <input id="inputEmail" class="form-control" type="email" required>
                                 <label for="inputEmail">Email</label>
-                                <small class="form-text text-muted">Email Will be Used As Login ID</small>
+                                <small class="form-text text-muted">Email will be used as login id</small>
                             </div>
                             <div class="md-form mb-5">
                                 <input id="inputAuthorizedPerson" class="form-control" type="text" required>
@@ -51,6 +51,22 @@
                                 <input id="inputStoreAddress" type="text" class="form-control" required>
                                 <label for="inputStoreAddress">Store Address</label>
                             </div>
+                            <div class="form-group mb-4">
+                                <label class="text-muted">Region</label>
+                                <select asp-items="ViewBag.Regions" id="selectRegion" class="form-control" required>
+                                    <option value="">[ SELECT ]</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-5">
+                                <label class="text-muted">Area</label>
+                                <select id="selectArea" class="form-control" required>
+                                    <option value="">[ SELECT ]</option>
+                                </select>
+                            </div>
+                            <div class="md-form mb-5">
+                                <input id="inputPostCode" type="text" class="form-control" required>
+                                <label for="inputPostCode">Postcode</label>
+                            </div>
                             <button id="btnSignUp" class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3" type="submit">Create account</button>
                             <div>
                                 <span id="accountError" class="field-validation-error"></span>
@@ -61,7 +77,7 @@
                     <div class="mt-5">
                         <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Account/Login" class="blue-text ml-1">Sign In</a></p>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
@@ -114,7 +130,7 @@
         const verifyError = formVerify.querySelector("#verifyError");
 
         //send code
-        btnSendCode.addEventListener("click", function(evt) {
+        btnSendCode.addEventListener("click", function (evt) {
             mobileError.textContent = "";
             if (!formRegistration.inputMobile.value) return;
 
@@ -127,7 +143,7 @@
                 type: "POST",
                 url: "/Seller/SendCode",
                 data: { mobile: formRegistration.inputMobile.value, time },
-                success: function(response) {
+                success: function (response) {
                     if (response.IsSuccess) {
                         codeVerifyModal.modal('show');
                         btnSendCode.disabled = false;
@@ -140,7 +156,7 @@
                         mobileError.textContent = response.Message;
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                     btnSendCode.disabled = false;
                     btnSendCode.innerText = "Verify";
@@ -149,7 +165,7 @@
         });
 
         //re-send code
-        btnResend.addEventListener("click", function(evt) {
+        btnResend.addEventListener("click", function (evt) {
             evt.preventDefault();
 
             if (!formRegistration.inputMobile.value) return;
@@ -160,7 +176,7 @@
                 type: "POST",
                 url: "/Seller/SendCode",
                 data: { mobile: formRegistration.inputMobile.value, time },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
 
                     if (response.IsSuccess) {
@@ -168,14 +184,14 @@
                         startTimer(time);
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                 }
             });
         });
 
         //verify code
-        formVerify.addEventListener('submit', function(evt) {
+        formVerify.addEventListener('submit', function (evt) {
             evt.preventDefault();
             verifyError.textContent = "";
 
@@ -189,7 +205,7 @@
                 type: "POST",
                 url: "/Seller/CodeVerify",
                 data: { code, mobile },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
 
                     if (response.IsSuccess) {
@@ -209,7 +225,7 @@
                     formVerify.btnSubmitVerify.disabled = false;
                     formVerify.btnSubmitVerify.innerText = "verify";
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                     formVerify.btnSubmitVerify.disabled = false;
                     formVerify.btnSubmitVerify.textContent = "verify";
@@ -217,8 +233,39 @@
             });
         });
 
+        //on change region
+        const selectRegion = document.getElementById("selectRegion");
+        const selectArea = document.getElementById("selectArea");
+
+        selectRegion.addEventListener("change", function (evt) {
+            selectArea.innerHTML = "";
+            selectArea.appendChild(createOptions({ AreaId: "", AreaName:"[ SELECT ]"}));
+
+            $.ajax({
+                url: "/Seller/GetAreaByRegion",
+                data: { id: this.value },
+                success: response => {
+                    response.forEach(item => {
+                        selectArea.appendChild(createOptions(item));
+                    });
+                },
+                error: error => {
+                    console.log(error);
+                }
+            });
+        });
+
+        //create option
+        function createOptions(item) {
+            const option = document.createElement("option");
+            option.innerText = item.AreaName;
+            option.value = item.AreaId;
+
+            return option;
+        }
+
         //post registration
-        formRegistration.addEventListener('submit', function(evt) {
+        formRegistration.addEventListener('submit', function (evt) {
             evt.preventDefault();
             const accountError = document.getElementById("accountError");
             accountError.textContent = "";
@@ -231,14 +278,16 @@
                 AuthorizedPerson: this.inputAuthorizedPerson.value,
                 VerifiedPhone: this.inputMobile.value,
                 StoreName: this.inputStoreName.value,
-                StoreAddress: this.inputStoreAddress.value
+                StoreAddress: this.inputStoreAddress.value,
+                AreaId: this.selectArea.value,
+                PostCode: this.inputPostCode.value
             }
 
             $.ajax({
                 type: "POST",
                 url: "/Seller/SignUp",
                 data,
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     if (response.IsSuccess) {
                         location.href = "/Seller/Success";
@@ -249,7 +298,7 @@
                     formRegistration.btnSignUp.disabled = false;
                     formRegistration.btnSignUp.textContent = "Create account";
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                     formRegistration.btnSignUp.disabled = false;
                     formRegistration.btnSignUp.textContent = "Create account";
@@ -264,7 +313,7 @@
             let seconds = 0;
             btnResend.classList.add("timerCount");
 
-            const interval = setInterval(function() {
+            const interval = setInterval(function () {
                 seconds = parseInt(timer % 60, 10);
                 seconds = seconds < 10 ? `0${seconds}` : seconds;
 

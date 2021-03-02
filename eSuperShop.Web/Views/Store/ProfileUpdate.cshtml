@@ -1,0 +1,352 @@
+﻿
+@{
+    ViewData["Title"] = "ProfileUpdate";
+    Layout = "~/Views/Shared/_SellerLayout.cshtml";
+}
+
+
+<div class="container">
+    <form>
+        <h4 class="page-header mb-3">profile</h4>
+
+        <div class="card card-body mb-4">
+            <h5 class="font-weight-bold mb-3">Seller Account</h5>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Store Name</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="md-form">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>Choose Logo<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input name="FileStoreLogo" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload Logo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <img src="" alt="" />
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-body mb-4">
+            <h5 class="font-weight-bold mb-3">Business Info</h5>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Region/Division</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Area</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Postcode</label>
+                        <input type="text" class="form-control" disabled value="" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>NID Card No.</label>
+                        <input name="NId" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="md-form">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>NID(Front)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input name="FileNidPhotoFront" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload NID(Front)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="md-form">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>NID(Back)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input name="FileNidPhotoBack" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload NID(Back)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="md-form">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>Choose Trade License<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input name="FileTradeLicense" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload Trade License Copy">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="md-form">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>Choose Certificate<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input name="FileOthersCertificate" type="file" multiple accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload Others Certificates(multiple)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-body mb-4">
+            <h5 class="font-weight-bold mb-3">Bank Account or Mobile Banking</h5>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Account Title</label>
+                        <input name="BankAccountTitle" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Account Number</label>
+                        <input name="BankAccountNumber" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Bank Name</label>
+                        <input name="BankName" type="text" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Branch Name</label>
+                        <input name="BranchName" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Routing Number</label>
+                        <input name="RoutingNumber" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="md-form">
+                        <div class="file-field">
+                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                                <span>Choose Cheque Copy<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                <input name="FileChequeCopy" type="file" accept="image/*">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Cheque Copy">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Mobile Banking</label>
+                        <select name="MobileBankingType" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Mobile Banking Number</label>
+                        <input name="MobileBankingNumber" type="text" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-body mb-4">
+            <h5 class="font-weight-bold mb-3">Warehouse Address</h5>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input name="WarehouseAddress" type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Postcode</label>
+                        <input name="WarehousePostcode" type="text" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Region/Division</label>
+                        <select id="slectWarehouseRegion" class="form-control">
+                            <option value="">[ SELECT ]</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Area</label>
+                        <select id="selectWarehouseArea" name="WarehouseAreaId" class="form-control" required>
+                            <option value="">[ SELECT ]</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input name="WarehousePhone" type="text" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-body mb-4">
+            <h5 class="font-weight-bold mb-3">Return Address</h5>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input name="ReturnAddress" type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Postcode</label>
+                        <input name="ReturnPostcode" type="text" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Region/Division</label>
+                        <select id="slectReturnRegion" class="form-control">
+                            <option value="">[ SELECT ]</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Area</label>
+                        <select id="selectReturnArea" name="ReturnAreaId" class="form-control" required>
+                            <option value="">[ SELECT ]</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input name="ReturnPhone" type="text" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-3 text-right">
+            <input type="submit" value="Submit" class="btn btn-danger" />
+            <label id="imageError"></label>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        //set image file
+        $('input[type="file"]').change(function (e) {
+            const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
+            const size = e.target.files[0].size / 1024 / 1024;
+            const allowSize = 1;
+            const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
+
+
+            if (!(regex.test(e.target.value.toLowerCase()))) {
+                e.target.value = "";
+                pathInput.value = "";
+          
+                $(pathInput).notify("Please select correct file format",{ position: "bottom left" });
+                return;
+            }
+
+            if (size > allowSize) {
+                e.target.value = "";
+                pathInput.value = "";
+                $(pathInput).notify(`image size must be less than ${allowSize}MB. your file size:${size.toFixed()} MB`, { position: "bottom left" });
+                return;
+            }
+
+            let fileName = "";
+            for (let i = 0; i <= e.target.files.length - 1; i++) {
+                fileName += i > 0 ? `, ${e.target.files[i].name}` : e.target.files[i].name;
+            }
+            pathInput.value = fileName;
+        });
+    </script>
+}

@@ -4,6 +4,7 @@ using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -11,17 +12,31 @@ namespace eSuperShop.Web.Controllers
     {
         private readonly IVendorCore _vendor;
         private readonly ICatalogCore _catalog;
-        public SellerController(IVendorCore vendor, ICatalogCore catalog)
+        private readonly IRegionCore _region;
+        private readonly IAreaCore _area;
+
+        public SellerController(IVendorCore vendor, ICatalogCore catalog, IRegionCore region, IAreaCore area)
         {
             _vendor = vendor;
             _catalog = catalog;
+            _region = region;
+            _area = area;
         }
 
         //seller sign-up
         public IActionResult Registration()
         {
+            ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
             return View();
         }
+
+        //get area by region
+        public IActionResult GetAreaByRegion(int id)
+        {
+            var response = _area.GetRegionWiseArea(id);
+            return Json(response);
+        }
+
 
         //send code to mobile
         [HttpPost]

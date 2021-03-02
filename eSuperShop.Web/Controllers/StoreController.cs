@@ -30,6 +30,11 @@ namespace eSuperShop.Web.Controllers
             _store = store;
         }
 
+        //Profile Update
+        public IActionResult ProfileUpdate()
+        {
+            return View();
+        }
 
         //Image Slider
         public IActionResult ImageSlider()

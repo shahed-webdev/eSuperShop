@@ -43,7 +43,42 @@
 
     <div id="sidedrawer" class="d-print-none z-depth-1">
         <Partial Name="_AdminLoginPartial" />
-        <ul id="menuItem"></ul>
+
+        <ul id="menuItem">
+            <li>
+                <strong>
+                    <span class="fas fa-tachometer-alt"></span>
+                    <a class="links" href="/Dashboard/Seller">Dashboard</a>
+                </strong>
+            </li>
+            <li>
+                <strong>
+                    <span class="fas fa-address-card"></span>
+                    <a class="links" href="/Store/ProfileUpdate">Profile Update</a>
+                </strong>
+            </li>
+            <li>
+                <strong>
+                    <span class="fas fa-store"></span><i class="fas fa-caret-right"></i>Store
+                </strong>
+                <ul class="sub-menu">
+                    <li><a class="links" href="/Store/ImageSlider">Add Image Slider</a></li>
+                    <li><a class="links" href="/Store/AddCategory">Add Category</a></li>
+                    <li><a class="links" href="/Store/AssignCategory">Assign Category</a></li>
+                    <li><a class="links" href="/Store/UpdateStore">Update Store Info</a></li>
+                </ul>
+            </li>
+            <li>
+                <strong>
+                    <span class="fas fa-shopping-bag"></span><i class="fas fa-caret-right"></i>Product
+                </strong>
+                <ul class="sub-menu">
+                    <li><a class="links" href="/StoreProduct/ProductCategory">Add Product</a></li>
+                    <li><a class="links" href="/StoreProduct/UnPublishedProduct">Un-Published Product</a></li>
+                    <li><a class="links" href="/StoreProduct/PublishedProduct">Published Product</a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
 
     <main id="content-wrapper" style="min-height:801px">
