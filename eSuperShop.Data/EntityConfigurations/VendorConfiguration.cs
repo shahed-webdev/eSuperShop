@@ -80,6 +80,72 @@ namespace eSuperShop.Data
                 .HasConstraintName("FK_Vendor_Registration")
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
+            builder.Property(e => e.NId)
+                .HasMaxLength(50);
+
+            builder.Property(e => e.NIdImageBackUrl)
+                .HasMaxLength(255);
+
+            builder.Property(e => e.NIdImageFrontUrl)
+                .HasMaxLength(255);
+
+            builder.Property(e => e.TradeLicenseImageUrl)
+                .HasMaxLength(255);
+            builder.Property(e => e.StorePostcode)
+                .HasMaxLength(50);
+
+
+            builder.Property(e => e.BankAccountTitle)
+                .HasMaxLength(128);
+            builder.Property(e => e.BankAccountNumber)
+                .HasMaxLength(128);
+            builder.Property(e => e.BankName)
+                .HasMaxLength(128);
+            builder.Property(e => e.BranchName)
+                .HasMaxLength(128);
+            builder.Property(e => e.RoutingNumber)
+                .HasMaxLength(128);
+            builder.Property(e => e.ChequeImageUrl)
+                .HasMaxLength(255);
+            builder.Property(e => e.MobileBankingType)
+                .HasMaxLength(50);
+            builder.Property(e => e.BankAccountNumber)
+                .HasMaxLength(50);
+
+
+            builder.Property(e => e.WarehouseAddress)
+                .HasMaxLength(128);
+            builder.Property(e => e.WarehousePostcode)
+                .HasMaxLength(50);
+            builder.Property(e => e.WarehousePhone)
+                .HasMaxLength(50);
+            builder.Property(e => e.ReturnAddress)
+                .HasMaxLength(128);
+            builder.Property(e => e.ReturnPhone)
+                .HasMaxLength(50);
+            builder.Property(e => e.ReturnPostcode)
+                .HasMaxLength(50);
+
+            builder.Property(e => e.MobileBankingNumber)
+                .HasMaxLength(50);
+
+            builder.HasOne(d => d.StoreArea)
+                .WithMany(p => p.VendorStore)
+                .HasForeignKey(d => d.StoreAreaId)
+                .HasConstraintName("FK_Area_VendorStore")
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(d => d.WarehouseArea)
+                .WithMany(p => p.VendorWarehouse)
+                .HasForeignKey(d => d.WarehouseAreaId)
+                .HasConstraintName("FK_Area_VendorWarehouse")
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(d => d.ReturnArea)
+                .WithMany(p => p.VendorReturn)
+                .HasForeignKey(d => d.ReturnAreaId)
+                .HasConstraintName("FK_Area_VendorReturnArea")
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

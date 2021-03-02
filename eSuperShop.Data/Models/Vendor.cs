@@ -14,6 +14,7 @@ namespace eSuperShop.Data
             VendorWarehouse = new HashSet<VendorWarehouse>();
             VendorStoreSlider = new HashSet<VendorStoreSlider>();
             VendorProductCategory = new HashSet<VendorProductCategory>();
+            VendorCertificate = new HashSet<VendorCertificate>();
         }
 
         public int VendorId { get; set; }
@@ -40,6 +41,34 @@ namespace eSuperShop.Data
         public decimal Withdraw { get; set; }
         public decimal Balance { get; set; }
 
+        public string StorePostcode { get; set; }
+        public int? StoreAreaId { get; set; }
+        public Area StoreArea { get; set; }
+        public string NId { get; set; }
+        public string NIdImageFrontUrl { get; set; }
+        public string NIdImageBackUrl { get; set; }
+        public string TradeLicenseImageUrl { get; set; }
+        public string BankAccountTitle { get; set; }
+        public string BankAccountNumber { get; set; }
+        public string BankName { get; set; }
+        public string BranchName { get; set; }
+        public string RoutingNumber { get; set; }
+        public string ChequeImageUrl { get; set; }
+        public string MobileBankingType { get; set; }
+        public string MobileBankingNumber { get; set; }
+        public string WarehouseAddress { get; set; }
+        public string WarehousePhone { get; set; }
+        public string WarehousePostcode { get; set; }
+        public int? WarehouseAreaId { get; set; }
+        public Area WarehouseArea { get; set; }
+        public string ReturnAddress { get; set; }
+        public string ReturnPhone { get; set; }
+        public string ReturnPostcode { get; set; }
+        public int? ReturnAreaId { get; set; }
+        public Area ReturnArea { get; set; }
+        public virtual ICollection<VendorCertificate> VendorCertificate { get; set; }
+
+
         public virtual Registration Registration { get; set; }
         public virtual ICollection<Product> Product { get; set; }
         public virtual ICollection<VendorCatalog> VendorCatalog { get; set; }
@@ -48,5 +77,6 @@ namespace eSuperShop.Data
         public virtual ICollection<VendorWarehouse> VendorWarehouse { get; set; }
         public virtual ICollection<VendorStoreSlider> VendorStoreSlider { get; set; }
         public virtual ICollection<VendorProductCategory> VendorProductCategory { get; set; }
+
     }
 }

@@ -12,6 +12,8 @@ namespace eSuperShop.Repository
         public string StoreName { get; set; }
         public string Email { get; set; }
         public string StoreAddress { get; set; }
+        public string StorePostcode { get; set; }
+        public int StoreAreaId { get; set; }
     }
     public class VendorModel
     {
@@ -20,7 +22,10 @@ namespace eSuperShop.Repository
         public string VerifiedPhone { get; set; }
         public string StoreName { get; set; }
         public string Email { get; set; }
+        public string StoreRegion { get; set; }
+        public string StoreArea { get; set; }
         public string StoreAddress { get; set; }
+        public string StorePostcode { get; set; }
         public bool IsApproved { get; set; }
         public DateTime CreatedOnUtc { get; set; }
     }
@@ -71,6 +76,32 @@ namespace eSuperShop.Repository
         public decimal Balance { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public StoreTheme StoreTheme { get; set; }
+        public string StorePostcode { get; set; }
+        public int StoreAreaId { get; set; }
+        public string StoreRegion { get; set; }
+        public string StoreArea { get; set; }
+        public string NId { get; set; }
+        public string NIdImageFrontUrl { get; set; }
+        public string NIdImageBackUrl { get; set; }
+        public string TradeLicenseImageUrl { get; set; }
+        public string BankAccountTitle { get; set; }
+        public string BankAccountNumber { get; set; }
+        public string BankName { get; set; }
+        public string BranchName { get; set; }
+        public string RouthingNumber { get; set; }
+        public string ChecqueImageUrl { get; set; }
+        public string MobileBankingType { get; set; }
+        public string MobileBankingNumber { get; set; }
+        public string WarehouseAddress { get; set; }
+        public string WarehousePostcode { get; set; }
+        public int WarehouseAreaId { get; set; }
+        public string WarehouseRegion { get; set; }
+        public string WarehouseArea { get; set; }
+        public string ReturnAddress { get; set; }
+        public string ReturnPostcode { get; set; }
+        public int ReturnAreaId { get; set; }
+        public string ReturnRegion { get; set; }
+        public string ReturnArea { get; set; }
     }
 
     public class VendorDashboardModel
