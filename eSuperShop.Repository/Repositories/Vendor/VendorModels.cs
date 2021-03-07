@@ -107,6 +107,9 @@ namespace eSuperShop.Repository
         public int ReturnAreaId { get; set; }
         public string ReturnRegion { get; set; }
         public string ReturnArea { get; set; }
+        public string ReturnPhone { get; set; }
+
+        public string WarehousePhone { get; set; }
     }
 
     public class VendorInfoDocFile
@@ -151,9 +154,12 @@ namespace eSuperShop.Repository
         public string MobileBankingType { get; set; }
         public string MobileBankingNumber { get; set; }
         public string WarehouseAddress { get; set; }
+        public string WarehousePhone { get; set; }
         public string WarehousePostcode { get; set; }
         public int WarehouseAreaId { get; set; }
         public string ReturnAddress { get; set; }
+
+        public string ReturnPhone { get; set; }
         public string ReturnPostcode { get; set; }
         public int ReturnAreaId { get; set; }
         public string[] VendorCertificateUrl { get; set; }
