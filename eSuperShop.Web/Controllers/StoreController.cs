@@ -158,7 +158,7 @@ namespace eSuperShop.Web.Controllers
         //Update Store
         public IActionResult UpdateStore()
         {
-            var response = _vendor.StoreDetails(User.Identity.Name);
+            var response = _vendor.ProfileDetails(User.Identity.Name);
             return View(response.Data);
         }
 
