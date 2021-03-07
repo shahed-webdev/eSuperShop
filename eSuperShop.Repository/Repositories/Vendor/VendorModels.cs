@@ -65,6 +65,9 @@ namespace eSuperShop.Repository
         public string AuthorizedPerson { get; set; }
         public string VerifiedPhone { get; set; }
         public string StoreName { get; set; }
+        public string StoreLogoUrl { set; get; }
+        public string StoreBannerUrl { get; set; }
+        public string StoreTagLine { get; set; }
         public string Email { get; set; }
         public string StoreAddress { get; set; }
         public bool IsApproved { get; set; }
