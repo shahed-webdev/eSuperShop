@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -164,28 +165,30 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateStore(VendorInfoUpdateModel model, VendorInfoDocFile files)
         {
-            if (files.FileStoreLogo != null)
+
+            model.StoreLogoUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoUrl, "store-logo");
+            model.StoreBannerUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerUrl, "store-banner");
+            model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "NId");
+            model.NIdImageFrontUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoFront, model.NIdImageFrontUrl, "nid");
+            model.ChequeImageUrl = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageUrl, "cheque");
+            model.TradeLicenseImageUrl = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageUrl, "trade-license");
+
+            if (files.FileOthersCertificate.Length > 0)
             {
-                if (!string.IsNullOrEmpty(model.StoreLogoUrl))
+                foreach (var s in model.VendorCertificateUrl)
                 {
-                    var uri = new Uri(model.StoreLogoUrl);
-                    await _cloudStorage.DeleteFileAsync(Path.GetFileName(uri.AbsolutePath));
+                    await _cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(s));
                 }
 
-                var fileName = FileBuilder.FileNameImage("store-logo", files.FileStoreLogo.FileName);
-                model.StoreLogoUrl = await _cloudStorage.UploadFileAsync(files.FileStoreLogo, fileName);
-            }
 
-            if (files.FileStoreBanner != null)
-            {
-                if (!string.IsNullOrEmpty(model.StoreBannerUrl))
+                var newUrls = new List<string>();
+                foreach (var file in files.FileOthersCertificate)
                 {
-                    var uri = new Uri(model.StoreBannerUrl);
-                    await _cloudStorage.DeleteFileAsync(Path.GetFileName(uri.AbsolutePath));
+                    newUrls.Add(await _cloudStorage.UpdateFileAsync(file, "", "Certificate"));
                 }
 
-                var fileName = FileBuilder.FileNameImage("store-banner", files.FileStoreBanner.FileName);
-                model.StoreBannerUrl = await _cloudStorage.UploadFileAsync(files.FileStoreBanner, fileName);
+                model.VendorCertificateUrl = newUrls.ToArray();
+
             }
 
             var response = _vendor.StoreUpdate(model, User.Identity.Name);
