@@ -154,9 +154,9 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateStore(VendorStoreInfoUpdateModel model, IFormFile logo, IFormFile bannerImage)
+        public async Task<IActionResult> UpdateStore(VendorInfoUpdateModel model, VendorInfoDocFile files)
         {
-            if (logo != null)
+            if (files.FileStoreLogo != null)
             {
                 if (!string.IsNullOrEmpty(model.StoreLogoUrl))
                 {
@@ -164,11 +164,11 @@ namespace eSuperShop.Web.Controllers
                     await _cloudStorage.DeleteFileAsync(Path.GetFileName(uri.AbsolutePath));
                 }
 
-                var fileName = FileBuilder.FileNameImage("store-logo", logo.FileName);
-                model.StoreLogoUrl = await _cloudStorage.UploadFileAsync(logo, fileName);
+                var fileName = FileBuilder.FileNameImage("store-logo", files.FileStoreLogo.FileName);
+                model.StoreLogoUrl = await _cloudStorage.UploadFileAsync(files.FileStoreLogo, fileName);
             }
 
-            if (bannerImage != null)
+            if (files.FileStoreBanner != null)
             {
                 if (!string.IsNullOrEmpty(model.StoreBannerUrl))
                 {
@@ -176,8 +176,8 @@ namespace eSuperShop.Web.Controllers
                     await _cloudStorage.DeleteFileAsync(Path.GetFileName(uri.AbsolutePath));
                 }
 
-                var fileName = FileBuilder.FileNameImage("store-banner", bannerImage.FileName);
-                model.StoreBannerUrl = await _cloudStorage.UploadFileAsync(bannerImage, fileName);
+                var fileName = FileBuilder.FileNameImage("store-banner", files.FileStoreBanner.FileName);
+                model.StoreBannerUrl = await _cloudStorage.UploadFileAsync(files.FileStoreBanner, fileName);
             }
 
             var response = _vendor.StoreUpdate(model, User.Identity.Name);

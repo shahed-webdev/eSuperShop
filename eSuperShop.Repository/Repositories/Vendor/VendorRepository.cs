@@ -241,24 +241,50 @@ namespace eSuperShop.Repository
             Db.Vendor.Update(vendor);
         }
 
-        public void StoreInfoUpdate(VendorStoreInfoUpdateModel model)
+        public void StoreInfoUpdate(VendorInfoUpdateModel model)
         {
             var vendor = Db.Vendor.Find(model.VendorId);
 
-            vendor.StoreName = model.StoreName;
-            vendor.StoreAddress = model.StoreAddress;
-            vendor.StoreSlugUrl = model.StoreSlugUrl;
             vendor.StoreBannerUrl = model.StoreBannerUrl;
             vendor.StoreLogoUrl = model.StoreLogoUrl;
             vendor.StoreTagLine = model.StoreTagLine;
+
+
+            vendor.StoreLogoUrl = model.StoreLogoUrl;
+            vendor.StoreBannerUrl = model.StoreBannerUrl;
+            vendor.StoreTagLine = model.StoreTagLine;
+            vendor.NId = model.NId;
+            vendor.NIdImageFrontUrl = model.NIdImageFrontUrl;
+            vendor.NIdImageBackUrl = model.NIdImageBackUrl;
+            vendor.TradeLicenseImageUrl = model.TradeLicenseImageUrl;
+            vendor.BankAccountTitle = model.BankAccountTitle;
+            vendor.BankAccountNumber = model.BankAccountNumber;
+            vendor.BankName = model.BankName;
+            vendor.BranchName = model.BranchName;
+            vendor.RoutingNumber = model.RoutingNumber;
+            vendor.ChequeImageUrl = model.ChequeImageUrl;
+            vendor.MobileBankingType = model.MobileBankingType;
+            vendor.MobileBankingNumber = model.MobileBankingNumber;
+            vendor.WarehouseAddress = model.WarehouseAddress;
+            vendor.WarehousePostcode = model.WarehousePostcode;
+            vendor.WarehouseAreaId = model.WarehouseAreaId;
+            vendor.ReturnAddress = model.ReturnAddress;
+            vendor.ReturnPostcode = model.ReturnPostcode;
+            vendor.ReturnAreaId = model.ReturnAreaId;
+            vendor.VendorCertificate = model.VendorCertificateUrl.Select(c => new VendorCertificate
+            {
+                CertificateImageUrl = c
+            }).ToList();
+
+
             Db.Vendor.Update(vendor);
         }
 
-        public VendorStoreInfoUpdateModel StoreDetails(int vendorId)
+        public VendorInfoUpdateModel StoreDetails(int vendorId)
         {
             return Db.Vendor
                 .Where(c => c.VendorId == vendorId)
-                .ProjectTo<VendorStoreInfoUpdateModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<VendorInfoUpdateModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefault();
         }
 

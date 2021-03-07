@@ -22,9 +22,10 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.WarehouseRegion, opt => opt.MapFrom(c => c.WarehouseArea.Region.RegionName))
                 .ForMember(d => d.ReturnArea, opt => opt.MapFrom(c => c.ReturnArea.AreaName))
                 .ForMember(d => d.ReturnRegion, opt => opt.MapFrom(c => c.ReturnArea.Region.RegionName))
+                .ForMember(d => d.VendorCertificateUrl, opt => opt.MapFrom(c => c.VendorCertificate.Select(c => c.CertificateImageUrl).ToArray()))
 
                 .ReverseMap();
-            CreateMap<Vendor, VendorStoreInfoUpdateModel>().ReverseMap();
+            CreateMap<Vendor, VendorInfoUpdateModel>().ReverseMap();
 
 
             CreateMap<VendorStoreSlider, VendorStoreSliderViewModel>().ReverseMap();

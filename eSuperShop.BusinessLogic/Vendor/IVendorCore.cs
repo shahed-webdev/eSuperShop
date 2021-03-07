@@ -25,7 +25,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse ThemeChange(int vendorId, StoreTheme theme);
         DbResponse SlugUrlChange(int vendorId, string slugUrl);
         DbResponse BannerUrlChange(int vendorId, string bannerUrl);
-        DbResponse StoreUpdate(VendorStoreInfoUpdateModel model, string vendorUserName);
-        DbResponse<VendorStoreInfoUpdateModel> StoreDetails(string vendorUserName);
+        DbResponse StoreUpdate(VendorInfoUpdateModel model, string vendorUserName);
+        DbResponse<VendorInfoUpdateModel> StoreDetails(string vendorUserName);
     }
 }

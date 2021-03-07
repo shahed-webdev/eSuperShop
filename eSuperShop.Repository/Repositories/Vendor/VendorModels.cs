@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Data;
+using Microsoft.AspNetCore.Http;
 using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -88,8 +89,9 @@ namespace eSuperShop.Repository
         public string BankAccountNumber { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
-        public string RouthingNumber { get; set; }
-        public string ChecqueImageUrl { get; set; }
+        public string RoutingNumber { get; set; }
+        public string ChequeImageUrl { get; set; }
+        public string[] VendorCertificateUrl { get; set; }
         public string MobileBankingType { get; set; }
         public string MobileBankingNumber { get; set; }
         public string WarehouseAddress { get; set; }
@@ -104,6 +106,18 @@ namespace eSuperShop.Repository
         public string ReturnArea { get; set; }
     }
 
+    public class VendorInfoDocFile
+    {
+        public IFormFile FileStoreLogo { get; set; }
+        public IFormFile FileNidPhotoFront { get; set; }
+        public IFormFile FileNidPhotoBack { get; set; }
+        public IFormFile FileTradeLicense { get; set; }
+        public IFormFile[] FileOthersCertificate { get; set; }
+        public IFormFile FileChequeCopy { get; set; }
+        public IFormFile FileStoreBanner { get; set; }
+    }
+
+
     public class VendorDashboardModel
     {
         public VendorDashboardModel()
@@ -115,15 +129,31 @@ namespace eSuperShop.Repository
         public ICollection<VendorCatalogViewModel> Catalogs { get; set; }
     }
 
-    public class VendorStoreInfoUpdateModel
+    public class VendorInfoUpdateModel
     {
         public int VendorId { get; set; }
-        public string StoreName { get; set; }
-        public string StoreAddress { get; set; }
-        public string StoreSlugUrl { get; set; }
+        public string StoreLogoUrl { set; get; }
         public string StoreBannerUrl { get; set; }
-        public string StoreLogoUrl { get; set; }
         public string StoreTagLine { get; set; }
+        public string NId { get; set; }
+        public string NIdImageFrontUrl { get; set; }
+        public string NIdImageBackUrl { get; set; }
+        public string TradeLicenseImageUrl { get; set; }
+        public string BankAccountTitle { get; set; }
+        public string BankAccountNumber { get; set; }
+        public string BankName { get; set; }
+        public string BranchName { get; set; }
+        public string RoutingNumber { get; set; }
+        public string ChequeImageUrl { get; set; }
+        public string MobileBankingType { get; set; }
+        public string MobileBankingNumber { get; set; }
+        public string WarehouseAddress { get; set; }
+        public string WarehousePostcode { get; set; }
+        public int WarehouseAreaId { get; set; }
+        public string ReturnAddress { get; set; }
+        public string ReturnPostcode { get; set; }
+        public int ReturnAreaId { get; set; }
+        public string[] VendorCertificateUrl { get; set; }
     }
 
     public class StoreFilterRequest : PageRequest

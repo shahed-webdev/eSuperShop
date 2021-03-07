@@ -306,12 +306,10 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse StoreUpdate(VendorStoreInfoUpdateModel model, string vendorUserName)
+        public DbResponse StoreUpdate(VendorInfoUpdateModel model, string vendorUserName)
         {
             try
             {
-                if (string.IsNullOrEmpty(model.StoreName)) return new DbResponse(false, "Invalid Data");
-
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0)
                     return new DbResponse(false, "Invalid User");
@@ -320,12 +318,6 @@ namespace eSuperShop.BusinessLogic
 
                 if (_db.Vendor.IsNull(vendorId))
                     return new DbResponse(false, "No Data Found");
-
-                if (_db.Vendor.IsExistStore(model.StoreName, vendorId))
-                    return new DbResponse(false, "Store Name already Exist");
-
-                if (_db.Vendor.IsExistSlugUrl(model.StoreSlugUrl, vendorId))
-                    return new DbResponse(false, "SlugUrl already Exist");
 
                 _db.Vendor.StoreInfoUpdate(model);
                 _db.SaveChanges();
@@ -338,26 +330,26 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<VendorStoreInfoUpdateModel> StoreDetails(string vendorUserName)
+        public DbResponse<VendorInfoUpdateModel> StoreDetails(string vendorUserName)
         {
             try
             {
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0)
-                    return new DbResponse<VendorStoreInfoUpdateModel>(false, "Invalid User");
+                    return new DbResponse<VendorInfoUpdateModel>(false, "Invalid User");
 
 
 
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse<VendorStoreInfoUpdateModel>(false, "No Data Found");
+                    return new DbResponse<VendorInfoUpdateModel>(false, "No Data Found");
 
                 var data = _db.Vendor.StoreDetails(vendorId);
 
-                return new DbResponse<VendorStoreInfoUpdateModel>(true, "Success", data);
+                return new DbResponse<VendorInfoUpdateModel>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<VendorStoreInfoUpdateModel>(false, e.Message);
+                return new DbResponse<VendorInfoUpdateModel>(false, e.Message);
             }
         }
     }
