@@ -2,7 +2,7 @@
 
 .navbar-brand { font-weight: bold; font-size: 1.5rem; color: #fff }
 
-.page-header { text-transform: uppercase; margin: 0; font-weight: 500; color: #4f4f4f !important; }
+.page-header { text-transform: uppercase; margin: 0; font-weight: 500; }
 
 .error-color td { color: red; }
 .used-error { color: #ff0000 }
