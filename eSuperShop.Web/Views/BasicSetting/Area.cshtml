@@ -40,11 +40,11 @@
 
         <table id="data-table" class="table">
             <thead>
-            <tr>
-                <th><strong>Area</strong></th>
-                <th style="width: 50px"><strong>Edit</strong></th>
-                <th style="width: 50px"><strong>Delete</strong></th>
-            </tr>
+                <tr>
+                    <th><strong>Area</strong></th>
+                    <th style="width: 50px" class="text-center"><strong>Edit</strong></th>
+                    <th style="width: 50px" class="text-center"><strong>Delete</strong></th>
+                </tr>
             </thead>
             <tbody id="tBody"></tbody>
         </table>
@@ -200,8 +200,8 @@
                 const tr = document.createElement("tr");
 
                 tr.innerHTML = `<td>${data.AreaName}</td>
-                                        <td><i data-id="${data.AreaId}" data-value="${data.AreaName}" class="edit fas fa-edit"></i></td>
-                                        <td><i data-id="${data.AreaId}" class="delete fas fa-trash"></i></td>`;
+                                <td class="text-center"><i data-id="${data.AreaId}" data-value="${data.AreaName}" class="edit fas fa-edit"></i></td>
+                                <td class="text-center"><i data-id="${data.AreaId}" class="delete fas fa-trash"></i></td>`;
 
                 return tr;
             }

@@ -36,6 +36,14 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
+        //post profile
+        [HttpPost]
+        public IActionResult ProfileUpdate(VendorInfoModel model)
+        {
+            return View();
+        }
+
+
         //Image Slider
         public IActionResult ImageSlider()
         {
