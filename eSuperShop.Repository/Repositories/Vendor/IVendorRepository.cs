@@ -36,7 +36,7 @@ namespace eSuperShop.Repository
         void SlugUrlChange(int vendorId, string slugUrl);
         void BanarUrlChange(int vendorId, string banarUrl);
         void StoreInfoUpdate(VendorInfoUpdateModel model);
-        VendorInfoUpdateModel StoreDetails(int vendorId);
+        VendorInfoModel ProfileDetails(int vendorId);
         PagedResult<StoreViewModel> TopStores(StoreFilterRequest request);
         StoreThemeViewModel StoreThemeDetails(string storeSlugUrl);
 

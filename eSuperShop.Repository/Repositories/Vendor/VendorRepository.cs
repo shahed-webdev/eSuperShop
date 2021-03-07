@@ -280,11 +280,11 @@ namespace eSuperShop.Repository
             Db.Vendor.Update(vendor);
         }
 
-        public VendorInfoUpdateModel StoreDetails(int vendorId)
+        public VendorInfoModel ProfileDetails(int vendorId)
         {
             return Db.Vendor
                 .Where(c => c.VendorId == vendorId)
-                .ProjectTo<VendorInfoUpdateModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<VendorInfoModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefault();
         }
 
