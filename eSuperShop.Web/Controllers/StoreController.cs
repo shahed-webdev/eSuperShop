@@ -34,15 +34,47 @@ namespace eSuperShop.Web.Controllers
         //Profile Update
         public IActionResult ProfileUpdate()
         {
-            return View();
+            var response = _vendor.ProfileDetails(User.Identity.Name);
+            return View(response.Data);
         }
 
         //post profile
         [HttpPost]
-        public IActionResult ProfileUpdate(VendorInfoModel model)
+        public async Task<IActionResult> ProfileUpdate(VendorInfoUpdateModel model, VendorInfoDocFile files)
         {
-            return View();
+            model.StoreLogoUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoUrl, "store-logo");
+            model.StoreBannerUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerUrl, "store-banner");
+            model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "NId");
+            model.NIdImageFrontUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoFront, model.NIdImageFrontUrl, "nid");
+            model.ChequeImageUrl = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageUrl, "cheque");
+            model.TradeLicenseImageUrl = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageUrl, "trade-license");
+
+            if (files.FileOthersCertificate.Length > 0)
+            {
+                foreach (var s in model.VendorCertificateUrl)
+                {
+                    await _cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(s));
+                }
+
+                var newUrls = new List<string>();
+                foreach (var file in files.FileOthersCertificate)
+                {
+                    newUrls.Add(await _cloudStorage.UploadFileAsync(file, "Certificate"));
+                }
+
+                model.VendorCertificateUrl = newUrls.ToArray();
+            }
+
+            var response = _vendor.StoreUpdate(model, User.Identity.Name);
+
+            if (!response.IsSuccess)
+                ModelState.AddModelError(response.FieldName, response.Message);
+
+            if (!ModelState.IsValid) return View(model);
+
+            return RedirectToAction("Seller", "Dashboard");
         }
+
 
 
         //Image Slider
@@ -152,53 +184,6 @@ namespace eSuperShop.Web.Controllers
         {
             var response = _category.AssignToggle(model);
             return Json(response);
-        }
-
-
-        //Update Store
-        public IActionResult UpdateStore()
-        {
-            var response = _vendor.ProfileDetails(User.Identity.Name);
-            return View(response.Data);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateStore(VendorInfoUpdateModel model, VendorInfoDocFile files)
-        {
-
-            model.StoreLogoUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoUrl, "store-logo");
-            model.StoreBannerUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerUrl, "store-banner");
-            model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "NId");
-            model.NIdImageFrontUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoFront, model.NIdImageFrontUrl, "nid");
-            model.ChequeImageUrl = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageUrl, "cheque");
-            model.TradeLicenseImageUrl = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageUrl, "trade-license");
-
-            if (files.FileOthersCertificate.Length > 0)
-            {
-                foreach (var s in model.VendorCertificateUrl)
-                {
-                    await _cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(s));
-                }
-
-
-                var newUrls = new List<string>();
-                foreach (var file in files.FileOthersCertificate)
-                {
-                    newUrls.Add(await _cloudStorage.UpdateFileAsync(file, "", "Certificate"));
-                }
-
-                model.VendorCertificateUrl = newUrls.ToArray();
-
-            }
-
-            var response = _vendor.StoreUpdate(model, User.Identity.Name);
-
-            if (!response.IsSuccess)
-                ModelState.AddModelError(response.FieldName, response.Message);
-
-            if (!ModelState.IsValid) return View(model);
-
-            return RedirectToAction("Seller", "Dashboard");
         }
 
 
