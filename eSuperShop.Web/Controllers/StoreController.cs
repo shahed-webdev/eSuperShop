@@ -34,7 +34,7 @@ namespace eSuperShop.Web.Controllers
         //Profile Update
         public IActionResult ProfileUpdate()
         {
-            var response = _vendor.StoreDetails(User.Identity.Name);
+            var response = _vendor.ProfileDetails(User.Identity.Name);
             return View(response.Data);
         }
 

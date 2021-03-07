@@ -1,4 +1,4 @@
-﻿@model VendorInfoUpdateModel
+﻿@model VendorInfoModel
 @{
     ViewData["Title"] = "Profile Update";
     Layout = "~/Views/Shared/_SellerLayout.cshtml";
@@ -16,19 +16,19 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.AuthorizedPerson" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.Email" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.VerifiedPhone" />
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Store Name</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.StoreName" />
                     </div>
                 </div>
                 <div class="col-lg-6">
