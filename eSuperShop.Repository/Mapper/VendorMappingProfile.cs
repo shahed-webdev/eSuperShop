@@ -16,18 +16,13 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.StoreRegion, opt => opt.MapFrom(c => c.StoreArea.Region.RegionName))
                 .ReverseMap();
             CreateMap<Vendor, VendorInfoModel>()
-                .ForMember(d => d.StoreLogoUrl, opt => opt.MapFrom(c => $"thumb_{c.StoreLogoUrl}"))
-                .ForMember(d => d.StoreBannerUrl, opt => opt.MapFrom(c => $"thumb_{c.StoreBannerUrl}"))
-                .ForMember(d => d.NIdImageFrontUrl, opt => opt.MapFrom(c => $"thumb_{c.NIdImageFrontUrl}"))
-                .ForMember(d => d.NIdImageBackUrl, opt => opt.MapFrom(c => $"thumb_{c.NIdImageBackUrl}"))
-                .ForMember(d => d.StoreBannerUrl, opt => opt.MapFrom(c => $"thumb_{c.StoreBannerUrl}"))
                 .ForMember(d => d.StoreArea, opt => opt.MapFrom(c => c.StoreArea.AreaName))
                 .ForMember(d => d.StoreRegion, opt => opt.MapFrom(c => c.StoreArea.Region.RegionName))
                 .ForMember(d => d.WarehouseArea, opt => opt.MapFrom(c => c.WarehouseArea.AreaName))
                 .ForMember(d => d.WarehouseRegion, opt => opt.MapFrom(c => c.WarehouseArea.Region.RegionName))
                 .ForMember(d => d.ReturnArea, opt => opt.MapFrom(c => c.ReturnArea.AreaName))
                 .ForMember(d => d.ReturnRegion, opt => opt.MapFrom(c => c.ReturnArea.Region.RegionName))
-                .ForMember(d => d.VendorCertificateUrl, opt => opt.MapFrom(c => c.VendorCertificate.Select(c => $"thumb_{c.CertificateImageUrl}").ToArray()))
+                .ForMember(d => d.VendorCertificateUrl, opt => opt.MapFrom(c => c.VendorCertificate.Select(c => c.CertificateImageUrl).ToArray()))
 
                 .ReverseMap();
             CreateMap<Vendor, VendorInfoUpdateModel>().ReverseMap();
