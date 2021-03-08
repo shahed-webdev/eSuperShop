@@ -78,5 +78,8 @@ namespace eSuperShop.Data
         public virtual ICollection<VendorStoreSlider> VendorStoreSlider { get; set; }
         public virtual ICollection<VendorProductCategory> VendorProductCategory { get; set; }
 
+
+
+
     }
 }

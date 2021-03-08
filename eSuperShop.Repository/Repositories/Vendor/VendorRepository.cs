@@ -266,9 +266,11 @@ namespace eSuperShop.Repository
             vendor.MobileBankingType = model.MobileBankingType;
             vendor.MobileBankingNumber = model.MobileBankingNumber;
             vendor.WarehouseAddress = model.WarehouseAddress;
+            vendor.WarehousePhone = model.WarehousePhone;
             vendor.WarehousePostcode = model.WarehousePostcode;
             vendor.WarehouseAreaId = model.WarehouseAreaId;
             vendor.ReturnAddress = model.ReturnAddress;
+            vendor.ReturnPhone = model.ReturnPhone;
             vendor.ReturnPostcode = model.ReturnPostcode;
             vendor.ReturnAreaId = model.ReturnAreaId;
             if (model.VendorCertificateUrl != null)
