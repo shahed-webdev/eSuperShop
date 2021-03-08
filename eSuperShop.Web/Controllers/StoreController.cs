@@ -48,8 +48,6 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProfileUpdate(VendorInfoUpdateModel model, VendorInfoDocFile files)
         {
-            ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
-
             model.StoreLogoUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoUrl, "store-logo");
             model.StoreBannerUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerUrl, "store-banner");
             model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "NId");
@@ -77,13 +75,7 @@ namespace eSuperShop.Web.Controllers
             }
 
             var response = _vendor.StoreUpdate(model, User.Identity.Name);
-
-            if (!response.IsSuccess)
-                ModelState.AddModelError(response.FieldName, response.Message);
-
-            //if (!ModelState.IsValid) return View(model);
-
-            return RedirectToAction("Seller", "Dashboard");
+            return Json(response);
         }
 
 

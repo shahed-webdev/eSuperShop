@@ -26,34 +26,35 @@ namespace CloudStorage
             await using var memoryStream = new MemoryStream();
             await imageFile.CopyToAsync(memoryStream);
 
-            var dataObject = await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, imageFile.ContentType, memoryStream);
+            var dataObject = await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage,
+                imageFile.ContentType, memoryStream);
             return dataObject.MediaLink;
         }
 
         //update image
         public async Task<string> UpdateFileAsync(IFormFile newImageFile, string oldImageUrl, string fileNamePrefix)
         {
-            try
-            {
-                if (newImageFile == null) return oldImageUrl;
+            if (newImageFile == null) return oldImageUrl;
 
-                if (!string.IsNullOrEmpty(oldImageUrl))
-                    await DeleteFileAsync(FileBuilder.FileNameFromUrl(oldImageUrl));
+            if (!string.IsNullOrEmpty(oldImageUrl))
+                await DeleteFileAsync(FileBuilder.FileNameFromUrl(oldImageUrl));
 
-                var fileName = FileBuilder.FileNameImage(fileNamePrefix, newImageFile.FileName);
+            var fileName = FileBuilder.FileNameImage(fileNamePrefix, newImageFile.FileName);
 
-                return await UploadFileAsync(newImageFile, fileName);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return await UploadFileAsync(newImageFile, fileName);
         }
 
         //delete image
         public async Task DeleteFileAsync(string fileNameForStorage)
         {
-            await _storageClient.DeleteObjectAsync(_bucketName, fileNameForStorage);
+            try
+            {
+                await _storageClient.DeleteObjectAsync(_bucketName, fileNameForStorage);
+            }
+            catch
+            {
+                // ignored
+            }
         }
     }
 }
