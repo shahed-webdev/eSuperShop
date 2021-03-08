@@ -1,4 +1,5 @@
-﻿using eSuperShop.Data;
+﻿using CloudStorage;
+using eSuperShop.Data;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
@@ -27,5 +28,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse BannerUrlChange(int vendorId, string bannerUrl);
         DbResponse StoreUpdate(VendorInfoUpdateModel model, string vendorUserName);
         DbResponse<VendorInfoModel> ProfileDetails(string vendorUserName);
+
+        DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request);
+        Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model, ICloudStorage cloudStorage);
     }
 }

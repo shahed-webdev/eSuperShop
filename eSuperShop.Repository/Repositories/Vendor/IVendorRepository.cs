@@ -43,8 +43,8 @@ namespace eSuperShop.Repository
 
         PagedResult<StoreProductViewModel> StoreProductList(StoreProductFilterRequest request);
         DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request);
-
-
+        //return list will be use for delete image from blob server 
+        List<string> DataChangeApproved(VendorDataChangeApprovedModel model);
 
     }
 
