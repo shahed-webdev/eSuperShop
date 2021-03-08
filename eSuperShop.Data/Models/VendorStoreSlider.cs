@@ -12,5 +12,6 @@ namespace eSuperShop.Data
         public DateTime CreatedOnUtc { get; set; }
 
         public virtual Vendor Vendor { get; set; }
+        public bool IsApprovedByAdmin { get; set; }
     }
 }

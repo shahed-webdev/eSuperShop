@@ -8,5 +8,6 @@
 
         public virtual Product Product { get; set; }
         public virtual VendorProductCategory VendorProductCategory { get; set; }
+        public bool IsApprovedByAdmin { get; set; }
     }
 }

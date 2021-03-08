@@ -20,5 +20,6 @@ namespace eSuperShop.Data
         public virtual Vendor Vendor { get; set; }
 
         public virtual ICollection<VendorProductCategoryList> VendorProductCategoryList { get; set; }
+        public bool IsApprovedByAdmin { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CloudStorage;
 using eSuperShop.Data;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
@@ -350,6 +351,36 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse<VendorInfoModel>(false, e.Message);
+            }
+        }
+
+        public DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request)
+        {
+            return _db.Vendor.DataChangeUnapprovedList(request);
+        }
+
+        public async Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model,
+            ICloudStorage cloudStorage)
+        {
+            try
+            {
+
+
+                if (_db.Vendor.IsNull(model.VendorId))
+                    return new DbResponse(false, "No Data Found");
+
+                var urls = _db.Vendor.DataChangeApproved(model);
+                _db.SaveChanges();
+                foreach (var url in urls)
+                {
+                    await cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(url));
+                }
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
             }
         }
     }

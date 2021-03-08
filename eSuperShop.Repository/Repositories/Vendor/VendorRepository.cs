@@ -355,6 +355,48 @@ namespace eSuperShop.Repository
                 .ToDataResult(request);
         }
 
+        public List<string> DataChangeApproved(VendorDataChangeApprovedModel model)
+        {
+            var urlList = new List<string>();
+            var vendor = Db.Vendor.Find(model.VendorId);
+
+            if (string.IsNullOrEmpty(model.ChangedStoreLogoUrl))
+            {
+                if (!string.Equals(vendor.StoreLogoUrl, model.StoreLogoUrl, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    urlList.Add(vendor.StoreLogoUrl);
+                    vendor.StoreLogoUrl = model.ChangedStoreLogoUrl;
+                    vendor.ChangedStoreLogoUrl = string.Empty;
+
+                }
+            }
+
+            if (string.IsNullOrEmpty(model.ChangedStoreBannerUrl))
+            {
+                if (!string.Equals(vendor.StoreBannerUrl, model.StoreLogoUrl, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    urlList.Add(vendor.StoreBannerUrl);
+
+                    vendor.StoreBannerUrl = model.ChangedStoreBannerUrl;
+                    vendor.ChangedStoreBannerUrl = string.Empty;
+                }
+            }
+
+            if (string.IsNullOrEmpty(model.ChangedStoreTagLine))
+            {
+                if (!string.Equals(vendor.StoreTagLine, model.ChangedStoreTagLine, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    vendor.ChangedStoreLogoUrl = model.StoreLogoUrl;
+                    vendor.ChangedStoreTagLine = string.Empty;
+                }
+            }
+
+            vendor.IsChangedApproved = true;
+
+            Db.Vendor.Update(vendor);
+            return urlList;
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 
