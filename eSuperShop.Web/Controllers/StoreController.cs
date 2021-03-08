@@ -22,18 +22,24 @@ namespace eSuperShop.Web.Controllers
         private readonly IVendorCore _vendor;
         private readonly IStoreCore _store;
 
-        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category, IVendorSliderCore vendorSlider, IVendorCore vendor, IStoreCore store)
+        private readonly IRegionCore _region;
+        private readonly IAreaCore _area;
+
+        public StoreController(ICloudStorage cloudStorage, IVendorProductCategoryCore category, IVendorSliderCore vendorSlider, IVendorCore vendor, IStoreCore store, IAreaCore area, IRegionCore region)
         {
             _cloudStorage = cloudStorage;
             _category = category;
             _vendorSlider = vendorSlider;
             _vendor = vendor;
             _store = store;
+            _area = area;
+            _region = region;
         }
 
         //Profile Update
         public IActionResult ProfileUpdate()
         {
+            ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
             var response = _vendor.ProfileDetails(User.Identity.Name);
             return View(response.Data);
         }
@@ -42,6 +48,8 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProfileUpdate(VendorInfoUpdateModel model, VendorInfoDocFile files)
         {
+            ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
+
             model.StoreLogoUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoUrl, "store-logo");
             model.StoreBannerUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerUrl, "store-banner");
             model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "NId");
@@ -49,11 +57,14 @@ namespace eSuperShop.Web.Controllers
             model.ChequeImageUrl = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageUrl, "cheque");
             model.TradeLicenseImageUrl = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageUrl, "trade-license");
 
-            if (files.FileOthersCertificate.Length > 0)
+            if (files.FileOthersCertificate != null)
             {
-                foreach (var s in model.VendorCertificateUrl)
+                if (model.VendorCertificateUrl != null)
                 {
-                    await _cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(s));
+                    foreach (var s in model.VendorCertificateUrl)
+                    {
+                        await _cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(s));
+                    }
                 }
 
                 var newUrls = new List<string>();
@@ -70,11 +81,18 @@ namespace eSuperShop.Web.Controllers
             if (!response.IsSuccess)
                 ModelState.AddModelError(response.FieldName, response.Message);
 
-            if (!ModelState.IsValid) return View(model);
+            //if (!ModelState.IsValid) return View(model);
 
             return RedirectToAction("Seller", "Dashboard");
         }
 
+
+        //get data by region
+        public IActionResult GetAreaByRegion(int id)
+        {
+            var response = _area.GetRegionWiseArea(id);
+            return Json(response);
+        }
 
 
         //Image Slider

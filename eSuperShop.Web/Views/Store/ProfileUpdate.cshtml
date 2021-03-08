@@ -6,7 +6,7 @@
 
 
 <div class="m-md-3">
-    <form enctype="multipart/form-data" asp-action="ProfileUpdate">
+    <form id="formUpdate">
         <h4 class="page-header mb-3">profile</h4>
 
         <div class="card card-body mb-4">
@@ -45,7 +45,7 @@
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Logo<i class="fas fa-upload ml-3"></i></span>
                                 <input name="FileStoreLogo" type="file" accept="image/*">
-                                <input name="StoreLogoUrl" type="hidden" value="">
+                                <input name="StoreLogoUrl" type="hidden" value="@Model.StoreLogoUrl">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload Store Logo">
@@ -58,7 +58,7 @@
                 <div class="col-lg-7">
                     <div class="form-group">
                         <label>Store Tag Line</label>
-                        <input name="StoreTagLine" type="text" class="form-control" required>
+                        <input name="StoreTagLine" type="text" class="form-control" value="@Model.StoreTagLine" required>
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -67,7 +67,7 @@
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Banner Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileStoreBanner" type="file" accept="image/*">
-                                <input name="StoreBannerUrl" type="hidden" value="">
+                                <input name="StoreBannerUrl" type="hidden" value="@Model.StoreBannerUrl">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload Banner Image">
@@ -85,25 +85,25 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Address</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.StoreAddress" />
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Region/Division</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.StoreRegion" />
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Area</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.StoreArea" />
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Postcode</label>
-                        <input type="text" class="form-control" disabled value="" />
+                        <input type="text" class="form-control" disabled value="@Model.StorePostcode" />
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>NID Card No.</label>
-                        <input name="NId" type="text" class="form-control" />
+                        <input name="NId" type="text" class="form-control" value="@Model.NId" />
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -121,7 +121,7 @@
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>NID(Front)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileNidPhotoFront" type="file" accept="image/*">
-                                <input name="NIdImageFrontUrl" type="hidden" value="">
+                                <input name="NIdImageFrontUrl" type="hidden" value="@Model.NIdImageFrontUrl">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Front)">
@@ -135,7 +135,7 @@
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>NID(Back)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileNidPhotoBack" type="file" accept="image/*">
-                                <input name="NIdImageBackUrl" type="hidden" value="">
+                                <input name="NIdImageBackUrl" type="hidden" value="@Model.NIdImageBackUrl">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Back)">
@@ -152,7 +152,7 @@
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Trade License<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileTradeLicense" type="file" accept="image/*">
-                                <input name="TradeLicenseImageUrl" type="hidden" value="">
+                                <input name="TradeLicenseImageUrl" type="hidden" value="@Model.TradeLicenseImageUrl">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload Trade License Copy">
@@ -166,7 +166,15 @@
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Certificate<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileOthersCertificate" type="file" multiple accept="image/*">
-                                <input name="OthersCertificateImageUrl" type="hidden" value="">
+
+                                @{
+                                    var index = 0;
+                                    foreach (var url in Model.VendorCertificateUrl)
+                                    {
+                                        <input name="OthersCertificateImageUrl" type="hidden" value="@url[index]">
+                                        index++;
+                                    }
+                                }
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload Others Certificates(multiple)">
@@ -184,19 +192,19 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Account Title</label>
-                        <input name="BankAccountTitle" type="text" class="form-control" />
+                        <input name="BankAccountTitle" type="text" class="form-control" value="@Model.BankAccountTitle" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Account Number</label>
-                        <input name="BankAccountNumber" type="text" class="form-control" />
+                        <input name="BankAccountNumber" type="text" class="form-control" value="@Model.BankAccountNumber" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Bank Name</label>
-                        <input name="BankName" type="text" class="form-control" />
+                        <input name="BankName" type="text" class="form-control" value="@Model.BankName" />
                     </div>
                 </div>
             </div>
@@ -205,13 +213,13 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Branch Name</label>
-                        <input name="BranchName" type="text" class="form-control" />
+                        <input name="BranchName" type="text" class="form-control" value="@Model.BranchName" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Routing Number</label>
-                        <input name="RoutingNumber" type="text" class="form-control" />
+                        <input name="RoutingNumber" type="text" class="form-control" value="@Model.RoutingNumber" />
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -220,7 +228,7 @@
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Cheque Copy<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileChequeCopy" type="file" accept="image/*">
-                                <input name="ChequeImageUrl" type="hidden" value="">
+                                <input name="ChequeImageUrl" type="hidden" value="@Model.ChequeImageUrl">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Cheque Copy">
@@ -234,13 +242,21 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Mobile Banking</label>
-                        <select name="MobileBankingType" class="form-control"></select>
+                        <select name="MobileBankingType" class="form-control" value="@Model.MobileBankingType">
+                            <option value="">[ SELECT ]</option>
+                            <option value="Bkash">Bkash</option>
+                            <option value="Rocket">Rocket</option>
+                            <option value="Nagad">Nagad</option>
+                            <option value="SureCash">SureCash</option>
+                            <option value="Ucash">Ucash</option>
+                            <option value="mCash">mCash</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Mobile Banking Number</label>
-                        <input name="MobileBankingNumber" type="text" class="form-control" />
+                        <input name="MobileBankingNumber" type="text" class="form-control" value="@Model.MobileBankingNumber" />
                     </div>
                 </div>
             </div>
@@ -253,13 +269,13 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label>Address</label>
-                        <input name="WarehouseAddress" type="text" class="form-control" required>
+                        <input name="WarehouseAddress" type="text" class="form-control" value="@Model.WarehouseAddress" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Postcode</label>
-                        <input name="WarehousePostcode" type="text" class="form-control" required>
+                        <input name="WarehousePostcode" type="text" class="form-control" value="@Model.WarehousePostcode" required>
                     </div>
                 </div>
             </div>
@@ -267,15 +283,15 @@
             <div class="row my-2">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Region/Division</label>
-                        <select id="slectWarehouseRegion" class="form-control">
+                        <label>Region/Division <strong>@Model.WarehouseRegion</strong></label>
+                        <select asp-items="ViewBag.Regions" id="selectWarehouseRegion" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Area</label>
+                        <label>Area <strong>@Model.WarehouseArea</strong></label>
                         <select id="selectWarehouseArea" name="WarehouseAreaId" class="form-control" required>
                             <option value="">[ SELECT ]</option>
                         </select>
@@ -284,7 +300,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input name="WarehousePhone" type="text" class="form-control" required>
+                        <input name="WarehousePhone" type="text" class="form-control" value="@Model.WarehousePhone" required>
                     </div>
                 </div>
             </div>
@@ -297,13 +313,13 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label>Address</label>
-                        <input name="ReturnAddress" type="text" class="form-control" required>
+                        <input name="ReturnAddress" type="text" class="form-control" value="@Model.ReturnAddress" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Postcode</label>
-                        <input name="ReturnPostcode" type="text" class="form-control" required>
+                        <input name="ReturnPostcode" type="text" class="form-control" value="@Model.ReturnPostcode" required>
                     </div>
                 </div>
             </div>
@@ -311,15 +327,15 @@
             <div class="row my-2">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Region/Division</label>
-                        <select id="slectReturnRegion" class="form-control">
+                        <label>Region/Division <strong>@Model.ReturnRegion</strong></label>
+                        <select asp-items="ViewBag.Regions" id="selectReturnRegion" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Area</label>
+                        <label>Area <strong>@Model.ReturnArea</strong></label>
                         <select id="selectReturnArea" name="ReturnAreaId" class="form-control" required>
                             <option value="">[ SELECT ]</option>
                         </select>
@@ -328,16 +344,16 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input name="ReturnPhone" type="text" class="form-control" required>
+                        <input name="ReturnPhone" type="text" class="form-control" value="@Model.ReturnPhone" required>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="mt-3 text-right">
+        <div class="mt-3">
             <input type="submit" value="Submit" class="btn btn-danger" />
+            <div asp-validation-summary="All"></div>
         </div>
-        <div asp-validation-summary="All"></div>
     </form>
 </div>
 
@@ -372,5 +388,53 @@
             }
             pathInput.value = fileName;
         });
+
+
+        //warehouse region change
+        const selectWarehouseRegion = document.getElementById("selectWarehouseRegion");
+        const selectWarehouseArea = document.getElementById("selectWarehouseArea");
+
+        selectWarehouseRegion.addEventListener("change", function () {
+            selectWarehouseArea.innerHTML = "";
+            selectWarehouseArea.appendChild(createOptions({ AreaId: "", AreaName: "[ SELECT ]" }));
+
+            getAreaData(this.value, "warehouse");
+        });
+
+        //return region change
+        const selectReturnRegion = document.getElementById("selectReturnRegion");
+        const selectReturnArea = document.getElementById("selectReturnArea");
+
+        selectReturnRegion.addEventListener("change", function () {
+            selectReturnArea.innerHTML = "";
+            selectReturnArea.appendChild(createOptions({ AreaId: "", AreaName: "[ SELECT ]" }));
+
+            getAreaData(this.value, "return");
+        });
+
+        //get area data by region
+        function getAreaData(id, type) {
+            $.ajax({
+                url: "/Store/GetAreaByRegion",
+                data: { id },
+                success: response => {
+                    if (type === "warehouse")
+                        response.forEach(item => selectWarehouseArea.appendChild(createOptions(item)));
+                    else
+                        response.forEach(item => selectReturnArea.appendChild(createOptions(item)));
+                },
+                error:
+                    error => { console.log(error) }
+            });
+        }
+
+        //set options
+        function createOptions(item) {
+            const option = document.createElement("option");
+            option.innerText = item.AreaName;
+            option.value = item.AreaId;
+
+            return option;
+        }
     </script>
 }
