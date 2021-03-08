@@ -271,11 +271,13 @@ namespace eSuperShop.Repository
             vendor.ReturnAddress = model.ReturnAddress;
             vendor.ReturnPostcode = model.ReturnPostcode;
             vendor.ReturnAreaId = model.ReturnAreaId;
-            vendor.VendorCertificate = model.VendorCertificateUrl.Select(c => new VendorCertificate
+            if (model.VendorCertificateUrl != null)
             {
-                CertificateImageUrl = c
-            }).ToList();
-
+                vendor.VendorCertificate = model.VendorCertificateUrl.Select(c => new VendorCertificate
+                {
+                    CertificateImageUrl = c
+                }).ToList();
+            }
 
             Db.Vendor.Update(vendor);
         }
