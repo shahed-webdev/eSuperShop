@@ -4,6 +4,19 @@
     Layout = "~/Views/Shared/_SellerLayout.cshtml";
 }
 
+@section Styles
+{
+    <style>
+        .show-image { cursor: pointer; color: #fff; background-color: #1c8ff4; border-radius: 50%; padding: 7px; }
+        .empty-image { pointer-events: none; color: #ddd; background-color: #777; border-radius: 50%; padding: 7px; }
+
+        #show-img-container h5 { font-weight: bold; text-align: center }
+        #show-img-container img { width: 100% }
+
+        .certificate-doc { display: flex; }
+        .certificate-doc img { margin: 5px; }
+    </style>
+}
 
 <div class="m-md-3">
     <form id="formUpdate">
@@ -41,16 +54,20 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="md-form">
-                        <div class="file-field">
-                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
-                                <span>Choose Logo<i class="fas fa-upload ml-3"></i></span>
-                                <input name="FileStoreLogo" type="file" accept="image/*">
-                                <input name="StoreLogoUrl" type="hidden" value="@Model.StoreLogoUrl">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="file-field flex-grow-1">
+                                <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
+                                    <span>Choose Logo<i class="fas fa-upload ml-3"></i></span>
+                                    <input name="FileStoreLogo" type="file" accept="image/*">
+                                    <input name="StoreLogoUrl" type="hidden" value="@Model.StoreLogoUrl">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload Store Logo">
+                                </div>
                             </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" placeholder="Upload Store Logo">
-                            </div>
+                            <i data-url="@Model.StoreLogoUrl" data-name="Store Logo" class="@(string.IsNullOrEmpty(Model.StoreLogoUrl) ? "empty-image" : "show-image") fas fa-image"></i>
                         </div>
+                        <small class="form-text text-danger">Need authority approval after change logo.</small>
                     </div>
                 </div>
             </div>
@@ -59,20 +76,25 @@
                     <div class="form-group">
                         <label>Store Tag Line</label>
                         <input name="StoreTagLine" type="text" class="form-control" value="@Model.StoreTagLine" required>
+                        <small class="form-text text-danger">Need authority approval after change Tag Line.</small>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <div class="md-form">
-                        <div class="file-field">
-                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
-                                <span>Choose Banner Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                                <input name="FileStoreBanner" type="file" accept="image/*">
-                                <input name="StoreBannerUrl" type="hidden" value="@Model.StoreBannerUrl">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="file-field flex-grow-1">
+                                <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
+                                    <span>Choose Banner Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
+                                    <input name="FileStoreBanner" type="file" accept="image/*">
+                                    <input name="StoreBannerUrl" type="hidden" value="@Model.StoreBannerUrl">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload Banner Image">
+                                </div>
                             </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" placeholder="Upload Banner Image">
-                            </div>
+                            <i data-url="@Model.StoreBannerUrl" data-name="Banner Image" class="@(string.IsNullOrEmpty(Model.StoreBannerUrl) ? "empty-image" : "show-image") fas fa-image"></i>
                         </div>
+                        <small class="form-text text-danger">Need authority approval after change banner image.</small>
                     </div>
                 </div>
             </div>
@@ -116,9 +138,9 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="md-form">
-                        <div class="file-field">
-                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                    <div class="md-form d-flex justify-content-between align-items-center">
+                        <div class="file-field flex-grow-1">
+                            <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>NID(Front)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileNidPhotoFront" type="file" accept="image/*">
                                 <input name="NIdImageFrontUrl" type="hidden" value="@Model.NIdImageFrontUrl">
@@ -127,12 +149,13 @@
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Front)">
                             </div>
                         </div>
+                        <i data-url="@Model.NIdImageFrontUrl" data-name="NID(Front)" class="@(string.IsNullOrEmpty(Model.NIdImageFrontUrl)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="md-form">
-                        <div class="file-field">
-                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                    <div class="md-form d-flex justify-content-between align-items-center">
+                        <div class="file-field flex-grow-1">
+                            <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>NID(Back)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileNidPhotoBack" type="file" accept="image/*">
                                 <input name="NIdImageBackUrl" type="hidden" value="@Model.NIdImageBackUrl">
@@ -141,15 +164,16 @@
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Back)">
                             </div>
                         </div>
+                        <i data-url="@Model.NIdImageBackUrl" data-name="NID(Back)" class="@(string.IsNullOrEmpty(Model.NIdImageBackUrl)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="md-form">
-                        <div class="file-field">
-                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                    <div class="md-form d-flex justify-content-between align-items-center">
+                        <div class="file-field flex-grow-1">
+                            <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>Choose Trade License<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileTradeLicense" type="file" accept="image/*">
                                 <input name="TradeLicenseImageUrl" type="hidden" value="@Model.TradeLicenseImageUrl">
@@ -158,29 +182,30 @@
                                 <input class="file-path validate" type="text" placeholder="Upload Trade License Copy">
                             </div>
                         </div>
+                        <i data-url="@Model.TradeLicenseImageUrl" data-name="Trade License" class="@(string.IsNullOrEmpty(Model.TradeLicenseImageUrl)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="md-form">
-                        <div class="file-field">
-                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                    <div class="md-form d-flex justify-content-between align-items-center">
+                        <div class="file-field flex-grow-1">
+                            <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>Choose Certificate<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileOthersCertificate" type="file" multiple accept="image/*">
-
-                                @{
-                                    var index = 0;
-                                    foreach (var url in Model.VendorCertificateUrl)
-                                    {
-                                        <input name="OthersCertificateImageUrl[@index]" type="hidden" value="@url">
-                                        index++;
-                                    }
-                                }
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload Others Certificates(multiple)">
                             </div>
                         </div>
+                        <i data-name="Certificate" class="@(!Model.VendorCertificateUrl.Any()? "empty-image":"show-image") fas fa-image"></i>
                     </div>
+                    @{
+                        var index = 0;
+                        foreach (var url in Model.VendorCertificateUrl)
+                        {
+                            <input name="VendorCertificateUrl[@index]" type="hidden" value="@url">
+                            index++;
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -223,9 +248,9 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="md-form">
-                        <div class="file-field">
-                            <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
+                    <div class="md-form d-flex justify-content-between align-items-center">
+                        <div class="file-field flex-grow-1">
+                            <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>Choose Cheque Copy<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileChequeCopy" type="file" accept="image/*">
                                 <input name="ChequeImageUrl" type="hidden" value="@Model.ChequeImageUrl">
@@ -234,6 +259,7 @@
                                 <input class="file-path validate" type="text" placeholder="Cheque Copy">
                             </div>
                         </div>
+                        <i data-url="@Model.ChequeImageUrl" data-name="Cheque Copy" class="@(string.IsNullOrEmpty(Model.ChequeImageUrl)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
             </div>
@@ -356,6 +382,16 @@
     </form>
 </div>
 
+<!-- Modal Show Image-->
+<div class="modal fade" id="modalShowImage" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="show-img-container" class="modal-body"></div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts{
     <script>
         (function() {
@@ -471,6 +507,35 @@
                 btn.disabled = isLoading;
                 btn.value = isLoading ? "submitting..." : "Submit";
             }
+
+
+            //on show image
+            formUpdate.addEventListener("click", function(evt) {
+                const element = evt.target;
+                const onShowClick = element.classList.contains("show-image");
+
+                if (onShowClick) {
+                    const url = element.getAttribute("data-url");
+                    const name = element.getAttribute("data-name");
+                    const showContainer = document.getElementById("show-img-container");
+
+                    if (name === "Certificate") {
+                        const certificateData = @Html.Raw(Json.Serialize(Model.VendorCertificateUrl));
+                        let doc = `<h5>${name}</h5><div class="certificate-doc">`;
+                        certificateData.forEach(item => {
+                            doc += `<img src="${item}" alt="store doc">`;
+                        });
+                        doc +="</div>"
+                        showContainer.innerHTML = doc;
+                    }
+                    else
+                    {
+                        showContainer.innerHTML = `<h5>${name}</h5><img src="${url}" alt="store doc" />`;
+                    }
+
+                    $("#modalShowImage").modal("show");
+                }
+            });
         })();
     </script>
 }

@@ -32,10 +32,11 @@ namespace eSuperShop.Web.Controllers
         }
 
         //add slider
-        public async Task<IActionResult> Add(SliderAddModel model, IFormFile image)
+        [HttpPost]
+        public async Task<IActionResult> Add(SliderAddModel model, IFormFile fileImage)
         {
-            var fileName = FileBuilder.FileNameImage("slider", image.FileName);
-            model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            var fileName = FileBuilder.FileNameImage("slider", fileImage.FileName);
+            model.ImageUrl = await _cloudStorage.UploadFileAsync(fileImage, fileName);
             model.FileName = fileName;
 
             var response = _slider.Add(model, User.Identity.Name);
