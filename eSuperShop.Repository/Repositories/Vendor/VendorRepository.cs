@@ -347,6 +347,14 @@ namespace eSuperShop.Repository
                 .GetPaged(request.Page, request.PageSize);
         }
 
+        public DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request)
+        {
+            return Db.Vendor
+                .Where(c => !c.IsChangedApproved)
+                .ProjectTo<VendorDataChangeApprovedModel>(_mapper.ConfigurationProvider)
+                .ToDataResult(request);
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 

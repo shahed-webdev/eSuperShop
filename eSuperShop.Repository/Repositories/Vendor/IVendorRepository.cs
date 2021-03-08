@@ -42,6 +42,10 @@ namespace eSuperShop.Repository
 
 
         PagedResult<StoreProductViewModel> StoreProductList(StoreProductFilterRequest request);
+        DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request);
+
+
+
     }
 
 
