@@ -251,10 +251,34 @@ namespace eSuperShop.Repository
             vendor.StoreLogoUrl = model.StoreLogoUrl;
             vendor.StoreTagLine = model.StoreTagLine;
 
+            if (string.IsNullOrEmpty(model.StoreLogoUrl))
+            {
+                if (!String.Equals(vendor.StoreLogoUrl, model.StoreLogoUrl, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    vendor.ChangedStoreLogoUrl = model.StoreLogoUrl;
+                    vendor.IsChangedApproved = false;
+                }
+            }
 
-            vendor.StoreLogoUrl = model.StoreLogoUrl;
-            vendor.StoreBannerUrl = model.StoreBannerUrl;
-            vendor.StoreTagLine = model.StoreTagLine;
+            if (string.IsNullOrEmpty(model.StoreBannerUrl))
+            {
+                if (!String.Equals(vendor.StoreBannerUrl, model.StoreBannerUrl, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    vendor.ChangedStoreBannerUrl = model.ChequeImageUrl;
+                    vendor.IsChangedApproved = false;
+                }
+            }
+
+            if (string.IsNullOrEmpty(model.StoreTagLine))
+            {
+                if (!String.Equals(vendor.StoreTagLine, model.StoreTagLine, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    vendor.ChangedStoreTagLine = model.StoreTagLine;
+                    vendor.IsChangedApproved = false;
+                }
+            }
+
+
             vendor.NId = model.NId;
             vendor.NIdImageFrontUrl = model.NIdImageFrontUrl;
             vendor.NIdImageBackUrl = model.NIdImageBackUrl;

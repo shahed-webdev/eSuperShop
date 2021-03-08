@@ -146,6 +146,16 @@ namespace eSuperShop.Data
                 .HasForeignKey(d => d.ReturnAreaId)
                 .HasConstraintName("FK_Area_VendorReturnArea")
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.Property(e => e.ChangedStoreLogoUrl)
+                .HasMaxLength(255);
+            builder.Property(e => e.ChangedStoreBannerUrl)
+                .HasMaxLength(255);
+            builder.Property(e => e.ChangedStoreTagLine)
+                .HasMaxLength(255);
+            builder.Property(e => e.IsChangedApproved)
+                .HasDefaultValue(true);
         }
     }
 }
