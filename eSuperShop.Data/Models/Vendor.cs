@@ -79,7 +79,10 @@ namespace eSuperShop.Data
         public virtual ICollection<VendorProductCategory> VendorProductCategory { get; set; }
 
 
-
+        public string ChangedStoreBannerUrl { get; set; }
+        public string ChangedStoreLogoUrl { get; set; }
+        public string ChangedStoreTagLine { get; set; }
+        public bool IsChangedApproved { get; set; }
 
     }
 }

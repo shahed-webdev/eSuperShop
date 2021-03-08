@@ -243,7 +243,9 @@ namespace eSuperShop.Repository
 
         public void StoreInfoUpdate(VendorInfoUpdateModel model)
         {
-            var vendor = Db.Vendor.Find(model.VendorId);
+            var vendor = Db.Vendor
+                .Include(v => v.VendorCertificate)
+                .FirstOrDefault(v => v.VendorId == model.VendorId);
 
             vendor.StoreBannerUrl = model.StoreBannerUrl;
             vendor.StoreLogoUrl = model.StoreLogoUrl;
