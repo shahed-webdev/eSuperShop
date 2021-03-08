@@ -50,7 +50,7 @@ namespace eSuperShop.Web.Controllers
         {
             model.StoreLogoUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoUrl, "store-logo");
             model.StoreBannerUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerUrl, "store-banner");
-            model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "NId");
+            model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "nid");
             model.NIdImageFrontUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoFront, model.NIdImageFrontUrl, "nid");
             model.ChequeImageUrl = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageUrl, "cheque");
             model.TradeLicenseImageUrl = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageUrl, "trade-license");
@@ -68,7 +68,7 @@ namespace eSuperShop.Web.Controllers
                 var newUrls = new List<string>();
                 foreach (var file in files.FileOthersCertificate)
                 {
-                    newUrls.Add(await _cloudStorage.UploadFileAsync(file, "Certificate"));
+                    newUrls.Add(await _cloudStorage.UploadFileAsync(file, FileBuilder.FileNameImage("certificate", file.FileName)));
                 }
 
                 model.VendorCertificateUrl = newUrls.ToArray();
