@@ -12,9 +12,9 @@ namespace eSuperShop.Data
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getutcdate())");
 
-            builder.Property(e => e.ImageUrl)
+            builder.Property(e => e.ImageFileName)
                 .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(128);
 
             builder.Property(e => e.RedirectUrl)
                 .HasMaxLength(500);

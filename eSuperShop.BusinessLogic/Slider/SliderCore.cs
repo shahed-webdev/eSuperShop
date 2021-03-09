@@ -25,7 +25,7 @@ namespace eSuperShop.BusinessLogic
 
                 model.CreatedByRegistrationId = registrationId;
 
-                if (string.IsNullOrEmpty(model.ImageUrl)) return new DbResponse<SliderListModel>(false, "Invalid Data");
+                if (string.IsNullOrEmpty(model.ImageFileName)) return new DbResponse<SliderListModel>(false, "Invalid Data");
                 _db.Slider.Add(model);
                 _db.SaveChanges();
 

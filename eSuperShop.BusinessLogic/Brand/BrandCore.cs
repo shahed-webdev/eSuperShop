@@ -46,6 +46,22 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<BrandModel> Get(int id)
+        {
+            try
+            {
+                if (_db.Brand.IsNull(id))
+                    return new DbResponse<BrandModel>(false, "Data not found");
+
+                var data = _db.Brand.Get(id);
+                return new DbResponse<BrandModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<BrandModel>(false, e.Message);
+            }
+        }
+
         public DbResponse Delete(int id)
         {
             try
@@ -56,6 +72,28 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse(false, "Related data Exist");
 
                 _db.Brand.Delete(id);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse Edit(BrandEditModel model)
+        {
+            try
+            {
+                if (_db.Brand.IsNull(model.BrandId))
+                    return new DbResponse(false, "Data not found");
+                if (string.IsNullOrEmpty(model.Name))
+                    return new DbResponse(false, "Invalid Data");
+                if (_db.Brand.IsExistName(model.Name, model.BrandId))
+                    return new DbResponse(false, "Brand Name already Exist");
+
+                _db.Brand.Edit(model);
                 _db.SaveChanges();
 
                 return new DbResponse(true, "Success");

@@ -4,7 +4,7 @@
     {
         public int VendorCertificateId { get; set; }
         public int VendorId { get; set; }
-        public string CertificateImageUrl { get; set; }
+        public string CertificateImageFileName { get; set; }
         public Vendor Vendor { get; set; }
     }
 }

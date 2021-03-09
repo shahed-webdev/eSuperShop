@@ -5,7 +5,7 @@ namespace eSuperShop.Data
     public class Slider
     {
         public int SliderId { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string RedirectUrl { get; set; }
         public int? DisplayOrder { get; set; }
         public SliderDisplayPlace DisplayPlace { get; set; }

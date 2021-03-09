@@ -303,7 +303,7 @@ namespace eSuperShop.Repository
             {
                 vendor.VendorCertificate = model.VendorCertificateUrl.Select(c => new VendorCertificate
                 {
-                    CertificateImageUrl = c
+                    CertificateImageFileName = c
                 }).ToList();
             }
 

@@ -11,6 +11,9 @@ namespace eSuperShop.Repository
         CatalogBrand CatalogBrand { get; set; }
 
         void Add(BrandAddModel model);
+
+        void Edit(BrandEditModel model);
+
         void Delete(int id);
         BrandModel Get(int id);
         bool IsExistName(string name);

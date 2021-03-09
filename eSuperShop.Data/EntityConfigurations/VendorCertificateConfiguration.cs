@@ -7,6 +7,9 @@ namespace eSuperShop.Data
     {
         public void Configure(EntityTypeBuilder<VendorCertificate> builder)
         {
+            builder.Property(e => e.CertificateImageFileName)
+                .IsRequired()
+                .HasMaxLength(128);
 
             builder.HasOne(d => d.Vendor)
                 .WithMany(s => s.VendorCertificate)

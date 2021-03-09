@@ -29,10 +29,10 @@
             @foreach (var item in Model)
             {
                 <div class="col-xl-2 col-lg-4 mb-3">
-                    <img class="card-img-top" src="@item.ImageUrl" alt="@item.DisplayPlace">
+                    <img class="card-img-top" src="@item.ImageFileName" alt="@item.DisplayPlace">
                     <div class="p-3 d-flex justify-content-between align-items-center">
                         <span>@item.DisplayOrder - @item.DisplayPlace</span>
-                        <i data-id="@item.SliderId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text"></i>
+                        <i data-id="@item.SliderId" data-url="@item.ImageFileName" class="delete fas fa-trash red-text"></i>
                     </div>
                 </div>
             }

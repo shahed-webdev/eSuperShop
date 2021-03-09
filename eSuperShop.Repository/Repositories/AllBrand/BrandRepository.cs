@@ -22,6 +22,15 @@ namespace eSuperShop.Repository
             Db.AllBrand.Add(Brand);
         }
 
+        public void Edit(BrandEditModel model)
+        {
+            var brand = Db.AllBrand.Find(model.BrandId);
+
+            brand.Name = model.Name;
+            brand.LogoFileName = model.LogoFileName;
+            Db.AllBrand.Update(brand);
+        }
+
         public void Delete(int id)
         {
             Brand = Db.AllBrand.Find(id);

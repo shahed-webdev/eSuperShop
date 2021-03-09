@@ -5,7 +5,7 @@ namespace eSuperShop.Repository
 {
     public class SliderAddModel
     {
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string RedirectUrl { get; set; }
         public string FileName { get; set; }
         public int? DisplayOrder { get; set; }
@@ -15,7 +15,7 @@ namespace eSuperShop.Repository
     public class SliderListModel
     {
         public int SliderId { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string RedirectUrl { get; set; }
         public string FileName { get; set; }
         public int? DisplayOrder { get; set; }
@@ -25,7 +25,7 @@ namespace eSuperShop.Repository
     public class SliderSlideModel
     {
         public int SliderId { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string RedirectUrl { get; set; }
     }
 }
