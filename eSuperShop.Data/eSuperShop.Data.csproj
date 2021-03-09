@@ -23,6 +23,8 @@
     <Compile Remove="Migrations\20210302103047_AddColumnVendorTable.Designer.cs" />
     <Compile Remove="Migrations\20210302103633_AddColumnVendorTable.cs" />
     <Compile Remove="Migrations\20210302103633_AddColumnVendorTable.Designer.cs" />
+    <Compile Remove="Migrations\20210309054128_ChangeLogoUrlToLogoFileNameInBrandTable.cs" />
+    <Compile Remove="Migrations\20210309054128_ChangeLogoUrlToLogoFileNameInBrandTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

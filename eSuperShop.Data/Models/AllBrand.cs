@@ -13,7 +13,7 @@ namespace eSuperShop.Data
 
         public int BrandId { get; set; }
         public string Name { get; set; }
-        public string LogoUrl { get; set; }
+        public string LogoFileName { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public int CreatedByRegistrationId { get; set; }
 

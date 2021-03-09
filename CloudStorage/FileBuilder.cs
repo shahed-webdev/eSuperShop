@@ -18,5 +18,10 @@ namespace CloudStorage
             var uri = new Uri(url);
             return Path.GetFileName(uri.AbsolutePath);
         }
+
+        public static string BaseUrl()
+        {
+            return @"https://storage.googleapis.com/e-super-shop/";
+        }
     }
 }
