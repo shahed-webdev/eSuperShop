@@ -37,6 +37,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
+
         //Get Brand
         public IActionResult GetBrand(DataRequest request)
         {

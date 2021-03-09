@@ -14,28 +14,30 @@
 
             <div class="card card-body">
                 <form id="formUpdate">
+                    <input name="BrandId" type="hidden" value="@Model.BrandId">
                     <div class="md-form">
                         <label for="inputBrandName">Brand Name</label>
-                        <input id="inputBrandName" value="@Model.Name" type="text" class="form-control" required>
+                        <input id="inputBrandName" name="Name" value="@Model.Name" type="text" class="form-control" required>
                     </div>
 
                     <div class="md-form mt-5">
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Logo<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                                <input id="fileImage" name="image" type="file" accept="image/*">
+                                <input name="fileLogo" type="file" accept="image/*">
+                                <input name="LogoFileName" type="hidden" value="@Model.LogoFileName">
                             </div>
                             <div class="file-path-wrapper">
-                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Logo" autocomplete="off" required>
+                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Logo" autocomplete="off">
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="text-center">
                         <div class="mb-3">
                             <img id="prevImage" src="@baseUrl/@Model.LogoFileName" alt="@Model.Name" style="width: 100px">
                         </div>
-                        <input id="btnSubmit" type="submit" value="Submit" class="btn btn-danger"/>
+                        <input id="btnSubmit" type="submit" value="Submit" class="btn btn-danger" />
                     </div>
                 </form>
             </div>
@@ -44,38 +46,9 @@
 </div>
 
 
-<!-- image crop modal -->
-<div class="modal fade" id="cropImageModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-notify modal-danger" role="document">
-        <div class="modal-content text-center">
-            <div class="modal-header d-flex justify-content-center">
-                <p class="heading">Crop Logo</p>
-            </div>
-            <div class="modal-body">
-                <div id="upload-demo"></div>
-            </div>
-            <div class="modal-footer flex-center">
-                <button id="btnCrop" type="button" class="btn  btn-danger waves-effect">CROP</button>
-                <button class="btn btn-outline-danger" data-dismiss="modal">CANCEL</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 @section Scripts{
     <script>
-        //global variable
-        const formData = new FormData();
-        const imageError = $("#imageError");
-        const previewImage = $('#prevImage');
-        const cropImageModal = $('#cropImageModal');
-        const btnCrop = $('#btnCrop');
-        const cropImage = $('#upload-demo').croppie({
-            viewport: { width: 200, height: 140 },
-            boundary: { width: 210, height: 150 }
-        });
-
         //set image file
         $('input[type="file"]').change(function (e) {
             const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
@@ -105,43 +78,30 @@
             }
 
             pathInput.value = fileName;
-            readFile(this);
+            readURL(this);
         });
 
-        //crop done
-        btnCrop.on('click', function () {
-            cropImage.croppie('result', { type: 'blob' }).then(function (res) {
-                previewImage.attr('src', URL.createObjectURL(res));
-
-                formData.append("fileLogo", res, $('#filePath').val());
-                cropImageModal.modal('hide');
-            });
-        });
-
-        //read file
-        function readFile(input) {
+        //preview image
+        function readURL(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.readAsDataURL(input.files[0]);
-
-                reader.onload = function (e) {
-                    cropImage.croppie('bind', { url: e.target.result }).then(function () {
-                        $('.cr-slider').attr({ 'min': 0.5000, 'max': 1.5000 });
-                    });
+    
+                reader.onload = function(e) {
+                    $('#prevImage').attr('src', e.target.result);
                 }
-
-                cropImageModal.modal('show');
+    
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
             }
         }
+
 
         //update brand
         const formUpdate = document.getElementById("formUpdate");
         formUpdate.addEventListener('submit', function (evt) {
 
             evt.preventDefault()
-            formData.append("Name", this.inputBrandName.value);
-            formData.append("BrandId", @Model.BrandId);
 
+            const formData = new FormData(this);
             const btn = this.btnSubmit;
 
             loadingBtn(btn, true);
@@ -154,7 +114,7 @@
                 contentType: false,
                 success: function (response) {
                     $.notify(response.Message, response.IsSuccess ? "success" : "error");
-                  
+
                     if (response.IsSuccess) {
                         location.href = "/Brand/Add";
                         return;

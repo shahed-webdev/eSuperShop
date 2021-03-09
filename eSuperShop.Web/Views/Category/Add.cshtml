@@ -24,6 +24,7 @@
                         <label for="SlugUrl">Slug Url (allow: a-z, 0-9, -, %)</label>
                         <input type="text" asp-for="SlugUrl" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" class="form-control" required>
                         <span asp-validation-for="SlugUrl" class="field-validation-error"></span>
+                        <small id="urlHelpText" class="form-text text-muted"></small>
                     </div>
                     <div class="md-form my-5">
                         <label for="inputDisplayOrder">Display Order</label>
@@ -33,7 +34,7 @@
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                                <input id="fileImage" name="image" type="file" accept="image/*">
+                                <input name="fileImage" type="file" accept="image/*">
                             </div>
                             <div class="file-path-wrapper">
                                 <input id="filePath" class="file-path validate" type="text" placeholder="Upload Category Image" autocomplete="off">
@@ -55,7 +56,7 @@
 @section Scripts{
     <script>
         // Material Select Initialization
-        $(function () {
+        $(function() {
             $('.mdb-select').materialSelect();
 
             //check image data
@@ -88,5 +89,31 @@
                 pathInput.value = fileName;
             });
         });
+
+        //set slug url
+        const inputCatalogName = document.getElementById("CatalogName");
+        const inputSlugUrl = document.getElementById("SlugUrl");
+
+        //on input catalog
+        inputCatalogName.addEventListener("input", function() {
+            inputSlugUrl.previousElementSibling.classList.add("active");
+            inputSlugUrl.value = slugUrl.create(this.value);
+
+            demoUrl(inputSlugUrl.value);
+        });
+
+        //on input slug url
+        inputSlugUrl.addEventListener("change", function() {
+            this.value = slugUrl.create(this.value);
+
+            demoUrl(this.value);
+        });
+
+        //show demo url
+        function demoUrl(text) {
+            const url = `www.esupershop.com/category/${text}`;
+            const urlHelpText = document.getElementById("urlHelpText");
+            urlHelpText.innerHTML = text? url:"";
+        }
     </script>
 }

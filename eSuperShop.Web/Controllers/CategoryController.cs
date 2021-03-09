@@ -75,7 +75,7 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CatalogAddModel model, IFormFile image)
+        public async Task<IActionResult> Add(CatalogAddModel model, IFormFile fileImage)
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
 
