@@ -23,6 +23,19 @@ namespace eSuperShop.Repository
             Db.Catalog.Add(catalog);
         }
 
+        public void Edit(CatalogDisplayModel model)
+        {
+            var cat = Db.Catalog.Find(model.CatalogId);
+            cat.CatalogName = model.CatalogName;
+            cat.ImageFileName = model.ImageFileName;
+            cat.SlugUrl = model.SlugUrl;
+            cat.DisplayOrder = model.DisplayOrder;
+
+            Db.Catalog.Update(cat);
+
+
+        }
+
         public void Delete(int id)
         {
             catalog = Db.Catalog.Find(id);

@@ -79,13 +79,7 @@ namespace eSuperShop.Web.Controllers
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
 
-            if (fileImage != null)
-            {
-                var fileName = FileBuilder.FileNameImage("catalog", fileImage.FileName);
-                model.ImageFileName = await _cloudStorage.UploadFileAsync(fileImage, fileName);
-            }
-
-            var response = _catalog.Add(model, User.Identity.Name);
+            var response = await _catalog.AddAsync(model, User.Identity.Name, _cloudStorage, image);
 
             if (!response.IsSuccess)
                 ModelState.AddModelError(response.FieldName, response.Message);
@@ -107,17 +101,13 @@ namespace eSuperShop.Web.Controllers
 
         //post update
         [HttpPost]
-        public async Task<IActionResult> Update(CatalogAddModel model, IFormFile image)
+        public async Task<IActionResult> Update(CatalogDisplayModel model, IFormFile image)
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
 
-            if (image != null)
-            {
-                var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
-                model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
-            }
 
-            var response = _catalog.Add(model, User.Identity.Name);
+
+            var response = await _catalog.EditAsync(model, _cloudStorage, image);
 
             if (!response.IsSuccess)
                 ModelState.AddModelError(response.FieldName, response.Message);

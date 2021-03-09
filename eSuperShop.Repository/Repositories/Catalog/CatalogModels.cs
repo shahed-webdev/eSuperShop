@@ -28,6 +28,7 @@ namespace eSuperShop.Repository
         public string CatalogName { get; set; }
         public string SlugUrl { get; set; }
         public string ImageFileName { get; set; }
+        public int? DisplayOrder { get; set; }
     }
 
     public class CatalogModel : ICatalogModel
