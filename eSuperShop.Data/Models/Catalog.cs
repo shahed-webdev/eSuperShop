@@ -20,7 +20,7 @@ namespace eSuperShop.Data
         public string CatalogName { get; set; }
         public string SlugUrl { get; set; }
         public int? ParentCatalogId { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public bool IsActive { get; set; }
         public int? DisplayOrder { get; set; }
         public DateTime CreatedOnUtc { get; set; }

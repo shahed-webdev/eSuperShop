@@ -83,7 +83,7 @@ namespace eSuperShop.Web.Controllers
             if (image != null)
             {
                 var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
-                model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+                model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
             }
 
             var response = _catalog.Add(model, User.Identity.Name);

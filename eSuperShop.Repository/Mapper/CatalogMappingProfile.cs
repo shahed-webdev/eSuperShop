@@ -16,7 +16,7 @@ namespace eSuperShop.Repository
             CreateMap<CatalogShownPlace, CatalogAssignModel>().ReverseMap();
             CreateMap<CatalogShownPlace, CatalogDisplayModel>()
                 .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
-                .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.Catalog.ImageUrl))
+                .ForMember(d => d.ImageFileName, opt => opt.MapFrom(c => c.Catalog.ImageFileName))
                 .ForMember(d => d.SlugUrl, opt => opt.MapFrom(c => c.Catalog.SlugUrl));
 
         }
