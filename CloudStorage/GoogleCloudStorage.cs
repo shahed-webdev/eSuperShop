@@ -27,16 +27,16 @@ namespace CloudStorage
             await imageFile.CopyToAsync(memoryStream);
 
             var dataObject = await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, imageFile.ContentType, memoryStream);
-            return dataObject.MediaLink;
+            return dataObject.Name;
         }
 
         //update image
-        public async Task<string> UpdateFileAsync(IFormFile newImageFile, string oldImageUrl, string fileNamePrefix)
+        public async Task<string> UpdateFileAsync(IFormFile newImageFile, string oldFileName, string fileNamePrefix)
         {
-            if (newImageFile == null) return oldImageUrl;
+            if (newImageFile == null) return oldFileName;
 
-            if (!string.IsNullOrEmpty(oldImageUrl))
-                await DeleteFileAsync(FileBuilder.FileNameFromUrl(oldImageUrl));
+            if (!string.IsNullOrEmpty(oldFileName))
+                await DeleteFileAsync(oldFileName);
 
             var fileName = FileBuilder.FileNameImage(fileNamePrefix, newImageFile.FileName);
 

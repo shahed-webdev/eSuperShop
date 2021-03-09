@@ -25,7 +25,7 @@ namespace eSuperShop.Web.Controllers
             _brand = brand;
             _cloudStorage = cloudStorage;
         }
-       
+
         //Add Brand
         public IActionResult Add()
         {
@@ -33,12 +33,12 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBrand(BrandAddModel model, IFormFile logo)
+        public async Task<IActionResult> AddBrand(BrandAddModel model, IFormFile fileLogo)
         {
-            if (logo == null) return UnprocessableEntity("Insert logo!");
+            if (fileLogo == null) return UnprocessableEntity("Insert logo!");
 
-            var fileName = FileBuilder.FileNameImage("brand-logo", logo.FileName);
-            model.LogoFileName = await _cloudStorage.UploadFileAsync(logo, fileName);
+            var fileName = FileBuilder.FileNameImage("brand-logo", fileLogo.FileName);
+            model.LogoFileName = await _cloudStorage.UploadFileAsync(fileLogo, fileName);
 
             var response = _brand.Add(model, User.Identity.Name);
             return Json(response);
@@ -51,18 +51,35 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
+
+        //Update Brand
+        public IActionResult UpdateBrand(int? id)
+        {
+            if (!id.HasValue) return RedirectToAction("Add");
+
+            var response = _brand.Get(id.GetValueOrDefault());
+            return View(response.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateBrand(BrandEditModel model, IFormFile fileLogo)
+        {
+            if (fileLogo == null) return UnprocessableEntity("Insert logo!");
+
+            model.LogoFileName = await _cloudStorage.UpdateFileAsync(fileLogo, model.LogoFileName, "brand-logo");
+
+            var response = _brand.Edit(model);
+            return Json(response);
+        }
+
+
         //Delete Brand
-        public async Task<IActionResult> DeleteBrand(int? id, string imageUrl)
+        public async Task<IActionResult> DeleteBrand(int? id, string fileName)
         {
             var response = _brand.Delete(id.GetValueOrDefault());
 
-            var uri = new Uri(imageUrl);
-            var fileName = Path.GetFileName(uri.AbsolutePath);
-
-            if (response.IsSuccess)
-            {
+            if (response.IsSuccess && !string.IsNullOrEmpty(fileName))
                 await _cloudStorage.DeleteFileAsync(fileName);
-            }
 
             return Json(response);
         }

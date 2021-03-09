@@ -21,7 +21,7 @@ namespace CloudStorage
 
         public static string BaseUrl()
         {
-            return @"https://storage.googleapis.com/e-super-shop/";
+            return @"https://storage.googleapis.com/e-super-shop";
         }
     }
 }

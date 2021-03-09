@@ -1,19 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Add Brand";
     Layout = "_AdminLayout";
+
+    var baseUrl = CloudStorage.FileBuilder.BaseUrl();
 }
+
 
 @section Styles{
     <style>
         .logo { width: 50px; }
-        .fa-spinner { pointer-events: none}
+        .fa-spinner { pointer-events: none }
     </style>
 }
 
 
 <div class="container">
     <h4 class="page-header mb-3">Product Brand</h4>
-    
+
     <div class="card card-body">
         <form id="formAdd">
             <div class="row align-items-center mb-3">
@@ -34,7 +37,6 @@
                                 <input id="filePath" class="file-path validate" type="text" placeholder="Upload Logo" autocomplete="off" required>
                             </div>
                         </div>
-                        <span id="imageError" class="field-validation-error"></span>
                     </div>
                 </div>
                 <div class="col-lg-3 text-right">
@@ -44,12 +46,13 @@
                 </div>
             </div>
         </form>
-      
+
         <table id="brand-table" class="table table-sm table-bordered">
             <thead>
                 <tr>
                     <th><strong>Brand Name</strong></th>
                     <th style="width: 50px"><strong>Logo</strong></th>
+                    <th style="width: 30px"><strong>Edit</strong></th>
                     <th style="width: 30px"><strong>Delete</strong></th>
                 </tr>
             </thead>
@@ -80,7 +83,6 @@
 @section Scripts{
     <script>
         $(function() {
-            $('.mdb-select').materialSelect();
             dataTable.getData();
         });
 
@@ -98,45 +100,43 @@
                     columns:
                     [
                         { data: "Name", "render": function(data, type, row, meta) {
-                            return `<a class="blue-text" href="/Brand/AssignedCatalog/${row.BrandId}">${data}</a>`;
+                                return `<a class="blue-text" href="/Brand/AssignedCatalog/${row.BrandId}">${data}</a>`;
                             }
                         },
                         {
-                            data: "LogoUrl", "render": function(data, type, row, meta) {
-                                return `<img src="${data}" class="logo">`;
+                            data: "LogoFileName", "render": function(data, type, row, meta) {
+                                return data ? `<img src="@baseUrl/${data}" alt="${row.Name}" class="logo">` : "";
                             }
                         },
                         {
                             data: "BrandId", "render": function(data, type, row, meta) {
-                                return `<a class="delete fas fa-trash red-text" data-image="${row.LogoUrl}" data-id="${data}"></a>`
+                                return `<a class="fas fa-edit" href="/Brand/UpdateBrand/${data}"></a>`;
+                            }
+                        },
+                        {
+                            data: "BrandId", "render": function(data, type, row, meta) {
+                                const fileName = row.LogoFileName ? row.LogoFileName : "";
+                                return `<a class="delete fas fa-trash red-text" data-image="${fileName}" data-id="${data}"></a>`;
                             }
                         }
                     ],
                     columnDefs: [
-                        { 'searchable': false, 'targets': [1, 2] },
-                        { 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-center", "targets": [1, 2] }
+                        { 'searchable': false, 'targets': [1, 2,3] },
+                        { 'sortable': false, 'targets': [1, 2,3] },
+                        { 'className': "text-center", "targets": [1, 2,3] }
                     ]
                 });
             },
             operand: {
                 Equal: 0,
-                NotEqual:
-                    1,
-                GreaterThan:
-                    2,
-                LessThan:
-                    3,
-                GreaterThanOrEqual:
-                    4,
-                LessThanOrEqual:
-                    5,
-                Contains:
-                    6,
-                StartsWith:
-                    7,
-                EndsWith:
-                    8
+                NotEqual: 1,
+                GreaterThan: 2,
+                LessThan: 3,
+                GreaterThanOrEqual: 4,
+                LessThanOrEqual: 5,
+                Contains: 6,
+                StartsWith: 7,
+                EndsWith: 8
             },
             getData: function() {
                 dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
@@ -157,40 +157,44 @@
         });
 
         //set image file
-        $('#fileImage').change(function(e) {
-            imageError.text("");
-
-            const pathInput = $('#filePath');
+        $('input[type="file"]').change(function(e) {
+            const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
             const size = e.target.files[0].size / 1024 / 1024;
-            const allowSize = 1;
+            const allowSize = 2;
             const regex = new RegExp("(.*?)\.(jpeg|jpg|png|webp)$");
+
 
             if (!(regex.test(e.target.value.toLowerCase()))) {
                 e.target.value = "";
-                pathInput.val("");
+                pathInput.value = "";
 
-                imageError.text(`Please select correct file format`);
+                $(pathInput).notify("Please select image file", { position: "bottom left" });
                 return;
             }
 
             if (size > allowSize) {
                 e.target.value = "";
-                pathInput.val("");
-
-                imageError.text(`image size must be less than ${allowSize}MB. your file size:${size.toFixed()} MB`);
+                pathInput.value = "";
+                $(pathInput).notify(`image size must be less than ${allowSize}MB. your file size:${size.toFixed()} MB`, { position: "bottom left" });
                 return;
             }
 
-            pathInput.val(e.target.files[0].name);
+            let fileName = "";
+            for (let i = 0; i <= e.target.files.length - 1; i++) {
+                fileName += i > 0 ? `, ${e.target.files[i].name}` : e.target.files[i].name;
+            }
+
+            pathInput.value = fileName;
             readFile(this);
         });
+
 
         //crop done
         btnCrop.on('click', function() {
             cropImage.croppie('result', { type: 'blob' }).then(function(res) {
                 previewImage.attr('src', URL.createObjectURL(res));
 
-                formData.append("logo", res, $('#filePath').val());
+                formData.append("fileLogo", res, $('#filePath').val());
                 cropImageModal.modal('hide');
             });
         });
@@ -261,7 +265,7 @@
 
             const element = evt.target.parentElement.parentElement;
             const id = evt.target.getAttribute("data-id");
-            const imageUrl = evt.target.getAttribute("data-image");
+            const fileName = evt.target.getAttribute("data-image");
             const isConfirm = confirm("Are you sure you want to delete?");
 
             if (!isConfirm) return;
@@ -270,8 +274,8 @@
 
             $.ajax({
                 url: "/Brand/DeleteBrand",
-                data: { id, imageUrl },
-                success: function (response) {
+                data: { id, fileName },
+                success: function(response) {
                     showSpinner(evt.target, false);
 
                     if (response.IsSuccess) {
