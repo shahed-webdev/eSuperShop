@@ -20,7 +20,7 @@ namespace eSuperShop.BusinessLogic
             _mapper = mapper;
             _db = db;
         }
-        public async Task<DbResponse<BrandModel>> Add(BrandAddModel model, string userName, ICloudStorage cloudStorage,
+        public async Task<DbResponse<BrandModel>> AddAsync(BrandAddModel model, string userName, ICloudStorage cloudStorage,
             IFormFile fileLogo)
         {
             try
@@ -88,7 +88,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public async Task<DbResponse> Edit(BrandEditModel model, IFormFile fileLogo, ICloudStorage cloudStorage)
+        public async Task<DbResponse> EditAsync(BrandEditModel model, IFormFile fileLogo, ICloudStorage cloudStorage)
         {
             try
             {

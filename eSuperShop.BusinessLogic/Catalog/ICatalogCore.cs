@@ -1,13 +1,19 @@
-﻿using eSuperShop.Data;
+﻿using CloudStorage;
+using eSuperShop.Data;
 using eSuperShop.Repository;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Paging.Infrastructure;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
     public interface ICatalogCore
     {
-        DbResponse<CatalogDisplayModel> Add(CatalogAddModel model, string userName);
+        Task<DbResponse<CatalogDisplayModel>> AddAsync(CatalogAddModel model, string userName, ICloudStorage cloudStorage, IFormFile image);
+        Task<DbResponse> EditAsync(CatalogDisplayModel model, ICloudStorage cloudStorage, IFormFile image);
+
+        DbResponse<CatalogDisplayModel> Get(int id);
         DbResponse Delete(int id);
         DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place, int numberOfItem);
         DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place);

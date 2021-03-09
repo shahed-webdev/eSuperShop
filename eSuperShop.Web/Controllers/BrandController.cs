@@ -33,7 +33,7 @@ namespace eSuperShop.Web.Controllers
         {
             if (fileLogo == null) return UnprocessableEntity("Insert logo!");
 
-            var response = await _brand.Add(model, User.Identity.Name, _cloudStorage, fileLogo);
+            var response = await _brand.AddAsync(model, User.Identity.Name, _cloudStorage, fileLogo);
             return Json(response);
         }
 
@@ -59,7 +59,7 @@ namespace eSuperShop.Web.Controllers
         {
 
 
-            var response = await _brand.Edit(model, fileLogo, _cloudStorage);
+            var response = await _brand.EditAsync(model, fileLogo, _cloudStorage);
             return Json(response);
         }
 

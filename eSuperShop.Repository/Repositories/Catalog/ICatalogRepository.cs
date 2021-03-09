@@ -8,6 +8,7 @@ namespace eSuperShop.Repository
         Catalog catalog { get; set; }
         CatalogShownPlace catalogShownPlace { get; set; }
         void Add(CatalogAddModel model);
+        void Edit(CatalogDisplayModel model);
         void Delete(int id);
         bool IsExistSlugUrl(string slugUrl);
         bool IsExistSlugUrl(string slugUrl, int updateId);

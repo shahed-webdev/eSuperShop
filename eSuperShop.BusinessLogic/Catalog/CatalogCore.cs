@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using CloudStorage;
 using eSuperShop.Data;
 using eSuperShop.Repository;
+using Microsoft.AspNetCore.Http;
+using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Paging.Infrastructure;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -20,7 +23,7 @@ namespace eSuperShop.BusinessLogic
             _db = db;
         }
 
-        public DbResponse<CatalogDisplayModel> Add(CatalogAddModel model, string userName)
+        public async Task<DbResponse<CatalogDisplayModel>> AddAsync(CatalogAddModel model, string userName, ICloudStorage cloudStorage, IFormFile image)
         {
             try
             {
@@ -39,11 +42,61 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<CatalogDisplayModel>(false, "SlugUrl already Exist", null, "SlugUrl");
 
 
+                if (image != null)
+                {
+                    var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
+                    model.ImageFileName = await cloudStorage.UploadFileAsync(image, fileName);
+                }
+
                 _db.Catalog.Add(model);
                 _db.SaveChanges();
 
                 var data = _mapper.Map<CatalogDisplayModel>(_db.Catalog.catalog);
 
+                return new DbResponse<CatalogDisplayModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<CatalogDisplayModel>(false, e.Message);
+            }
+        }
+
+        public async Task<DbResponse> EditAsync(CatalogDisplayModel model, ICloudStorage cloudStorage, IFormFile image)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.CatalogName) && string.IsNullOrEmpty(model.SlugUrl))
+                    return new DbResponse(false, "Invalid Data");
+
+                if (_db.Catalog.IsExistName(model.CatalogName, model.CatalogId))
+                    return new DbResponse(false, $"{model.CatalogName} already Exist");
+
+                if (_db.Catalog.IsExistSlugUrl(model.SlugUrl, model.CatalogId))
+                    return new DbResponse(false, $"{model.SlugUrl} SlugUrl already Exist");
+
+
+                model.ImageFileName = await cloudStorage.UpdateFileAsync(image, model.ImageFileName, "catalog");
+
+                _db.Catalog.Edit(model);
+                _db.SaveChanges();
+
+
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public DbResponse<CatalogDisplayModel> Get(int id)
+        {
+            try
+            {
+                if (_db.Catalog.IsNull(id))
+                    return new DbResponse<CatalogDisplayModel>(false, "Data not found");
+                var data = _db.Catalog.Get(id);
                 return new DbResponse<CatalogDisplayModel>(true, "Success", data);
             }
             catch (Exception e)
@@ -254,7 +307,7 @@ namespace eSuperShop.BusinessLogic
                 data.Products = _db.Product.GetCatalogWiseList(data.CatalogIds, new ProductFilterRequest
                 {
                     Page = 1,
-                    PageSize =pageSize
+                    PageSize = pageSize
                 }).Results;
 
 
