@@ -309,15 +309,15 @@
             <div class="row my-2">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Region/Division <strong>@Model.WarehouseRegion</strong></label>
-                        <select asp-items="ViewBag.Regions" id="selectWarehouseRegion" class="form-control">
+                        <label>Region/Division</label>
+                        <select asp-items="ViewBag.Regions" id="selectWarehouseRegion" name="WarehouseRegionId" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Area <strong>@Model.WarehouseArea</strong></label>
+                        <label>Area</label>
                         <select id="selectWarehouseArea" name="WarehouseAreaId" class="form-control" required>
                             <option value="">[ SELECT ]</option>
                         </select>
@@ -354,7 +354,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Region/Division <strong>@Model.ReturnRegion</strong></label>
-                        <select asp-items="ViewBag.Regions" id="selectReturnRegion" class="form-control">
+                        <select asp-items="ViewBag.Regions" id="selectReturnRegion" name="ReturnRegionId" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
@@ -426,6 +426,8 @@
             });
 
             //warehouse region change
+            getAreaData(@Model.WarehouseRegionId, "warehouse", @Model.WarehouseAreaId);
+
             const selectWarehouseRegion = document.getElementById("selectWarehouseRegion");
             const selectWarehouseArea = document.getElementById("selectWarehouseArea");
 
@@ -448,26 +450,29 @@
             });
 
             //get area data by region
-            function getAreaData(id, type) {
+            function getAreaData(id, type, selectedId) {
                 $.ajax({
                     url: "/Store/GetAreaByRegion",
                     data: { id },
                     success: response => {
-                        if (type === "warehouse")
-                            response.forEach(item => selectWarehouseArea.appendChild(createOptions(item)));
-                        else
+                        if (type === "warehouse") {
+                            response.forEach(item => {
+                                selectWarehouseArea.appendChild(createOptions(item, selectedId))
+                            });
+                        } else {
                             response.forEach(item => selectReturnArea.appendChild(createOptions(item)));
+                        }
                     },
-                    error:
-                        error => { console.log(error) }
+                    error: error => { console.log(error) }
                 });
             }
 
             //set options
-            function createOptions(item) {
+            function createOptions(item, selectedId) {
                 const option = document.createElement("option");
                 option.innerText = item.AreaName;
                 option.value = item.AreaId;
+                option.selected = item.AreaId === selectedId;
 
                 return option;
             }
@@ -523,14 +528,12 @@
                         const certificateData = @Html.Raw(Json.Serialize(Model.VendorCertificateUrl));
                         let doc = `<h5>${name}</h5><div class="certificate-doc">`;
                         certificateData.forEach(item => {
-                            doc += `<img src="${item}" alt="store doc">`;
+                            doc += `<img src="${item}" alt="${name}">`;
                         });
-                        doc +="</div>"
+                        doc += "</div>"
                         showContainer.innerHTML = doc;
-                    }
-                    else
-                    {
-                        showContainer.innerHTML = `<h5>${name}</h5><img src="${url}" alt="store doc" />`;
+                    } else {
+                        showContainer.innerHTML = `<h5>${name}</h5><img src="${url}" alt="${name}" />`;
                     }
 
                     $("#modalShowImage").modal("show");
