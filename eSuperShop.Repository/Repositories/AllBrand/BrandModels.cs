@@ -3,7 +3,7 @@
     public class BrandAddModel
     {
         public string Name { get; set; }
-        public string LogoUrl { get; set; }
+        public string LogoFileName { get; set; }
         public int CreatedByRegistrationId { get; set; }
     }
 
@@ -11,7 +11,7 @@
     {
         public int BrandId { get; set; }
         public string Name { get; set; }
-        public string LogoUrl { get; set; }
+        public string LogoFileName { get; set; }
         public string CreatedBy { get; set; }
     }
 

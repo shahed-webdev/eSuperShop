@@ -13,8 +13,8 @@ namespace eSuperShop.Data
                 .IsRequired()
                 .HasMaxLength(128);
 
-            builder.Property(e => e.LogoUrl)
-                .HasMaxLength(1024);
+            builder.Property(e => e.LogoFileName)
+                .HasMaxLength(128);
 
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")
