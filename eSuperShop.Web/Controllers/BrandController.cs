@@ -40,6 +40,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
+
         //Get Brand
         public IActionResult GetBrand(DataRequest request)
         {
@@ -60,8 +61,6 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateBrand(BrandEditModel model, IFormFile fileLogo)
         {
-
-
             var response = await _brand.Edit(model, fileLogo, _cloudStorage);
             return Json(response);
         }

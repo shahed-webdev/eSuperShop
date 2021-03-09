@@ -23,7 +23,7 @@
                 <div class="col-lg-4">
                     <div class="md-form">
                         <label for="inputBrandName">Brand Name</label>
-                        <input id="inputBrandName" type="text" class="form-control" required>
+                        <input id="inputBrandName" name="Name" type="text" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -31,18 +31,16 @@
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Logo<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                                <input id="fileImage" name="image" type="file" accept="image/*">
+                                <input name="fileLogo" type="file" accept="image/*">
                             </div>
                             <div class="file-path-wrapper">
-                                <input id="filePath" class="file-path validate" type="text" placeholder="Upload Logo" autocomplete="off" required>
+                                <input class="file-path validate" type="text" placeholder="Upload Logo" autocomplete="off" required>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 text-right">
-                    <img id="prevImage" alt="" style="width: 40px">
-                    <input id="btnSubmit" type="submit" value="Add" class="btn btn-danger" />
-                    @Html.ValidationMessage("dbCustomError")
+                    <input id="btnSubmit" type="submit" value="submit" class="btn btn-danger btn-md" />
                 </div>
             </div>
         </form>
@@ -57,25 +55,6 @@
                 </tr>
             </thead>
         </table>
-    </div>
-</div>
-
-
-<!-- image crop modal -->
-<div class="modal fade" id="cropImageModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-notify modal-danger" role="document">
-        <div class="modal-content text-center">
-            <div class="modal-header d-flex justify-content-center">
-                <p class="heading">Crop Logo</p>
-            </div>
-            <div class="modal-body">
-                <div id="upload-demo"></div>
-            </div>
-            <div class="modal-footer flex-center">
-                <button id="btnCrop" type="button" class="btn  btn-danger waves-effect">CROP</button>
-                <button class="btn btn-outline-danger" data-dismiss="modal">CANCEL</button>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -105,7 +84,7 @@
                         },
                         {
                             data: "LogoFileName", "render": function(data, type, row, meta) {
-                                return data ? `<img src="@baseUrl/${data}" alt="${row.Name}" class="logo">` : "";
+                                return data ? `<img src="@baseUrl/thumb_${data}" alt="${row.Name}" class="logo">` : "";
                             }
                         },
                         {
@@ -121,9 +100,9 @@
                         }
                     ],
                     columnDefs: [
-                        { 'searchable': false, 'targets': [1, 2,3] },
-                        { 'sortable': false, 'targets': [1, 2,3] },
-                        { 'className': "text-center", "targets": [1, 2,3] }
+                        { 'searchable': false, 'targets': [1, 2, 3] },
+                        { 'sortable': false, 'targets': [1, 2, 3] },
+                        { 'className': "text-center", "targets": [1, 2, 3] }
                     ]
                 });
             },
@@ -144,17 +123,6 @@
             addSign: function(data) { return `${data}/-` }
         }
 
-
-        //global variable
-        const formData = new FormData();
-        const imageError = $("#imageError");
-        const previewImage = $('#prevImage');
-        const cropImageModal = $('#cropImageModal');
-        const btnCrop = $('#btnCrop');
-        const cropImage = $('#upload-demo').croppie({
-            viewport: { width: 200, height: 140 },
-            boundary: { width: 210, height: 150 }
-        });
 
         //set image file
         $('input[type="file"]').change(function(e) {
@@ -185,44 +153,18 @@
             }
 
             pathInput.value = fileName;
-            readFile(this);
         });
 
-
-        //crop done
-        btnCrop.on('click', function() {
-            cropImage.croppie('result', { type: 'blob' }).then(function(res) {
-                previewImage.attr('src', URL.createObjectURL(res));
-
-                formData.append("fileLogo", res, $('#filePath').val());
-                cropImageModal.modal('hide');
-            });
-        });
-
-        //read file
-        function readFile(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.readAsDataURL(input.files[0]);
-
-                reader.onload = function(e) {
-                    cropImage.croppie('bind', { url: e.target.result }).then(function() {
-                        $('.cr-slider').attr({ 'min': 0.5000, 'max': 1.5000 });
-                    });
-                }
-
-                cropImageModal.modal('show');
-            }
-        }
 
         //post brand
         const formAdd = document.getElementById("formAdd");
         formAdd.addEventListener('submit', function(evt) {
             evt.preventDefault()
-            formData.append("Name", formAdd.inputBrandName.value);
 
-            this.btnSubmit.disabled = true;
-            this.btnSubmit.value = "submitting...";
+            const formData = new FormData(this);
+            const btn = this.btnSubmit;
+
+            disableBtn(btn, true);
 
             $.ajax({
                 type: "POST",
@@ -230,29 +172,18 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
-                    formAdd.btnSubmit.disabled = false;
-                    formAdd.btnSubmit.value = "Add";
-
+                success: response => {
                     if (response.IsSuccess) {
-                        $.notify("Brand added Successfully", "success", { position: "right" });
-
-                        formAdd.inputBrandName.value = "";
-                        $('#filePath').val("");
-
-                        formAdd.inputBrandName.value = "";
-                        formData.delete('Name');
-                        formData.delete('logo');
-
                         dataTable.getData();
-                    } else {
-                        $.notify(response.Message, "error", { position: "right" });
+                        this.reset();
                     }
+
+                    disableBtn(btn, false);
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
                 },
                 error: function(err) {
                     console.log(err);
-                    formAdd.btnSubmit.disabled = false;
-                    formAdd.btnSubmit.value = "Add";
+                    disableBtn(btn, false);
                 }
             });
         });
@@ -276,14 +207,11 @@
                 url: "/Brand/DeleteBrand",
                 data: { id, fileName },
                 success: function(response) {
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
                     showSpinner(evt.target, false);
 
-                    if (response.IsSuccess) {
+                    if (response.IsSuccess)
                         element.remove();
-                    } else {
-                        $.notify(response.Message, "error", { position: "right" });
-                        console.log(response);
-                    }
                 },
                 error: function(err) {
                     console.log(err);
@@ -291,6 +219,12 @@
                 }
             });
         });
+
+        //disable btn
+        function disableBtn(btn, isLoading) {
+            btn.disabled = isLoading;
+            btn.value = isLoading ? "submitting..." : "Submit";
+        }
 
         //show spinner
         function showSpinner(element, isShow) {

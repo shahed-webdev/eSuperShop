@@ -75,14 +75,14 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CatalogAddModel model, IFormFile image)
+        public async Task<IActionResult> Add(CatalogAddModel model, IFormFile fileImage)
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
 
-            if (image != null)
+            if (fileImage != null)
             {
-                var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
-                model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
+                var fileName = FileBuilder.FileNameImage("catalog", fileImage.FileName);
+                model.ImageFileName = await _cloudStorage.UploadFileAsync(fileImage, fileName);
             }
 
             var response = _catalog.Add(model, User.Identity.Name);
