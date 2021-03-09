@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using CloudStorage;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -82,7 +84,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse Edit(BrandEditModel model)
+        public async Task<DbResponse> Edit(BrandEditModel model, IFormFile fileLogo, ICloudStorage cloudStorage)
         {
             try
             {
@@ -92,6 +94,8 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse(false, "Invalid Data");
                 if (_db.Brand.IsExistName(model.Name, model.BrandId))
                     return new DbResponse(false, "Brand Name already Exist");
+
+                model.LogoFileName = await cloudStorage.UpdateFileAsync(fileLogo, model.LogoFileName, "brand-logo");
 
                 _db.Brand.Edit(model);
                 _db.SaveChanges();

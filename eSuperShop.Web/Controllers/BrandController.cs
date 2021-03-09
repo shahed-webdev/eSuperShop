@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CloudStorage;
+﻿using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -64,11 +60,9 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateBrand(BrandEditModel model, IFormFile fileLogo)
         {
-            if (fileLogo == null) return UnprocessableEntity("Insert logo!");
 
-            model.LogoFileName = await _cloudStorage.UpdateFileAsync(fileLogo, model.LogoFileName, "brand-logo");
 
-            var response = _brand.Edit(model);
+            var response = await _brand.Edit(model, fileLogo, _cloudStorage);
             return Json(response);
         }
 
