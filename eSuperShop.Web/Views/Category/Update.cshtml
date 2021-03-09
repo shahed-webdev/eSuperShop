@@ -2,20 +2,18 @@
 @{
     ViewData["Title"] = "Update Category";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var baseUrl = CloudStorage.FileBuilder.BaseUrl();
 }
 
 <div class="container">
     <div class="row">
         <div class="col-lg-8 mx-auto">
-            <h4 class="page-header my-3">Update Category</h4>
+            <h4 class="page-header my-3">Update Category: <small>@Model.CatalogName</small></h4>
             <div class="card card-body">
                 <form enctype="multipart/form-data" asp-action="Update">
-                    <input type="hidden" name="ParentCatalogId" value="@Model.ParentCatalogId" />
-                    <div class="md-form">
-                        <select searchable="Find Category" name="ParentCatalogId" asp-items="ViewBag.ParentCatalog" class="mdb-select">
-                            <option value="">Parent Category</option>
-                        </select>
-                    </div>
+                    <input type="hidden" name="CatalogId" value="@Model.CatalogId" />
+                 
                     <div class="md-form my-5">
                         <label for="CatalogName">Category Name</label>
                         <input type="text" asp-for="CatalogName" class="form-control" required>
@@ -25,23 +23,27 @@
                         <label for="SlugUrl">Slug Url (allow: a-z, 0-9, -, %)</label>
                         <input type="text" asp-for="SlugUrl" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" class="form-control" required>
                         <span asp-validation-for="SlugUrl" class="field-validation-error"></span>
+                        <small id="urlHelpText" class="form-text text-muted"></small>
                     </div>
                     <div class="md-form my-5">
                         <label for="inputDisplayOrder">Display Order</label>
-                        <input type="number" required name="DisplayOrder" id="inputDisplayOrder" class="form-control">
+                        <input asp-for="DisplayOrder" type="number" required id="inputDisplayOrder" class="form-control">
                     </div>
                     <div class="md-form">
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="fileImage" type="file" accept="image/*">
+                                <input name="ImageFileName" type="hidden" value="@Model.ImageFileName">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload Category Image" autocomplete="off">
                             </div>
                         </div>
                     </div>
-
+                    
+                    <img src="@baseUrl/thumb_@Model.ImageFileName" alt="@Model.ImageFileName" />
+                    
                     <div class="d-flex justify-content-between align-items-center">
                         <input type="submit" value="Update" class="btn btn-danger" />
                         <a href="/Category/Index"><i class="far fa-long-arrow-alt-left mr-1"></i>Back to List</a>
@@ -57,8 +59,6 @@
     <script>
         // Material Select Initialization
         $(function () {
-            $('.mdb-select').materialSelect();
-
             //check image data
             $('input[type="file"]').change(function (e) {
                 const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
@@ -89,6 +89,32 @@
                 pathInput.value = fileName;
             });
         });
+
+        //set slug url
+        const inputCatalogName = document.getElementById("CatalogName");
+        const inputSlugUrl = document.getElementById("SlugUrl");
+
+        //on input catalog
+        inputCatalogName.addEventListener("input", function () {
+            inputSlugUrl.previousElementSibling.classList.add("active");
+            inputSlugUrl.value = slugUrl.create(this.value);
+
+            demoUrl(inputSlugUrl.value);
+        });
+
+        //on input slug url
+        inputSlugUrl.addEventListener("change", function () {
+            this.value = slugUrl.create(this.value);
+
+            demoUrl(this.value);
+        });
+
+        //show demo url
+        function demoUrl(text) {
+            const url = `www.esupershop.com/category/${text}`;
+            const urlHelpText = document.getElementById("urlHelpText");
+            urlHelpText.innerHTML = text ? url : "";
+        }
     </script>
 }
 

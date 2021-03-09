@@ -79,7 +79,7 @@ namespace eSuperShop.Web.Controllers
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
 
-            var response = await _catalog.AddAsync(model, User.Identity.Name, _cloudStorage, image);
+            var response = await _catalog.AddAsync(model, User.Identity.Name, _cloudStorage, fileImage);
 
             if (!response.IsSuccess)
                 ModelState.AddModelError(response.FieldName, response.Message);
@@ -96,18 +96,18 @@ namespace eSuperShop.Web.Controllers
             if (!id.HasValue) return RedirectToAction("Index");
 
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
-            return View();
+            var response = _catalog.Get(id.GetValueOrDefault());
+
+            return View(response.Data);
         }
 
         //post update
         [HttpPost]
-        public async Task<IActionResult> Update(CatalogDisplayModel model, IFormFile image)
+        public async Task<IActionResult> Update(CatalogDisplayModel model, IFormFile fileImage)
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
 
-
-
-            var response = await _catalog.EditAsync(model, _cloudStorage, image);
+            var response = await _catalog.EditAsync(model, _cloudStorage, fileImage);
 
             if (!response.IsSuccess)
                 ModelState.AddModelError(response.FieldName, response.Message);
