@@ -1,5 +1,5 @@
-﻿using System;
-using eSuperShop.Data;
+﻿using eSuperShop.Data;
+using System;
 
 namespace eSuperShop.Repository
 {
@@ -45,11 +45,13 @@ namespace eSuperShop.Repository
         public string WarehousePostcode { get; set; }
         public int WarehouseAreaId { get; set; }
         public string WarehouseRegion { get; set; }
+        public int WarehouseRegionId { get; set; }
         public string WarehouseArea { get; set; }
         public string ReturnAddress { get; set; }
         public string ReturnPostcode { get; set; }
         public int ReturnAreaId { get; set; }
         public string ReturnRegion { get; set; }
+        public int ReturnRegionId { get; set; }
         public string ReturnArea { get; set; }
         public string ReturnPhone { get; set; }
 
