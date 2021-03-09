@@ -11,6 +11,6 @@
         public double Rating { get; set; }
         public int RatingBy { get; set; }
 
-        public string[] ProductImageUrls { get; set; }
+        public string[] ProductImageFileNames { get; set; }
     }
 }

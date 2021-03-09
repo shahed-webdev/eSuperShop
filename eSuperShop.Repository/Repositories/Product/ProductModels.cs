@@ -48,13 +48,13 @@ namespace eSuperShop.Repository
     public class ProductAttributeValueAddModel
     {
         public string Value { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public IFormFile AttributeImage { get; set; }
     }
 
     public class ProductBlobAddModel
     {
-        public string BlobUrl { get; set; }
+        public string BlobFileName { get; set; }
         public int? DisplayOrder { get; set; }
     }
 
@@ -166,7 +166,7 @@ namespace eSuperShop.Repository
     {
         public int ProductBlobId { get; set; }
         public int ProductId { get; set; }
-        public string BlobUrl { get; set; }
+        public string BlobFileName { get; set; }
         public int? DisplayOrder { get; set; }
     }
 
@@ -279,7 +279,7 @@ namespace eSuperShop.Repository
         public string ShortDescription { get; set; }
         public decimal Price { get; set; }
         public decimal OldPrice { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string StoreName { get; set; }
         public double Rating { get; set; }
         public int Sold { get; set; }
@@ -291,7 +291,7 @@ namespace eSuperShop.Repository
         public int ProductId { get; set; }
         public string Name { get; set; }
         public string SlugUrl { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
     }
 }
 

@@ -33,8 +33,8 @@ namespace eSuperShop.Data
             builder.Property(e => e.Email)
                 .HasMaxLength(50);
 
-            builder.Property(e => e.ImageUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.ImageFileName)
+                .HasMaxLength(128);
 
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")

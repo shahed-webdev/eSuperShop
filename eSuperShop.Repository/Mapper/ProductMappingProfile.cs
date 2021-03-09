@@ -61,7 +61,7 @@ namespace eSuperShop.Repository
             CreateMap<Product, ProductDetailsViewModel>()
                 .ForMember(d => d.Attributes,
                     opt => opt.MapFrom(c => c.ProductAttribute.OrderBy(p => p.Attribute.KeyName)))
-                .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob.Select(b => b.BlobUrl).ToArray()))
+                .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob.Select(b => b.BlobFileName).ToArray()))
                 .ForMember(d => d.Faqs,
                     opt => opt.MapFrom(c =>
                         c.ProductFaq.Where(f => f.IsVisible && !string.IsNullOrEmpty(f.Answer))
@@ -107,14 +107,14 @@ namespace eSuperShop.Repository
 
             //Product Show Mapping
             CreateMap<Product, ProductListViewModel>()
-                .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
+                .ForMember(d => d.ImageFileName, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobFileName))
                 .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.ProductReview.Count()))
                 .ForMember(d => d.Rating, opt => opt.MapFrom(c => (double)c.ProductReview.Sum(r => r.Rating) / (double)c.ProductReview.Count()))
                 .ForMember(d => d.StoreName, opt => opt.MapFrom(c => c.Vendor.StoreName))
                 .ReverseMap();
 
             CreateMap<Product, ProductShortInfo>()
-                .ForMember(d => d.ImageUrl, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobUrl))
+                .ForMember(d => d.ImageFileName, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobFileName))
                 .ReverseMap();
 
             // ProductReview Mapping

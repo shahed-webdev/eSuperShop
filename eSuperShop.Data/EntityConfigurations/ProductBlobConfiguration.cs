@@ -8,9 +8,9 @@ namespace eSuperShop.Data
         public void Configure(EntityTypeBuilder<ProductBlob> builder)
         {
 
-            builder.Property(e => e.BlobUrl)
+            builder.Property(e => e.BlobFileName)
                 .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(128);
 
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")

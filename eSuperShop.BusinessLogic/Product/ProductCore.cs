@@ -69,7 +69,7 @@ namespace eSuperShop.BusinessLogic
                     var blob = new ProductBlobAddModel
                     {
                         DisplayOrder = count,
-                        BlobUrl = await _cloudStorage.UploadFileAsync(img, fileName)
+                        BlobFileName = await _cloudStorage.UploadFileAsync(img, fileName)
                     };
                     model.Blobs.Add(blob);
                     count++;
@@ -84,7 +84,7 @@ namespace eSuperShop.BusinessLogic
                         if (value.AttributeImage == null) continue;
 
                         var fileName = FileBuilder.FileNameImage("product-attribute-image", value.AttributeImage.FileName);
-                        value.ImageUrl = await _cloudStorage.UploadFileAsync(value.AttributeImage, fileName);
+                        value.ImageFileName = await _cloudStorage.UploadFileAsync(value.AttributeImage, fileName);
                     }
                 }
 

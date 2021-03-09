@@ -33,8 +33,8 @@ namespace eSuperShop.Repository
             CreateMap<VendorStoreSlider, VendorStoreSliderViewModel>().ReverseMap();
             //Vendor store Mapping
             CreateMap<Vendor, StoreViewModel>()
-                .ForMember(d => d.ProductImageUrls,
-                    opt => opt.MapFrom(c => c.Product.Where(p => p.Published).Select(p => p.ProductBlob.First().BlobUrl).ToArray()))
+                .ForMember(d => d.ProductImageFileNames,
+                    opt => opt.MapFrom(c => c.Product.Where(p => p.Published).Select(p => p.ProductBlob.First().BlobFileName).ToArray()))
                 .ForMember(d => d.RatingBy, opt => opt.MapFrom(c => c.VendorReview.Count()))
                 .ForMember(d => d.Rating,
                     opt => opt.MapFrom(c => (double)c.VendorReview.Sum(r => r.Rating) / (double)c.VendorReview.Count()))

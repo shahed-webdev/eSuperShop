@@ -32,7 +32,7 @@ namespace eSuperShop.Data
         public string DateofBirth { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public DateTime CreatedOnUtc { get; set; }
 
         public virtual ICollection<AllAttribute> AllAttribute { get; set; }
