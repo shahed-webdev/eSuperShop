@@ -1,15 +1,15 @@
 ﻿@model CatalogAddModel
 @{
-    ViewData["Title"] = "Add Category";
-    Layout = "_AdminLayout";
+    ViewData["Title"] = "Update Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container">
     <div class="row">
         <div class="col-lg-8 mx-auto">
-            <h4 class="page-header my-3">Add Category</h4>
+            <h4 class="page-header my-3">Update Category</h4>
             <div class="card card-body">
-                <form enctype="multipart/form-data" asp-action="Add">
+                <form enctype="multipart/form-data" asp-action="Update">
                     <div class="md-form">
                         <select searchable="Find Category" name="ParentCatalogId" asp-items="ViewBag.ParentCatalog" class="mdb-select">
                             <option value="">Parent Category</option>
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <input type="submit" value="Add" class="btn btn-danger" />
+                        <input type="submit" value="Update" class="btn btn-danger" />
                         <a href="/Category/Index"><i class="far fa-long-arrow-alt-left mr-1"></i>Back to List</a>
                     </div>
                     @Html.ValidationMessage("dbCustomError")
@@ -59,7 +59,7 @@
             $('.mdb-select').materialSelect();
 
             //check image data
-            $('input[type="file"]').change(function(e) {
+            $('input[type="file"]').change(function (e) {
                 const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
                 const size = e.target.files[0].size / 1024 / 1024;
                 const allowSize = 1;
@@ -90,3 +90,4 @@
         });
     </script>
 }
+

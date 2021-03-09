@@ -7,20 +7,7 @@
 .error-color td { color: red; }
 .used-error { color: #ff0000 }
 
-/*--Table id--*/
-/*.table > tbody > tr > td { vertical-align: middle; }
-#data-table { text-align: center; background-color: #fff; width: 100% }
-#data-table th { background-color: #777c84; color: #fff; }
-#data-table tbody td { padding: 0.5rem }
-#data-table .delete { color: #ff0000 }*/
-
 .action-td-size { width: 50px; text-align: center }
-
-/*--Table class--*/
-/*.data-table { text-align: center; background-color: #fff; }
-.data-table th { background-color: #777c84; color: #fff; }
-.data-table .error-color td { color: red; }*/
-
 table tr td .edit { color: #333; cursor: pointer }
 table tr td .delete { color: #ef5350; cursor: pointer }
 
@@ -44,6 +31,8 @@ input[type="checkbox"].input-validation-error { border: 0 none; }
 .validation-summary-errors ul { padding: 0; list-style: none; font-size: .85rem }
 .validation-summary-valid { display: none; }
 
+/*dropdown value color set*/
+.dropdown-content li > a, .dropdown-content li > span { display: block; padding: .5rem; font-size: .9rem; color: #191b1e; }
 
 /**DISABLE INPUT TYPE NUMBER WHEEL**/
 input[type="number"]::-webkit-outer-spin-button,

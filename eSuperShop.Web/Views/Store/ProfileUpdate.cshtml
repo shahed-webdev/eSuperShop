@@ -310,7 +310,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Region/Division</label>
-                        <select asp-items="ViewBag.Regions" id="selectWarehouseRegion" name="WarehouseRegionId" class="form-control">
+                        <select asp-items="ViewBag.Regions" id="selectWarehouseRegion" asp-for="WarehouseRegionId" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
@@ -353,15 +353,15 @@
             <div class="row my-2">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Region/Division <strong>@Model.ReturnRegion</strong></label>
-                        <select asp-items="ViewBag.Regions" id="selectReturnRegion" name="ReturnRegionId" class="form-control">
+                        <label>Region/Division</label>
+                        <select asp-items="ViewBag.Regions" id="selectReturnRegion" asp-for="ReturnRegionId" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Area <strong>@Model.ReturnArea</strong></label>
+                        <label>Area</label>
                         <select id="selectReturnArea" name="ReturnAreaId" class="form-control" required>
                             <option value="">[ SELECT ]</option>
                         </select>
@@ -425,7 +425,7 @@
                 pathInput.value = fileName;
             });
 
-            //warehouse region change
+            //warehouse region
             getAreaData(@Model.WarehouseRegionId, "warehouse", @Model.WarehouseAreaId);
 
             const selectWarehouseRegion = document.getElementById("selectWarehouseRegion");
@@ -438,7 +438,9 @@
                 getAreaData(this.value, "warehouse");
             });
 
-            //return region change
+            //return region
+            getAreaData(@Model.ReturnRegionId, "return", @Model.ReturnAreaId);
+
             const selectReturnRegion = document.getElementById("selectReturnRegion");
             const selectReturnArea = document.getElementById("selectReturnArea");
 
@@ -456,11 +458,9 @@
                     data: { id },
                     success: response => {
                         if (type === "warehouse") {
-                            response.forEach(item => {
-                                selectWarehouseArea.appendChild(createOptions(item, selectedId))
-                            });
+                            response.forEach(item => selectWarehouseArea.appendChild(createOptions(item, selectedId)));
                         } else {
-                            response.forEach(item => selectReturnArea.appendChild(createOptions(item)));
+                            response.forEach(item => selectReturnArea.appendChild(createOptions(item, selectedId)));
                         }
                     },
                     error: error => { console.log(error) }
