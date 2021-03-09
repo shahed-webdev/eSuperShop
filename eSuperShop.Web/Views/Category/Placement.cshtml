@@ -1,13 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Category Placement";
     Layout = "_AdminLayout";
+
+    var baseUrl = CloudStorage.FileBuilder.BaseUrl();
 }
 
 @section Styles{
     <style>
         #assignList img { height: 70px; width: 70px; border-radius: 5px; box-shadow: 1px 1px 10px rgba(0, 0, 0, .1); margin-right: 5px }
         #assignList .remove { color: #e53935; cursor: pointer }
-        .fa-spin { pointer-events: none}
+        .fa-spin { pointer-events: none }
     </style>
 }
 
@@ -20,14 +22,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-3">
                     <div class="md-form">
-                        <select searchable="Find Place" id="selectShownPlace" asp-items="ViewBag.ShownPlace" class="mdb-select" required>
+                        <select searchable="Find Place" id="selectShownPlace" name="ShownPlace" asp-items="ViewBag.ShownPlace" class="mdb-select" required>
                             <option selected disabled value="">Select Place</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="md-form">
-                        <select searchable="Find Category" id="selectCatalogId" asp-items="ViewBag.Catalog" class="mdb-select" required>
+                        <select searchable="Find Category" id="selectCatalogId" name="CatalogId" asp-items="ViewBag.Catalog" class="mdb-select" required>
                             <option selected disabled value="">Select Category</option>
                         </select>
                     </div>
@@ -36,7 +38,7 @@
                 <div class="col-lg-3">
                     <div class="md-form">
                         <label for="inputDisplayOrder">Display Order</label>
-                        <input type="number" id="inputDisplayOrder" class="form-control">
+                        <input type="number" id="inputDisplayOrder" name="DisplayOrder" class="form-control">
                     </div>
                 </div>
                 <div class="col text-right notify">
@@ -69,21 +71,21 @@
 
             <div class="modal-body mx-4">
                 <form id="seoForm">
-                    <input id="hiddenAssignTableId" type="hidden">
+                    <input id="hiddenAssignTableId" name="AssignTableId" type="hidden">
                     <div class="md-form mb-5">
-                        <input type="text" id="inputMetaTitle" class="form-control" required>
+                        <input type="text" id="inputMetaTitle" name="MetaTitle" class="form-control" required>
                         <label for="inputMetaTitle">Meta Title</label>
                     </div>
                     <div class="md-form pb-3">
-                        <input type="text" id="inputMetaDescription" class="form-control" required>
+                        <input type="text" id="inputMetaDescription" name="MetaDescription" class="form-control" required>
                         <label for="inputMetaDescription">Meta Description</label>
                     </div>
                     <div class="md-form pb-3">
-                        <input type="text" id="inputMetaKeywords" class="form-control" required>
+                        <input type="text" id="inputMetaKeywords" name="MetaKeywords" class="form-control" required>
                         <label for="inputMetaKeywords">Meta Keywords</label>
                     </div>
                     <div class="text-center mb-3">
-                        <button type="submit" class="btn btn-success btn-rounded z-depth-1a"><i class="far fa-check"></i> Save</button>
+                        <button id="btnSubmit" type="submit" class="btn btn-success btn-rounded z-depth-1a"><i class="far fa-check"></i> Save</button>
                         <button id="btnSeoDelete" type="button" class="btn btn-danger btn-rounded z-depth-1a"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
                 </form>
@@ -99,6 +101,15 @@
             $('.mdb-select').materialSelect();
         });
 
+        const serializeForm = function(form) {
+            const obj = {};
+            const formData = new FormData(form);
+            for (let key of formData.keys()) {
+                obj[key] = formData.get(key);
+            }
+            return obj;
+        };
+
         const formAdd = document.getElementById('formAdd');
         const assignList = document.getElementById('assignList');
         const selectShownPlace = formAdd.selectShownPlace;
@@ -107,43 +118,30 @@
         formAdd.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
-            const CatalogId = formAdd.selectCatalogId.value;
-            const ShownPlace = formAdd.selectShownPlace.value;
-            const DisplayOrder = +formAdd.inputDisplayOrder.value;
-
-            const data = { CatalogId, ShownPlace, DisplayOrder }
-
-            formAdd.btnAdd.disabled = true;
-            formAdd.btnAdd.value = "submitting..";
+            const btn = this.btnAdd;
+            disableBtn(btn, true);
 
             $.ajax({
                 type: "POST",
                 url: "/Category/Placement",
-                data,
+                data: serializeForm(this),
                 success: function(response) {
-                    if (response.IsSuccess) {
+                    if (response.IsSuccess)
                         assignList.appendChild(appendData(response.Data));
-                        $(".notify").notify("Assign Success", "success", { position: "right" });
-                    }
-                    else {
-                        $(".notify").notify(response.Message, "error", { position: "right" });
-                    }
 
-                    formAdd.btnAdd.disabled = false;
-                    formAdd.btnAdd.value = "Add";
+                    $(".notify").notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                    disableBtn(btn, false);
                 },
                 error: function(err) {
                     console.log(err);
-
-                    formAdd.btnAdd.disabled = false;
-                    formAdd.btnAdd.value = "Add";
+                    disableBtn(btn, false);
                 }
             });
         });
 
         //append data to DOM
         function appendData(data) {
-            console.log(data)
             const item = document.createElement('div');
             item.className = "list-group-item d-flex justify-content-between align-items-center";
 
@@ -152,7 +150,7 @@
             leftContain.className = "d-flex align-items-center";
 
             const image = document.createElement('img');
-            image.src = data.ImageUrl;
+            image.src = data.ImageFileName ? `@baseUrl/thumb_${data.ImageFileName}` : "";
             leftContain.appendChild(image);
 
             const info = document.createElement('div');
@@ -248,7 +246,7 @@
             });
         });
 
-        //show spinner
+        //show spinner loading
         function showSpinner(element, isShow) {
             if (isShow) {
                 element.classList.remove("fa-trash");
@@ -259,12 +257,13 @@
             }
         }
 
+
         //**SEO***
         const list = document.querySelector('.list-group');
         const seoForm = document.getElementById('seoForm');
         const btnSeoDelete = document.getElementById('btnSeoDelete');
 
-        //event listener
+        //show event listener
         list.addEventListener('click', function(evt) {
             const element = evt.target;
 
@@ -276,11 +275,6 @@
             }
         });
 
-
-        const inputMetaTitle = seoForm.inputMetaTitle;
-        const inputMetaDescription = seoForm.inputMetaDescription;
-        const inputMetaKeywords = seoForm.inputMetaKeywords;
-        const hiddenAssignTableId = seoForm.hiddenAssignTableId;
 
         //get
         function showSeoModal(id, category) {
@@ -306,6 +300,10 @@
 
         //set inserted value
         function setValueInput(data) {
+            const inputMetaTitle = seoForm.inputMetaTitle;
+            const inputMetaDescription = seoForm.inputMetaDescription;
+            const inputMetaKeywords = seoForm.inputMetaKeywords;
+
             inputMetaTitle.value = data.MetaTitle;
             inputMetaTitle.nextElementSibling.classList.add('active');
 
@@ -331,23 +329,24 @@
         //post seo
         seoForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
+            const btn = this.btnSubmit;
 
-            const body = {
-                AssignTableId: +hiddenAssignTableId.value,
-                MetaTitle: inputMetaTitle.value,
-                MetaDescription: inputMetaDescription.value,
-                MetaKeywords: inputMetaKeywords.value
-            }
+            disableBtn(btn, true);
 
             $.ajax({
                 type: "POST",
                 url: "/Category/AddSeo",
-                data: body,
+                data: serializeForm(this),
                 success: function(response) {
+                    disableBtn(btn, false);
+
                     if (response.IsSuccess)
                         $("#seoModal").modal("hide");
                 },
-                error: function(err) { console.log(err.responseText) }
+                error: function(err) {
+                    console.log(err.responseText);
+                    disableBtn(btn, false);
+                }
             });
         });
 
@@ -356,15 +355,27 @@
             const id = this.getAttribute('data-id');
             if (!id) return;
 
+            disableBtn(this, true);
+
             $.ajax({
                 type: "POST",
                 url: "/Category/DeleteSeo",
                 data: { id },
-                success: function(response) {
+                success: response => {
+                    disableBtn(this, false);
                     $("#seoModal").modal("hide");
                 },
-                error: function(err) { console.log(err.responseText); }
+                error: err => {
+                    disableBtn(this, false);
+                    console.log(err.responseText);
+                }
             });
         });
+
+        //disable btn
+        function disableBtn(btn, isLoading) {
+            btn.disabled = isLoading;
+            btn.value = isLoading ? "submitting..." : "Submit";
+        }
     </script>
 }
