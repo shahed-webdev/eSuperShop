@@ -33,10 +33,7 @@ namespace eSuperShop.Web.Controllers
         {
             if (fileLogo == null) return UnprocessableEntity("Insert logo!");
 
-            var fileName = FileBuilder.FileNameImage("brand-logo", fileLogo.FileName);
-            model.LogoFileName = await _cloudStorage.UploadFileAsync(fileLogo, fileName);
-
-            var response = _brand.Add(model, User.Identity.Name);
+            var response = await _brand.Add(model, User.Identity.Name, _cloudStorage, fileLogo);
             return Json(response);
         }
 

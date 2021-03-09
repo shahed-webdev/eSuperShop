@@ -20,7 +20,8 @@ namespace eSuperShop.BusinessLogic
             _mapper = mapper;
             _db = db;
         }
-        public DbResponse<BrandModel> Add(BrandAddModel model, string userName)
+        public async Task<DbResponse<BrandModel>> Add(BrandAddModel model, string userName, ICloudStorage cloudStorage,
+            IFormFile fileLogo)
         {
             try
             {
@@ -34,6 +35,9 @@ namespace eSuperShop.BusinessLogic
 
                 if (_db.Brand.IsExistName(model.Name))
                     return new DbResponse<BrandModel>(false, "Brand Name already Exist", null, "Name");
+
+                var fileName = FileBuilder.FileNameImage("brand-logo", fileLogo.FileName);
+                model.LogoFileName = await cloudStorage.UploadFileAsync(fileLogo, fileName);
 
                 _db.Brand.Add(model);
                 _db.SaveChanges();
