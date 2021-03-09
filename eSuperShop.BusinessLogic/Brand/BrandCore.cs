@@ -93,7 +93,7 @@ namespace eSuperShop.BusinessLogic
                 if (string.IsNullOrEmpty(model.Name))
                     return new DbResponse(false, "Invalid Data");
                 if (_db.Brand.IsExistName(model.Name, model.BrandId))
-                    return new DbResponse(false, "Brand Name already Exist");
+                    return new DbResponse(false, $"{model.Name} already Exist");
 
                 model.LogoFileName = await cloudStorage.UpdateFileAsync(fileLogo, model.LogoFileName, "brand-logo");
 

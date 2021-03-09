@@ -12,7 +12,7 @@ namespace eSuperShop.Data
         public int VendorProductCategoryId { get; set; }
         public int VendorId { get; set; }
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public int? DisplayOrder { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedOnUtc { get; set; }

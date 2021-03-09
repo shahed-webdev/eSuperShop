@@ -22,7 +22,7 @@ namespace eSuperShop.Repository
     }
     public class VendorStoreSliderViewModel
     {
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string RedirectUrl { get; set; }
     }
 }

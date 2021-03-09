@@ -98,7 +98,7 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> AddImageSlider(VendorSliderModel model, IFormFile image)
         {
             var fileName = FileBuilder.FileNameImage("store", image.FileName);
-            model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
 
             var response = _vendorSlider.Add(model, User.Identity.Name);
             return Json(response);
@@ -130,7 +130,7 @@ namespace eSuperShop.Web.Controllers
             if (image != null)
             {
                 var fileName = FileBuilder.FileNameImage("store-product-category", image.FileName);
-                model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+                model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
             }
 
             var response = _category.Add(model, User.Identity.Name);
@@ -160,14 +160,14 @@ namespace eSuperShop.Web.Controllers
         {
             if (image != null)
             {
-                if (!string.IsNullOrEmpty(model.ImageUrl))
+                if (!string.IsNullOrEmpty(model.ImageFileName))
                 {
-                    var uri = new Uri(model.ImageUrl);
+                    var uri = new Uri(model.ImageFileName);
                     await _cloudStorage.DeleteFileAsync(Path.GetFileName(uri.AbsolutePath));
                 }
 
                 var fileName = FileBuilder.FileNameImage("store-product-category", image.FileName);
-                model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+                model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
             }
 
             var response = _category.Update(model);

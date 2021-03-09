@@ -11,8 +11,8 @@ namespace eSuperShop.Data
                 .IsRequired()
                 .HasMaxLength(400);
 
-            builder.Property(e => e.ImageUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.ImageFileName)
+                .HasMaxLength(128);
 
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")
