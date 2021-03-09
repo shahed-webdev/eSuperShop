@@ -35,8 +35,6 @@ namespace eSuperShop.Web.Controllers
 
         //Products
         [AllowAnonymous]
-        //[Route("[controller]/[action]")]
-        //[Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Products(string slugUrl)
         {
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("Index", "Home");
@@ -68,7 +66,8 @@ namespace eSuperShop.Web.Controllers
             return View(model.Data);
         }
 
-        //Add Catalog
+
+        //*** Add Catalog ***
         public IActionResult Add()
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
@@ -96,7 +95,40 @@ namespace eSuperShop.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //Delete Catalog
+
+        //**** Update***
+        public IActionResult Update(int? id)
+        {
+            if (!id.HasValue) return RedirectToAction("Index");
+
+            ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
+            return View();
+        }
+
+        //post update
+        [HttpPost]
+        public async Task<IActionResult> Update(CatalogAddModel model, IFormFile image)
+        {
+            ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
+
+            if (image != null)
+            {
+                var fileName = FileBuilder.FileNameImage("catalog", image.FileName);
+                model.ImageUrl = await _cloudStorage.UploadFileAsync(image, fileName);
+            }
+
+            var response = _catalog.Add(model, User.Identity.Name);
+
+            if (!response.IsSuccess)
+                ModelState.AddModelError(response.FieldName, response.Message);
+
+            if (!ModelState.IsValid) return View(model);
+
+            return RedirectToAction("Index");
+        }
+
+
+        //**Delete Catalog**
         public IActionResult DeleteCatalog(int id)
         {
             var response = _catalog.Delete(id);

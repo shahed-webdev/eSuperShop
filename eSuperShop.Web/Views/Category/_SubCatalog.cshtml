@@ -16,9 +16,11 @@
                     <span class="fas fa-angle-right rotate"></span>
                 }
                 <span class="@(isNoCategory ? "last-child" : "")">
-                    <a href="/Category/AssignedDetails/@catalog.CatalogId"><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</a>
+                    <a class="black-text" href="/Category/AssignedDetails/@catalog.CatalogId">
+                        <span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName
+                    </a>
                 </span>
-            </div> 
+            </div>
             <div>
                 <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2"><i class="far fa-search-location"></i> SEO</a>
                 @if (isNoCategory)
@@ -29,7 +31,10 @@
                 {
                     <i data-id="0" class="muted fal fa-trash-alt mr-3"></i>
                 }
-                <i data-id="@catalog.CatalogId" class="edit fal fa-edit"></i>
+
+                <a class="black-text" href="/Category/Update/@catalog.CatalogId">
+                    <i class="fal fa-edit"></i>
+                </a>
             </div>
         </div>
 

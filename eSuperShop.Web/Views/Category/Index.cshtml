@@ -15,13 +15,13 @@
         .parentCategory i.muted { color: #bfbfbf; pointer-events: none }
         .parentCategory:hover, .childCategory:hover { background-color: #eee; border-radius: 3px }
         .childCategory i.muted { color: #bfbfbf; pointer-events: none }
-        
+
         .last-child, .childCategory i, a { font-size: 15px }
 
         .nested { display: none; padding-left: 15px }
         .nested.show { display: block }
         .down { content: "\f107"; font-family: 'Font Awesome 5 Pro' }
-    </style>  
+    </style>
 }
 
 <div class="container">
@@ -52,11 +52,16 @@
                                     <span class="fas fa-angle-right rotate"></span>
                                 }
 
-                                <a href="/Category/AssignedDetails/@catalog.CatalogId"><strong><span class="far fa-folder-open ic-w mx-1"></span>@catalog.CatalogName</strong></a>
+                                <a class="black-text" href="/Category/AssignedDetails/@catalog.CatalogId">
+                                    <strong>
+                                        <span class="far fa-folder-open ic-w mx-1">
+                                        </span>@catalog.CatalogName
+                                    </strong>
+                                </a>
                             </div>
                             <div>
                                 <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2"><i class="far fa-search-location"></i> SEO</a>
-                               
+
                                 @if (isNoCategory)
                                 {
                                     <i data-id="@catalog.CatalogId" class="delete fal fa-trash-alt mr-3"></i>
@@ -66,7 +71,9 @@
                                     <i data-id="0" class="muted fal fa-trash-alt mr-3"></i>
                                 }
 
-                                <i data-id="@catalog.CatalogId" class="edit fal fa-edit"></i>
+                                <a class="black-text" href="/Category/Update/@catalog.CatalogId">
+                                    <i class="fal fa-edit"></i>
+                                </a>
                             </div>
                         </div>
 
@@ -145,10 +152,6 @@
             if (element.classList.contains('delete')) {
                 const id = +element.getAttribute('data-id');
                 deleteCategory(id, element);
-            }
-
-            if (element.classList.contains('edit')) {
-                location.href = `/Category/Update/${element.getAttribute('data-id')}`;
             }
 
             if (element.classList.contains('rotate')) {

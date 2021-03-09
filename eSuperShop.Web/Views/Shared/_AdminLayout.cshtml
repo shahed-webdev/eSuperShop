@@ -94,9 +94,12 @@
     <script src="~/js/menu-links-admin.js"></script>
     <script src="~/js/sidedrawer-show-hide.js"></script>
 
+    <!-- slug url generator -->
+    <script src="~/lib/slug-url-generator.js"></script>
+
     @await RenderSectionAsync("Scripts", false)
 
-<script type="text/javascript">
+    <script type="text/javascript">
         $(function () {
             //User login Info
             @*const url = "@Url.Action($"GetUserLoggedInInfo", $"Dashboard")";
