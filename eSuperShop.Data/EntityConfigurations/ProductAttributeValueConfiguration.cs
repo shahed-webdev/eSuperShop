@@ -7,8 +7,8 @@ namespace eSuperShop.Data
     {
         public void Configure(EntityTypeBuilder<ProductAttributeValue> builder)
         {
-            builder.Property(e => e.ImageUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.ImageFileName)
+                .HasMaxLength(128);
 
             builder.Property(e => e.InsertedOnUtc)
                 .HasColumnType("datetime")

@@ -12,7 +12,7 @@ namespace eSuperShop.Data
         public int ProductAttributeValueId { get; set; }
         public int ProductAttributeId { get; set; }
         public string Value { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public DateTime InsertedOnUtc { get; set; }
         public virtual ProductAttribute ProductAttribute { get; set; }
         public virtual ICollection<ProductQuantitySetAttribute> ProductQuantitySetAttribute { get; set; }

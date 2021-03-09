@@ -52,7 +52,7 @@ namespace eSuperShop.Repository
 
         public bool IsRelatedDataExist(int id)
         {
-            return Db.Product.Any(c => c.BrandId == id);
+            return Db.CatalogBrand.Any(c => c.BrandId == id) || Db.Product.Any(c => c.BrandId == id);
         }
 
         public DataResult<BrandModel> List(DataRequest request)
