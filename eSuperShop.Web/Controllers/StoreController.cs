@@ -48,18 +48,18 @@ namespace eSuperShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ProfileUpdate(VendorInfoUpdateModel model, VendorInfoDocFile files)
         {
-            model.StoreLogoUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoUrl, "store-logo");
-            model.StoreBannerUrl = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerUrl, "store-banner");
-            model.NIdImageBackUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackUrl, "nid");
-            model.NIdImageFrontUrl = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoFront, model.NIdImageFrontUrl, "nid");
-            model.ChequeImageUrl = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageUrl, "cheque");
-            model.TradeLicenseImageUrl = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageUrl, "trade-license");
+            model.StoreLogoFileName = await _cloudStorage.UpdateFileAsync(files.FileStoreLogo, model.StoreLogoFileName, "store-logo");
+            model.StoreBannerFileName = await _cloudStorage.UpdateFileAsync(files.FileStoreBanner, model.StoreBannerFileName, "store-banner");
+            model.NIdImageBackFileName = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoBack, model.NIdImageBackFileName, "nid");
+            model.NIdImageFrontFileName = await _cloudStorage.UpdateFileAsync(files.FileNidPhotoFront, model.NIdImageFrontFileName, "nid");
+            model.ChequeImageFileName = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageFileName, "cheque");
+            model.TradeLicenseImageFileName = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageFileName, "trade-license");
 
             if (files.FileOthersCertificate != null)
             {
-                if (model.VendorCertificateUrl != null)
+                if (model.VendorCertificateFileNames != null)
                 {
-                    foreach (var s in model.VendorCertificateUrl)
+                    foreach (var s in model.VendorCertificateFileNames)
                     {
                         await _cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(s));
                     }
@@ -71,7 +71,7 @@ namespace eSuperShop.Web.Controllers
                     newUrls.Add(await _cloudStorage.UploadFileAsync(file, FileBuilder.FileNameImage("certificate", file.FileName)));
                 }
 
-                model.VendorCertificateUrl = newUrls.ToArray();
+                model.VendorCertificateFileNames = newUrls.ToArray();
             }
 
             var response = _vendor.StoreUpdate(model, User.Identity.Name);

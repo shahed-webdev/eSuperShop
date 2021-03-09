@@ -54,11 +54,11 @@ namespace eSuperShop.Data
             builder.Property(e => e.StoreSlugUrl)
                 .HasMaxLength(255);
 
-            builder.Property(e => e.StoreBannerUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.StoreBannerFileName)
+                .HasMaxLength(128);
 
-            builder.Property(e => e.StoreLogoUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.StoreLogoFileName)
+                .HasMaxLength(128);
 
             builder.Property(e => e.StoreTagLine)
                 .HasMaxLength(255);
@@ -83,14 +83,14 @@ namespace eSuperShop.Data
             builder.Property(e => e.NId)
                 .HasMaxLength(50);
 
-            builder.Property(e => e.NIdImageBackUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.NIdImageBackFileName)
+                .HasMaxLength(128);
 
-            builder.Property(e => e.NIdImageFrontUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.NIdImageFrontFileName)
+                .HasMaxLength(128);
 
-            builder.Property(e => e.TradeLicenseImageUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.TradeLicenseImageFileName)
+                .HasMaxLength(128);
             builder.Property(e => e.StorePostcode)
                 .HasMaxLength(50);
 
@@ -105,7 +105,7 @@ namespace eSuperShop.Data
                 .HasMaxLength(128);
             builder.Property(e => e.RoutingNumber)
                 .HasMaxLength(128);
-            builder.Property(e => e.ChequeImageUrl)
+            builder.Property(e => e.ChequeImageFileName)
                 .HasMaxLength(255);
             builder.Property(e => e.MobileBankingType)
                 .HasMaxLength(50);
@@ -148,10 +148,10 @@ namespace eSuperShop.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.Property(e => e.ChangedStoreLogoUrl)
-                .HasMaxLength(255);
-            builder.Property(e => e.ChangedStoreBannerUrl)
-                .HasMaxLength(255);
+            builder.Property(e => e.ChangedStoreLogoFileName)
+                .HasMaxLength(128);
+            builder.Property(e => e.ChangedStoreBannerFileName)
+                .HasMaxLength(128);
             builder.Property(e => e.ChangedStoreTagLine)
                 .HasMaxLength(255);
             builder.Property(e => e.IsChangedApproved)

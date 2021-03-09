@@ -24,7 +24,7 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.ReturnArea, opt => opt.MapFrom(c => c.ReturnArea.AreaName))
                 .ForMember(d => d.ReturnRegionId, opt => opt.MapFrom(c => c.ReturnArea.RegionId))
                 .ForMember(d => d.ReturnRegion, opt => opt.MapFrom(c => c.ReturnArea.Region.RegionName))
-                .ForMember(d => d.VendorCertificateUrl, opt => opt.MapFrom(c => c.VendorCertificate.Select(c => c.CertificateImageFileName).ToArray()))
+                .ForMember(d => d.VendorCertificateFileNames, opt => opt.MapFrom(c => c.VendorCertificate.Select(c => c.CertificateImageFileName).ToArray()))
 
                 .ReverseMap();
             CreateMap<Vendor, VendorInfoUpdateModel>().ReverseMap();
