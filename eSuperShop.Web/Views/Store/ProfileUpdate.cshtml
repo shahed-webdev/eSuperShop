@@ -59,13 +59,13 @@
                                 <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                     <span>Choose Logo<i class="fas fa-upload ml-3"></i></span>
                                     <input name="FileStoreLogo" type="file" accept="image/*">
-                                    <input name="StoreLogoUrl" type="hidden" value="@Model.StoreLogoUrl">
+                                    <input name="StoreLogoUrl" type="hidden" value="@Model.StoreLogoFileName">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text" placeholder="Upload Store Logo">
                                 </div>
                             </div>
-                            <i data-url="@Model.StoreLogoUrl" data-name="Store Logo" class="@(string.IsNullOrEmpty(Model.StoreLogoUrl) ? "empty-image" : "show-image") fas fa-image"></i>
+                            <i data-url="@Model.StoreLogoFileName" data-name="Store Logo" class="@(string.IsNullOrEmpty(Model.StoreLogoFileName) ? "empty-image" : "show-image") fas fa-image"></i>
                         </div>
                         <small class="form-text text-danger">Need authority approval after change logo.</small>
                     </div>
@@ -86,13 +86,13 @@
                                 <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                     <span>Choose Banner Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                     <input name="FileStoreBanner" type="file" accept="image/*">
-                                    <input name="StoreBannerUrl" type="hidden" value="@Model.StoreBannerUrl">
+                                    <input name="StoreBannerUrl" type="hidden" value="@Model.StoreBannerFileName">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text" placeholder="Upload Banner Image">
                                 </div>
                             </div>
-                            <i data-url="@Model.StoreBannerUrl" data-name="Banner Image" class="@(string.IsNullOrEmpty(Model.StoreBannerUrl) ? "empty-image" : "show-image") fas fa-image"></i>
+                            <i data-url="@Model.StoreBannerFileName" data-name="Banner Image" class="@(string.IsNullOrEmpty(Model.StoreBannerFileName) ? "empty-image" : "show-image") fas fa-image"></i>
                         </div>
                         <small class="form-text text-danger">Need authority approval after change banner image.</small>
                     </div>
@@ -143,13 +143,13 @@
                             <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>NID(Front)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileNidPhotoFront" type="file" accept="image/*">
-                                <input name="NIdImageFrontUrl" type="hidden" value="@Model.NIdImageFrontUrl">
+                                <input name="NIdImageFrontUrl" type="hidden" value="@Model.NIdImageFrontFileName">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Front)">
                             </div>
                         </div>
-                        <i data-url="@Model.NIdImageFrontUrl" data-name="NID(Front)" class="@(string.IsNullOrEmpty(Model.NIdImageFrontUrl)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-url="@Model.NIdImageFrontFileName" data-name="NID(Front)" class="@(string.IsNullOrEmpty(Model.NIdImageFrontFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -158,13 +158,13 @@
                             <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>NID(Back)<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileNidPhotoBack" type="file" accept="image/*">
-                                <input name="NIdImageBackUrl" type="hidden" value="@Model.NIdImageBackUrl">
+                                <input name="NIdImageBackUrl" type="hidden" value="@Model.NIdImageBackFileName">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Back)">
                             </div>
                         </div>
-                        <i data-url="@Model.NIdImageBackUrl" data-name="NID(Back)" class="@(string.IsNullOrEmpty(Model.NIdImageBackUrl)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-url="@Model.NIdImageBackFileName" data-name="NID(Back)" class="@(string.IsNullOrEmpty(Model.NIdImageBackFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
             </div>
@@ -176,13 +176,13 @@
                             <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>Choose Trade License<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileTradeLicense" type="file" accept="image/*">
-                                <input name="TradeLicenseImageUrl" type="hidden" value="@Model.TradeLicenseImageUrl">
+                                <input name="TradeLicenseImageUrl" type="hidden" value="@Model.TradeLicenseImageFileName">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Upload Trade License Copy">
                             </div>
                         </div>
-                        <i data-url="@Model.TradeLicenseImageUrl" data-name="Trade License" class="@(string.IsNullOrEmpty(Model.TradeLicenseImageUrl)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-url="@Model.TradeLicenseImageFileName" data-name="Trade License" class="@(string.IsNullOrEmpty(Model.TradeLicenseImageFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -196,11 +196,11 @@
                                 <input class="file-path validate" type="text" placeholder="Upload Others Certificates(multiple)">
                             </div>
                         </div>
-                        <i data-name="Certificate" class="@(!Model.VendorCertificateUrl.Any()? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-name="Certificate" class="@(!Model.VendorCertificateFileNames.Any()? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                     @{
                         var index = 0;
-                        foreach (var url in Model.VendorCertificateUrl)
+                        foreach (var url in Model.VendorCertificateFileNames)
                         {
                             <input name="VendorCertificateUrl[@index]" type="hidden" value="@url">
                             index++;
@@ -253,13 +253,13 @@
                             <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                 <span>Choose Cheque Copy<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
                                 <input name="FileChequeCopy" type="file" accept="image/*">
-                                <input name="ChequeImageUrl" type="hidden" value="@Model.ChequeImageUrl">
+                                <input name="ChequeImageUrl" type="hidden" value="@Model.ChequeImageFileName">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" placeholder="Cheque Copy">
                             </div>
                         </div>
-                        <i data-url="@Model.ChequeImageUrl" data-name="Cheque Copy" class="@(string.IsNullOrEmpty(Model.ChequeImageUrl)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-url="@Model.ChequeImageFileName" data-name="Cheque Copy" class="@(string.IsNullOrEmpty(Model.ChequeImageFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
             </div>
@@ -525,7 +525,7 @@
                     const showContainer = document.getElementById("show-img-container");
 
                     if (name === "Certificate") {
-                        const certificateData = @Html.Raw(Json.Serialize(Model.VendorCertificateUrl));
+                        const certificateData = @Html.Raw(Json.Serialize(Model.VendorCertificateFileNames));
                         let doc = `<h5>${name}</h5><div class="certificate-doc">`;
                         certificateData.forEach(item => {
                             doc += `<img src="${item}" alt="${name}">`;

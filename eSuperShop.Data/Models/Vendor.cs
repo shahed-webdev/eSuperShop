@@ -25,8 +25,8 @@ namespace eSuperShop.Data
         public string StoreName { get; set; }
         public string StoreAddress { get; set; }
         public string StoreSlugUrl { get; set; }
-        public string StoreBannerUrl { get; set; }
-        public string StoreLogoUrl { get; set; }
+        public string StoreBannerFileName { get; set; }
+        public string StoreLogoFileName { get; set; }
         public string StoreTagLine { get; set; }
         public StoreTheme StoreTheme { get; set; }
         public bool IsApproved { get; set; }
@@ -45,15 +45,15 @@ namespace eSuperShop.Data
         public int? StoreAreaId { get; set; }
         public Area StoreArea { get; set; }
         public string NId { get; set; }
-        public string NIdImageFrontUrl { get; set; }
-        public string NIdImageBackUrl { get; set; }
-        public string TradeLicenseImageUrl { get; set; }
+        public string NIdImageFrontFileName { get; set; }
+        public string NIdImageBackFileName { get; set; }
+        public string TradeLicenseImageFileName { get; set; }
         public string BankAccountTitle { get; set; }
         public string BankAccountNumber { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
         public string RoutingNumber { get; set; }
-        public string ChequeImageUrl { get; set; }
+        public string ChequeImageFileName { get; set; }
         public string MobileBankingType { get; set; }
         public string MobileBankingNumber { get; set; }
         public string WarehouseAddress { get; set; }
@@ -79,8 +79,8 @@ namespace eSuperShop.Data
         public virtual ICollection<VendorProductCategory> VendorProductCategory { get; set; }
 
 
-        public string ChangedStoreBannerUrl { get; set; }
-        public string ChangedStoreLogoUrl { get; set; }
+        public string ChangedStoreBannerFileName { get; set; }
+        public string ChangedStoreLogoFileName { get; set; }
         public string ChangedStoreTagLine { get; set; }
         public bool IsChangedApproved { get; set; }
 

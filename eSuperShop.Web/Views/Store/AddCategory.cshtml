@@ -32,19 +32,19 @@
             {
                 <div class="list-group-item d-flex justify-content-between align-items-center">
                     <p class="mb-0 d-flex align-items-center">
-                        @if (string.IsNullOrEmpty(item.ImageUrl))
+                        @if (string.IsNullOrEmpty(item.ImageFileName))
                         {
                             <i class="far fa-image fa-2x rounded defaut-img"></i>
                         }
                         else
                         {
-                            <img src="@item.ImageUrl" class="rounded" alt="" style="width: 50px">
+                            <img src="@item.ImageFileName" class="rounded" alt="" style="width: 50px">
                         }
                         <strong class="ml-2">@item.Name</strong>
                     </p>
                     <div class="actions">
-                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageUrl" data-name="@item.Name" data-active="@item.IsActive" data-order="@item.DisplayOrder" class="category-update fas fa-edit"></i>
-                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageUrl" class="delete fas fa-trash red-text ml-4"></i>
+                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageFileName" data-name="@item.Name" data-active="@item.IsActive" data-order="@item.DisplayOrder" class="category-update fas fa-edit"></i>
+                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageFileName" class="delete fas fa-trash red-text ml-4"></i>
                     </div>
                 </div>
             }

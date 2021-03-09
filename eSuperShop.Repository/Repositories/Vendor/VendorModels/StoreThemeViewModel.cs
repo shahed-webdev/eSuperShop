@@ -13,8 +13,8 @@ namespace eSuperShop.Repository
         public string StoreName { get; set; }
         public string StoreSlugUrl { get; set; }
         public StoreTheme StoreTheme { get; set; }
-        public string StoreBannerUrl { get; set; }
-        public string StoreLogoUrl { get; set; }
+        public string StoreBannerFileName { get; set; }
+        public string StoreLogoFileName { get; set; }
         public string StoreTagLine { get; set; }
         public double Rating { get; set; }
         public int RatingBy { get; set; }
@@ -22,7 +22,7 @@ namespace eSuperShop.Repository
     }
     public class VendorStoreSliderViewModel
     {
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string RedirectUrl { get; set; }
     }
 }

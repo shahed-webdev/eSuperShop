@@ -9,8 +9,8 @@ namespace eSuperShop.Repository
         public string AuthorizedPerson { get; set; }
         public string VerifiedPhone { get; set; }
         public string StoreName { get; set; }
-        public string StoreLogoUrl { set; get; }
-        public string StoreBannerUrl { get; set; }
+        public string StoreLogoFileName { set; get; }
+        public string StoreBannerFileName { get; set; }
         public string StoreTagLine { get; set; }
         public string Email { get; set; }
         public string StoreAddress { get; set; }
@@ -29,16 +29,16 @@ namespace eSuperShop.Repository
         public string StoreRegion { get; set; }
         public string StoreArea { get; set; }
         public string NId { get; set; }
-        public string NIdImageFrontUrl { get; set; }
-        public string NIdImageBackUrl { get; set; }
-        public string TradeLicenseImageUrl { get; set; }
+        public string NIdImageFrontFileName { get; set; }
+        public string NIdImageBackFileName { get; set; }
+        public string TradeLicenseImageFileName { get; set; }
         public string BankAccountTitle { get; set; }
         public string BankAccountNumber { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
         public string RoutingNumber { get; set; }
-        public string ChequeImageUrl { get; set; }
-        public string[] VendorCertificateUrl { get; set; }
+        public string ChequeImageFileName { get; set; }
+        public string[] VendorCertificateFileNames { get; set; }
         public string MobileBankingType { get; set; }
         public string MobileBankingNumber { get; set; }
         public string WarehouseAddress { get; set; }

@@ -9,7 +9,8 @@ namespace eSuperShop.BusinessLogic
 {
     public interface IBrandCore
     {
-        DbResponse<BrandModel> Add(BrandAddModel model, string userName);
+        Task<DbResponse<BrandModel>> Add(BrandAddModel model, string userName, ICloudStorage cloudStorage,
+            IFormFile fileLogo);
         DbResponse<BrandModel> Get(int id);
         DbResponse Delete(int id);
         Task<DbResponse> Edit(BrandEditModel model, IFormFile fileLogo, ICloudStorage cloudStorage);

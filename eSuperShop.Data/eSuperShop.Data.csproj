@@ -25,6 +25,8 @@
     <Compile Remove="Migrations\20210302103633_AddColumnVendorTable.Designer.cs" />
     <Compile Remove="Migrations\20210309054128_ChangeLogoUrlToLogoFileNameInBrandTable.cs" />
     <Compile Remove="Migrations\20210309054128_ChangeLogoUrlToLogoFileNameInBrandTable.Designer.cs" />
+    <Compile Remove="Migrations\20210309094659_ChangeUrlToFileNameInVendor.cs" />
+    <Compile Remove="Migrations\20210309094659_ChangeUrlToFileNameInVendor.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

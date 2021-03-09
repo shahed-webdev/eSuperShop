@@ -56,10 +56,10 @@
     </div>
 </div>
 
-@if (!string.IsNullOrEmpty(Model.StoreBannerUrl))
+@if (!string.IsNullOrEmpty(Model.StoreBannerFileName))
 {
     <div id="coverImage">
-        <img src="@Model.StoreBannerUrl" alt="@Model.StoreName" />
+        <img src="@Model.StoreBannerFileName" alt="@Model.StoreName" />
     </div>
 }
 

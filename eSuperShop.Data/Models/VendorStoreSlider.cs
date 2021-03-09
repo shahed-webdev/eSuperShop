@@ -6,7 +6,7 @@ namespace eSuperShop.Data
     {
         public int VendorStoreSliderId { get; set; }
         public int VendorId { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
         public string RedirectUrl { get; set; }
         public int? DisplayOrder { get; set; }
         public DateTime CreatedOnUtc { get; set; }

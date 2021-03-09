@@ -34,7 +34,7 @@ namespace eSuperShop.Repository
 
             vendorCategory.VendorProductCategoryId = model.VendorProductCategoryId;
             vendorCategory.Name = model.Name;
-            vendorCategory.ImageUrl = model.ImageUrl;
+            vendorCategory.ImageFileName = model.ImageFileName;
             vendorCategory.DisplayOrder = model.DisplayOrder;
             vendorCategory.IsActive = model.IsActive;
 
