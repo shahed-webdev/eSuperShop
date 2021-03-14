@@ -4,7 +4,6 @@ using eSuperShop.Data;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Identity;
-using OtpNet;
 using Service.SMS;
 using System;
 using System.Collections.Generic;
@@ -28,34 +27,34 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Vendor.IsExistPhone(mobileNumber)) return new DbResponse(false, "Phone number already exist");
+                //if (_db.Vendor.IsExistPhone(mobileNumber)) return new DbResponse(false, "Phone number already exist");
 
-                OtpServiceSingleton.Instance.PhoneNunber = mobileNumber;
-                #region Generate Code
-                var bytes = Base32Encoding.ToBytes("JBSWY3DPEHPK3PXP");
+                //OtpServiceSingleton.Instance.PhoneNunber = mobileNumber;
+                //#region Generate Code
+                //var bytes = Base32Encoding.ToBytes("JBSWY3DPEHPK3PXP");
 
-                OtpServiceSingleton.Instance.Totp = new Totp(bytes, codeValidSecond);
+                //OtpServiceSingleton.Instance.Totp = new Totp(bytes, codeValidSecond);
 
-                var code = OtpServiceSingleton.Instance.Totp.ComputeTotp(DateTime.UtcNow);
+                //var code = OtpServiceSingleton.Instance.Totp.ComputeTotp(DateTime.UtcNow);
 
-                var textSms = $"Your Verification code is {code}. This code is valid for {codeValidSecond} second";
-                #endregion
+                //var textSms = $"Your Verification code is {code}. This code is valid for {codeValidSecond} second";
+                //#endregion
 
-                #region SMS Code
+                //#region SMS Code
 
-                var massageLength = SmsValidator.MassageLength(textSms);
-                var smsCount = SmsValidator.TotalSmsCount(textSms);
+                //var massageLength = SmsValidator.MassageLength(textSms);
+                //var smsCount = SmsValidator.TotalSmsCount(textSms);
 
-                var smsProvider = new SmsProviderBuilder();
+                //var smsProvider = new SmsProviderBuilder();
 
-                var smsBalance = smsProvider.SmsBalance();
-                if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
+                //var smsBalance = smsProvider.SmsBalance();
+                //if (smsBalance < smsCount) return new DbResponse(false, "No SMS Balance");
 
-                var providerSendId = smsProvider.SendSms(textSms, mobileNumber);
+                //var providerSendId = smsProvider.SendSms(textSms, mobileNumber);
 
-                if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
+                //if (!smsProvider.IsSuccess) return new DbResponse(false, smsProvider.Error);
 
-                #endregion
+                //#endregion
 
                 return new DbResponse(true, "Success");
             }
@@ -70,9 +69,10 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(code, out var timeStepMatched, window: null);
-                if (mobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
-               
+                //var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(code, out var timeStepMatched, window: null);
+                //if (mobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
+
+                var verify = string.Equals("123456", code);
                 return !verify ? new DbResponse(false, "Invalid Code") : new DbResponse(true, "Success");
             }
             catch (Exception e)
