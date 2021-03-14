@@ -57,7 +57,33 @@
 
 @section Scripts{
     <script>
-        // Material Select Initialization
+        //set slug url
+        const inputCatalogName = document.getElementById("CatalogName");
+        const inputSlugUrl = document.getElementById("SlugUrl");
+
+        //on input catalog
+        inputCatalogName.addEventListener("input", function () {
+            inputSlugUrl.previousElementSibling.classList.add("active");
+            inputSlugUrl.value = slugUrl.create(this.value);
+
+            demoUrl(inputSlugUrl.value);
+        });
+
+        //on input slug url
+        inputSlugUrl.addEventListener("change", function () {
+            this.value = slugUrl.create(this.value);
+
+            demoUrl(this.value);
+        });
+
+        //show demo url
+        function demoUrl(text) {
+            const url = `www.esupershop.com/category/${text}`;
+            const urlHelpText = document.getElementById("urlHelpText");
+            urlHelpText.innerHTML = text ? url : "";
+        }
+
+  
         $(function () {
             //check image data
             $('input[type="file"]').change(function (e) {
@@ -88,33 +114,9 @@
                 }
                 pathInput.value = fileName;
             });
-        });
-
-        //set slug url
-        const inputCatalogName = document.getElementById("CatalogName");
-        const inputSlugUrl = document.getElementById("SlugUrl");
-
-        //on input catalog
-        inputCatalogName.addEventListener("input", function () {
-            inputSlugUrl.previousElementSibling.classList.add("active");
-            inputSlugUrl.value = slugUrl.create(this.value);
 
             demoUrl(inputSlugUrl.value);
         });
-
-        //on input slug url
-        inputSlugUrl.addEventListener("change", function () {
-            this.value = slugUrl.create(this.value);
-
-            demoUrl(this.value);
-        });
-
-        //show demo url
-        function demoUrl(text) {
-            const url = `www.esupershop.com/category/${text}`;
-            const urlHelpText = document.getElementById("urlHelpText");
-            urlHelpText.innerHTML = text ? url : "";
-        }
     </script>
 }
 

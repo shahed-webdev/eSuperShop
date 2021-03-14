@@ -186,8 +186,6 @@ namespace eSuperShop.Web.Controllers
         public IActionResult GetSeo(int id)
         {
             var response = _seo.Get(id);
-            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
-
             return Json(response);
         }
 

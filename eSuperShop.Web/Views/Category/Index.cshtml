@@ -1,5 +1,4 @@
-﻿@using eSuperShop.Repository
-@model IEnumerable<ICatalogModel>
+﻿@model IEnumerable<ICatalogModel>
 
 @{
     ViewData["Title"] = "Category";
@@ -10,6 +9,7 @@
     <style>
         .treeview i { cursor: pointer }
         .treeview i.delete { color: #fb5959 }
+        .addSeo i, .fa-spinner{pointer-events: none}
 
         .parentCategory, .childCategory { transition: all .3s ease-in-out }
         .parentCategory i.muted { color: #bfbfbf; pointer-events: none }
@@ -60,11 +60,13 @@
                                 </a>
                             </div>
                             <div>
-                                <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2"><i class="far fa-search-location"></i> SEO</a>
+                                <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2">
+                                    <i class="far fa-search-location"></i> SEO
+                                </a>
 
                                 @if (isNoCategory)
                                 {
-                                    <i data-id="@catalog.CatalogId" class="delete fal fa-trash-alt mr-3"></i>
+                                    <i data-id="@catalog.CatalogId" class="delete fa fa-trash mr-3"></i>
                                 }
                                 else
                                 {
@@ -122,8 +124,8 @@
                         <label for="inputMetaKeywords">Meta Keywords</label>
                     </div>
                     <div class="text-center mb-3">
-                        <button type="submit" class="btn btn-success btn-rounded z-depth-1a"><i class="far fa-check"></i> Save</button>
-                        <button id="btnSeoDelete" type="button" class="btn btn-danger btn-rounded z-depth-1a"><i class="fas fa-trash-alt"></i> Delete</button>
+                        <button id="btnAddSeo" type="submit" class="btn btn-success btn-rounded z-depth-1a"><i class="far fa-check"></i> Save</button>
+                        <button id="btnSeoDelete" disabled type="button" class="btn btn-danger btn-rounded z-depth-1a"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
                 </form>
             </div>
@@ -139,7 +141,7 @@
         const btnSeoDelete = document.getElementById('btnSeoDelete');
 
         //event listener
-        list.addEventListener('click', function (evt) {
+        list.addEventListener('click', function(evt) {
             const element = evt.target;
 
             //show seo modal
@@ -161,13 +163,19 @@
 
         //on delete category
         function deleteCategory(id, element) {
+            showSpinner(element, true);
+
             const url = '/Category/DeleteCatalog';
-            axios.post(url, null, { params: { id: id } }).then(function (response) {
+            axios.post(url, null, { params: { id } }).then(function(response) {
+                $.notify(response.data.Message, response.data.IsSuccess ? "success" : "error");
+                showSpinner(element, false);
+
                 if (response.data.IsSuccess)
                     element.parentElement.parentElement.remove();
-                else
-                    alert('Category already in used');
-            })
+            }).catch(err => {
+                showSpinner(element, false);
+                console.log(err);
+            });
         }
 
         //show/hide sub-category
@@ -180,6 +188,17 @@
             }
         }
 
+        //show spinner loading
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
+
 
         //**SEO***
         const inputMetaTitle = seoForm.inputMetaTitle;
@@ -187,9 +206,8 @@
         const inputMetaKeywords = seoForm.inputMetaKeywords;
         const hiddenAssignTableId = seoForm.hiddenAssignTableId;
 
-        //get
+        //show modal and get seo data
         function showSeoModal(id, category) {
-            btnSeoDelete.style.display = "none";
             clearInput();
 
             $.ajax({
@@ -197,11 +215,17 @@
                 url: "/Category/GetSeo",
                 data: { id },
                 success: function (response) {
-                    btnSeoDelete.style.display = "inline-block";
-                    btnSeoDelete.setAttribute("data-id", id);
-                    setValueInput(response.Data);
+                    btnSeoDelete.disabled = !response.IsSuccess;
+
+                    if (response.IsSuccess) {
+                        btnSeoDelete.setAttribute("data-id", id);
+                        setValueInput(response.Data);
+                    }
                 },
-                error: function (err) { console.log(err.responseText); }
+                error: function(err) {
+                    console.log(err.responseText);
+                    btnSeoDelete.disabled = false;
+                }
             });
 
             $("#seoModal").modal("show");
@@ -234,8 +258,11 @@
         }
 
         //post
-        seoForm.addEventListener('submit', function (evt) {
+        seoForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
+
+            const btn = this.btnAddSeo;
+            disableBtn(btn, true);
 
             const body = {
                 AssignTableId: +hiddenAssignTableId.value,
@@ -248,28 +275,48 @@
                 type: "POST",
                 url: "/Category/AddSeo",
                 data: body,
-                success: function (response) {
+                success: function(response) {
+                    disableBtn(btn, false);
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
                     if (response.IsSuccess)
                         $("#seoModal").modal("hide");
                 },
-                error: function (err) { console.log(err.responseText) }
+                error: function(err) {
+                    console.log(err.responseText);
+                    disableBtn(btn, false);
+                }
             });
         });
 
         //delete
-        btnSeoDelete.addEventListener('click', function () {
+        btnSeoDelete.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
             if (!id) return;
 
+            const btn = this;
+
+            disableBtn(btn, true);
             $.ajax({
                 type: "POST",
                 url: "/Category/DeleteSeo",
                 data: { id },
-                success: function (response) {
+                success: function(response) {
+                    disableBtn(btn, false);
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
                     $("#seoModal").modal("hide");
                 },
-                error: function (err) { console.log(err.responseText); }
+                error: function(err) {
+                    console.log(err.responseText);
+                    disableBtn(btn, false);
+                }
             });
         });
+
+        //disable btn
+        function disableBtn(btn, isLoading) {
+            btn.disabled = isLoading;
+        }
     </script>
 }
