@@ -70,12 +70,10 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                long timeStepMatched;
-                var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(code, out timeStepMatched, window: null);
+                var verify = OtpServiceSingleton.Instance.Totp.VerifyTotp(code, out var timeStepMatched, window: null);
                 if (mobileNumber != OtpServiceSingleton.Instance.PhoneNunber) return new DbResponse(false, "Mobile number not match");
-                if (!verify) return new DbResponse(false, "Invalid Code");
-
-                return new DbResponse(true, "Success");
+               
+                return !verify ? new DbResponse(false, "Invalid Code") : new DbResponse(true, "Success");
             }
             catch (Exception e)
             {
@@ -359,18 +357,15 @@ namespace eSuperShop.BusinessLogic
             return _db.Vendor.DataChangeUnapprovedList(request);
         }
 
-        public async Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model,
-            ICloudStorage cloudStorage)
+        public async Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model, ICloudStorage cloudStorage)
         {
             try
             {
-
-
-                if (_db.Vendor.IsNull(model.VendorId))
-                    return new DbResponse(false, "No Data Found");
+                if (_db.Vendor.IsNull(model.VendorId)) return new DbResponse(false, "No Data Found");
 
                 var urls = _db.Vendor.DataChangeApproved(model);
                 _db.SaveChanges();
+
                 foreach (var url in urls)
                 {
                     await cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(url));
