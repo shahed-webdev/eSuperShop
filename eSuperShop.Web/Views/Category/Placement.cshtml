@@ -9,7 +9,7 @@
     <style>
         #assignList img { height: 70px; width: 70px; border-radius: 5px; box-shadow: 1px 1px 10px rgba(0, 0, 0, .1); margin-right: 5px }
         #assignList .remove { color: #e53935; cursor: pointer }
-        .fa-spin { pointer-events: none }
+        .addSeo i, .fa-spinner { pointer-events: none }
     </style>
 }
 
@@ -86,7 +86,7 @@
                     </div>
                     <div class="text-center mb-3">
                         <button id="btnSubmit" type="submit" class="btn btn-success btn-rounded z-depth-1a"><i class="far fa-check"></i> Save</button>
-                        <button id="btnSeoDelete" type="button" class="btn btn-danger btn-rounded z-depth-1a"><i class="fas fa-trash-alt"></i> Delete</button>
+                        <button id="btnSeoDelete" disabled type="button" class="btn btn-danger btn-rounded z-depth-1a"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
                 </form>
             </div>
@@ -144,53 +144,22 @@
         function appendData(data) {
             const item = document.createElement('div');
             item.className = "list-group-item d-flex justify-content-between align-items-center";
+            const imgSrc = data.ImageFileName ? `@baseUrl/thumb_${data.ImageFileName}` : "";
 
-            //item left
-            const leftContain = document.createElement('div');
-            leftContain.className = "d-flex align-items-center";
-
-            const image = document.createElement('img');
-            image.src = data.ImageFileName ? `@baseUrl/thumb_${data.ImageFileName}` : "";
-            leftContain.appendChild(image);
-
-            const info = document.createElement('div');
-            info.className = "ml-1";
-
-            const strong = document.createElement('strong');
-            strong.className = "d-block";
-            strong.textContent = data.CatalogName;
-            info.appendChild(strong);
-
-            const em = document.createElement('em');
-            em.className = "text-muted";
-            em.textContent = data.SlugUrl;
-            info.appendChild(em);
-            leftContain.appendChild(info);
-
-            item.appendChild(leftContain);
-
-            //item right
-            const rightContain = document.createElement('div');
-
-            const remove = document.createElement('i');
-            remove.className = "fas fa-trash remove";
-            remove.setAttribute("data-id", data.CatalogId);
-
-            const SeoLink = document.createElement('a');
-            SeoLink.setAttribute("data-name", data.CatalogName);
-            SeoLink.setAttribute("data-id", data.CatalogId);
-
-            const seoIco = document.createElement('i');
-            seoIco.className = "far fa-search-location";
-
-            SeoLink.appendChild(seoIco);
-            SeoLink.className = "addSeo blue-text mr-2";
-            SeoLink.appendChild(document.createTextNode("SEO"));
-
-            rightContain.appendChild(SeoLink);
-            rightContain.appendChild(remove);
-
-            item.appendChild(rightContain);
+            item.innerHTML = `
+                        <div class="d-flex align-items-center">
+                            <img src="${imgSrc}" alt="no image">
+                            <div class="ml-1">
+                            <strong class="d-block">${data.CatalogName}</strong>
+                            <em class="text-muted">${data.SlugUrl}</em>
+                         </div>
+                        </div>
+                        <div>
+                         <a data-name="${data.CatalogName}" data-id="${data.CatalogId}" class="addSeo blue-text mr-2">
+                          <i class="far fa-search-location"></i>SEO
+                        </a>
+                         <i class="fas fa-trash remove" data-id="${data.CatalogId}"></i>
+                      </div>`
 
             return item;
         }
@@ -234,6 +203,7 @@
                 url: "/Category/DeletePlacement",
                 data: { categoryId, place },
                 success: function(response) {
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
                     showSpinner(element, false);
 
                     if (!response.IsSuccess) return;
@@ -276,9 +246,8 @@
         });
 
 
-        //get
+        //show modal and get seo data
         function showSeoModal(id, category) {
-            btnSeoDelete.style.display = "none";
             clearInput();
 
             $.ajax({
@@ -286,11 +255,17 @@
                 url: "/Category/GetSeo",
                 data: { id },
                 success: function(response) {
-                    btnSeoDelete.style.display = "inline-block";
-                    btnSeoDelete.setAttribute("data-id", id);
-                    setValueInput(response.Data);
+                    btnSeoDelete.disabled = !response.IsSuccess;
+
+                    if (response.IsSuccess) {
+                        btnSeoDelete.setAttribute("data-id", id);
+                        setValueInput(response.Data);
+                    }
                 },
-                error: function(err) { console.log(err.responseText); }
+                error: function(err) {
+                    console.log(err.responseText);
+                    btnSeoDelete.disabled = false;
+                }
             });
 
             $("#seoModal").modal("show");
@@ -339,6 +314,7 @@
                 data: serializeForm(this),
                 success: function(response) {
                     disableBtn(btn, false);
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
                     if (response.IsSuccess)
                         $("#seoModal").modal("hide");
@@ -362,7 +338,9 @@
                 url: "/Category/DeleteSeo",
                 data: { id },
                 success: response => {
-                    disableBtn(this, false);
+                    disableBtn(btn, false);
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
                     $("#seoModal").modal("hide");
                 },
                 error: err => {

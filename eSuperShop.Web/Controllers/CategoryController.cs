@@ -118,7 +118,7 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        //**Delete Catalog**
+        //*** Delete Catalog ****
         public IActionResult DeleteCatalog(int id)
         {
             var response = _catalog.Delete(id);
@@ -186,8 +186,6 @@ namespace eSuperShop.Web.Controllers
         public IActionResult GetSeo(int id)
         {
             var response = _seo.Get(id);
-            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
-
             return Json(response);
         }
 
