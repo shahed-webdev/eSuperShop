@@ -14,7 +14,7 @@ namespace eSuperShop.BusinessLogic
         Task<DbResponse> EditAsync(CatalogDisplayModel model, ICloudStorage cloudStorage, IFormFile image);
 
         DbResponse<CatalogDisplayModel> Get(int id);
-        DbResponse Delete(int id);
+        Task<DbResponse> DeleteAsync(int id, ICloudStorage cloudStorage);
         DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place, int numberOfItem);
         DbResponse<List<CatalogDisplayModel>> GetDisplayList(CatalogDisplayPlace place);
         DbResponse<List<ICatalogModel>> List();

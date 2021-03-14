@@ -119,9 +119,9 @@ namespace eSuperShop.Web.Controllers
 
 
         //**Delete Catalog**
-        public IActionResult DeleteCatalog(int id)
+        public async Task<IActionResult> DeleteCatalog(int id)
         {
-            var response = _catalog.Delete(id);
+            var response = await _catalog.DeleteAsync(id, _cloudStorage);
             return Json(response);
         }
 

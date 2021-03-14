@@ -105,7 +105,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse Delete(int id)
+        public async Task<DbResponse> DeleteAsync(int id, ICloudStorage cloudStorage)
         {
             try
             {
@@ -113,9 +113,12 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse(false, "Data not found");
                 if (_db.Catalog.IsRelatedDataExist(id))
                     return new DbResponse(false, "Related data Exist");
+                var catalog = _db.Catalog.Get(id);
 
                 _db.Catalog.Delete(id);
                 _db.SaveChanges();
+
+                await cloudStorage.DeleteFileAsync(catalog.ImageFileName);
 
                 return new DbResponse(true, "Success");
             }
