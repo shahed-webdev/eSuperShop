@@ -117,7 +117,7 @@
 
 @section Scripts {
     <script>
-        (function () {})()
+        (function () { })()
         //registration form
         const formRegistration = document.getElementById("formRegistration");
         const btnSendCode = document.getElementById("btnSendCode");
@@ -240,7 +240,7 @@
 
         selectRegion.addEventListener("change", function (evt) {
             selectArea.innerHTML = "";
-            selectArea.appendChild(createOptions({ AreaId: "", AreaName:"[ SELECT ]"}));
+            selectArea.appendChild(createOptions({ AreaId: "", AreaName: "[ SELECT ]" }));
 
             $.ajax({
                 url: "/Seller/GetAreaByRegion",
@@ -268,30 +268,28 @@
         //post registration
         formRegistration.addEventListener('submit', function (evt) {
             evt.preventDefault();
+
             const accountError = document.getElementById("accountError");
             accountError.textContent = "";
 
-            this.btnSignUp.disabled = true;
-            this.btnSignUp.textContent = "submitting..";
+            const btn = this.btnSignUp;
+            btnDisable(btn, true);
 
             $.ajax({
                 type: "POST",
                 url: "/Seller/SignUp",
                 data: new FormData(this),
                 success: function (response) {
-                    if (response.IsSuccess) {
+                    if (response.IsSuccess)
                         location.href = "/Seller/Success";
-                    } else {
+                    else
                         accountError.textContent = response.Message;
-                    }
 
-                    formRegistration.btnSignUp.disabled = false;
-                    formRegistration.btnSignUp.textContent = "Create account";
+                    btnDisable(btn, false);
                 },
                 error: function (err) {
                     console.log(err);
-                    formRegistration.btnSignUp.disabled = false;
-                    formRegistration.btnSignUp.textContent = "Create account";
+                    btnDisable(btn, false);
                 }
             });
         });
@@ -317,6 +315,12 @@
                 }
 
             }, 1000);
+        }
+
+        //btn disable
+        function btnDisable(btn, isLoading) {
+            btn.disabled = isLoading;
+            btn.textContent = isLoading ? "submitting.." : "Create account";
         }
     </script>
 }
