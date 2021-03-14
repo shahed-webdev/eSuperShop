@@ -5,7 +5,7 @@
             <div v-for="(item,i) in data.slice((i - 1) * 5, i * 5)" :key="i" class="col-lg-2 col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="view overlay h-100">
-                        <img class="card-img-top" :src="item.ImageUrl" alt="">
+                        <img class="card-img-top" :src="baseUrl+'/thumb_'+item.ImageFileName" alt="">
                         <a :href="'/category/'+item.SlugUrl">
                             <div class="mask rgba-white-slight"></div>
                         </a>
@@ -21,11 +21,17 @@
     export default {
         data() {
             return {
-               data:[]
+                baseUrl:"",
+                data: []
             }
         },
         beforeMount() {
-            axios.get('/home/GetCategory', { params: { place: "HomePageTopCatalog", numberOfData: 10} }).then(response => {
+            //base url
+            axios.get('/home/GetBaseUrl').then(response => {
+                this.baseUrl = response.data;
+            });
+
+            axios.get('/home/GetCategory', { params: { place: "HomePageTopCatalog", numberOfData: 10 } }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
 

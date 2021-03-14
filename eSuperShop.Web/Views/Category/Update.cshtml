@@ -104,7 +104,7 @@
                 if (size > allowSize) {
                     e.target.value = "";
                     pathInput.value = "";
-                    $(pathInput).notify(`image size must be less than ${allowSize}MB. your file size:${size.toFixed()} MB`, { position: "bottom left" });
+                    $(pathInput).notify(`image size must be less than ${allowSize}MB. your file size:${size.toFixed(2)} MB`, { position: "bottom left" });
                     return;
                 }
 

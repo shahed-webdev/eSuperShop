@@ -26,8 +26,8 @@
                         </div>
 
                         <div class="photo-box">
-                            <div v-for="(imgUrl, i) in item.ProductImageUrls" :key="i" class="box">
-                                <img :src="imgUrl" alt="" />
+                            <div v-for="(name, i) in item.ProductImageFileNames" :key="i" class="box">
+                                <img :src="baseUrl+'/thumb_'+name" alt="" />
                             </div>
                         </div>
                     </div>
@@ -45,10 +45,16 @@
         },
         data() {
             return {
+                baseUrl: "",
                 data: []
             }
         },
         beforeMount() {
+            //base url
+            axios.get('/home/GetBaseUrl').then(response => {
+                this.baseUrl = response.data;
+            });
+
             axios.get('/home/GetTopStore', { params: { Page: 1, PageSize: 4 } }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
