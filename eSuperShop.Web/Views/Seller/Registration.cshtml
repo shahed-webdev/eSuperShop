@@ -117,210 +117,220 @@
 
 @section Scripts {
     <script>
-        (function () { })()
-        //registration form
-        const formRegistration = document.getElementById("formRegistration");
-        const btnSendCode = document.getElementById("btnSendCode");
-        const mobileError = document.getElementById("mobileError");
-        const codeVerifyModal = $("#codeVerifyModal");
-        const othersInfo = formRegistration.querySelector("#othersInfo");
+        (function () {
+            //registration form
+            const formRegistration = document.getElementById("formRegistration");
+            const btnSendCode = document.getElementById("btnSendCode");
+            const mobileError = document.getElementById("mobileError");
+            const codeVerifyModal = $("#codeVerifyModal");
+            const othersInfo = formRegistration.querySelector("#othersInfo");
 
-        //verify form
-        const formVerify = document.getElementById("formVerify");
-        const btnResend = formVerify.querySelector("#btnResend");
-        const verifyError = formVerify.querySelector("#verifyError");
+            //verify form
+            const formVerify = document.getElementById("formVerify");
+            const btnResend = formVerify.querySelector("#btnResend");
+            const verifyError = formVerify.querySelector("#verifyError");
 
-        //send code
-        btnSendCode.addEventListener("click", function (evt) {
-            mobileError.textContent = "";
-            if (!formRegistration.inputMobile.value) return;
+            //send code
+            btnSendCode.addEventListener("click", function (evt) {
+                mobileError.textContent = "";
+                if (!formRegistration.inputMobile.value) return;
 
-            this.disabled = true;
-            this.innerText = "sending..";
+                this.disabled = true;
+                this.innerText = "sending..";
 
-            const time = 60;
+                const time = 60;
 
-            $.ajax({
-                type: "POST",
-                url: "/Seller/SendCode",
-                data: { mobile: formRegistration.inputMobile.value, time },
-                success: function (response) {
-                    if (response.IsSuccess) {
-                        codeVerifyModal.modal('show');
+                $.ajax({
+                    type: "POST",
+                    url: "/Seller/SendCode",
+                    data: { mobile: formRegistration.inputMobile.value, time },
+                    success: function (response) {
+                        if (response.IsSuccess) {
+                            codeVerifyModal.modal('show');
+                            btnSendCode.disabled = false;
+                            btnSendCode.innerText = "Verify";
+
+                            startTimer(time);
+                        } else {
+                            btnSendCode.disabled = false;
+                            btnSendCode.innerText = "Verify";
+                            mobileError.textContent = response.Message;
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
                         btnSendCode.disabled = false;
                         btnSendCode.innerText = "Verify";
-
-                        startTimer(time);
-                    } else {
-                        btnSendCode.disabled = false;
-                        btnSendCode.innerText = "Verify";
-                        mobileError.textContent = response.Message;
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                    btnSendCode.disabled = false;
-                    btnSendCode.innerText = "Verify";
-                }
+                });
             });
-        });
 
-        //re-send code
-        btnResend.addEventListener("click", function (evt) {
-            evt.preventDefault();
+            //re-send code
+            btnResend.addEventListener("click", function (evt) {
+                evt.preventDefault();
 
-            if (!formRegistration.inputMobile.value) return;
+                if (!formRegistration.inputMobile.value) return;
 
-            const time = 60;
+                const time = 60;
 
-            $.ajax({
-                type: "POST",
-                url: "/Seller/SendCode",
-                data: { mobile: formRegistration.inputMobile.value, time },
-                success: function (response) {
-                    console.log(response);
+                $.ajax({
+                    type: "POST",
+                    url: "/Seller/SendCode",
+                    data: { mobile: formRegistration.inputMobile.value, time },
+                    success: function (response) {
+                        console.log(response);
 
-                    if (response.IsSuccess) {
-                        formVerify.inputCode.value = "";
-                        startTimer(time);
+                        if (response.IsSuccess) {
+                            formVerify.inputCode.value = "";
+                            startTimer(time);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
+                });
             });
-        });
 
-        //verify code
-        formVerify.addEventListener('submit', function (evt) {
-            evt.preventDefault();
-            verifyError.textContent = "";
+            //verify code
+            formVerify.addEventListener('submit', function (evt) {
+                evt.preventDefault();
+                verifyError.textContent = "";
 
-            this.btnSubmitVerify.disabled = true;
-            this.btnSubmitVerify.textContent = "verifying...";
+                this.btnSubmitVerify.disabled = true;
+                this.btnSubmitVerify.textContent = "verifying...";
 
-            const code = this.inputCode.value.trim();
-            const mobile = formRegistration.inputMobile.value.trim();
+                const code = this.inputCode.value.trim();
+                const mobile = formRegistration.inputMobile.value.trim();
 
-            $.ajax({
-                type: "POST",
-                url: "/Seller/CodeVerify",
-                data: { code, mobile },
-                success: function (response) {
-                    console.log(response);
+                $.ajax({
+                    type: "POST",
+                    url: "/Seller/CodeVerify",
+                    data: { code, mobile },
+                    success: response => {
+                        if (response.IsSuccess) {
+                            codeVerifyModal.modal('hide');
+                            formRegistration.inputMobile.setAttribute("readonly", "readonly");
 
-                    if (response.IsSuccess) {
-                        codeVerifyModal.modal('hide');
-                        formRegistration.inputMobile.disabled = true;
+                            btnSendCode.disabled = true;
+                            btnSendCode.classList.add("btn-success");
+                            btnSendCode.classList.remove("btn-danger");
+                            btnSendCode.innerText = "Verified";
 
-                        btnSendCode.disabled = true;
-                        btnSendCode.classList.add("btn-success");
-                        btnSendCode.classList.remove("btn-danger");
-                        btnSendCode.innerText = "Verified";
+                            othersInfo.style.display = "block";
+                        } else {
+                            verifyError.textContent = response.Message;
+                        }
 
-                        othersInfo.style.display = "block";
-                    } else {
-                        verifyError.textContent = response.Message;
+                        this.btnSubmitVerify.disabled = false;
+                        this.btnSubmitVerify.innerText = "verify";
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        this.btnSubmitVerify.disabled = false;
+                        this.btnSubmitVerify.textContent = "verify";
+                    }
+                });
+            });
+
+            //on change region
+            const selectRegion = document.getElementById("selectRegion");
+            const selectArea = document.getElementById("selectArea");
+
+            selectRegion.addEventListener("change", function (evt) {
+                selectArea.innerHTML = "";
+                selectArea.appendChild(createOptions({ AreaId: "", AreaName: "[ SELECT ]" }));
+
+                $.ajax({
+                    url: "/Seller/GetAreaByRegion",
+                    data: { id: this.value },
+                    success: response => {
+                        response.forEach(item => {
+                            selectArea.appendChild(createOptions(item));
+                        });
+                    },
+                    error: error => {
+                        console.log(error);
+                    }
+                });
+            });
+
+            //create option
+            function createOptions(item) {
+                const option = document.createElement("option");
+                option.innerText = item.AreaName;
+                option.value = item.AreaId;
+
+                return option;
+            }
+
+            //get form data as object
+            const serializeForm = function (form) {
+                const obj = {};
+                const formData = new FormData(form);
+                for (let key of formData.keys()) {
+                    obj[key] = formData.get(key);
+                }
+                return obj;
+            };
+
+
+            //post registration
+            formRegistration.addEventListener('submit', function (evt) {
+                evt.preventDefault();
+
+                const accountError = document.getElementById("accountError");
+                accountError.textContent = "";
+
+                const btn = this.btnSignUp;
+                btnDisable(btn, true);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Seller/SignUp",
+                    data: serializeForm(this),
+                    success: function (response) {
+                        if (response.IsSuccess)
+                            location.href = "/Seller/Success";
+                        else
+                            accountError.textContent = response.Message;
+
+                        btnDisable(btn, false);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        btnDisable(btn, false);
+                    }
+                });
+            });
+
+
+            //count down
+            function startTimer(duration) {
+                let timer = duration;
+                let seconds = 0;
+                btnResend.classList.add("timerCount");
+
+                const interval = setInterval(function () {
+                    seconds = parseInt(timer % 60, 10);
+                    seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+                    btnResend.textContent = `Resend after ${seconds}s`;
+                    btnResend.style.pointerEvent = "none";
+
+                    if (--timer < 0) {
+                        clearInterval(interval);
+                        btnResend.textContent = "Re Send Code";
+                        btnResend.classList.remove("timerCount");
                     }
 
-                    formVerify.btnSubmitVerify.disabled = false;
-                    formVerify.btnSubmitVerify.innerText = "verify";
-                },
-                error: function (err) {
-                    console.log(err);
-                    formVerify.btnSubmitVerify.disabled = false;
-                    formVerify.btnSubmitVerify.textContent = "verify";
-                }
-            });
-        });
+                }, 1000);
+            }
 
-        //on change region
-        const selectRegion = document.getElementById("selectRegion");
-        const selectArea = document.getElementById("selectArea");
-
-        selectRegion.addEventListener("change", function (evt) {
-            selectArea.innerHTML = "";
-            selectArea.appendChild(createOptions({ AreaId: "", AreaName: "[ SELECT ]" }));
-
-            $.ajax({
-                url: "/Seller/GetAreaByRegion",
-                data: { id: this.value },
-                success: response => {
-                    response.forEach(item => {
-                        selectArea.appendChild(createOptions(item));
-                    });
-                },
-                error: error => {
-                    console.log(error);
-                }
-            });
-        });
-
-        //create option
-        function createOptions(item) {
-            const option = document.createElement("option");
-            option.innerText = item.AreaName;
-            option.value = item.AreaId;
-
-            return option;
-        }
-
-        //post registration
-        formRegistration.addEventListener('submit', function (evt) {
-            evt.preventDefault();
-
-            const accountError = document.getElementById("accountError");
-            accountError.textContent = "";
-
-            const btn = this.btnSignUp;
-            btnDisable(btn, true);
-
-            $.ajax({
-                type: "POST",
-                url: "/Seller/SignUp",
-                data: new FormData(this),
-                success: function (response) {
-                    if (response.IsSuccess)
-                        location.href = "/Seller/Success";
-                    else
-                        accountError.textContent = response.Message;
-
-                    btnDisable(btn, false);
-                },
-                error: function (err) {
-                    console.log(err);
-                    btnDisable(btn, false);
-                }
-            });
-        });
-
-
-        //count down
-        function startTimer(duration) {
-            let timer = duration;
-            let seconds = 0;
-            btnResend.classList.add("timerCount");
-
-            const interval = setInterval(function () {
-                seconds = parseInt(timer % 60, 10);
-                seconds = seconds < 10 ? `0${seconds}` : seconds;
-
-                btnResend.textContent = `Resend after ${seconds}s`;
-                btnResend.style.pointerEvent = "none";
-
-                if (--timer < 0) {
-                    clearInterval(interval);
-                    btnResend.textContent = "Re Send Code";
-                    btnResend.classList.remove("timerCount");
-                }
-
-            }, 1000);
-        }
-
-        //btn disable
-        function btnDisable(btn, isLoading) {
-            btn.disabled = isLoading;
-            btn.textContent = isLoading ? "submitting.." : "Create account";
-        }
+            //btn disable
+            function btnDisable(btn, isLoading) {
+                btn.disabled = isLoading;
+                btn.textContent = isLoading ? "submitting.." : "Create account";
+            }
+        })();
     </script>
 }
