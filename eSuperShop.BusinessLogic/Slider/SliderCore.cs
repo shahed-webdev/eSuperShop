@@ -28,7 +28,7 @@ namespace eSuperShop.BusinessLogic
 
                 model.CreatedByRegistrationId = registrationId;
 
-                if (string.IsNullOrEmpty(model.ImageFileName)) return new DbResponse<SliderListModel>(false, "Invalid Data");
+                if (file == null) return new DbResponse<SliderListModel>(false, "Invalid Data");
 
                 var fileName = FileBuilder.FileNameImage("slider", file.FileName);
                 model.ImageFileName = await cloudStorage.UploadFileAsync(file, fileName);

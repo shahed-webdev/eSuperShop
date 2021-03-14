@@ -2,7 +2,7 @@
     <div>
         <div class="product-header">
             <h3>Top Stores</h3>
-            <a href="/Product/AllStores">View More<i class="far fa-eye ml-1"></i></a>
+            <a class="black-text" href="/Product/AllStores">View More<i class="far fa-eye ml-1"></i></a>
         </div>
         <div class="row">
             <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-3">

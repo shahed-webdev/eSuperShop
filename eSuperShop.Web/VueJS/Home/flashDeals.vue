@@ -2,7 +2,7 @@
     <div v-if="isData" class="mt-5">
         <div class="product-header">
             <h3>Flash Deals</h3>
-            <a href="/Product/FlashDeals">View More<i class="far fa-eye ml-1"></i></a>
+            <a class="black-text" href="/Product/FlashDeals">View More<i class="far fa-eye ml-1"></i></a>
         </div>
     
         <div v-for="i in Math.ceil(data.length / 5)" class="row fivecolumns">

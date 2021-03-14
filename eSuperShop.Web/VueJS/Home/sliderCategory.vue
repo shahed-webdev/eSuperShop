@@ -27,7 +27,7 @@
                     <!--540*400 px-->
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item" v-for="(item,i) in mainSlider" :class="{ active: i == 0 }" :key="item.SliderId">
-                            <img :src="item.ImageUrl" alt="" class="img-fluid">
+                            <img :src="baseUrl+'/'+item.ImageFileName" alt="" class="img-fluid">
                         </div>
                     </div>
 
@@ -52,7 +52,7 @@
                     <!--255*400 px-->
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item" v-for="(item,i) in sideSlider" :class="{ active: i == 0 }" :key="item.SliderId">
-                            <img :src="item.ImageUrl" alt="" class="img-fluid">
+                            <img :src="baseUrl+'/'+item.ImageFileName" alt="" class="img-fluid">
                         </div>
                     </div>
 
@@ -67,19 +67,26 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
 </template>
 
 <script>
     export default {
         data() {
             return {
+                baseUrl: "",
                 catalog: [],
                 mainSlider: [],
-                sideSlider:[]
+                sideSlider: []
             }
         },
         beforeMount() {
+            //base url
+            axios.get('/home/GetBaseUrl').then(response => {
+                this.baseUrl = response.data;
+            });
+
+
             axios.get('/home/GetCategory', { params: { place: "HomePageMain", numberOfData: 11 } }).then(response => {
                 const { IsSuccess, Data } = response.data;
                 if (!IsSuccess) return;
