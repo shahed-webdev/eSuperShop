@@ -1,4 +1,5 @@
 ﻿
+using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
 using eSuperShop.Repository;
@@ -26,6 +27,12 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
+        //get image base url
+        public string GetBaseUrl()
+        {
+            return FileBuilder.BaseUrl();
+        }
+
         //get image slider
         public IActionResult GetSliderData(SliderDisplayPlace place)
         {
@@ -39,7 +46,7 @@ namespace eSuperShop.Web.Controllers
             var response = _catalog.GetDisplayList(place, numberOfData);
             return Json(response);
         }
-        
+
         //get FlashDeals
         public IActionResult GetFlashDeals(ProductFilterRequest filter)
         {
