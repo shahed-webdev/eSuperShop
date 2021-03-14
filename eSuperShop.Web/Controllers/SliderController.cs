@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace eSuperShop.Web.Controllers
@@ -33,23 +31,16 @@ namespace eSuperShop.Web.Controllers
 
         //add slider
         [HttpPost]
-        public async Task<IActionResult> Add(SliderAddModel model, IFormFile fileImage)
+        public async Task<IActionResult> AddAsync(SliderAddModel model, IFormFile fileImage)
         {
-            var fileName = FileBuilder.FileNameImage("slider", fileImage.FileName);
-            model.ImageFileName = await _cloudStorage.UploadFileAsync(fileImage, fileName);
-            model.FileName = fileName;
-
-            var response = _slider.Add(model, User.Identity.Name);
+            var response = await _slider.AddAsync(model, User.Identity.Name, _cloudStorage, fileImage);
             return Json(response);
         }
 
         //delete slider
-        public async Task<IActionResult> Delete(string imageUrl, int id)
+        public async Task<IActionResult> DeleteAsync(int id, string fileName)
         {
             var response = _slider.Delete(id);
-
-            var uri = new Uri(imageUrl);
-            var fileName = Path.GetFileName(uri.AbsolutePath);
 
             if (response.IsSuccess)
             {

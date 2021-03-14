@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using CloudStorage;
 using eSuperShop.Data;
 using eSuperShop.Repository;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -16,7 +19,7 @@ namespace eSuperShop.BusinessLogic
             _mapper = mapper;
             _db = db;
         }
-        public DbResponse<SliderListModel> Add(SliderAddModel model, string userName)
+        public async Task<DbResponse<SliderListModel>> AddAsync(SliderAddModel model, string userName, ICloudStorage cloudStorage, IFormFile file)
         {
             try
             {
@@ -26,6 +29,11 @@ namespace eSuperShop.BusinessLogic
                 model.CreatedByRegistrationId = registrationId;
 
                 if (string.IsNullOrEmpty(model.ImageFileName)) return new DbResponse<SliderListModel>(false, "Invalid Data");
+
+                var fileName = FileBuilder.FileNameImage("slider", file.FileName);
+                model.ImageFileName = await cloudStorage.UploadFileAsync(file, fileName);
+
+
                 _db.Slider.Add(model);
                 _db.SaveChanges();
 
