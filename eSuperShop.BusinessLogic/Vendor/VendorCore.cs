@@ -87,8 +87,8 @@ namespace eSuperShop.BusinessLogic
                 if (string.IsNullOrEmpty(model.VerifiedPhone))
                     return new DbResponse<VendorModel>(false, "Invalid Data");
 
-                if (_db.Vendor.IsExistPhone(model.VerifiedPhone))
-                    return new DbResponse<VendorModel>(false, "Mobile Number already Exist", null, "VerifiedPhone");
+                //if (_db.Vendor.IsExistPhone(model.VerifiedPhone))
+                //    return new DbResponse<VendorModel>(false, "Mobile Number already Exist", null, "VerifiedPhone");
                 //if (model.VerifiedPhone != OtpServiceSingleton.Instance.PhoneNunber)
                 //    return new DbResponse<VendorModel>(false, "Mobile number not Verified", null, "VerifiedPhone");
                 if (_db.Vendor.IsExistEmail(model.Email))
