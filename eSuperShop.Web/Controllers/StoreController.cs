@@ -40,7 +40,7 @@ namespace eSuperShop.Web.Controllers
         public IActionResult ProfileUpdate()
         {
             ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
-            
+
             var response = _vendor.ProfileDetails(User.Identity.Name);
             return View(response.Data);
         }
@@ -99,10 +99,7 @@ namespace eSuperShop.Web.Controllers
         //Add Image Slider
         public async Task<IActionResult> AddImageSlider(VendorSliderModel model, IFormFile image)
         {
-            var fileName = FileBuilder.FileNameImage("store", image.FileName);
-            model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
-
-            var response = _vendorSlider.Add(model, User.Identity.Name);
+            var response = await _vendorSlider.AddAsync(model, User.Identity.Name, _cloudStorage, image);
             return Json(response);
         }
 
