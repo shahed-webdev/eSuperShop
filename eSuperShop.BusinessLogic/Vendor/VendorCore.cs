@@ -428,5 +428,28 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse(false, e.Message);
             }
         }
+
+        public async Task<DbResponse> DataChangeReject(int vendorId, ICloudStorage cloudStorage)
+        {
+            try
+            {
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse(false, "Vendor ID Not Found");
+
+                var urls = _db.Vendor.DataChangeReject(vendorId);
+                _db.SaveChanges();
+
+                foreach (var url in urls)
+                {
+                    await cloudStorage.DeleteFileAsync(FileBuilder.FileNameFromUrl(url));
+                }
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }

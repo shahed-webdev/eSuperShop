@@ -33,5 +33,6 @@ namespace eSuperShop.BusinessLogic
 
         DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request);
         Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model, ICloudStorage cloudStorage);
+        Task<DbResponse> DataChangeReject(int vendorId, ICloudStorage cloudStorage);
     }
 }
