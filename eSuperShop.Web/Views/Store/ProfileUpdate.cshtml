@@ -531,12 +531,12 @@
                         const certificateData = @Html.Raw(Json.Serialize(Model.VendorCertificateFileNames));
                         let doc = `<h5>${name}</h5><div class="certificate-doc">`;
                         certificateData.forEach(item => {
-                            doc += `<img src="${url}/${item}" alt="${name}">`;
+                            doc += `<img src="${url}/thumb_${item}" alt="${name}">`;
                         });
                         doc += "</div>"
                         showContainer.innerHTML = doc;
                     } else {
-                        showContainer.innerHTML = `<h5>${name}</h5><img src="${url}/${fileName}" alt="${name}" />`;
+                        showContainer.innerHTML = `<h5>${name}</h5><img src="${url}/thumb_${fileName}" alt="${name}" />`;
                     }
 
                     $("#modalShowImage").modal("show");
