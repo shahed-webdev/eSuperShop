@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using CloudStorage;
 using eSuperShop.Repository;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -16,7 +19,7 @@ namespace eSuperShop.BusinessLogic
             _mapper = mapper;
         }
 
-        public DbResponse<VendorSliderModel> Add(VendorSliderModel model, string vendorUserName)
+        public async Task<DbResponse<VendorSliderModel>> AddAsync(VendorSliderModel model, string vendorUserName, ICloudStorage cloudStorage, IFormFile file)
         {
             try
             {
@@ -25,6 +28,9 @@ namespace eSuperShop.BusinessLogic
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0)
                     return new DbResponse<VendorSliderModel>(false, "Invalid User");
+
+                var fileName = FileBuilder.FileNameImage("store", file.FileName);
+                model.ImageFileName = await cloudStorage.UploadFileAsync(file, fileName);
 
                 model.VendorId = vendorId;
                 _db.VendorStoreSlider.Add(model);
