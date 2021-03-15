@@ -58,5 +58,10 @@ namespace eSuperShop.Repository
         public string ReturnPhone { get; set; }
 
         public string WarehousePhone { get; set; }
+
+        public string ChangedStoreBannerFileName { get; set; }
+        public string ChangedStoreLogoFileName { get; set; }
+        public string ChangedStoreTagLine { get; set; }
+        public bool IsChangedApproved { get; set; }
     }
 }
