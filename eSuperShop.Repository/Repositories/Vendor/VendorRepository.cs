@@ -247,15 +247,12 @@ namespace eSuperShop.Repository
                 .Include(v => v.VendorCertificate)
                 .FirstOrDefault(v => v.VendorId == model.VendorId);
 
-            vendor.StoreBannerFileName = model.StoreBannerFileName;
-            vendor.StoreLogoFileName = model.StoreLogoFileName;
-            vendor.StoreTagLine = model.StoreTagLine;
-
             if (string.IsNullOrEmpty(model.StoreLogoFileName))
             {
                 if (!String.Equals(vendor.StoreLogoFileName, model.StoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     vendor.ChangedStoreLogoFileName = model.StoreLogoFileName;
+
                     vendor.IsChangedApproved = false;
                 }
             }

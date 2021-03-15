@@ -17,9 +17,11 @@ namespace eSuperShop.Repository
                 .ReverseMap();
             CreateMap<Vendor, VendorInfoModel>()
                 .ForMember(d => d.StoreArea, opt => opt.MapFrom(c => c.StoreArea.AreaName))
+                .ForMember(d => d.StoreRegionId, opt => opt.MapFrom(c => c.StoreArea.RegionId))
                 .ForMember(d => d.StoreRegion, opt => opt.MapFrom(c => c.StoreArea.Region.RegionName))
                 .ForMember(d => d.WarehouseArea, opt => opt.MapFrom(c => c.WarehouseArea.AreaName))
                 .ForMember(d => d.WarehouseRegionId, opt => opt.MapFrom(c => c.WarehouseArea.RegionId))
+
                 .ForMember(d => d.WarehouseRegion, opt => opt.MapFrom(c => c.WarehouseArea.Region.RegionName))
                 .ForMember(d => d.ReturnArea, opt => opt.MapFrom(c => c.ReturnArea.AreaName))
                 .ForMember(d => d.ReturnRegionId, opt => opt.MapFrom(c => c.ReturnArea.RegionId))

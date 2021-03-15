@@ -26,6 +26,7 @@ namespace eSuperShop.Repository
         public DateTime CreatedOnUtc { get; set; }
         public StoreTheme StoreTheme { get; set; }
         public string StorePostcode { get; set; }
+        public int StoreRegionId { get; set; }
         public int StoreAreaId { get; set; }
         public string StoreRegion { get; set; }
         public string StoreArea { get; set; }
