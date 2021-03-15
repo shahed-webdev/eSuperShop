@@ -46,7 +46,6 @@ namespace eSuperShop.Repository
         //return list will be use for delete image from blob server 
         List<string> DataChangeApproved(VendorDataChangeApprovedModel model);
 
+        void VendorInfoUpdateByAdmin(VendorInfoUpdateByAdminModel model);
     }
-
-
 }

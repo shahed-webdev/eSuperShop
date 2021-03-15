@@ -9,6 +9,7 @@ namespace eSuperShop.Repository
         public string AuthorizedPerson { get; set; }
         public string VerifiedPhone { get; set; }
         public string StoreName { get; set; }
+        public string StoreSlugUrl { get; set; }
         public string StoreLogoFileName { set; get; }
         public string StoreBannerFileName { get; set; }
         public string StoreTagLine { get; set; }
