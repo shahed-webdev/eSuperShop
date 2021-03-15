@@ -94,7 +94,17 @@ namespace eSuperShop.BusinessLogic
                 if (_db.Vendor.IsExistEmail(model.Email))
                     return new DbResponse<VendorModel>(false, "Email already Exist", null, "Email");
                 if (_db.Vendor.IsExistStore(model.StoreName))
-                    return new DbResponse<VendorModel>(false, "Store Name already Exist", null, "Email");
+                    return new DbResponse<VendorModel>(false, "Store Name already Exist", null, "StoreName");
+
+                var slugUrl = model.StoreSlugUrl;
+
+                for (var i = 1; _db.Vendor.IsExistSlugUrl(model.StoreSlugUrl); i++)
+                {
+
+                    model.StoreSlugUrl = slugUrl + "-" + i.ToString();
+                }
+
+
 
                 _db.Vendor.Add(model);
                 _db.SaveChanges();
