@@ -56,15 +56,20 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="md-form">
+                        @{
+                            var isChangedLogo = !string.IsNullOrEmpty(Model.ChangedStoreLogoFileName);
+                            var isChangedBanner = !string.IsNullOrEmpty(Model.ChangedStoreBannerFileName);
+                            var isChangedTagLine = !string.IsNullOrEmpty(Model.ChangedStoreTagLine);
+                        }
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="file-field flex-grow-1">
                                 <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                     <span>Choose Logo<i class="fas fa-upload ml-3"></i></span>
-                                    <input name="FileStoreLogo" type="file" accept="image/*">
-                                    <input name="StoreLogoUrl" type="hidden" value="@Model.StoreLogoFileName">
+                                    <input name="FileStoreLogo" @(isChangedLogo ? "disabled" : "") type="file" accept="image/*">
+                                    <input name="StoreLogoUrl" @(isChangedLogo ? "disabled" : "") type="hidden" value="@Model.StoreLogoFileName">
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" placeholder="Upload Store Logo">
+                                    <input class="file-path validate @(isChangedLogo ? "bottom border-danger" : "")" @(isChangedLogo ? "disabled" : "") type="text" placeholder="Upload Store Logo">
                                 </div>
                             </div>
                             <i data-file="@Model.StoreLogoFileName" data-name="Store Logo" class="@(string.IsNullOrEmpty(Model.StoreLogoFileName) ? "empty-image" : "show-image") fas fa-image"></i>
@@ -77,7 +82,7 @@
                 <div class="col-lg-7">
                     <div class="form-group">
                         <label>Store Tag Line</label>
-                        <input name="StoreTagLine" type="text" class="form-control" value="@Model.StoreTagLine" required>
+                        <input name="StoreTagLine" type="text" class="form-control @(isChangedTagLine ? "border border-danger" : "")" @(isChangedTagLine ? "disabled" : "") value="@Model.StoreTagLine" required>
                         <small class="form-text text-danger">Need authority approval after change Tag Line.</small>
                     </div>
                 </div>
@@ -87,11 +92,11 @@
                             <div class="file-field flex-grow-1">
                                 <div class="btn btn-outline-secondary btn-rounded btn-sm float-left">
                                     <span>Choose Banner Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                                    <input name="FileStoreBanner" type="file" accept="image/*">
-                                    <input name="StoreBannerUrl" type="hidden" value="@Model.StoreBannerFileName">
+                                    <input name="FileStoreBanner" @(isChangedBanner ? "disabled" : "") type="file" accept="image/*">
+                                    <input name="StoreBannerUrl" @(isChangedBanner ? "disabled" : "") type="hidden" value="@Model.StoreBannerFileName">
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text" placeholder="Upload Banner Image">
+                                    <input class="file-path validate @(isChangedBanner ? "bottom border-danger" : "")" @(isChangedBanner ? "disabled" : "") type="text" placeholder="Upload Banner Image">
                                 </div>
                             </div>
                             <i data-file="@Model.StoreBannerFileName" data-name="Banner Image" class="@(string.IsNullOrEmpty(Model.StoreBannerFileName) ? "empty-image" : "show-image") fas fa-image"></i>

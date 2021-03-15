@@ -66,19 +66,21 @@
                         },
                         {
                             data: "StoreLogoFileName", "render": function(data, type, row, meta) {
-                                const beforeData = data ? `<img src="@baseUrl/thumb_${data}" class="before-info" />` : "";
-                                return `${beforeData}<img src="@baseUrl/thumb_${row.ChangedStoreLogoFileName}" class="after-info" />`;
+                                const beforeData = data ? `<img src="@baseUrl/${data}" class="before-info mb-1" />` : "";
+                                const afterData = row.ChangedStoreLogoFileName ? `<img src="@baseUrl/${row.ChangedStoreLogoFileName}" class="after-info" />` : "";
+                                return `${beforeData} ${afterData}`;
                             }
                         },
                         {
-                            data: "StoreBannerFileName", "render": function (data, type, row, meta) {
-                                const beforeData = data ? `<img src="@baseUrl/thumb_${data}" class="before-info" />` : "";
-                                return `${beforeData}<img src="@baseUrl/thumb_${row.ChangedStoreBannerFileName}" class="after-info" />`;
+                            data: "StoreBannerFileName", "render": function(data, type, row, meta) {
+                                const beforeData = data ? `<img src="@baseUrl/${data}" class="before-info mb-1" />` : "";
+                                const afterData = row.ChangedStoreBannerFileName ? `<img src="@baseUrl/${row.ChangedStoreBannerFileName}" class="after-info" />` : "";
+                                return `${beforeData} ${afterData}`;
                             }
                         },
                         {
-                            data: "StoreTagLine", "render": function (data, type, row, meta) {
-                                const beforeData = data ? `<span class="before-info">${data}</span>` : "";
+                            data: "StoreTagLine", "render": function(data, type, row, meta) {
+                                const beforeData = data ? `<span class="before-info mr-1">${data}</span>` : "";
                                 return `${beforeData}<span class="after-info">${row.ChangedStoreTagLine}</span>`;
                             }
                         },
@@ -96,7 +98,7 @@
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
                         //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-center", "targets": [5,6] }
+                        { 'className': "text-center", "targets": [5, 6] }
                     ]
                 });
             },
