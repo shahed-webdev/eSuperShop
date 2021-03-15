@@ -338,6 +338,26 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse StoreUpdateByAdmin(VendorInfoUpdateByAdminModel model)
+        {
+            try
+            {
+                if (_db.Vendor.IsNull(model.VendorId))
+                    return new DbResponse(false, "No Data Found");
+                if (_db.Vendor.IsExistSlugUrl(model.StoreSlugUrl, model.VendorId))
+                    return new DbResponse(false, "SlugUrl Already Exist");
+
+                _db.Vendor.VendorInfoUpdateByAdmin(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
         public DbResponse<VendorInfoModel> ProfileDetails(string vendorUserName)
         {
             try
