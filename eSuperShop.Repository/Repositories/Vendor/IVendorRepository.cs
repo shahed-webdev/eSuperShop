@@ -45,6 +45,7 @@ namespace eSuperShop.Repository
         DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request);
         //return list will be use for delete image from blob server 
         List<string> DataChangeApproved(VendorDataChangeApprovedModel model);
+        List<string> DataChangeReject(int vendorId);
 
         void VendorInfoUpdateByAdmin(VendorInfoUpdateByAdminModel model);
     }

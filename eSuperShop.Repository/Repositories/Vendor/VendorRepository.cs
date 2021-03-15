@@ -357,7 +357,7 @@ namespace eSuperShop.Repository
             var urlList = new List<string>();
             var vendor = Db.Vendor.Find(model.VendorId);
 
-            if (string.IsNullOrEmpty(model.ChangedStoreLogoFileName))
+            if (!string.IsNullOrEmpty(model.ChangedStoreLogoFileName))
             {
                 if (!string.Equals(vendor.StoreLogoFileName, model.StoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -368,7 +368,7 @@ namespace eSuperShop.Repository
                 }
             }
 
-            if (string.IsNullOrEmpty(model.ChangedStoreBannerFileName))
+            if (!string.IsNullOrEmpty(model.ChangedStoreBannerFileName))
             {
                 if (!string.Equals(vendor.StoreBannerFileName, model.StoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -379,7 +379,7 @@ namespace eSuperShop.Repository
                 }
             }
 
-            if (string.IsNullOrEmpty(model.ChangedStoreTagLine))
+            if (!string.IsNullOrEmpty(model.ChangedStoreTagLine))
             {
                 if (!string.Equals(vendor.StoreTagLine, model.ChangedStoreTagLine, StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -388,6 +388,30 @@ namespace eSuperShop.Repository
                 }
             }
 
+            vendor.IsChangedApproved = true;
+
+            Db.Vendor.Update(vendor);
+            return urlList;
+        }
+
+        public List<string> DataChangeReject(int vendorId)
+        {
+            var urlList = new List<string>();
+            var vendor = Db.Vendor.Find(vendorId);
+
+            if (!string.IsNullOrEmpty(vendor.ChangedStoreLogoFileName))
+            {
+                urlList.Add(vendor.ChangedStoreLogoFileName);
+                vendor.ChangedStoreLogoFileName = string.Empty;
+            }
+
+            if (!string.IsNullOrEmpty(vendor.ChangedStoreBannerFileName))
+            {
+                urlList.Add(vendor.ChangedStoreBannerFileName);
+                vendor.ChangedStoreBannerFileName = string.Empty;
+            }
+
+            vendor.ChangedStoreTagLine = string.Empty;
             vendor.IsChangedApproved = true;
 
             Db.Vendor.Update(vendor);
