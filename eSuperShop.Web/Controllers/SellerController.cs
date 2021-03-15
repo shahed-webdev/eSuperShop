@@ -138,6 +138,14 @@ namespace eSuperShop.Web.Controllers
             return View(response.Data);
         }
 
+        //post update profile
+        [HttpPost]
+        public IActionResult ProfileUpdate(VendorInfoUpdateByAdminModel model)
+        {
+            var response = _vendor.StoreUpdateByAdmin(model);
+            return Json(response);
+        }
+
 
         //seller pending profile info
         [Authorize(Roles = "admin, sub-admin")]

@@ -500,6 +500,7 @@
                             return;
                         }
 
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
                         disableBtn(this.btnSubmit, false);
                     },
                     error: error => {

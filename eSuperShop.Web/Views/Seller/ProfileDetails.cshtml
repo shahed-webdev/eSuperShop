@@ -25,7 +25,7 @@
 
         <div class="card card-body mb-4">
             <h5 class="font-weight-bold mb-3">Store Info</h5>
-
+            <input type="hidden" name="VendorId" value="@Model.VendorId" />
             <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
@@ -81,7 +81,7 @@
                 <div class="col-lg-7">
                     <div class="form-group">
                         <label>Store Tag Line</label>
-                        <input name="StoreTagLine" type="text" class="form-control" value="@Model.StoreTagLine" required>
+                        <input name="StoreTagLine" disabled type="text" class="form-control" value="@Model.StoreTagLine" required>
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -111,7 +111,7 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Address</label>
-                        <input type="text" class="form-control" name="StoreAddress" value="@Model.StoreAddress" />
+                        <input type="text" class="form-control" disabled name="StoreAddress" value="@Model.StoreAddress" />
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -142,7 +142,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>NID Card No.</label>
-                        <input name="NId" type="text" class="form-control" value="@Model.NId" />
+                        <input name="NId" disabled type="text" class="form-control" value="@Model.NId" />
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -225,19 +225,19 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Account Title</label>
-                        <input name="BankAccountTitle" type="text" class="form-control" value="@Model.BankAccountTitle" />
+                        <input name="BankAccountTitle" disabled type="text" class="form-control" value="@Model.BankAccountTitle" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Account Number</label>
-                        <input name="BankAccountNumber" type="text" class="form-control" value="@Model.BankAccountNumber" />
+                        <input name="BankAccountNumber" disabled type="text" class="form-control" value="@Model.BankAccountNumber" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Bank Name</label>
-                        <input name="BankName" type="text" class="form-control" value="@Model.BankName" />
+                        <input name="BankName" disabled type="text" class="form-control" value="@Model.BankName" />
                     </div>
                 </div>
             </div>
@@ -246,13 +246,13 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Branch Name</label>
-                        <input name="BranchName" type="text" class="form-control" value="@Model.BranchName" />
+                        <input name="BranchName" disabled type="text" class="form-control" value="@Model.BranchName" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Routing Number</label>
-                        <input name="RoutingNumber" type="text" class="form-control" value="@Model.RoutingNumber" />
+                        <input name="RoutingNumber" disabled type="text" class="form-control" value="@Model.RoutingNumber" />
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -276,7 +276,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Mobile Banking</label>
-                        <select name="MobileBankingType" class="form-control" asp-for="@Model.MobileBankingType">
+                        <select name="MobileBankingType" disabled class="form-control" asp-for="@Model.MobileBankingType">
                             <option value="">[ SELECT ]</option>
                             <option value="Bkash">Bkash</option>
                             <option value="Rocket">Rocket</option>
@@ -290,7 +290,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>Mobile Banking Number</label>
-                        <input name="MobileBankingNumber" type="text" class="form-control" value="@Model.MobileBankingNumber" />
+                        <input name="MobileBankingNumber" disabled type="text" class="form-control" value="@Model.MobileBankingNumber" />
                     </div>
                 </div>
             </div>
@@ -303,13 +303,13 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label>Address</label>
-                        <input name="WarehouseAddress" type="text" class="form-control" value="@Model.WarehouseAddress" required>
+                        <input name="WarehouseAddress" disabled type="text" class="form-control" value="@Model.WarehouseAddress" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Postcode</label>
-                        <input name="WarehousePostcode" type="text" class="form-control" value="@Model.WarehousePostcode" required>
+                        <input name="WarehousePostcode" disabled type="text" class="form-control" value="@Model.WarehousePostcode" required>
                     </div>
                 </div>
             </div>
@@ -318,7 +318,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Region/Division</label>
-                        <select asp-items="ViewBag.Regions" id="selectWarehouseRegion" asp-for="WarehouseRegionId" class="form-control">
+                        <select asp-items="ViewBag.Regions" disabled id="selectWarehouseRegion" asp-for="WarehouseRegionId" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
@@ -326,7 +326,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Area</label>
-                        <select id="selectWarehouseArea" name="WarehouseAreaId" class="form-control" required>
+                        <select id="selectWarehouseArea" disabled name="WarehouseAreaId" class="form-control" required>
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
@@ -334,7 +334,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input name="WarehousePhone" type="text" class="form-control" value="@Model.WarehousePhone" required>
+                        <input name="WarehousePhone" disabled type="text" class="form-control" value="@Model.WarehousePhone" required>
                     </div>
                 </div>
             </div>
@@ -347,13 +347,13 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label>Address</label>
-                        <input name="ReturnAddress" type="text" class="form-control" value="@Model.ReturnAddress" required>
+                        <input name="ReturnAddress" disabled type="text" class="form-control" value="@Model.ReturnAddress" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Postcode</label>
-                        <input name="ReturnPostcode" type="text" class="form-control" value="@Model.ReturnPostcode" required>
+                        <input name="ReturnPostcode" disabled type="text" class="form-control" value="@Model.ReturnPostcode" required>
                     </div>
                 </div>
             </div>
@@ -362,7 +362,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Region/Division</label>
-                        <select asp-items="ViewBag.Regions" id="selectReturnRegion" asp-for="ReturnRegionId" class="form-control">
+                        <select asp-items="ViewBag.Regions" disabled id="selectReturnRegion" asp-for="ReturnRegionId" class="form-control">
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
@@ -370,7 +370,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Area</label>
-                        <select id="selectReturnArea" name="ReturnAreaId" class="form-control" required>
+                        <select id="selectReturnArea" disabled name="ReturnAreaId" class="form-control" required>
                             <option value="">[ SELECT ]</option>
                         </select>
                     </div>
@@ -378,7 +378,7 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Phone</label>
-                        <input name="ReturnPhone" type="text" class="form-control" value="@Model.ReturnPhone" required>
+                        <input name="ReturnPhone" disabled type="text" class="form-control" value="@Model.ReturnPhone" required>
                     </div>
                 </div>
             </div>
@@ -528,6 +528,7 @@
                             return;
                         }
 
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
                         disableBtn(this.btnSubmit, false);
                     },
                     error: error => {
