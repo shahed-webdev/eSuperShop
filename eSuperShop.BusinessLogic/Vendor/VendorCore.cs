@@ -88,13 +88,13 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<VendorModel>(false, "Invalid Data");
 
                 //if (_db.Vendor.IsExistPhone(model.VerifiedPhone))
-                //    return new DbResponse<VendorModel>(false, "Mobile Number already Exist", null, "VerifiedPhone");
+                //    return new DbResponse<VendorModel>(false, $"{model.VerifiedPhone} Number already Exist", null, "VerifiedPhone");
                 //if (model.VerifiedPhone != OtpServiceSingleton.Instance.PhoneNunber)
-                //    return new DbResponse<VendorModel>(false, "Mobile number not Verified", null, "VerifiedPhone");
+                //    return new DbResponse<VendorModel>(false, $"{model.VerifiedPhone} number not Verified", null, "VerifiedPhone");
                 if (_db.Vendor.IsExistEmail(model.Email))
-                    return new DbResponse<VendorModel>(false, "Email already Exist", null, "Email");
+                    return new DbResponse<VendorModel>(false, $"{model.Email} already Exist", null, "Email");
                 if (_db.Vendor.IsExistStore(model.StoreName))
-                    return new DbResponse<VendorModel>(false, "Store Name already Exist", null, "StoreName");
+                    return new DbResponse<VendorModel>(false, $"{model.StoreName} already Exist", null, "StoreName");
 
                 var slugUrl = model.StoreSlugUrl;
 
@@ -205,7 +205,7 @@ namespace eSuperShop.BusinessLogic
             {
 
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse<VendorModel>(false, "No Data Found", null, "VerifiedPhone");
+                    return new DbResponse<VendorModel>(false, "Vendor ID Not Found", null, "VerifiedPhone");
 
 
                 var data = _db.Vendor.Get(vendorId);
@@ -241,7 +241,8 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_db.Brand.IsExistBrandInCatalog(vendorId, catalogId)) return new DbResponse(false, "Data Not Found");
+                if (!_db.Brand.IsExistBrandInCatalog(vendorId, catalogId))
+                    return new DbResponse(false, "Vendor ID Not Found");
                 _db.Vendor.UnAssignCatalog(vendorId, catalogId);
                 _db.SaveChanges();
 
@@ -262,7 +263,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse(false, "No Data Found");
+                    return new DbResponse(false, "Vendor ID Not Found");
 
 
                 _db.Vendor.ThemeChange(vendorId, theme);
@@ -281,9 +282,9 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse(false, "No Data Found");
+                    return new DbResponse(false, "Vendor ID Not Found");
                 if (_db.Vendor.IsExistSlugUrl(slugUrl))
-                    return new DbResponse(false, "SlugUrl Already Exist");
+                    return new DbResponse(false, $"{slugUrl} Url Already Exist");
 
                 _db.Vendor.SlugUrlChange(vendorId, slugUrl);
                 _db.SaveChanges();
@@ -301,7 +302,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse(false, "No Data Found");
+                    return new DbResponse(false, "Vendor ID Not Found");
 
                 _db.Vendor.BanarUrlChange(vendorId, banarUrl);
                 _db.SaveChanges();
@@ -325,7 +326,7 @@ namespace eSuperShop.BusinessLogic
                 model.VendorId = vendorId;
 
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse(false, "No Data Found");
+                    return new DbResponse(false, "Vendor ID Not Found");
 
                 _db.Vendor.StoreInfoUpdate(model);
                 _db.SaveChanges();
@@ -343,9 +344,11 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 if (_db.Vendor.IsNull(model.VendorId))
-                    return new DbResponse(false, "No Data Found");
+                    return new DbResponse(false, "Vendor ID Not Found");
+                if (_db.Vendor.IsExistStore(model.StoreName, model.VendorId))
+                    return new DbResponse(false, $"{model.StoreName} already Exist");
                 if (_db.Vendor.IsExistSlugUrl(model.StoreSlugUrl, model.VendorId))
-                    return new DbResponse(false, "SlugUrl Already Exist");
+                    return new DbResponse(false, $"{model.StoreSlugUrl} Url already Exist");
 
                 _db.Vendor.VendorInfoUpdateByAdmin(model);
                 _db.SaveChanges();
@@ -369,7 +372,7 @@ namespace eSuperShop.BusinessLogic
 
 
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse<VendorInfoModel>(false, "No Data Found");
+                    return new DbResponse<VendorInfoModel>(false, "Vendor ID Not Found");
 
                 var data = _db.Vendor.ProfileDetails(vendorId);
 
@@ -386,7 +389,7 @@ namespace eSuperShop.BusinessLogic
             try
             {
                 if (_db.Vendor.IsNull(vendorId))
-                    return new DbResponse<VendorInfoModel>(false, "No Data Found");
+                    return new DbResponse<VendorInfoModel>(false, "Vendor ID Not Found");
 
                 var data = _db.Vendor.ProfileDetails(vendorId);
 
@@ -407,7 +410,8 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (_db.Vendor.IsNull(model.VendorId)) return new DbResponse(false, "No Data Found");
+                if (_db.Vendor.IsNull(model.VendorId))
+                    return new DbResponse(false, "Vendor ID Not Found");
 
                 var urls = _db.Vendor.DataChangeApproved(model);
                 _db.SaveChanges();
