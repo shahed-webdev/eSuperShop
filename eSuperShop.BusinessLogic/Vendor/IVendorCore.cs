@@ -32,7 +32,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<VendorInfoModel> ProfileDetails(int vendorId);
 
         DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request);
-        Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model, ICloudStorage cloudStorage);
+        Task<DbResponse> DataChangeApproved(int vendorId, ICloudStorage cloudStorage);
         Task<DbResponse> DataChangeReject(int vendorId, ICloudStorage cloudStorage);
     }
 }

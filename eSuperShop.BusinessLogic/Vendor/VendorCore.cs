@@ -406,14 +406,14 @@ namespace eSuperShop.BusinessLogic
             return _db.Vendor.DataChangeUnapprovedList(request);
         }
 
-        public async Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model, ICloudStorage cloudStorage)
+        public async Task<DbResponse> DataChangeApproved(int vendorId, ICloudStorage cloudStorage)
         {
             try
             {
-                if (_db.Vendor.IsNull(model.VendorId))
+                if (_db.Vendor.IsNull(vendorId))
                     return new DbResponse(false, "Vendor ID Not Found");
 
-                var urls = _db.Vendor.DataChangeApproved(model);
+                var urls = _db.Vendor.DataChangeApproved(vendorId);
                 _db.SaveChanges();
 
                 foreach (var url in urls)

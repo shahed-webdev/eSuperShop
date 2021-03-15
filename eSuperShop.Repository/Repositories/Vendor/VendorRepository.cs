@@ -352,38 +352,38 @@ namespace eSuperShop.Repository
                 .ToDataResult(request);
         }
 
-        public List<string> DataChangeApproved(VendorDataChangeApprovedModel model)
+        public List<string> DataChangeApproved(int vendorId)
         {
             var urlList = new List<string>();
-            var vendor = Db.Vendor.Find(model.VendorId);
+            var vendor = Db.Vendor.Find(vendorId);
 
-            if (!string.IsNullOrEmpty(model.ChangedStoreLogoFileName))
+            if (!string.IsNullOrEmpty(vendor.ChangedStoreLogoFileName))
             {
-                if (!string.Equals(vendor.StoreLogoFileName, model.StoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(vendor.StoreLogoFileName, vendor.ChangedStoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     urlList.Add(vendor.StoreLogoFileName);
-                    vendor.StoreLogoFileName = model.ChangedStoreLogoFileName;
+                    vendor.StoreLogoFileName = vendor.ChangedStoreLogoFileName;
                     vendor.ChangedStoreLogoFileName = string.Empty;
 
                 }
             }
 
-            if (!string.IsNullOrEmpty(model.ChangedStoreBannerFileName))
+            if (!string.IsNullOrEmpty(vendor.ChangedStoreBannerFileName))
             {
-                if (!string.Equals(vendor.StoreBannerFileName, model.StoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(vendor.StoreBannerFileName, vendor.ChangedStoreBannerFileName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     urlList.Add(vendor.StoreBannerFileName);
 
-                    vendor.StoreBannerFileName = model.ChangedStoreBannerFileName;
+                    vendor.StoreBannerFileName = vendor.ChangedStoreBannerFileName;
                     vendor.ChangedStoreBannerFileName = string.Empty;
                 }
             }
 
-            if (!string.IsNullOrEmpty(model.ChangedStoreTagLine))
+            if (!string.IsNullOrEmpty(vendor.ChangedStoreTagLine))
             {
-                if (!string.Equals(vendor.StoreTagLine, model.ChangedStoreTagLine, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(vendor.StoreTagLine, vendor.ChangedStoreTagLine, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    vendor.ChangedStoreLogoFileName = model.StoreLogoFileName;
+                    vendor.StoreTagLine = vendor.ChangedStoreTagLine;
                     vendor.ChangedStoreTagLine = string.Empty;
                 }
             }
