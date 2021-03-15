@@ -4,7 +4,7 @@
 }
 
 @section Styles{
-  
+
 }
 
 
@@ -15,13 +15,16 @@
         <table id="data-table" class="table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th><strong>Authorized Person</strong></th>
+                    <th><strong>Auth. Person</strong></th>
                     <th><strong>Verified Phone</strong></th>
                     <th><strong>Email</strong></th>
-                    <th><strong>Store Name</strong></th>
-                    <th><strong>Store Address</strong></th>
-                    <th style="width: 35px"><strong>Approve</strong></th>
-                    <th style="width: 35px"><strong>Delete</strong></th>
+                    <th><strong>Store</strong></th>
+                    <th><strong>Address</strong></th>
+                    <th><strong>Region</strong></th>
+                    <th><strong>Area</strong></th>
+                    <th><strong>Postcode</strong></th>
+                    <th class="text-center"><strong>Approve</strong></th>
+                    <th class="text-center"><strong>Delete</strong></th>
                 </tr>
             </thead>
         </table>
@@ -31,14 +34,14 @@
 
 @section Scripts{
     <script>
-        $(function() {
+        $(function () {
             dataTable.getData();
         });
 
         //get data
         var dataTable = {
             table: null,
-            init: function() {
+            init: function () {
                 dataTable.table = $("#data-table").DataTable({
                     processing: true,
                     serverSide: true,
@@ -47,31 +50,34 @@
                         type: "POST"
                     },
                     columns:
-                    [
-                        {
-                            data: "AuthorizedPerson", "render": function(data, type, row, meta) {
-                                return `<a class="blue-text" href="/Seller/AssignCatalog/${row.VendorId}">${data}</a>`;
+                        [
+                            {
+                                data: "AuthorizedPerson", "render": function (data, type, row, meta) {
+                                    return `<a class="blue-text" href="/Seller/AssignCatalog/${row.VendorId}">${data}</a>`;
+                                }
+                            },
+                            { data: "VerifiedPhone" },
+                            { data: "Email" },
+                            { data: "StoreName" },
+                            { data: "StoreAddress" },
+                            { data: "StoreRegion" },
+                            { data: "StoreArea" },
+                            { data: "StorePostcode" },
+                            {
+                                data: "IsApproved", "render": function (data, type, row, meta) {
+                                    return `<input id="${row.VendorId}" type="checkbox" ${data ? "disabled" : ""} ${data ? "checked" : ""} class="form-check-input"><label class="approve form-check-label" for="${row.VendorId}"></label>`;
+                                }
+                            },
+                            {
+                                data: "VendorId", "render": function (data, type, row, meta) {
+                                    return `<a id="${row.VendorId}" class="delete fas fa-trash red-text" data-url="/Seller/DeleteVendor/${data}"></a>`;
+                                }
                             }
-                        },
-                        { data: "VerifiedPhone" },
-                        { data: "Email" },
-                        { data: "StoreName" },
-                        { data: "StoreAddress" },
-                        {
-                            data: "IsApproved", "render": function(data, type, row, meta) {
-                                return `<input id="${row.VendorId}" type="checkbox" ${data ? "disabled" : ""} ${data ? "checked" : ""} class="form-check-input"><label class="approve form-check-label" for="${row.VendorId}"></label>`;
-                            }
-                        },
-                        {
-                            data: "VendorId", "render": function(data, type, row, meta) {
-                                return `<a id="${row.VendorId}" class="delete fas fa-trash red-text" data-url="/Seller/DeleteVendor/${data}"></a>`;
-                            }
-                        }
-                    ],
+                        ],
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
                         //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-center", "targets": [1] }
+                        { 'className': "text-center", "targets": [1, 8, 9] }
                     ]
                 });
             },
@@ -86,46 +92,52 @@
                 StartsWith: 7,
                 EndsWith: 8
             },
-            getData: function() {
+            getData: function () {
                 dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
             },
-            addSign: function(data) { return `${data}/-` }
+            addSign: function (data) { return `${data}/-` }
         }
 
         const onTable = document.getElementById("data-table");
-        onTable.addEventListener("click", function(evt) {
+        onTable.addEventListener("click", function (evt) {
             const element = evt.target;
 
+            //approve
             const onApprove = element.classList.contains("approve");
             if (onApprove) {
                 const cb = element.previousElementSibling;
 
                 if (!cb.checked) {
-                    const data = { VendorId: +cb.id }
-
                     $.ajax({
                         type: "POST",
                         url: `/Seller/ApproveVendor`,
-                        data,
-                        success: function(response) {
-                            console.log(response)
-                            cb.disabled = false;
+                        data: { VendorId: +cb.id },
+                        success: function (response) {
+                            $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                            if (response.IsSuccess) {
+                                cb.disabled = false;
+                            }
                         },
-                        error: function(err) { console.log(err); }
+                        error: function (err) {
+                            console.log(err);
+                        }
                     });
                 }
             }
 
+            //delete
             const onDelete = element.classList.contains("delete");
             if (onDelete) {
                 $.ajax({
                     url: `/Seller/DeleteVendor/${element.id}`,
-                    success: function(response) {
-                        console.log(response)
+                    success: function (response) {
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
                         if (response.IsSuccess)
                             element.parentElement.parentElement.remove();
                     },
-                    error: function(err) { console.log(err); }
+                    error: function (err) { console.log(err); }
                 });
             }
         });
