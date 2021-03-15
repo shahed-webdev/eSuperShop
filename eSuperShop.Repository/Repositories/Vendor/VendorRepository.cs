@@ -247,9 +247,9 @@ namespace eSuperShop.Repository
                 .Include(v => v.VendorCertificate)
                 .FirstOrDefault(v => v.VendorId == model.VendorId);
 
-            if (string.IsNullOrEmpty(model.StoreLogoFileName))
+            if (!string.IsNullOrEmpty(model.StoreLogoFileName))
             {
-                if (!String.Equals(vendor.StoreLogoFileName, model.StoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(vendor.StoreLogoFileName, model.StoreLogoFileName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     vendor.ChangedStoreLogoFileName = model.StoreLogoFileName;
 
@@ -257,18 +257,18 @@ namespace eSuperShop.Repository
                 }
             }
 
-            if (string.IsNullOrEmpty(model.StoreBannerFileName))
+            if (!string.IsNullOrEmpty(model.StoreBannerFileName))
             {
-                if (!String.Equals(vendor.StoreBannerFileName, model.StoreBannerFileName, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(vendor.StoreBannerFileName, model.StoreBannerFileName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     vendor.ChangedStoreBannerFileName = model.ChequeImageFileName;
                     vendor.IsChangedApproved = false;
                 }
             }
 
-            if (string.IsNullOrEmpty(model.StoreTagLine))
+            if (!string.IsNullOrEmpty(model.StoreTagLine))
             {
-                if (!String.Equals(vendor.StoreTagLine, model.StoreTagLine, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(vendor.StoreTagLine, model.StoreTagLine, StringComparison.CurrentCultureIgnoreCase))
                 {
                     vendor.ChangedStoreTagLine = model.StoreTagLine;
                     vendor.IsChangedApproved = false;
@@ -396,7 +396,16 @@ namespace eSuperShop.Repository
 
         public void VendorInfoUpdateByAdmin(VendorInfoUpdateByAdminModel model)
         {
-            throw new NotImplementedException();
+            var vendor = Db.Vendor
+                .FirstOrDefault(v => v.VendorId == model.VendorId);
+
+            vendor.AuthorizedPerson = model.AuthorizedPerson;
+            vendor.StoreName = model.StoreName;
+            vendor.StoreSlugUrl = model.StoreSlugUrl;
+            vendor.StorePostcode = model.StorePostcode;
+            vendor.StoreAreaId = model.StoreAreaId;
+
+            Db.Vendor.Update(vendor);
         }
 
         string CatalogDllFunction(Catalog catalog, string cat)

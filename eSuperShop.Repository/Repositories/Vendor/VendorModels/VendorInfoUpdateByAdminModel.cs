@@ -6,6 +6,8 @@
         public string AuthorizedPerson { get; set; }
         public string StoreName { get; set; }
         public string StoreSlugUrl { get; set; }
+        public string StorePostcode { get; set; }
+        public int? StoreAreaId { get; set; }
 
     }
 }
