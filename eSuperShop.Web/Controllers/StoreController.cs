@@ -55,6 +55,7 @@ namespace eSuperShop.Web.Controllers
             model.ChequeImageFileName = await _cloudStorage.UpdateFileAsync(files.FileChequeCopy, model.ChequeImageFileName, "cheque");
             model.TradeLicenseImageFileName = await _cloudStorage.UpdateFileAsync(files.FileTradeLicense, model.TradeLicenseImageFileName, "trade-license");
 
+            //multiple certificate insert
             if (files.FileOthersCertificate != null)
             {
                 if (model.VendorCertificateFileNames != null)
@@ -65,13 +66,13 @@ namespace eSuperShop.Web.Controllers
                     }
                 }
 
-                var newUrls = new List<string>();
+                var newFile = new List<string>();
                 foreach (var file in files.FileOthersCertificate)
                 {
-                    newUrls.Add(await _cloudStorage.UploadFileAsync(file, FileBuilder.FileNameImage("certificate", file.FileName)));
+                    newFile.Add(await _cloudStorage.UploadFileAsync(file, FileBuilder.FileNameImage("certificate", file.FileName)));
                 }
 
-                model.VendorCertificateFileNames = newUrls.ToArray();
+                model.VendorCertificateFileNames = newFile.ToArray();
             }
 
             var response = _vendor.StoreUpdate(model, User.Identity.Name);

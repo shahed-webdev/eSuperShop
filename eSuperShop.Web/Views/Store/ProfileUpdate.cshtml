@@ -1,7 +1,9 @@
-﻿@model VendorInfoModel
+﻿@using CloudStorage
+@model VendorInfoModel
 @{
     ViewData["Title"] = "Profile Update";
     Layout = "~/Views/Shared/_SellerLayout.cshtml";
+    var baseUrl = FileBuilder.BaseUrl();
 }
 
 @section Styles
@@ -50,7 +52,7 @@
                     <div class="form-group">
                         <label>Store Name</label>
                         <input type="text" class="form-control" disabled value="@Model.StoreName" />
-                        <small>www.esupershop.com/</small>
+                        <small>www.esupershop.com/@Model.StoreSlugUrl</small>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -66,7 +68,7 @@
                                     <input class="file-path validate" type="text" placeholder="Upload Store Logo">
                                 </div>
                             </div>
-                            <i data-url="@Model.StoreLogoFileName" data-name="Store Logo" class="@(string.IsNullOrEmpty(Model.StoreLogoFileName) ? "empty-image" : "show-image") fas fa-image"></i>
+                            <i data-file="@Model.StoreLogoFileName" data-name="Store Logo" class="@(string.IsNullOrEmpty(Model.StoreLogoFileName) ? "empty-image" : "show-image") fas fa-image"></i>
                         </div>
                         <small class="form-text text-danger">Need authority approval after change logo.</small>
                     </div>
@@ -93,7 +95,7 @@
                                     <input class="file-path validate" type="text" placeholder="Upload Banner Image">
                                 </div>
                             </div>
-                            <i data-url="@Model.StoreBannerFileName" data-name="Banner Image" class="@(string.IsNullOrEmpty(Model.StoreBannerFileName) ? "empty-image" : "show-image") fas fa-image"></i>
+                            <i data-file="@Model.StoreBannerFileName" data-name="Banner Image" class="@(string.IsNullOrEmpty(Model.StoreBannerFileName) ? "empty-image" : "show-image") fas fa-image"></i>
                         </div>
                         <small class="form-text text-danger">Need authority approval after change banner image.</small>
                     </div>
@@ -150,7 +152,7 @@
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Front)">
                             </div>
                         </div>
-                        <i data-url="@Model.NIdImageFrontFileName" data-name="NID(Front)" class="@(string.IsNullOrEmpty(Model.NIdImageFrontFileName)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-file="@Model.NIdImageFrontFileName" data-name="NID(Front)" class="@(string.IsNullOrEmpty(Model.NIdImageFrontFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -165,7 +167,7 @@
                                 <input class="file-path validate" type="text" placeholder="Upload NID(Back)">
                             </div>
                         </div>
-                        <i data-url="@Model.NIdImageBackFileName" data-name="NID(Back)" class="@(string.IsNullOrEmpty(Model.NIdImageBackFileName)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-file="@Model.NIdImageBackFileName" data-name="NID(Back)" class="@(string.IsNullOrEmpty(Model.NIdImageBackFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
             </div>
@@ -183,7 +185,7 @@
                                 <input class="file-path validate" type="text" placeholder="Upload Trade License Copy">
                             </div>
                         </div>
-                        <i data-url="@Model.TradeLicenseImageFileName" data-name="Trade License" class="@(string.IsNullOrEmpty(Model.TradeLicenseImageFileName)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-file="@Model.TradeLicenseImageFileName" data-name="Trade License" class="@(string.IsNullOrEmpty(Model.TradeLicenseImageFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -260,7 +262,7 @@
                                 <input class="file-path validate" type="text" placeholder="Cheque Copy">
                             </div>
                         </div>
-                        <i data-url="@Model.ChequeImageFileName" data-name="Cheque Copy" class="@(string.IsNullOrEmpty(Model.ChequeImageFileName)? "empty-image":"show-image") fas fa-image"></i>
+                        <i data-file="@Model.ChequeImageFileName" data-name="Cheque Copy" class="@(string.IsNullOrEmpty(Model.ChequeImageFileName)? "empty-image":"show-image") fas fa-image"></i>
                     </div>
                 </div>
             </div>
@@ -521,7 +523,8 @@
                 const onShowClick = element.classList.contains("show-image");
 
                 if (onShowClick) {
-                    const url = element.getAttribute("data-url");
+                    const url = '@baseUrl';
+                    const fileName = element.getAttribute("data-file");
                     const name = element.getAttribute("data-name");
                     const showContainer = document.getElementById("show-img-container");
 
@@ -529,12 +532,12 @@
                         const certificateData = @Html.Raw(Json.Serialize(Model.VendorCertificateFileNames));
                         let doc = `<h5>${name}</h5><div class="certificate-doc">`;
                         certificateData.forEach(item => {
-                            doc += `<img src="${item}" alt="${name}">`;
+                            doc += `<img src="${url}/${item}" alt="${name}">`;
                         });
                         doc += "</div>"
                         showContainer.innerHTML = doc;
                     } else {
-                        showContainer.innerHTML = `<h5>${name}</h5><img src="${url}" alt="${name}" />`;
+                        showContainer.innerHTML = `<h5>${name}</h5><img src="${url}/${fileName}" alt="${name}" />`;
                     }
 
                     $("#modalShowImage").modal("show");

@@ -397,6 +397,11 @@ namespace eSuperShop.Repository
             return urlList;
         }
 
+        public void VendorInfoUpdateByAdmin(VendorInfoUpdateByAdminModel model)
+        {
+            throw new NotImplementedException();
+        }
+
         string CatalogDllFunction(Catalog catalog, string cat)
         {
 
