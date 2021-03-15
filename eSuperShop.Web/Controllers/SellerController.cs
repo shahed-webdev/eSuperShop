@@ -139,6 +139,14 @@ namespace eSuperShop.Web.Controllers
         }
 
 
+        //seller pending profile info
+        [Authorize(Roles = "admin, sub-admin")]
+        public IActionResult PendingProfileInfo()
+        {
+            return View();
+        }
+
+
         //store
         [Authorize(Roles = "Seller")]
         public IActionResult Store()
