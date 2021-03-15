@@ -145,6 +145,13 @@ let linkData = [
                 "Action": "List",
                 "Title": "List",
                 "IconClass": null
+            }, {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Seller",
+                "Action": "PendingProfileInfo",
+                "Title": "Pending Profile Info",
+                "IconClass": null
             }]
     },
     {

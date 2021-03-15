@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
+using CloudStorage;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -14,13 +15,15 @@ namespace eSuperShop.Web.Controllers
         private readonly ICatalogCore _catalog;
         private readonly IRegionCore _region;
         private readonly IAreaCore _area;
+        private readonly ICloudStorage _cloudStorage;
 
-        public SellerController(IVendorCore vendor, ICatalogCore catalog, IRegionCore region, IAreaCore area)
+        public SellerController(IVendorCore vendor, ICatalogCore catalog, IRegionCore region, IAreaCore area, ICloudStorage cloudStorage)
         {
             _vendor = vendor;
             _catalog = catalog;
             _region = region;
             _area = area;
+            _cloudStorage = cloudStorage;
         }
 
         //seller sign-up
@@ -78,6 +81,7 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
+        //get data-table
         public IActionResult SellerList(DataRequest request)
         {
             var response = _vendor.List(request);
@@ -153,6 +157,29 @@ namespace eSuperShop.Web.Controllers
         {
             return View();
         }
+
+        //pending profile info
+        public IActionResult GetPendingProfileInfo(DataRequest request)
+        {
+            var response = _vendor.DataChangeUnapprovedList(request);
+            return Json(response);
+        }
+
+        //Approve Profile Info
+        [HttpPost]
+        public async Task<IActionResult> ApproveProfileInfo(int id)
+        {
+            var response = await _vendor.DataChangeApproved(id, _cloudStorage);
+            return Json(response);
+        }
+
+        //Reject Profile Info
+        public IActionResult RejectProfileInfo(int id)
+        {
+            var response = _vendor.DataChangeReject(id,_cloudStorage);
+            return Json(response);
+        }
+
 
 
         //store
