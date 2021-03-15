@@ -100,8 +100,7 @@ namespace eSuperShop.BusinessLogic
 
                 for (var i = 1; _db.Vendor.IsExistSlugUrl(model.StoreSlugUrl); i++)
                 {
-
-                    model.StoreSlugUrl = slugUrl + "-" + i.ToString();
+                    model.StoreSlugUrl = slugUrl + "-" + i;
                 }
 
 

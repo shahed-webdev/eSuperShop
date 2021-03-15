@@ -58,7 +58,11 @@
                             },
                             { data: "VerifiedPhone" },
                             { data: "Email" },
-                            { data: "StoreName" },
+                            {
+                                data: "StoreName", "render": function (data, type, row, meta) {
+                                    return `<strong class="d-block">${data}</strong><small class="blue-text">${row.StoreSlugUrl}</small>`;
+                                }
+                            },
                             { data: "StoreAddress" },
                             { data: "StoreRegion" },
                             { data: "StoreArea" },
@@ -108,6 +112,8 @@
                 const cb = element.previousElementSibling;
 
                 if (!cb.checked) {
+                    cb.disabled = true;
+
                     $.ajax({
                         type: "POST",
                         url: `/Seller/ApproveVendor`,
@@ -115,12 +121,13 @@
                         success: function (response) {
                             $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
-                            if (response.IsSuccess) {
+                            if (!response.IsSuccess) {
                                 cb.disabled = false;
                             }
                         },
                         error: function (err) {
                             console.log(err);
+                            cb.disabled = false;
                         }
                     });
                 }

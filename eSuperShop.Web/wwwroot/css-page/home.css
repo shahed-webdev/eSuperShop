@@ -39,7 +39,7 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 
 
 /*top stores*/
-.shop-name { color: #312626; font-size: 16px; }
+.shop-name { color: #312626; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .shop-description { font-style: italic; font-size: 13px; color: #676565; }
 .photo-box { display: grid; grid-gap: 10px; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; grid-template-areas: ". ." ". ."; }
 .photo-box .box { border: 1px solid #E1E1E1; }
