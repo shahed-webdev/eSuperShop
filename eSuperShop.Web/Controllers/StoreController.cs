@@ -40,6 +40,7 @@ namespace eSuperShop.Web.Controllers
         public IActionResult ProfileUpdate()
         {
             ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
+            
             var response = _vendor.ProfileDetails(User.Identity.Name);
             return View(response.Data);
         }

@@ -16,9 +16,9 @@
             <thead>
                 <tr>
                     <th><strong>Auth. Person</strong></th>
+                    <th><strong>Store</strong></th>
                     <th><strong>Verified Phone</strong></th>
                     <th><strong>Email</strong></th>
-                    <th><strong>Store</strong></th>
                     <th><strong>Address</strong></th>
                     <th><strong>Region</strong></th>
                     <th><strong>Area</strong></th>
@@ -53,16 +53,16 @@
                         [
                             {
                                 data: "AuthorizedPerson", "render": function (data, type, row, meta) {
-                                    return `<a class="blue-text" href="/Seller/AssignCatalog/${row.VendorId}">${data}</a>`;
+                                    return `<a class="blue-text" href="/Seller/ProfileDetails/${row.VendorId}">${data}</a>`;
+                                }
+                            },
+                            {
+                                data: "StoreName", "render": function (data, type, row, meta) {
+                                    return `<a class="blue-text d-block" href="/Seller/AssignCatalog/${row.VendorId}"><strong>${data}</strong></a><small>${row.StoreSlugUrl}</small>`;
                                 }
                             },
                             { data: "VerifiedPhone" },
                             { data: "Email" },
-                            {
-                                data: "StoreName", "render": function (data, type, row, meta) {
-                                    return `<strong class="d-block">${data}</strong><small class="blue-text">${row.StoreSlugUrl}</small>`;
-                                }
-                            },
                             { data: "StoreAddress" },
                             { data: "StoreRegion" },
                             { data: "StoreArea" },
@@ -81,7 +81,7 @@
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
                         //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-center", "targets": [1, 8, 9] }
+                        { 'className': "text-center", "targets": [2,7, 8, 9] }
                     ]
                 });
             },
