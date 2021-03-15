@@ -118,11 +118,21 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        //get vendor info(ajax)
+        //get vendor info in Assign Catalog (ajax)
         public IActionResult GetVendorInfo(int id)
         {
             var model = _vendor.GetDetails(id);
             return Json(model);
+        }
+
+
+        //seller profile
+        [Authorize(Roles = "admin, sub-admin")]
+        public IActionResult ProfileDetails(int? id)
+        {
+            if (!id.HasValue) return RedirectToAction("List");
+
+            return View();
         }
 
 
