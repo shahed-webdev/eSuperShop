@@ -1,8 +1,8 @@
 ﻿@using CloudStorage
 @model VendorInfoModel
 @{
-    ViewData["Title"] = "Profile Update";
-    Layout = "~/Views/Shared/_SellerLayout.cshtml";
+    ViewData["Title"] = "Profile Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var baseUrl = FileBuilder.BaseUrl();
 }
 
@@ -21,7 +21,7 @@
 
 <div class="m-md-3">
     <form id="formUpdate">
-        <h4 class="page-header mb-3">profile</h4>
+        <h4 class="page-header mb-3">profile Details</h4>
 
         <div class="card card-body mb-4">
             <h5 class="font-weight-bold mb-3">Store Info</h5>
@@ -545,3 +545,4 @@
         })();
     </script>
 }
+
