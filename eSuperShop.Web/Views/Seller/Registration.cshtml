@@ -1,5 +1,4 @@
-﻿@using eSuperShop.Repository
-@model LoginViewModel
+﻿@model LoginViewModel
 @{
     ViewBag.Title = "Seller Registration";
 }
@@ -284,10 +283,14 @@
                 const btn = this.btnSignUp;
                 btnDisable(btn, true);
 
+                const data = serializeForm(this);
+                data.StoreSlugUrl = slugUrl.create(this.inputStoreName.value);
+
+
                 $.ajax({
                     type: "POST",
                     url: "/Seller/SignUp",
-                    data: serializeForm(this),
+                    data,
                     success: function (response) {
                         if (response.IsSuccess)
                             location.href = "/Seller/Success";

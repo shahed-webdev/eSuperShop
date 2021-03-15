@@ -8,7 +8,6 @@
             <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-3">
                 <a :href="'/'+item.StoreSlugUrl">
                     <div class="card hoverable card-body">
-
                         <div class="shop-name">{{item.StoreName}}</div>
                         <div class="shop-description">{{item.StoreTagLine}}</div>
 
