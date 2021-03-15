@@ -132,7 +132,10 @@ namespace eSuperShop.Web.Controllers
         {
             if (!id.HasValue) return RedirectToAction("List");
 
-            return View();
+            ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
+            var response = _vendor.ProfileDetails(id.GetValueOrDefault());
+
+            return View(response.Data);
         }
 
 
