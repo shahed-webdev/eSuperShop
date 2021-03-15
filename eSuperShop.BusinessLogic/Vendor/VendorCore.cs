@@ -361,6 +361,23 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<VendorInfoModel> ProfileDetails(int vendorId)
+        {
+            try
+            {
+                if (_db.Vendor.IsNull(vendorId))
+                    return new DbResponse<VendorInfoModel>(false, "No Data Found");
+
+                var data = _db.Vendor.ProfileDetails(vendorId);
+
+                return new DbResponse<VendorInfoModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<VendorInfoModel>(false, e.Message);
+            }
+        }
+
         public DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request)
         {
             return _db.Vendor.DataChangeUnapprovedList(request);

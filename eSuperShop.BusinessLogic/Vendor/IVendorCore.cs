@@ -28,6 +28,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse BannerUrlChange(int vendorId, string bannerUrl);
         DbResponse StoreUpdate(VendorInfoUpdateModel model, string vendorUserName);
         DbResponse<VendorInfoModel> ProfileDetails(string vendorUserName);
+        DbResponse<VendorInfoModel> ProfileDetails(int vendorId);
 
         DataResult<VendorDataChangeApprovedModel> DataChangeUnapprovedList(DataRequest request);
         Task<DbResponse> DataChangeApproved(VendorDataChangeApprovedModel model, ICloudStorage cloudStorage);
