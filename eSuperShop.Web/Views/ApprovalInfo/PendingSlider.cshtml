@@ -8,9 +8,7 @@
 
 @section Styles{
     <style>
-        #data-table tr td img { width: 100% }
-        .before-info { border: 1px solid #dc143c; padding: 5px; border-radius: 3px; }
-        .after-info { border: 1px solid #32cd32; padding: 5px; border-radius: 3px; }
+        #data-table tr td img { width: 100%;height: 100px;object-fit: cover }
     </style>
 }
 
@@ -23,9 +21,7 @@
                 <tr>
                     <th><strong>Auth. Person</strong></th>
                     <th><strong>Store</strong></th>
-                    <th><strong>Logo</strong></th>
-                    <th><strong>Banner</strong></th>
-                    <th><strong>Tag line</strong></th>
+                    <th><strong>Slider Image</strong></th>
                     <th><strong>Approved</strong></th>
                     <th><strong>Reject</strong></th>
                 </tr>
@@ -65,40 +61,25 @@
                             }
                         },
                         {
-                            data: "StoreLogoFileName", "render": function(data, type, row, meta) {
-                                const beforeData = data ? `<img src="@baseUrl/${data}" class="before-info mb-1" />` : "";
-                                const afterData = row.ChangedStoreLogoFileName ? `<img src="@baseUrl/${row.ChangedStoreLogoFileName}" class="after-info" />` : "";
-                                return `${beforeData} ${afterData}`;
-                            }
-                        },
-                        {
-                            data: "StoreBannerFileName", "render": function(data, type, row, meta) {
-                                const beforeData = data ? `<img src="@baseUrl/${data}" class="before-info mb-1" />` : "";
-                                const afterData = row.ChangedStoreBannerFileName ? `<img src="@baseUrl/${row.ChangedStoreBannerFileName}" class="after-info" />` : "";
-                                return `${beforeData} ${afterData}`;
-                            }
-                        },
-                        {
-                            data: "StoreTagLine", "render": function(data, type, row, meta) {
-                                const beforeData = data ? `<span class="before-info mr-1">${data}</span>` : "";
-                                return `${beforeData}<span class="after-info">${row.ChangedStoreTagLine}</span>`;
+                            data: "ImageFileName", "render": function(data, type, row, meta) {
+                                return `<img src="@baseUrl/thumb_${data}">`;
                             }
                         },
                         {
                             data: "IsApproved", "render": function(data, type, row, meta) {
-                                return `<input id="${row.VendorId}" type="checkbox" class="form-check-input"><label class="approve form-check-label" for="${row.VendorId}"></label>`;
+                                return `<input id="${row.VendorStoreSliderId}" type="checkbox" class="form-check-input"><label class="approve form-check-label" for="${row.VendorStoreSliderId}"></label>`;
                             }
                         },
                         {
-                            data: "VendorId", "render": function(data, type, row, meta) {
-                                return `<a id="${row.VendorId}" class="delete fas fa-trash red-text" data-url="/Seller/DeleteVendor/${data}"></a>`;
+                            data: "VendorStoreSliderId", "render": function(data, type, row, meta) {
+                                return `<a id="${row.VendorStoreSliderId}" class="delete fas fa-trash red-text" data-url="/ApprovalInfo/RejectSlider/${data}"></a>`;
                             }
                         }
                     ],
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
                         //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-center", "targets": [5, 6] }
+                        { 'className': "text-center", "targets": [3, 4] }
                     ]
                 });
             },
@@ -157,18 +138,35 @@
             //delete
             const onDelete = element.classList.contains("delete");
             if (onDelete) {
+                showSpinner(element, true);
+
                 $.ajax({
                     url: `/ApprovalInfo/RejectSlider/${element.id}`,
                     success: function(response) {
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                        showSpinner(element, false);
 
                         if (response.IsSuccess)
                             location.reload();
                     },
-                    error: function(err) { console.log(err); }
+                    error: function(err) {
+                        console.log(err);
+                        showSpinner(element, false);
+                    }
                 });
             }
         });
+
+        //show spinner
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
     </script>
 }
 
