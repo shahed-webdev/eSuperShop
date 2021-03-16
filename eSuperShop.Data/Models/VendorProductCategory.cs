@@ -13,6 +13,9 @@ namespace eSuperShop.Data
         public int VendorId { get; set; }
         public string Name { get; set; }
         public string ImageFileName { get; set; }
+
+        public string ChangedName { get; set; }
+        public string ChangedImageFileName { get; set; }
         public int? DisplayOrder { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedOnUtc { get; set; }

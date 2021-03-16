@@ -14,6 +14,12 @@ namespace eSuperShop.Data
             builder.Property(e => e.ImageFileName)
                 .HasMaxLength(128);
 
+            builder.Property(e => e.ChangedName)
+                .HasMaxLength(400);
+
+            builder.Property(e => e.ChangedImageFileName)
+                .HasMaxLength(128);
+
             builder.Property(e => e.CreatedOnUtc)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getutcdate())");
