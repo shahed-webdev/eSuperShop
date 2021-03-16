@@ -17,7 +17,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse AssignToggle(VendorProductCategoryAssignModel model);
         DbResponse<DataResult<ProductListVendorCategoryWiseModel>> ProductList(DataRequest request, string vendorUserName, int vendorProductCategoryId);
 
-        DataResult<VendorProductCategoryUnapprovedModel> SliderUnapprovedList(DataRequest request);
+        DataResult<VendorProductCategoryUnapprovedModel> CategoryUnapprovedList(DataRequest request);
         Task<DbResponse> Approved(int vendorProductCategoryId, ICloudStorage cloudStorage);
         Task<DbResponse> Reject(int vendorProductCategoryId, ICloudStorage cloudStorage);
     }

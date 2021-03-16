@@ -35,7 +35,7 @@ namespace eSuperShop.Repository
         public List<VendorSliderSlideModel> Display(int vendorId)
         {
             return Db.VendorStoreSlider
-                .Where(s => s.VendorId == vendorId)
+                .Where(s => s.VendorId == vendorId & s.IsApprovedByAdmin)
                 .ProjectTo<VendorSliderSlideModel>(_mapper.ConfigurationProvider)
                 .ToList();
         }

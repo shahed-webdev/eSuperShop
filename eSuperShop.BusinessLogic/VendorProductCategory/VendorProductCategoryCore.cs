@@ -182,7 +182,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DataResult<VendorProductCategoryUnapprovedModel> SliderUnapprovedList(DataRequest request)
+        public DataResult<VendorProductCategoryUnapprovedModel> CategoryUnapprovedList(DataRequest request)
         {
             var data = _db.VendorProductCategory.CategoryUnapprovedList(request);
             return data;

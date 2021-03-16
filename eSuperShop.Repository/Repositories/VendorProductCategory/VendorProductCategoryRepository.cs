@@ -70,7 +70,8 @@ namespace eSuperShop.Repository
         public List<VendorProductCategoryDisplayModel> DisplayList(int vendorId)
         {
             return Db.VendorProductCategory
-                .Where(c => c.VendorId == vendorId).OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name)
+                .Where(c => c.VendorId == vendorId && c.IsApprovedByAdmin)
+                .OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name)
                 .ProjectTo<VendorProductCategoryDisplayModel>(_mapper.ConfigurationProvider)
                 .ToList();
         }
@@ -147,7 +148,7 @@ namespace eSuperShop.Repository
 
         public DataResult<VendorProductCategoryUnapprovedModel> CategoryUnapprovedList(DataRequest request)
         {
-            return Db.VendorStoreSlider
+            return Db.VendorProductCategory
                 .Include(v => v.Vendor)
                 .Where(s => !s.IsApprovedByAdmin)
                 .OrderBy(v => v.VendorId)
