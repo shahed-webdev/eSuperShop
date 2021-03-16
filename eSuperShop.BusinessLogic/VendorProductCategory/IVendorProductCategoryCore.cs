@@ -1,6 +1,8 @@
-﻿using eSuperShop.Repository;
+﻿using CloudStorage;
+using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -14,5 +16,9 @@ namespace eSuperShop.BusinessLogic
         DbResponse<VendorProductCategoryUpdateModel> Get(int id);
         DbResponse AssignToggle(VendorProductCategoryAssignModel model);
         DbResponse<DataResult<ProductListVendorCategoryWiseModel>> ProductList(DataRequest request, string vendorUserName, int vendorProductCategoryId);
+
+        DataResult<VendorProductCategoryUnapprovedModel> SliderUnapprovedList(DataRequest request);
+        Task<DbResponse> Approved(int vendorProductCategoryId, ICloudStorage cloudStorage);
+        Task<DbResponse> Reject(int vendorProductCategoryId, ICloudStorage cloudStorage);
     }
 }

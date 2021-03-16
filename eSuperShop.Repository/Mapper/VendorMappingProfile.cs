@@ -68,6 +68,12 @@ namespace eSuperShop.Repository
             CreateMap<VendorProductCategory, VendorProductCategoryModel>().ReverseMap();
             CreateMap<VendorProductCategory, VendorProductCategoryDisplayModel>().ReverseMap();
             CreateMap<VendorProductCategory, VendorProductCategoryUpdateModel>().ReverseMap();
+            CreateMap<VendorProductCategory, VendorProductCategoryUnapprovedModel>()
+                .ForMember(d => d.AuthorizedPerson, opt => opt.MapFrom(c => c.Vendor.AuthorizedPerson))
+                .ForMember(d => d.Email, opt => opt.MapFrom(c => c.Vendor.Email))
+                .ForMember(d => d.StoreName, opt => opt.MapFrom(c => c.Vendor.StoreName))
+                .ForMember(d => d.VerifiedPhone, opt => opt.MapFrom(c => c.Vendor.StoreName))
+                .ReverseMap();
 
 
             //Vendor ProductCategory Assign Mapping

@@ -27,6 +27,12 @@ namespace eSuperShop.Repository
         bool IsPlaceAssign(VendorProductCategoryAssignModel model);
         void Unassigned(VendorProductCategoryAssignModel model);
         List<VendorCategoryProductsModel> Products(int vendorProductCategoryId);
+
+
+
+        DataResult<VendorProductCategoryUnapprovedModel> CategoryUnapprovedList(DataRequest request);
+        string Approved(int vendorProductCategoryId);
+        string Reject(int vendorProductCategoryId);
     }
 
 

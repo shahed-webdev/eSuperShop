@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -32,9 +34,13 @@ namespace eSuperShop.Repository
         {
             var vendorCategory = Db.VendorProductCategory.Find(model.VendorProductCategoryId);
 
-            vendorCategory.VendorProductCategoryId = model.VendorProductCategoryId;
-            vendorCategory.Name = model.Name;
-            vendorCategory.ImageFileName = model.ImageFileName;
+            if (!string.Equals(vendorCategory.Name, model.Name, StringComparison.OrdinalIgnoreCase) || !string.Equals(vendorCategory.ImageFileName, model.ImageFileName, StringComparison.OrdinalIgnoreCase))
+            {
+                vendorCategory.IsApprovedByAdmin = false;
+                vendorCategory.ChangedName = model.Name;
+                vendorCategory.ChangedImageFileName = model.ImageFileName;
+
+            }
             vendorCategory.DisplayOrder = model.DisplayOrder;
             vendorCategory.IsActive = model.IsActive;
 
@@ -137,6 +143,50 @@ namespace eSuperShop.Repository
         public List<VendorCategoryProductsModel> Products(int vendorProductCategoryId)
         {
             throw new System.NotImplementedException();
+        }
+
+        public DataResult<VendorProductCategoryUnapprovedModel> CategoryUnapprovedList(DataRequest request)
+        {
+            return Db.VendorStoreSlider
+                .Include(v => v.Vendor)
+                .Where(s => !s.IsApprovedByAdmin)
+                .OrderBy(v => v.VendorId)
+                .ProjectTo<VendorProductCategoryUnapprovedModel>(_mapper.ConfigurationProvider)
+                .ToDataResult(request);
+        }
+
+        public string Approved(int vendorProductCategoryId)
+        {
+            VendorProductCategory = Db.VendorProductCategory.Find(vendorProductCategoryId);
+            var imageFile = string.Empty;
+
+            VendorProductCategory.IsApprovedByAdmin = true;
+            if (!string.IsNullOrEmpty(VendorProductCategory.ChangedName))
+                VendorProductCategory.Name = VendorProductCategory.ChangedName;
+            if (!string.IsNullOrEmpty(VendorProductCategory.ChangedImageFileName))
+            {
+                imageFile = VendorProductCategory.ImageFileName;
+                VendorProductCategory.ImageFileName = VendorProductCategory.ChangedImageFileName;
+
+            }
+
+            Db.VendorProductCategory.Update(VendorProductCategory);
+            return imageFile;
+
+        }
+
+        public string Reject(int vendorProductCategoryId)
+        {
+            VendorProductCategory = Db.VendorProductCategory.Find(vendorProductCategoryId);
+
+            var imageFile = VendorProductCategory.ChangedImageFileName;
+            VendorProductCategory.IsApprovedByAdmin = true;
+            VendorProductCategory.ChangedName = string.Empty;
+            VendorProductCategory.ChangedImageFileName = string.Empty;
+
+            Db.VendorProductCategory.Update(VendorProductCategory);
+
+            return imageFile;
         }
     }
 }

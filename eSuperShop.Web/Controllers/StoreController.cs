@@ -107,7 +107,7 @@ namespace eSuperShop.Web.Controllers
         public async Task<IActionResult> DeleteImageSlider(string fileName, int id)
         {
             var response = _vendorSlider.Delete(id);
-            
+
             if (response.IsSuccess)
                 await _cloudStorage.DeleteFileAsync(fileName);
 
@@ -157,12 +157,6 @@ namespace eSuperShop.Web.Controllers
         {
             if (image != null)
             {
-                if (!string.IsNullOrEmpty(model.ImageFileName))
-                {
-                    var uri = new Uri(model.ImageFileName);
-                    await _cloudStorage.DeleteFileAsync(Path.GetFileName(uri.AbsolutePath));
-                }
-
                 var fileName = FileBuilder.FileNameImage("store-product-category", image.FileName);
                 model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
             }

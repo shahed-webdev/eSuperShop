@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using CloudStorage;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eSuperShop.BusinessLogic
 {
@@ -177,6 +179,54 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse<DataResult<ProductListVendorCategoryWiseModel>>(false, e.Message);
+            }
+        }
+
+        public DataResult<VendorProductCategoryUnapprovedModel> SliderUnapprovedList(DataRequest request)
+        {
+            var data = _db.VendorProductCategory.CategoryUnapprovedList(request);
+            return data;
+        }
+
+        public async Task<DbResponse> Approved(int vendorProductCategoryId, ICloudStorage cloudStorage)
+        {
+            try
+            {
+                if (!_db.VendorProductCategory.IsNull(vendorProductCategoryId)) return new DbResponse(false, "Vendor Store Category Id Not Found");
+
+                var imageFileName = _db.VendorProductCategory.Approved(vendorProductCategoryId);
+                _db.SaveChanges();
+
+                if (string.IsNullOrEmpty(imageFileName))
+                {
+                    await cloudStorage.DeleteFileAsync(imageFileName);
+                }
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
+        public async Task<DbResponse> Reject(int vendorProductCategoryId, ICloudStorage cloudStorage)
+        {
+            try
+            {
+                if (!_db.VendorProductCategory.IsNull(vendorProductCategoryId)) return new DbResponse(false, "Vendor Store Category Id Not Found");
+
+                var imageFileName = _db.VendorProductCategory.Reject(vendorProductCategoryId);
+                _db.SaveChanges();
+
+                if (string.IsNullOrEmpty(imageFileName))
+                {
+                    await cloudStorage.DeleteFileAsync(imageFileName);
+                }
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
             }
         }
     }
