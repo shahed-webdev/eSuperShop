@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Data;
+using JqueryDataTables.LoopsIT;
 using System.Collections.Generic;
 
 namespace eSuperShop.Repository
@@ -11,5 +12,6 @@ namespace eSuperShop.Repository
         bool IsNull(int vendorStoreSliderId);
         List<VendorSliderSlideModel> Display(int vendorId);
         List<VendorSliderModel> List(int vendorId);
+        DataResult<VendorSliderUnapprovedModel> SliderUnapprovedList(DataRequest request);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using JqueryDataTables.LoopsIT;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,6 +46,17 @@ namespace eSuperShop.Repository
                 .Where(s => s.VendorId == vendorId)
                 .ProjectTo<VendorSliderModel>(_mapper.ConfigurationProvider)
                 .ToList();
+        }
+
+
+        public DataResult<VendorSliderUnapprovedModel> SliderUnapprovedList(DataRequest request)
+        {
+            return Db.VendorStoreSlider
+                .Include(v => v.Vendor)
+                .Where(s => !s.IsApprovedByAdmin)
+                .OrderBy(v => v.VendorId)
+                .ProjectTo<VendorSliderUnapprovedModel>(_mapper.ConfigurationProvider)
+                .ToDataResult(request);
         }
     }
 }
