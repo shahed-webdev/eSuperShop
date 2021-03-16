@@ -1,8 +1,167 @@
-﻿
+﻿@using CloudStorage
+
 @{
     ViewData["Title"] = "Pending Category";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var baseUrl = FileBuilder.BaseUrl();
 }
 
-<h1>PendingCategory</h1>
+@section Styles{
+    <style>
+        #data-table tr td img { width: 100% }
+        .before-info { border: 1px solid #dc143c; padding: 5px; border-radius: 3px; }
+        .after-info { border: 1px solid #32cd32; padding: 5px; border-radius: 3px; }
+    </style>
+}
+
+<div class="m-3">
+    <h4 class="page-header mb-3">Pending Category</h4>
+
+    <div class="card card-body">
+        <table id="data-table" class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th><strong>Auth. Person</strong></th>
+                    <th><strong>Store</strong></th>
+                    <th><strong>Category Image</strong></th>
+                    <th><strong>Category</strong></th>
+                    <th><strong>Approved</strong></th>
+                    <th><strong>Reject</strong></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(function() {
+            dataTable.getData();
+        });
+
+        //get data
+        var dataTable = {
+            table: null,
+            init: function() {
+                dataTable.table = $("#data-table").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/ApprovalInfo/GetPendingCategory",
+                        type: "POST"
+                    },
+                    columns:
+                    [
+                        {
+                            data: "AuthorizedPerson", "render": function(data, type, row, meta) {
+                                return `<strong class="d-block">${data}</strong><span>${row.VerifiedPhone}</span>`;
+                            }
+                        },
+                        {
+                            data: "StoreName", "render": function(data, type, row, meta) {
+                                return `<strong class="d-block">${data}</strong><span>${row.Email}</span>`;
+                            }
+                        },
+                        {
+                            data: "ImageFileName", "render": function(data, type, row, meta) {
+                                const beforeData = data ? `<img src="@baseUrl/${data}" class="before-info mb-1" />` : "";
+                                const afterData = row.ChangedImageFileName ? `<img src="@baseUrl/${row.ChangedImageFileName}" class="after-info" />` : "";
+                                return `${beforeData} ${afterData}`;
+                            }
+                        },
+                        {
+                            data: "Name", "render": function(data, type, row, meta) {
+                                const beforeData = data ? `<span class="before-info mr-1">${data}</span>` : "";
+                                return `${beforeData}<span class="after-info">${row.ChangedName}</span>`;
+                            }
+                        },
+                        {
+                            data: "IsApproved", "render": function(data, type, row, meta) {
+                                return `<input id="${row.VendorProductCategoryId}" type="checkbox" class="form-check-input"><label class="approve form-check-label" for="${row.VendorProductCategoryId}"></label>`;
+                            }
+                        },
+                        {
+                            data: "VendorProductCategoryId", "render": function(data, type, row, meta) {
+                                return `<a id="${row.VendorProductCategoryId}" class="delete fas fa-trash red-text"></a>`;
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        //{ 'searchable': false, 'targets': [1, 2] },
+                        //{ 'sortable': false, 'targets': [1, 2] },
+                        { 'className': "text-center", "targets": [4, 5] }
+                    ]
+                });
+            },
+            operand: {
+                Equal: 0,
+                NotEqual: 1,
+                GreaterThan: 2,
+                LessThan: 3,
+                GreaterThanOrEqual: 4,
+                LessThanOrEqual: 5,
+                Contains: 6,
+                StartsWith: 7,
+                EndsWith: 8
+            },
+            getData: function() {
+                dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
+            },
+            addSign: function(data) { return `${data}/-` }
+        }
+
+        //approve / delete
+        const onTable = document.getElementById("data-table");
+        onTable.addEventListener("click", function(evt) {
+            const element = evt.target;
+
+            //approve
+            const onApprove = element.classList.contains("approve");
+            if (onApprove) {
+                const cb = element.previousElementSibling;
+
+                if (!cb.checked) {
+                    cb.disabled = true;
+
+                    $.ajax({
+                        type: "POST",
+                        url: `/ApprovalInfo/ApproveCategory`,
+                        data: { id: +cb.id },
+                        success: function(response) {
+                            $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                            if (!response.IsSuccess) {
+                                cb.disabled = false;
+                                return;
+                            }
+
+                            location.reload();
+                        },
+                        error: function(err) {
+                            console.log(err);
+                            cb.disabled = false;
+                        }
+                    });
+                }
+            }
+
+            //delete
+            const onDelete = element.classList.contains("delete");
+            if (onDelete) {
+                $.ajax({
+                    url: `/ApprovalInfo/RejectCategory/${element.id}`,
+                    success: function(response) {
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                        if (response.IsSuccess)
+                            location.reload();
+                    },
+                    error: function(err) { console.log(err); }
+                });
+            }
+        });
+    </script>
+}
+
 
