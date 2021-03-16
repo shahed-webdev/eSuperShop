@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CloudStorage;
 using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
+using eSuperShop.Repository;
 using eSuperShop.Repository.Repositories;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
@@ -18,11 +20,15 @@ namespace eSuperShop.Web.Controllers
     {
         private readonly IRegionCore _region;
         private readonly IAreaCore _area;
+        private readonly ISliderCore _slider;
+        private readonly ICloudStorage _cloudStorage;
 
-        public BasicSettingController(IRegionCore region, IAreaCore area)
+        public BasicSettingController(IRegionCore region, IAreaCore area, ISliderCore slider, ICloudStorage cloudStorage)
         {
             _region = region;
             _area = area;
+            _slider = slider;
+            _cloudStorage = cloudStorage;
         }
 
 
@@ -104,10 +110,40 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        // ****Courier Service****
+        // ****Courier Service ****
         public IActionResult CourierService()
         {
             return View();
+        }
+
+
+        // **** Home Page Slider ****
+        public IActionResult HomeSlider()
+        {
+            ViewBag.DisplayPlace = new SelectList(_slider.DisplayPlaceDdl(), "value", "label");
+            var response = _slider.List();
+
+            return View(response.Data);
+        }
+
+        //add slider
+        [HttpPost]
+        public async Task<IActionResult> PostHomeSlider(SliderAddModel model, IFormFile fileImage)
+        {
+            var response = await _slider.AddAsync(model, User.Identity.Name, _cloudStorage, fileImage);
+            return Json(response);
+        }
+
+        //delete slider
+        [HttpPost]
+        public async Task<IActionResult> DeleteHomeSlider(int id, string fileName)
+        {
+            var response = _slider.Delete(id);
+
+            if (response.IsSuccess)
+                await _cloudStorage.DeleteFileAsync(fileName);
+
+            return Json(response);
         }
     }
 }

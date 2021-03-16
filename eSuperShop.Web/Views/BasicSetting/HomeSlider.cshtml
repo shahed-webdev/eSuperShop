@@ -1,15 +1,14 @@
 ﻿@using CloudStorage
 @model IEnumerable<SliderListModel>
-
 @{
-    ViewData["Title"] = "Home Slider";
-    Layout = "_AdminLayout";
+    ViewData["Title"] = "Home Page Slider";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var baseUrl = FileBuilder.BaseUrl();
 }
 
 @section Styles{
     <style>
-        #slider-images img { height: 150px;object-fit: cover }
+        #slider-images img { height: 150px; object-fit: cover }
         #slider-images .delete { cursor: pointer }
     </style>
 }
@@ -31,10 +30,12 @@
             @foreach (var item in Model)
             {
                 <div class="col-xl-2 col-lg-4 mb-3">
-                    <img class="card-img-top" src="@baseUrl/thumb_@item.ImageFileName" alt="@item.DisplayPlace">
-                    <div class="p-3 d-flex justify-content-between align-items-center">
-                        <span>@item.DisplayOrder - @item.DisplayPlace</span>
-                        <i data-id="@item.SliderId" data-url="@item.ImageFileName" class="delete fas fa-trash red-text"></i>
+                    <div class="border border-light">
+                        <img class="card-img-top" src="@baseUrl/thumb_@item.ImageFileName" alt="@item.DisplayPlace">
+                        <div class="p-3 d-flex justify-content-between align-items-center">
+                            <span>@item.DisplayOrder - @item.DisplayPlace</span>
+                            <i data-id="@item.SliderId" data-url="@item.ImageFileName" class="delete fas fa-trash red-text"></i>
+                        </div>
                     </div>
                 </div>
             }
@@ -95,13 +96,13 @@
 
 @section Scripts {
     <script>
-        $(function() {
+        $(function () {
             // Material Select Initialization
             $('.mdb-select').materialSelect();
         });
 
         //set image file
-        $('input[type="file"]').change(function(e) {
+        $('input[type="file"]').change(function (e) {
             const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
             const size = e.target.files[0].size / 1024 / 1024;
             const allowSize = 2;
@@ -139,7 +140,7 @@
         const sliderImages = document.getElementById('slider-images');
 
         //post data
-        addForm.addEventListener('submit', function(evt) {
+        addForm.addEventListener('submit', function (evt) {
             evt.preventDefault();
 
             btnSubmit.disabled = true;
@@ -149,7 +150,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Slider/Add",
+                url: "/BasicSetting/PostHomeSlider",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -157,11 +158,13 @@
                     btnSubmit.disabled = false;
                     btnSubmit.value = "Add Slider";
 
-                    if (response.IsSuccess) 
-                        location.reload();
-                    
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                    if (response.IsSuccess)
+                        location.href = location.href;
+
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                     btnSubmit.disabled = false;
                     btnSubmit.value = "Add Slider";
@@ -171,7 +174,7 @@
 
 
         //on change display place
-        inputDisplayPlace.addEventListener('change', function() {
+        inputDisplayPlace.addEventListener('change', function () {
             const imageSizeText = document.querySelector("#imageSizeText");
 
             if (this.value === "Main") {
@@ -184,7 +187,7 @@
         })
 
         //on delete
-        sliderImages.addEventListener('click', function(evt) {
+        sliderImages.addEventListener('click', function (evt) {
             const element = evt.target;
 
             const onBtnDelete = element.classList.contains('delete');
@@ -197,9 +200,9 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Slider/Delete",
+                url: "/BasicSetting/DeleteHomeSlider",
                 data: { id, fileName },
-                success: function(response) {
+                success: function (response) {
                     $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
                     if (response.IsSuccess)
@@ -207,7 +210,7 @@
 
                     showSpinner(element, false);
                 },
-                error: function(err) {
+                error: function (err) {
                     console.log(err);
                     showSpinner(element, false);
                 }
@@ -226,3 +229,4 @@
         }
     </script>
 }
+

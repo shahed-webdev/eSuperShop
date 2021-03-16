@@ -49,7 +49,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "/Seller/GetPendingProfileInfo",
+                        url: "/ApprovalInfo/GetPendingProfileInfo",
                         type: "POST"
                     },
                     columns:
@@ -134,7 +134,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: `/Seller/ApproveProfileInfo`,
+                        url: `/ApprovalInfo/ApproveProfileInfo`,
                         data: { id: +cb.id },
                         success: function(response) {
                             $.notify(response.Message, response.IsSuccess ? "success" : "error");
@@ -158,7 +158,7 @@
             const onDelete = element.classList.contains("delete");
             if (onDelete) {
                 $.ajax({
-                    url: `/Seller/RejectProfileInfo/${element.id}`,
+                    url: `/ApprovalInfo/RejectProfileInfo/${element.id}`,
                     success: function(response) {
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
@@ -171,3 +171,4 @@
         });
     </script>
 }
+

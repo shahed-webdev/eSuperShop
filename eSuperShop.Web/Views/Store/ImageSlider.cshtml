@@ -9,6 +9,7 @@
 
 @section Styles{
     <style>
+        .fa-spinner { pointer-events: none}
         #slider-images .delete { cursor: pointer }
         #slider-images img { height: 150px; object-fit: cover }
     </style>
@@ -32,7 +33,7 @@
             @foreach (var item in Model)
             {
                 <div class="col-xl-2 col-lg-4 mb-3">
-                    <div class="border border-light">
+                    <div class="border @(item.IsApprovedByAdmin?"border-success":"border-danger")">
                         <img class="card-img-top" src="@baseUrl/thumb_@item.ImageFileName" alt="slider image">
 
                         <div class="p-3 rounded-bottom d-flex justify-content-between align-items-center">
@@ -60,6 +61,7 @@
 
             <div class="modal-body">
                 <form id="addForm">
+                    <div class="alert alert-warning">Need authority approval to show this image</div>
                     <div class="md-form mb-0">
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
@@ -73,15 +75,15 @@
                     </div>
 
                     <div class="md-form">
-                        <input id="inputRedirectUrl" name="RedirectUrl" type="text" class="form-control" placeholder="Redirect Url" />
+                        <input id="inputRedirectUrl" name="RedirectUrl" type="text" class="form-control" placeholder="Redirect Url"/>
                     </div>
 
                     <div class="md-form">
-                        <input id="inputDisplayOrder" name="DisplayOrder" type="number" class="form-control" placeholder="Display Order" required />
+                        <input id="inputDisplayOrder" name="DisplayOrder" type="number" class="form-control" placeholder="Display Order" required/>
                     </div>
 
                     <div class="md-form text-center">
-                        <input id="btnSubmit" type="submit" value="Submit" class="btn btn-danger" />
+                        <input id="btnSubmit" type="submit" value="Submit" class="btn btn-danger"/>
                     </div>
                 </form>
             </div>
@@ -146,7 +148,7 @@
                 contentType: false,
                 success: function (response) {
                     if (response.IsSuccess) {
-                        location.reload();
+                        location.href = location.href;
                         return;
                     };
 
