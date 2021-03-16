@@ -87,7 +87,21 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public DbResponse<List<VendorProductCategoryDisplayModel>> DisplayList(string vendorUserName)
+        public DbResponse<List<VendorProductCategoryDisplayModel>> ApprovedList(int vendorId)
+        {
+            try
+            {
+                var data = _db.VendorProductCategory.ApprovedList(vendorId);
+
+                return new DbResponse<List<VendorProductCategoryDisplayModel>>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<List<VendorProductCategoryDisplayModel>>(false, e.Message);
+            }
+        }
+
+        public DbResponse<List<VendorProductCategoryDisplayModel>> AllList(string vendorUserName)
         {
             try
             {
@@ -96,7 +110,7 @@ namespace eSuperShop.BusinessLogic
                     return new DbResponse<List<VendorProductCategoryDisplayModel>>(false, "Invalid User");
 
 
-                var data = _db.VendorProductCategory.DisplayList(vendorId);
+                var data = _db.VendorProductCategory.AllList(vendorId);
 
                 return new DbResponse<List<VendorProductCategoryDisplayModel>>(true, "Success", data);
             }

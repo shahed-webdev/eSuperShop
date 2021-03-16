@@ -67,10 +67,19 @@ namespace eSuperShop.Repository
             return Db.VendorProductCategoryList.Any(c => c.VendorProductCategoryId == id);
         }
 
-        public List<VendorProductCategoryDisplayModel> DisplayList(int vendorId)
+        public List<VendorProductCategoryDisplayModel> ApprovedList(int vendorId)
         {
             return Db.VendorProductCategory
                 .Where(c => c.VendorId == vendorId && c.IsApprovedByAdmin)
+                .OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name)
+                .ProjectTo<VendorProductCategoryDisplayModel>(_mapper.ConfigurationProvider)
+                .ToList();
+        }
+
+        public List<VendorProductCategoryDisplayModel> AllList(int vendorId)
+        {
+            return Db.VendorProductCategory
+                .Where(c => c.VendorId == vendorId)
                 .OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name)
                 .ProjectTo<VendorProductCategoryDisplayModel>(_mapper.ConfigurationProvider)
                 .ToList();

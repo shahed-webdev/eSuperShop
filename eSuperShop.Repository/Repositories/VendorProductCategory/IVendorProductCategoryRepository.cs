@@ -15,7 +15,8 @@ namespace eSuperShop.Repository
         bool IsExistName(string name, int updateId);
         bool IsNull(int vendorProductCategoryId);
         bool IsRelatedDataExist(int id);
-        List<VendorProductCategoryDisplayModel> DisplayList(int vendorId);
+        List<VendorProductCategoryDisplayModel> ApprovedList(int vendorId);
+        List<VendorProductCategoryDisplayModel> AllList(int vendorId);
 
         List<DDL> ListDdl(int vendorId);
         VendorProductCategoryUpdateModel Get(int vendorProductCategoryId);

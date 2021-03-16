@@ -121,7 +121,7 @@ namespace eSuperShop.Web.Controllers
         #region Add Product Category
         public IActionResult AddCategory()
         {
-            var response = _category.DisplayList(User.Identity.Name);
+            var response = _category.ApprovedList(User.Identity.Name);
             return View(response.Data);
         }
 
