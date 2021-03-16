@@ -14,12 +14,14 @@ namespace eSuperShop.Web.Controllers
     public class ApprovalInfoController : Controller
     {
         private readonly IVendorCore _vendor;
+        private readonly IVendorSliderCore _vendorSlider;
         private readonly ICloudStorage _cloudStorage;
 
-        public ApprovalInfoController(IVendorCore vendor, ICloudStorage cloudStorage)
+        public ApprovalInfoController(IVendorCore vendor, ICloudStorage cloudStorage, IVendorSliderCore vendorSlider)
         {
             _vendor = vendor;
             _cloudStorage = cloudStorage;
+            _vendorSlider = vendorSlider;
         }
 
         // **** Pending profile info ****
@@ -60,25 +62,25 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
-        //data-table
+        //get data-table
         public IActionResult GetPendingSlider(DataRequest request)
         {
-            var response = _vendor.DataChangeUnapprovedList(request);
+            var response = _vendorSlider.SliderUnapprovedList(request);
             return Json(response);
         }
 
         //Approve (ajax)
         [HttpPost]
-        public async Task<IActionResult> ApproveSlider(int id)
+        public IActionResult ApproveSlider(int id)
         {
-            var response = await _vendor.DataChangeApproved(id, _cloudStorage);
+            var response = _vendorSlider.Approved(id);
             return Json(response);
         }
 
         //Reject (ajax)
         public IActionResult RejectSlider(int id)
         {
-            var response = _vendor.DataChangeReject(id, _cloudStorage);
+            var response = _vendorSlider.Delete(id);
             return Json(response);
         }
         #endregion

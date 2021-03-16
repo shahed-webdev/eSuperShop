@@ -81,7 +81,7 @@
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
                         //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-center", "targets": [2,7, 8, 9] }
+                        { 'className': "text-center", "targets": [2, 7, 8, 9] }
                     ]
                 });
             },
@@ -137,17 +137,34 @@
             //delete
             const onDelete = element.classList.contains("delete");
             if (onDelete) {
+                showSpinner(element, true);
+
                 $.ajax({
                     url: `/Seller/DeleteVendor/${element.id}`,
                     success: function (response) {
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                        showSpinner(element, false);
 
                         if (response.IsSuccess)
                             element.parentElement.parentElement.remove();
                     },
-                    error: function (err) { console.log(err); }
+                    error: function (err) {
+                        console.log(err);
+                        showSpinner(element, false);
+                    }
                 });
             }
         });
+
+        //show spinner
+        function showSpinner(element, isShow) {
+            if (isShow) {
+                element.classList.remove("fa-trash");
+                element.classList.add("fa-spinner", "fa-spin");
+            } else {
+                element.classList.remove("fa-spinner", "fa-spin");
+                element.classList.add("fa-trash");
+            }
+        }
     </script>
 }

@@ -122,12 +122,12 @@ namespace eSuperShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCategory(VendorProductCategoryAddModel model, IFormFile image)
+        public async Task<IActionResult> AddCategory(VendorProductCategoryAddModel model, IFormFile fileImage)
         {
-            if (image != null)
+            if (fileImage != null)
             {
-                var fileName = FileBuilder.FileNameImage("store-product-category", image.FileName);
-                model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
+                var fileName = FileBuilder.FileNameImage("store-product-category", fileImage.FileName);
+                model.ImageFileName = await _cloudStorage.UploadFileAsync(fileImage, fileName);
             }
 
             var response = _category.Add(model, User.Identity.Name);
@@ -153,12 +153,12 @@ namespace eSuperShop.Web.Controllers
 
         //Update Category
         [HttpPost]
-        public async Task<IActionResult> UpdateCategory(VendorProductCategoryUpdateModel model, IFormFile image)
+        public async Task<IActionResult> UpdateCategory(VendorProductCategoryUpdateModel model, IFormFile fileImage)
         {
-            if (image != null)
+            if (fileImage != null)
             {
-                var fileName = FileBuilder.FileNameImage("store-product-category", image.FileName);
-                model.ImageFileName = await _cloudStorage.UploadFileAsync(image, fileName);
+                var fileName = FileBuilder.FileNameImage("store-product-category", fileImage.FileName);
+                model.ImageFileName = await _cloudStorage.UploadFileAsync(fileImage, fileName);
             }
 
             var response = _category.Update(model);
