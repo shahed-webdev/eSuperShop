@@ -13,5 +13,6 @@ namespace eSuperShop.Repository
         List<VendorSliderSlideModel> Display(int vendorId);
         List<VendorSliderModel> List(int vendorId);
         DataResult<VendorSliderUnapprovedModel> SliderUnapprovedList(DataRequest request);
+        void Approved(int vendorStoreSliderId);
     }
 }

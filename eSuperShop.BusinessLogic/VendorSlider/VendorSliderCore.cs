@@ -51,7 +51,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_db.VendorStoreSlider.IsNull(vendorStoreSliderId)) return new DbResponse(false, "No data Found");
+                if (!_db.VendorStoreSlider.IsNull(vendorStoreSliderId)) return new DbResponse(false, "Vendor Store Slider Id Not Found");
 
                 _db.VendorStoreSlider.Delete(vendorStoreSliderId);
                 _db.SaveChanges();
@@ -104,6 +104,23 @@ namespace eSuperShop.BusinessLogic
         {
             var data = _db.VendorStoreSlider.SliderUnapprovedList(request);
             return data;
+        }
+
+        public DbResponse Approved(int vendorStoreSliderId)
+        {
+            try
+            {
+                if (!_db.VendorStoreSlider.IsNull(vendorStoreSliderId)) return new DbResponse(false, "Vendor Store Slider Id Not Found");
+
+                _db.VendorStoreSlider.Approved(vendorStoreSliderId);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
         }
     }
 }

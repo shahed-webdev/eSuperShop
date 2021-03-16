@@ -58,5 +58,12 @@ namespace eSuperShop.Repository
                 .ProjectTo<VendorSliderUnapprovedModel>(_mapper.ConfigurationProvider)
                 .ToDataResult(request);
         }
+
+        public void Approved(int vendorStoreSliderId)
+        {
+            VendorStoreSlider = Db.VendorStoreSlider.Find(vendorStoreSliderId);
+            VendorStoreSlider.IsApprovedByAdmin = true;
+            Db.VendorStoreSlider.Update(VendorStoreSlider);
+        }
     }
 }

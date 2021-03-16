@@ -14,5 +14,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<List<VendorSliderSlideModel>> Display(string vendorUserName);
         DbResponse<List<VendorSliderModel>> List(string vendorUserName);
         DataResult<VendorSliderUnapprovedModel> SliderUnapprovedList(DataRequest request);
+        DbResponse Approved(int vendorStoreSliderId);
+
     }
 }
