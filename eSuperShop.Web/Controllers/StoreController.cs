@@ -97,19 +97,17 @@ namespace eSuperShop.Web.Controllers
         }
 
         //Add Image Slider
-        public async Task<IActionResult> AddImageSlider(VendorSliderModel model, IFormFile image)
+        public async Task<IActionResult> AddImageSlider(VendorSliderModel model, IFormFile fileImage)
         {
-            var response = await _vendorSlider.AddAsync(model, User.Identity.Name, _cloudStorage, image);
+            var response = await _vendorSlider.AddAsync(model, User.Identity.Name, _cloudStorage, fileImage);
             return Json(response);
         }
 
         //Delete Image Slider
-        public async Task<IActionResult> DeleteImageSlider(string imageUrl, int id)
+        public async Task<IActionResult> DeleteImageSlider(string fileName, int id)
         {
             var response = _vendorSlider.Delete(id);
-            var uri = new Uri(imageUrl);
-            var fileName = Path.GetFileName(uri.AbsolutePath);
-
+            
             if (response.IsSuccess)
                 await _cloudStorage.DeleteFileAsync(fileName);
 
