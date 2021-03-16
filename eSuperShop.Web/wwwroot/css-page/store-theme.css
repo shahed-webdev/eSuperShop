@@ -1,0 +1,20 @@
+﻿
+/*common style for all*/
+body { background-color: #fff; }
+.serach-container { display: none }
+
+input:hover,
+input:active,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active { outline: 0 !important; -webkit-appearance: none; box-shadow: none !important; }
+
+/*store nav bar*/
+#store-nav-bar { background-color: #F3F3F3 }
+
+#store-nav-bar ul{ margin: 0;padding: 0;}
+#store-nav-bar ul li{ float: left;list-style: none}
