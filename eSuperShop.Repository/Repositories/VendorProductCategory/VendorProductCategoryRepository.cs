@@ -163,11 +163,16 @@ namespace eSuperShop.Repository
 
             VendorProductCategory.IsApprovedByAdmin = true;
             if (!string.IsNullOrEmpty(VendorProductCategory.ChangedName))
+            {
                 VendorProductCategory.Name = VendorProductCategory.ChangedName;
+                VendorProductCategory.ChangedName = string.Empty;
+            }
+
             if (!string.IsNullOrEmpty(VendorProductCategory.ChangedImageFileName))
             {
                 imageFile = VendorProductCategory.ImageFileName;
                 VendorProductCategory.ImageFileName = VendorProductCategory.ChangedImageFileName;
+                VendorProductCategory.ChangedImageFileName = string.Empty;
 
             }
 
