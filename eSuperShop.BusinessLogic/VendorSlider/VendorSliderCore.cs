@@ -23,7 +23,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (string.IsNullOrEmpty(model.ImageFileName)) return new DbResponse<VendorSliderModel>(false, "Invalid Data");
+                if (file == null) return new DbResponse<VendorSliderModel>(false, "No image file found");
 
                 var vendorId = _db.Registration.VendorIdByUserName(vendorUserName);
                 if (vendorId == 0)
