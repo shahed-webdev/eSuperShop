@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CloudStorage;
 using eSuperShop.Repository;
+using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,12 @@ namespace eSuperShop.BusinessLogic
             {
                 return new DbResponse<List<VendorSliderModel>>(false, e.Message);
             }
+        }
+
+        public DataResult<VendorSliderUnapprovedModel> SliderUnapprovedList(DataRequest request)
+        {
+            var data = _db.VendorStoreSlider.SliderUnapprovedList(request);
+            return data;
         }
     }
 }
