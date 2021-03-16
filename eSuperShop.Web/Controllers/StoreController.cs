@@ -90,6 +90,7 @@ namespace eSuperShop.Web.Controllers
 
 
         //Image Slider
+        #region Image Slider
         public IActionResult ImageSlider()
         {
             var response = _vendorSlider.List(User.Identity.Name);
@@ -113,8 +114,11 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
+        #endregion
+
 
         //Add Category
+        #region Add Product Category
         public IActionResult AddCategory()
         {
             var response = _category.DisplayList(User.Identity.Name);
@@ -136,17 +140,12 @@ namespace eSuperShop.Web.Controllers
         }
 
         //Delete Category
-        public async Task<IActionResult> DeleteCategory(string imageUrl, int id)
+        public async Task<IActionResult> DeleteCategory(string fileName, int id)
         {
             var response = _category.Delete(id);
 
-            if (string.IsNullOrEmpty(imageUrl)) return Json(response);
-
-            if (!response.IsSuccess) return Json(response);
-
-            var uri = new Uri(imageUrl);
-            var fileName = Path.GetFileName(uri.AbsolutePath);
-            await _cloudStorage.DeleteFileAsync(fileName);
+            if (response.IsSuccess)
+                await _cloudStorage.DeleteFileAsync(fileName);
 
             return Json(response);
         }
@@ -165,7 +164,7 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
-
+        #endregion
 
         //Assign Category In Product
         public IActionResult AssignCategory()
