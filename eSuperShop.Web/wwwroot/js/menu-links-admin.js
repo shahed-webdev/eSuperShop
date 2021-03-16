@@ -27,6 +27,13 @@ let linkData = [
             "Action": "CourierService",
             "Title": "Courier Service",
             "IconClass": null
+        }, {
+            "LinkID": 6,
+            "SN": 2,
+            "Controller": "BasicSetting",
+            "Action": "HomeSlider",
+            "Title": "Home Page Slider",
+            "IconClass": null
         }]
     },
     {
@@ -50,21 +57,6 @@ let linkData = [
             "Title": "Placement",
             "IconClass": null
         }]
-    },
-    {
-        "LinkCategoryID": 2,
-        "SN": 7,
-        "Category": "Slider",
-        "IconClass": "far fa-images",
-        "links": [
-            {
-                "LinkID": 6,
-                "SN": 2,
-                "Controller": "Slider",
-                "Action": "Index",
-                "Title": "Home Slider",
-                "IconClass": null
-            }]
     },
     {
         "LinkCategoryID": 2,
@@ -145,14 +137,35 @@ let linkData = [
                 "Action": "List",
                 "Title": "List",
                 "IconClass": null
-            }, {
+            }]
+    },
+    {
+        "LinkCategoryID": 2,
+        "SN": 7,
+        "Category": "Approval Info",
+        "IconClass": "fas fa-user-lock",
+        "links": [{
                 "LinkID": 6,
                 "SN": 2,
-                "Controller": "Seller",
+                "Controller": "ApprovalInfo",
                 "Action": "PendingProfileInfo",
-                "Title": "Pending Profile Info",
+                "Title": "Profile Info",
                 "IconClass": null
-            }]
+        }, {
+            "LinkID": 6,
+            "SN": 2,
+            "Controller": "ApprovalInfo",
+            "Action": "PendingSlider",
+            "Title": "Image Slider",
+            "IconClass": null
+        }, {
+            "LinkID": 6,
+            "SN": 2,
+            "Controller": "ApprovalInfo",
+            "Action": "PendingCategory",
+            "Title": "Category",
+            "IconClass": null
+        }]
     },
     {
         "LinkCategoryID": 3,

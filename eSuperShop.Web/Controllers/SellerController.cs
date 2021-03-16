@@ -15,15 +15,13 @@ namespace eSuperShop.Web.Controllers
         private readonly ICatalogCore _catalog;
         private readonly IRegionCore _region;
         private readonly IAreaCore _area;
-        private readonly ICloudStorage _cloudStorage;
 
-        public SellerController(IVendorCore vendor, ICatalogCore catalog, IRegionCore region, IAreaCore area, ICloudStorage cloudStorage)
+        public SellerController(IVendorCore vendor, ICatalogCore catalog, IRegionCore region, IAreaCore area)
         {
             _vendor = vendor;
             _catalog = catalog;
             _region = region;
             _area = area;
-            _cloudStorage = cloudStorage;
         }
 
         //seller sign-up
@@ -142,41 +140,11 @@ namespace eSuperShop.Web.Controllers
             return View(response.Data);
         }
 
-        //post update profile
+        //edit seller profile
         [HttpPost]
         public IActionResult ProfileUpdate(VendorInfoUpdateByAdminModel model)
         {
             var response = _vendor.StoreUpdateByAdmin(model);
-            return Json(response);
-        }
-
-
-        //seller pending profile info
-        [Authorize(Roles = "admin, sub-admin")]
-        public IActionResult PendingProfileInfo()
-        {
-            return View();
-        }
-
-        //pending profile info
-        public IActionResult GetPendingProfileInfo(DataRequest request)
-        {
-            var response = _vendor.DataChangeUnapprovedList(request);
-            return Json(response);
-        }
-
-        //Approve Profile Info
-        [HttpPost]
-        public async Task<IActionResult> ApproveProfileInfo(int id)
-        {
-            var response = await _vendor.DataChangeApproved(id, _cloudStorage);
-            return Json(response);
-        }
-
-        //Reject Profile Info
-        public IActionResult RejectProfileInfo(int id)
-        {
-            var response = _vendor.DataChangeReject(id,_cloudStorage);
             return Json(response);
         }
 
