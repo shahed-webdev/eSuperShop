@@ -1,8 +1,10 @@
-﻿@model IEnumerable<VendorProductCategoryDisplayModel>
+﻿@using CloudStorage
+@model IEnumerable<VendorProductCategoryDisplayModel>
 
 @{
     ViewData["Title"] = "Add Category";
     Layout = "_SellerLayout";
+    var baseUrl = FileBuilder.BaseUrl();
 }
 
 @section Styles{
@@ -37,13 +39,13 @@
                         }
                         else
                         {
-                            <img src="@item.ImageFileName" class="rounded" alt="" style="width: 50px">
+                            <img src="@baseUrl/thumb_@item.ImageFileName" class="rounded" alt="" style="width: 50px">
                         }
                         <strong class="ml-2">@item.Name</strong>
                     </p>
                     <div class="actions">
-                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageFileName" data-name="@item.Name" data-active="@item.IsActive" data-order="@item.DisplayOrder" class="category-update fas fa-edit"></i>
-                        <i data-id="@item.VendorProductCategoryId" data-url="@item.ImageFileName" class="delete fas fa-trash red-text ml-4"></i>
+                        <i data-id="@item.VendorProductCategoryId" data-file="@item.ImageFileName" data-name="@item.Name" data-active="@item.IsActive" data-order="@item.DisplayOrder" class="category-update fas fa-edit"></i>
+                        <i data-id="@item.VendorProductCategoryId" data-file="@item.ImageFileName" class="delete fas fa-trash red-text ml-4"></i>
                     </div>
                 </div>
             }
@@ -84,7 +86,7 @@
                     </div>
 
                     <div class="md-form text-center">
-                        <input id="btnSubmit" type="submit" value="Add" class="btn btn-danger" />
+                        <input id="btnSubmit" type="submit" value="Submit" class="btn btn-danger" />
                     </div>
                 </form>
             </div>
@@ -108,34 +110,35 @@
                     <input id="productCategoryId" name="VendorProductCategoryId" type="hidden">
                     <div class="text-center">
                         <img src="" id="showImage" class="rounded" alt="" style="width: 50px">
+                        <input id="hiddenImageFileName" name="ImageFileName" type="hidden">
                     </div>
 
                     <div class="md-form">
                         <label for="inputUpdateName">Name</label>
-                        <input id="inputUpdateName" type="text" class="form-control" placeholder="Category Name" required>
+                        <input id="inputUpdateName" name="Name" type="text" class="form-control" placeholder="Category Name" required>
                     </div>
                     <div class="md-form mb-0">
                         <span id="imageErrorUpdate" class="input-validation-error"></span>
                         <div class="file-field">
                             <div class="btn btn-outline-danger btn-rounded btn-sm float-left">
                                 <span>Choose Image<i class="fas fa-upload ml-3" aria-hidden="true"></i></span>
-                                <input id="fileImageUpdate" type="file" accept="image/*">
+                                <input name="fileImage" type="file" accept="image/*">
                             </div>
                             <div class="file-path-wrapper">
-                                <input id="filePathUpdate" class="file-path validate" type="text" placeholder="Upload Image">
+                                <input class="file-path validate" type="text" placeholder="Upload Image">
                             </div>
                         </div>
                     </div>
                     <div class="md-form">
                         <label for="inputUpdateDisplayOrder">Display Order</label>
-                        <input id="inputUpdateDisplayOrder" type="number" class="form-control" placeholder="Display Order" required />
+                        <input id="inputUpdateDisplayOrder" name="DisplayOrder" type="number" class="form-control" placeholder="Display Order" required />
                     </div>
                     <div class="md-form text-center">
-                        <input id="activeCheckbox" type="checkbox" class="form-check-input">
+                        <input id="activeCheckbox" name="IsActive" type="checkbox" class="form-check-input">
                         <label class="form-check-label" for="activeCheckbox">Active</label>
                     </div>
                     <div class="md-form text-center">
-                        <input id="btnUpdate" type="submit" value="Update" class="btn btn-danger" />
+                        <input id="btnUpdate" type="submit" value="Submit" class="btn btn-danger" />
                     </div>
                 </form>
             </div>
@@ -147,7 +150,7 @@
 @section Scripts{
     <script>
         //set image file
-        $('input[type="file"]').change(function (e) {
+        $('input[type="file"]').change(function(e) {
             const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
             const size = e.target.files[0].size / 1024 / 1024;
             const allowSize = 2;
@@ -176,21 +179,13 @@
             pathInput.value = fileName;
         });
 
-        //add form
-        const addForm = document.getElementById('addForm');
 
         //update form
-        const updateForm = document.getElementById('updateForm');
-        const inputUpdateName = updateForm.inputUpdateName;
-        const showImage = updateForm.showImage;
-        const inputUpdateDisplayOrder = updateForm.inputUpdateDisplayOrder;
-        const activeCheckbox = updateForm.activeCheckbox;
-        const btnUpdate = updateForm.btnUpdate;
-
         const categories = document.getElementById('categories');
 
         //post insert data
-        addForm.addEventListener('submit', function (evt) {
+        const addForm = document.getElementById('addForm');
+        addForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
             const btn = btnSubmit;
@@ -204,7 +199,7 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
+                success: function(response) {
                     if (response.IsSuccess) {
                         location.href = location.href;
                         return;
@@ -213,7 +208,7 @@
                     $.notify(response.Message, response.IsSuccess ? "success" : "error");
                     disableBtn(btn, false);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                     btnSubmit.disabled = false;
                     btnSubmit.value = "Add";
@@ -222,7 +217,7 @@
         });
 
         //on delete
-        categories.addEventListener('click', function (evt) {
+        categories.addEventListener('click', function(evt) {
             const element = evt.target;
 
             const onBtnDelete = element.classList.contains('delete');
@@ -237,13 +232,13 @@
                 type: "POST",
                 url: "/Store/DeleteCategory",
                 data: { imageUrl, id },
-                success: function (response) {
+                success: function(response) {
                     if (response.IsSuccess)
                         element.parentElement.remove();
 
                     showSpinner(element, false);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                     showSpinner(element, false);
                 }
@@ -252,21 +247,28 @@
 
 
         //on edit Click
-        categories.addEventListener('click', function (evt) {
+        const inputUpdateName = updateForm.inputUpdateName;
+        const hiddenImageFileName = updateForm.hiddenImageFileName;
+        const showImage = updateForm.showImage;
+        const inputUpdateDisplayOrder = updateForm.inputUpdateDisplayOrder;
+        const activeCheckbox = updateForm.activeCheckbox;
+
+        categories.addEventListener('click', function(evt) {
             const element = evt.target;
 
             const onCategoryUpdate = element.classList.contains('category-update');
             if (!onCategoryUpdate) return;
 
             const id = element.getAttribute('data-id');
-            const url = element.getAttribute('data-url');
+            const fileName = element.getAttribute('data-file');
             const name = element.getAttribute('data-name');
             const active = element.getAttribute('data-active');
             const order = element.getAttribute('data-order');
 
             inputUpdateName.value = name;
             active === "True" ? activeCheckbox.checked = true : activeCheckbox.checked = false;
-            showImage.src = url;
+            showImage.src = `@baseUrl/thumb_${fileName}`;
+            hiddenImageFileName.value = fileName;
             productCategoryId.value = id;
             inputUpdateDisplayOrder.value = order;
 
@@ -274,20 +276,14 @@
         });
 
         //post update data
-        updateForm.addEventListener('submit', function (evt) {
+        const updateForm = document.getElementById('updateForm');
+        updateForm.addEventListener('submit', function(evt) {
             evt.preventDefault();
 
-            btnUpdate.disabled = true;
-            btnUpdate.value = "submitting..";
+            const btn = btnUpdate;
+            disableBtn(btn, true);
 
             const formData = new FormData(this);
-            formData.append("VendorProductCategoryId", productCategoryId.value);
-            formData.append("image", document.getElementById('fileImageUpdate').files[0]);
-            formData.append("Name", inputUpdateName.value);
-            formData.append("DisplayOrder", inputUpdateDisplayOrder.value);
-            formData.append("ImageUrl", showImage.getAttribute("src"));
-            formData.append("IsActive", activeCheckbox.checked);
-
 
             $.ajax({
                 type: "POST",
@@ -295,17 +291,18 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    btnUpdate.disabled = false;
-                    btnUpdate.value = "Update";
-                    console.log(response)
-                    if (!response.IsSuccess) return;
-                    location.reload();
+                success: function(response) {
+                    if (response.IsSuccess) {
+                        location.href = location.href;
+                        return;
+                    };
+
+                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                    disableBtn(btn, false);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
-                    btnUpdate.disabled = false;
-                    btnUpdate.value = "Add";
+                    disableBtn(btn, false);
                 }
             });
         });

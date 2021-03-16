@@ -16,7 +16,7 @@
             <thead>
                 <tr>
                     <th><strong>Auth. Person</strong></th>
-                    <th><strong>Store</strong></th>
+                    <th><strong>Store <small>(assign Category)</small></strong></th>
                     <th><strong>Verified Phone</strong></th>
                     <th><strong>Email</strong></th>
                     <th><strong>Address</strong></th>
@@ -58,7 +58,7 @@
                             },
                             {
                                 data: "StoreName", "render": function (data, type, row, meta) {
-                                    return `<a class="blue-text d-block" href="/Seller/AssignCatalog/${row.VendorId}"><strong>${data}</strong></a><small>${row.StoreSlugUrl}</small>`;
+                                    return `<a title="click to assign category" class="blue-text d-block" href="/Seller/AssignCatalog/${row.VendorId}"><strong>${data}</strong></a><small>${row.StoreSlugUrl}</small>`;
                                 }
                             },
                             { data: "VerifiedPhone" },
