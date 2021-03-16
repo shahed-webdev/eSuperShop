@@ -1,6 +1,8 @@
-﻿@model StoreThemeViewModel
+﻿@using CloudStorage
+@model StoreThemeViewModel
 @{
     ViewData["Title"] = Model.StoreName;
+    var baseUrl = FileBuilder.BaseUrl();
 }
 
 @section Styles{
@@ -22,36 +24,18 @@
     </style>
 }
 
-<div class="container">
-    <div class="row my-4">
-        <div class="col-lg-6">
-            <h4 id="store-name">@Model.StoreName</h4>
-        </div>
-        <div class="col-lg-6 text-right">
-            <form id="formFind">
-                <div class="input-group border-0 form-sm pl-0 search-group bg-custom">
-                    <input class="form-control my-0 py-1 border-0 bg-custom" type="text" placeholder="Search">
-                    <div class="input-group-append">
-                        <button class="input-group-text border-0 bg-custom">
-                            <i class="fas fa-search text-grey"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<partial name="../StoreThemes/_StoreNavbar.cshtml" model="Model" />
 
 @if (Model.VendorStoreSlider.Any())
 {
-    <div id="image-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <div id="image-carousel" class="carousel slide carousel-fade mt-3" data-ride="carousel">
         <div class="carousel-inner" role="listbox">
             @{
                 var index = 0;
                 foreach (var img in Model.VendorStoreSlider)
                 {
                     <div class="carousel-item @(index == 0 ? "active":"")">
-                        <img class="d-block w-100" src="@img.ImageFileName" alt="@Model.StoreName">
+                        <img class="d-block w-100" src="@baseUrl/@img.ImageFileName" alt="@Model.StoreName">
                     </div>
 
                     index++;

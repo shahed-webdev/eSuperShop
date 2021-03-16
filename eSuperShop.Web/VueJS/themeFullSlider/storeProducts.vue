@@ -7,7 +7,7 @@
                 <div class="col-lg-3 col-6 mb-4" v-for="product in category.Products" :key="product.ProductId">
                     <div class="card hoverable h-100">
                         <div class="view overlay">
-                            <img class="card-img-top" :src="product.ImageUrl" :alt="product.Name">
+                            <img class="card-img-top" :src="baseUrl+'/thumb_'+product.ImageFileName" :alt="product.Name">
                             <a :href="'/item/'+product.SlugUrl">
                                 <div class="mask rgba-white-slight"></div>
                             </a>
@@ -37,6 +37,7 @@
         props: ['vendorId'],
         data() {
             return {
+                baseUrl:"",
                 data: [],
                 params: { Page: 2, PageSize: 2, VendorId: +this.vendorId },
                 isLastPage: false,
@@ -76,6 +77,11 @@
         },
         beforeMount() {
             this.getData();
+
+            //base url
+            axios.get('/home/GetBaseUrl').then(response => {
+                this.baseUrl = response.data;
+            });
         }
     }
 </script>

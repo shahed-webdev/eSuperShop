@@ -1,6 +1,6 @@
 ﻿@model StoreThemeViewModel
 @{
-    ViewData["Title"] = "d"; //Model.StoreName;
+    ViewData["Title"] = Model.StoreName;
 }
 
 @section Styles{
@@ -21,29 +21,7 @@
     </style>
 }
 
-<partial name="../StoreThemes/_StoreNavbar.cshtml"/>
-
-<div class="container my-4">
-    <div class="card card-body">
-        <div class="row">
-            <div class="col-lg-6">
-                <h4 id="store-name">@Model.StoreName</h4>
-            </div>
-            <div class="col-lg-6 text-right">
-                <form id="formFind">
-                    <div class="input-group border-0 form-sm pl-0 search-group bg-custom">
-                        <input class="form-control my-0 py-1 border-0 bg-custom" type="text" placeholder="Search">
-                        <div class="input-group-append">
-                            <button class="input-group-text border-0 bg-custom">
-                                <i class="fas fa-search text-grey"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<partial name="../StoreThemes/_StoreNavbar.cshtml" model="Model"/>
 
 <section id="defaultApp" class="container mt-5">
     <store-product vendor-id="@Model.VendorId" />

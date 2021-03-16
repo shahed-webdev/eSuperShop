@@ -9,7 +9,7 @@
             <div v-for="(item,i) in data.slice((i - 1) * 5, i * 5)" :key="i" class="col-lg-2 col-md-4 mb-4">
                 <div class="card hoverable h-100">
                     <div class="view overlay">
-                        <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
+                        <img class="card-img-top" :src="baseUrl+'/thumb_'+item.ImageFileName" :alt="item.Name">
                         <a :href="'/item/'+item.SlugUrl"><div class="mask rgba-white-slight"></div></a>
                     </div>
                     <div class="card-body">
@@ -52,6 +52,7 @@
         },
         data() {
             return {
+                baseUrl:"",
                 data: [],
                 isData: false
             }
@@ -63,6 +64,11 @@
 
                 this.data = Data.Results;
                 this.isData = Data.Results ? true : false;
+            });
+
+            //base url
+            axios.get('/home/GetBaseUrl').then(response => {
+                this.baseUrl = response.data;
             });
         }
     }

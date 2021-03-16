@@ -1,21 +1,28 @@
-﻿
+﻿@using CloudStorage
+@model StoreThemeViewModel
+@{
+    var baseUrl = FileBuilder.BaseUrl();
+}
 <div id="store-nav-bar">
     <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <img src=""/>
-                <h3>store name</h3>
-                
-                <ul>
-                    <li><a href="#">Store Home</a></li>
-                    <li><a href="#">All Products</a></li>
-                    <li><a href="#">Top Selling</a></li>
-                    <li><a href="#">New Arrivals</a></li>
-                    <li><a href="#">Store Coupon</a></li>
-                    <li><a href="#">Feedback</a></li>
-                </ul>
+        <div class="row align-items-center">
+            <div class="col-xl-9 col-lg-8">
+                <div class="d-flex align-items-center">
+                    <img class="store-logo" src="@baseUrl/@Model.StoreLogoFileName" alt="@Model.StoreName" />
+                    <h3 class="mb-0">@Model.StoreName</h3>
+
+                    <ul>
+                        <li><a href="#">Store Home</a></li>
+                        <li><a href="#">All Products</a></li>
+                        <li><a href="#">Top Selling</a></li>
+                        <li><a href="#">New Arrivals</a></li>
+                        <li><a href="#">Store Coupon</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
             </div>
-            <div>
+
+            <div class="col-xl-3 col-lg-4">
                 <form id="formFind">
                     <div class="input-group border-0 form-sm pl-0 search-group bg-custom">
                         <input class="form-control my-0 py-1 border-0 bg-custom" type="text" placeholder="Search">

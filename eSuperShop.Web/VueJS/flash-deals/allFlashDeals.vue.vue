@@ -8,7 +8,7 @@
             <div v-for="(item,i) in data" :key="i" class="col-lg-3 col-sm-6 mb-4">
                 <div class="card hoverable h-100">
                     <div class="view overlay">
-                        <img class="card-img-top" :src="item.ImageUrl" :alt="item.Name">
+                        <img class="card-img-top" :src="baseUrl+'/thumb_'+item.ImageFileName" :alt="item.Name">
                         <a :href="'/item/'+item.SlugUrl">
                             <div class="mask rgba-white-slight"></div>
                         </a>
@@ -60,6 +60,7 @@
         },
         data() {
             return {
+                baseUrl:"",
                 data: [],
                 isData:false,
                 params: { Page: 2, PageSize: 8 },
@@ -97,6 +98,11 @@
         },
         beforeMount() {
             this.getData();
+
+            //base url
+            axios.get('/home/GetBaseUrl').then(response => {
+                this.baseUrl = response.data;
+            });
         }
     }
 </script>
