@@ -8,7 +8,7 @@
 
 @section Styles{
     <style>
-        #data-table tr td img { width: 100% }
+        #data-table tr td img { max-height: 85px }
         .before-info { border: 1px solid #dc143c; padding: 5px; border-radius: 3px; }
         .after-info { border: 1px solid #32cd32; padding: 5px; border-radius: 3px; }
     </style>
@@ -65,8 +65,8 @@
                         },
                         {
                             data: "ImageFileName", "render": function(data, type, row, meta) {
-                                const beforeData = data ? `<img src="@baseUrl/${data}" class="before-info mb-1" />` : "";
-                                const afterData = row.ChangedImageFileName ? `<img src="@baseUrl/${row.ChangedImageFileName}" class="after-info" />` : "";
+                                const beforeData = data ? `<img src="@baseUrl/thumb_${data}" class="before-info" />` : "";
+                                const afterData = row.ChangedImageFileName ? `<img src="@baseUrl/thumb_${row.ChangedImageFileName}" class="after-info" />` : "";
                                 return `${beforeData} ${afterData}`;
                             }
                         },

@@ -98,7 +98,7 @@ namespace eSuperShop.Web.Controllers
         //get pending list (ajax)
         public IActionResult GetPendingCategory(DataRequest request)
         {
-            var response = _vendorCategory.SliderUnapprovedList(request);
+            var response = _vendorCategory.CategoryUnapprovedList(request);
             return Json(response);
         }
 

@@ -192,7 +192,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_db.VendorProductCategory.IsNull(vendorProductCategoryId)) return new DbResponse(false, "Vendor Store Category Id Not Found");
+                if (_db.VendorProductCategory.IsNull(vendorProductCategoryId)) return new DbResponse(false, "Vendor Store Category Id Not Found");
 
                 var imageFileName = _db.VendorProductCategory.Approved(vendorProductCategoryId);
                 _db.SaveChanges();
