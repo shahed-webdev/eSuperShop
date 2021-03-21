@@ -159,6 +159,20 @@ namespace eSuperShop.Repository
             return list.ToList();
         }
 
+        public List<DDL> CatalogWiseDdl(int catalogId)
+        {
+            var list = Db.CatalogBrand
+                .Include(c => c.Brand)
+                .Where(c => c.CatalogId == catalogId)
+                .Select(c => new DDL
+                {
+                    value = c.BrandId.ToString(),
+                    label = c.Brand.Name
+                }).ToList();
+
+            return list;
+        }
+
         public List<BrandModel> CatalogsProductWiseList(List<int> catalogIds)
         {
             var list = Db.Product
