@@ -4,6 +4,7 @@ using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -11,33 +12,17 @@ namespace eSuperShop.Web.Controllers
     public class StoreProductController : Controller
     {
         private readonly IProductCore _product;
+        private readonly IBrandCore _brand;
+        private readonly IAttributeCore _attribute;
+        private readonly ISpecificationCore _specifications;
 
-        public StoreProductController(IProductCore product)
+        public StoreProductController(IProductCore product, IBrandCore brand, IAttributeCore attribute, ISpecificationCore specifications)
         {
             _product = product;
+            this._brand = brand;
+            _attribute = attribute;
+            _specifications = specifications;
         }
-
-        //Find Brand
-        public async Task<IActionResult> FindBrand(int catalogId, string name)
-        {
-            var data = await _product.SearchBrandAsync(catalogId, name);
-            return Json(data);
-        }
-
-        //Find Attribute
-        public async Task<IActionResult> FindAttribute(int catalogId, string name)
-        {
-            var data = await _product.SearchAttributeAsync(catalogId, name);
-            return Json(data);
-        }
-
-        //Find Specification
-        public async Task<IActionResult> FindSpecification(int catalogId, string name)
-        {
-            var data = await _product.SearchSpecificationAsync(catalogId, name);
-            return Json(data);
-        }
-
 
         public IActionResult ProductCategory()
         {
@@ -57,6 +42,11 @@ namespace eSuperShop.Web.Controllers
         public IActionResult AddProduct(int? id)
         {
             if (!id.HasValue) return RedirectToAction("ProductCategory");
+
+            ViewBag.Brands = new SelectList(_brand.CatalogWiseDdl(id.Value).Data, "value", "label");
+            ViewBag.Attributes = new SelectList(_attribute.CatalogWiseDdl(id.Value).Data, "value", "label");
+            ViewBag.Specifications = new SelectList(_specifications.CatalogWiseDdl(id.Value).Data, "value", "label");
+           
             return View();
         }
 

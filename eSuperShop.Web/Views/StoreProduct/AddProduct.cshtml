@@ -54,9 +54,9 @@
                     <div class="form-row">
                         <div class="col-lg-4">
                             <div class="md-form">
-                                <label for="inputBrand">Product Brand</label>
-                                <input id="inputBrand" type="text" class="form-control" autocomplete="off">
-                                <input id="hiddenBrandId" type="hidden" name="BrandId">
+                                <select searchable="Find Product Brand" name="BrandId" asp-items="ViewBag.Brands" class="mdb-select">
+                                    <option value="">[ Select Product Brand ]</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -84,8 +84,9 @@
                     <h5 class="font-weight-bold mt-3">PRODUCT ATTRIBUTE</h5>
 
                     <div class="md-form mb-0">
-                        <label for="inputAttribute">Find Attribute</label>
-                        <input id="inputAttribute" type="text" class="form-control">
+                        <select id="selectAttribute" searchable="Find Attribute" asp-items="ViewBag.Attributes" class="mdb-select">
+                            <option value="">[ Select Attribute ]</option>
+                        </select>
                     </div>
 
                     <div id="fieldAttribute"></div>
@@ -94,8 +95,9 @@
                 <div class="card card-body mb-4">
                     <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
                     <div class="md-form mb-0">
-                        <label for="inputSpecification">Find Specification</label>
-                        <input id="inputSpecification" type="text" class="form-control">
+                        <select id="selectSpecification" searchable="Find Specification" asp-items="ViewBag.Specifications" class="mdb-select">
+                            <option value="">[ Select Specification ]</option>
+                        </select>
                     </div>
 
                     <div id="fieldSpecification" class="list-group-flush mt-3"></div>
@@ -128,6 +130,8 @@
     <script>
         $(function() {
             getDetails();
+
+            $('.mdb-select').materialSelect();
 
             $('.input-images').imageUploader({
                 imagesInputName: 'ProductImage',
@@ -207,59 +211,17 @@
 
         const catalogId = @Context.Request.RouteValues["id"];
 
-        //brand
-        const inputBrand = document.getElementById("inputBrand");
-        const hiddenBrandId = document.getElementById("hiddenBrandId");
-        hiddenBrandId.value = "";
-        inputBrand.addEventListener('input', function() { hiddenBrandId.value = ""; });
-
-
-        //Brand autocomplete
-        $('#inputBrand').typeahead({
-            minLength: 1,
-            displayText: function(item) {
-                return item.Name;
-            },
-            afterSelect: function(item) {
-                this.$element[0].value = item.Name;
-            },
-            source: function(request, result) {
-                $.ajax({
-                    url: "/StoreProduct/FindBrand",
-                    data: { catalogId, name: request },
-                    success: function(response) { result(response); },
-                    error: function(err) { console.log(err) }
-                });
-            },
-            updater: function(item) {
-                hiddenBrandId.value = item.BrandId;
-                return item;
-            }
-        });
-
 
         //** Attribute ****//
+        const selectAttribute = document.getElementById("selectAttribute");
         const allAttributes = [];
-        $('#inputAttribute').typeahead({
-            minLength: 1,
-            displayText: function(item) {
-                return item.KeyName;
-            },
-            afterSelect: function(item) {
-                this.$element[0].value = '';
-            },
-            source: function(request, result) {
-                $.ajax({
-                    url: "/StoreProduct/FindAttribute",
-                    data: { catalogId, name: request },
-                    success: function(response) { result(response); },
-                    error: function(err) { console.log(err) }
-                });
-            },
-            updater: function(item) {
-                appendAttribute(item);
-                return item;
-            }
+
+        //on change attribute
+        selectAttribute.addEventListener("change", function (evt) {
+            if (!this.value) return;
+
+            const model = { AttributeId: this.value, KeyName: selectAttribute.options[selectAttribute.selectedIndex].text }
+            appendAttribute(model);
         });
 
 
@@ -267,7 +229,7 @@
         function appendAttribute(attribute) {
             const isExist = allAttributes.some(obj => obj.AttributeId === attribute.AttributeId);
             if (isExist) {
-                alert(`${attribute.KeyName} already added`);
+                $.notify(`"${attribute.KeyName}" already added`, "error");
                 return;
             }
 
@@ -360,29 +322,16 @@
 
 
         //** Specification **//
-        $('#inputSpecification').typeahead({
-            minLength: 1,
-            displayText: function(item) {
-                return item.KeyName;
-            },
-            afterSelect: function(item) {
-                this.$element[0].value = '';
-            },
-            source: function(request, result) {
-                $.ajax({
-                    url: "/StoreProduct/FindSpecification",
-                    data: { catalogId, name: request },
-                    success: function(response) { result(response); },
-                    error: function(err) { console.log(err) }
-                });
-            },
-            updater: function(item) {
-                appendSpecification(item);
-                return item;
-            }
-        });
-
+        const selectSpecification = document.getElementById("selectSpecification");
         const fieldSpecification = document.getElementById("fieldSpecification");
+
+        //on change Specification
+        selectSpecification.addEventListener("change", function (evt) {
+            if (!this.value) return;
+
+            const model = { SpecificationId: this.value, KeyName: selectSpecification.options[selectSpecification.selectedIndex].text }
+            appendSpecification(model);
+        });
 
         //add
         function appendSpecification(item) {

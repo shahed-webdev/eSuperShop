@@ -1,9 +1,10 @@
-﻿@using eSuperShop.Repository
+﻿@using CloudStorage
 @model ProductDetailsModel
 
 @{
     ViewData["Title"] = "Add Product Stock";
     Layout = "_SellerLayout";
+    var baseUrl = FileBuilder.BaseUrl();
 }
 
 @section Styles{
@@ -47,12 +48,12 @@
                     <strong>Slug Url: </strong>@Model.SlugUrl
                 </p>
 
-                <div class="mt-3">@Html.Raw(@Model.FullDescription)</div>
+                <div class="mt-3">@Html.Raw(Model.FullDescription)</div>
 
                 <div class="productImage mt-3">
                     @foreach (var img in Model.Blobs)
                     {
-                        <img src="@img.BlobFileName" alt="@img.DisplayOrder">
+                        <img src="@baseUrl/thumb_@img.BlobFileName" alt="@img.DisplayOrder">
                     }
                 </div>
             </div>
