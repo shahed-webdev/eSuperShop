@@ -22,8 +22,8 @@ const shoppingCart = (function () {
     const obj = {};
 
     // get cart
-    obj.getCart = function() {
-        return {shoppingList: cart, cartTotal: obj.totalCart()}
+    obj.getCart = function () {
+        return { shoppingList: cart, cartTotal: obj.totalCart() }
     }
 
     // Add to cart
@@ -136,7 +136,7 @@ const shoppingCart = (function () {
     obj.getProduct = function (id) {
         for (let i in cart) {
             if (cart[i].ProductQuantitySetId === id) {
-               return cart[i];
+                return cart[i];
             }
         }
         return null;
@@ -201,27 +201,35 @@ function addAttribute(attributes) {
 }
 
 // Item quantity input
-$('.show-cart').on("input", ".item-quantity", function (event) {
-    const self = $(this);
-    const id = self.data('id');
+$('.show-cart').on("change", ".item-quantity", function (event) {
+    const id = $(this).data('id');
     const quantity = Number($(this).val());
 
     if (quantity < 1) return;
 
+    $(this).prop("disabled", true);
+
     $.ajax({
         url: "/Product/GetAvailableQuantity",
         data: { quantitySetId: id },
-        success: function (response) {
+        success: response => {
+            $(this).prop("disabled", false);
+
             if (response.IsSuccess) {
-                self.attr("max", response.Data);
-                if (response.Data < quantity) return;
+                $(this).prop("max", response.Data);
+
+                if (response.Data < quantity) {
+                    $(".show-cart").notify(`Quantity more than current (${response.Data}) stock`, "error");
+                    return;
+                };
 
                 shoppingCart.inputQuantity(id, quantity);
             }
 
             displayCart();
         },
-        error: function (err) {
+        error: err => {
+            $(this).prop("disabled", false);
             console.log(err);
         }
     })
