@@ -1,5 +1,4 @@
-﻿@using eSuperShop.Repository
-@model ProductAddModel
+﻿@model ProductAddModel
 
 @{
     ViewData["Title"] = "Add Product";
@@ -7,12 +6,12 @@
 }
 
 @section Styles{
-    <link href="~/lib/imageUploader/src/image-uploader.min.css" rel="stylesheet"/>
+    <link href="~/lib/imageUploader/src/image-uploader.min.css" rel="stylesheet" />
     <style>
         fieldset { padding: .5rem; margin: 1rem 0; border: 1px solid #dee2e6; border-radius: .25rem; }
         fieldset legend { width: auto; padding: 0 5px; font-weight: bold; color: #484848; }
         .attImg { max-width: 150px }
-        .remove { cursor: pointer}
+        .remove { cursor: pointer }
     </style>
 }
 
@@ -24,7 +23,7 @@
             <a class="blue-text" href="/StoreProduct/ProductCategory"><i class="fal fa-long-arrow-left"></i> Back to Category</a>
         </div>
         <h5 id="categoryName" class="font-weight-bold">loading...</h5>
-    </div>   
+    </div>
 
     <form data-ajax-url="/StoreProduct/AddProduct" data-ajax="true" data-ajax-method="POST" data-ajax-begin="onPostBegin" data-ajax-failure="onError" data-ajax-success="onPostSuccess" enctype="multipart/form-data">
         <div class="row">
@@ -117,7 +116,7 @@
 
             <strong id="imageError" class="field-validation-error"></strong>
         </div>
-    </form>   
+    </form>
 </div>
 
 
@@ -138,6 +137,24 @@
             });
         });
 
+
+        /**SLUG URL**/
+        const inputProductName = document.getElementById("inputProductName");
+        const inputSlugUrl = document.getElementById("inputSlugUrl");
+
+        //on input product name
+        inputProductName.addEventListener("change", function () {
+            inputSlugUrl.previousElementSibling.classList.add("active");
+            inputSlugUrl.value = slugUrl.create(this.value);
+        });
+
+        //on input slug url
+        inputSlugUrl.addEventListener("change", function () {
+            this.value = slugUrl.create(this.value);
+        });
+
+
+
         //check product image added
         const imageError = document.querySelector("#imageError");
         const btnSubmit = document.getElementById("btnSubmit");
@@ -157,7 +174,7 @@
 
         //post begin
         function onPostBegin() {
-            const isValid = validateImage();;
+            const isValid = validateImage();
 
             if (isValid) {
                 btnSubmit.disabled = true;
@@ -221,7 +238,7 @@
         });
 
 
-        //** Attribute ****// 
+        //** Attribute ****//
         const allAttributes = [];
         $('#inputAttribute').typeahead({
             minLength: 1,
