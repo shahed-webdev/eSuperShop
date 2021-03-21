@@ -74,7 +74,7 @@ namespace eSuperShop.Repository
                     label = c.KeyName
                 });
 
-            return ddl?.ToList() ?? new List<DDL>();
+            return ddl.ToList();
         }
 
         public async Task<ICollection<SpecificationModel>> SearchAsync(string key)
@@ -149,6 +149,19 @@ namespace eSuperShop.Repository
                 .Where(c => c.CatalogId == catalogId)
                 .Select(c => c.Specification)
                 .ProjectTo<SpecificationModel>(_mapper.ConfigurationProvider);
+            return list.ToList();
+        }
+
+        public List<DDL> CatalogWiseDdl(int catalogId)
+        {
+            var list = Db.CatalogSpecification
+                .Include(c => c.Specification)
+                .Where(c => c.CatalogId == catalogId)
+                .Select(c => new DDL
+                {
+                    value = c.SpecificationId.ToString(),
+                    label = c.Specification.KeyName
+                });
             return list.ToList();
         }
 

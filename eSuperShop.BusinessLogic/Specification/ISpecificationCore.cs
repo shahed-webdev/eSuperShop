@@ -16,6 +16,7 @@ namespace eSuperShop.BusinessLogic
         DataResult<SpecificationModel> List(DataRequest request);
         DbResponse<List<DDL>> Ddl();
         DbResponse<List<SpecificationModel>> CatalogWiseList(int catalogId);
+        DbResponse<List<DDL>> CatalogWiseDdl(int catalogId);
     }
 
 

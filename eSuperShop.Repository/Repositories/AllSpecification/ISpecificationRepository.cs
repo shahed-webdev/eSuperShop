@@ -26,6 +26,7 @@ namespace eSuperShop.Repository
         void UnAssignCatalog(int specificationId, int catalogId);
         bool IsExistSpecificationInCatalog(int specificationId, int catalogId);
         List<SpecificationModel> CatalogWiseList(int catalogId);
+        List<DDL> CatalogWiseDdl(int catalogId);
         List<SpecificationFilterModel> CatalogsProductWiseList(List<int> catalogIds);
         List<SpecificationFilterModel> ProductWiseList(int productId);
     }
