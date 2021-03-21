@@ -1,19 +1,21 @@
 ﻿@using eSuperShop.Data
+@using CloudStorage
 @model eSuperShop.Repository.ProductDetailsViewModel
 
 @{
     ViewData["Title"] = Model.Name;
+    var baseUrl = FileBuilder.BaseUrl();
 }
 
 @section Styles{
-    <link href="~/css-page/product-details.css?v=0.1" rel="stylesheet" />
+    <link href="~/css-page/product-details.css?v=1.0.1" rel="stylesheet" />
     <link href="~/lib/rating/star-rating-svg.css" rel="stylesheet" />
 }
 
 <div class="container">
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item">
-            <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
+            <a class="black-text" href="/Home/Index">Home</a><i class="fas fa-angle-double-right mx-2"></i>
         </li>
         @if (Model.CatalogBreadcrumb.ParentCatalog != null)
         {
@@ -29,17 +31,17 @@
             <div class="card card-body">
                 <div class="row">
                     <div class="col-xl-5 col-lg-6 mb-3">
-                        <div id="img-container" href="@Model.Blobs[0]">
-                            <img src="@Model.Blobs[0]" id="show-img" alt="@Model.Name" />
+                        <div id="img-container" href="@baseUrl/@Model.Blobs[0]">
+                            <img src="@baseUrl/thumb_@Model.Blobs[0]" id="show-img" alt="@Model.Name" />
                         </div>
 
                         <div class="thumb-img-container">
                             <img src="/lib/imageZoomer/img/next-icon.png" class="icon-left" alt="" id="prev-img" />
                             <div class="small-container">
                                 <div id="small-img-roll">
-                                    @foreach (var url in Model.Blobs)
+                                    @foreach (var file in Model.Blobs)
                                     {
-                                        <img src="@url" class="show-small-img" alt="" />
+                                        <img src="@baseUrl/@file" class="show-small-img" alt="" />
                                     }
                                 </div>
                             </div>
@@ -82,7 +84,7 @@
                                                 {
                                                     <label class="attribute-img">
                                                         <input class="radio-attribute" required id="@val.ProductAttributeValueId" type="radio" name="@att.KeyName" att-val="@val.Value" value="@val.ProductAttributeValueId">
-                                                        <img for="@val.ProductAttributeValueId" src="@val.ImageUrl" alt="@val.Value" title="@val.Value" />
+                                                        <img for="@val.ProductAttributeValueId" data-file="@val.ImageFileName" src="@baseUrl/@val.ImageFileName" alt="@val.Value" title="@val.Value" />
                                                     </label>
                                                 }
                                             </div>
@@ -140,7 +142,7 @@
                 {
                     <div class="recomand-product">
                         <a href="/item/@rp.SlugUrl">
-                            <img src="@rp.ImageFileName" alt="@rp.Name">
+                            <img src="@baseUrl/thumb_@rp.ImageFileName" alt="@rp.Name">
                             <span class="price-tag">৳@rp.Price</span>
                         </a>
                     </div>
@@ -251,7 +253,7 @@
             <div class="col-lg-3 col-sm-6 mb-3">
                 <div class="card hoverable h-100">
                     <div class="view overlay">
-                        <img class="card-img-top" src="@product.ImageFileName" alt="@product.Name">
+                        <img class="card-img-top" src="@baseUrl/thumb_@product.ImageFileName" alt="@product.Name">
                         <a href="/item/@product.SlugUrl">
                             <div class="mask rgba-white-slight"></div>
                         </a>
@@ -398,8 +400,12 @@
             const bigImg = document.getElementById("big-img");
 
             if (image.tagName === "IMG") {
-                showImg.setAttribute("src", image.getAttribute("src"));
-                bigImg.setAttribute("src", image.getAttribute("src"));
+                const isFile = image.getAttribute("data-file");
+                if (!isFile) return;
+
+                const imgSrc = image.getAttribute("src");
+                showImg.setAttribute("src", imgSrc);
+                bigImg.setAttribute("src", imgSrc);
             }
 
             const valueIds = document.querySelectorAll('input[type="radio"]:checked');

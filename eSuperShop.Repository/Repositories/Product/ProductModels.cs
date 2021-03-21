@@ -150,7 +150,7 @@ namespace eSuperShop.Repository
         public int ProductAttributeValueId { get; set; }
         public int ProductAttributeId { get; set; }
         public string Value { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageFileName { get; set; }
     }
 
     public class ProductSpecificationViewModel

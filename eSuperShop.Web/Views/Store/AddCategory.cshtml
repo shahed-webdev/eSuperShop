@@ -44,7 +44,7 @@
                         <strong class="ml-2 @(item.IsApprovedByAdmin?"":"red-text")">@item.Name</strong>
                     </p>
                     <div class="actions">
-                        <i data-id="@item.VendorProductCategoryId" data-file="@item.ImageFileName" data-name="@item.Name" data-active="@item.IsActive" data-order="@item.DisplayOrder" class="@(item.IsApprovedByAdmin ? "category-update" : "text-muted") fas fa-edit"></i>
+                        <i data-id="@item.VendorProductCategoryId" data-file="@item.ImageFileName" data-name="@item.Name" data-active="@item.IsActive" data-order="@item.DisplayOrder" class="category-update fas fa-edit"></i>
                         <i data-id="@item.VendorProductCategoryId" data-file="@item.ImageFileName" class="delete fas fa-trash red-text ml-4"></i>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
     <div v-if="loadingScreen">
         <ol class="breadcrumb grey lighten-3 mt-3">
             <li class="breadcrumb-item">
-                <a class="black-text" href="/Home">Home</a><i class="fas fa-angle-double-right mx-2"></i>
+                <a class="black-text" href="/Home/Index">Home</a><i class="fas fa-angle-double-right mx-2"></i>
             </li>
             <li v-if="ParentCatalog" class="breadcrumb-item">
                 <a :href="'/category/'+ParentCatalog.SlugUrl" class="black-text">{{ParentCatalog.CatalogName}}</a><i class="fas fa-angle-double-right mx-2"></i>
