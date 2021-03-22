@@ -165,6 +165,13 @@ let linkData = [
             "Action": "PendingCategory",
             "Title": "Category",
             "IconClass": null
+        }, {
+            "LinkID": 6,
+            "SN": 2,
+            "Controller": "ApprovalInfo",
+                "Action": "PendingProductInfo",
+                "Title": "Product Info",
+            "IconClass": null
         }]
     },
     {
