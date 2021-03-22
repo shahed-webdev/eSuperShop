@@ -6,7 +6,7 @@
 
 @section Styles{
     <style>
-        .icon-disable { pointer-events: none}
+        .icon-disable { pointer-events: none }
     </style>
 }
 
@@ -15,14 +15,25 @@
 
     <div class="card card-body mt-3">
         <form id="formAdd">
-            <div class="row">
-                <div class="col-lg-6">
+            <div class="row align-items-center">
+                <div class="col-lg-4">
                     <div class="md-form">
                         <label for="inputRegion">Region Name</label>
                         <input id="inputRegion" name="RegionName" type="text" class="form-control" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-5">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="inside" name="IsInDhaka" value="true" required>
+                        <label class="custom-control-label" for="inside">Inside Dhaka</label>
+                    </div>
+
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="outside" name="IsInDhaka" value="false" required>
+                        <label class="custom-control-label" for="outside">Outside Dhaka</label>
+                    </div>
+                </div>
+                <div class="col-lg-3">
                     <div class="md-form">
                         <input id="btnAdd" type="submit" class="btn btn-danger btn-md" value="Add">
                     </div>
@@ -32,11 +43,11 @@
 
         <table id="data-table" class="table">
             <thead>
-            <tr>
-                <th><strong>Region</strong></th>
-                <th style="width: 50px"><strong>Edit</strong></th>
-                <th style="width: 50px"><strong>Delete</strong></th>
-            </tr>
+                <tr>
+                    <th><strong>Region</strong></th>
+                    <th style="width: 50px"><strong>Edit</strong></th>
+                    <th style="width: 50px"><strong>Delete</strong></th>
+                </tr>
             </thead>
             <tbody id="tBody"></tbody>
         </table>
@@ -46,14 +57,30 @@
 
 <!-- Modal -->
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-notify modal-danger" role="document">
         <div class="modal-content form-elegant">
+            <div class="modal-header text-center">
+                <h4 class="modal-title white-text w-100 font-weight-bold">Update</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
             <div class="modal-body mx-4">
                 <form id="formUpdate">
                     <div class="form-group">
                         <label for="inputUpdatedField">Region Name</label>
                         <input id="inputUpdatedField" name="RegionName" type="text" class="form-control" required>
                         <input id="hiddenId" name="RegionId" type="hidden">
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="updateInside" value="true" name="IsInDhaka">
+                            <label class="custom-control-label" for="updateInside">Inside Dhaka</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="updateOutside" value="false" name="IsInDhaka">
+                            <label class="custom-control-label" for="updateOutside">Outside Dhaka</label>
+                        </div>
                     </div>
                     <div class="text-center">
                         <button id="btnUpdate" type="submit" class="btn btn-danger btn-rounded z-depth-1a">Update</button>
@@ -68,11 +95,11 @@
 
 @section Scripts{
     <script>
-        (function() {
+        (function () {
             //get data
             var dataTable = {
                 table: null,
-                init: function() {
+                init: function () {
                     dataTable.table = $("#data-table").DataTable({
                         processing: true,
                         serverSide: true,
@@ -81,32 +108,37 @@
                             type: "POST"
                         },
                         columns:
-                        [
-                            { data: "RegionName" },
-                            {
-                                data: "RegionId", "render": function(data, type, row, meta) {
-                                    return `<i data-id="${data}" data-value="${row.RegionName}" class="edit fas fa-edit"></i>`;
+                            [
+                                {
+                                    data: "RegionName", "render": function (data, type, row, meta) {
+                                        const isInDhaka = row.IsInDhaka ? "Inside Dhaka" : "Outside Dhaka";
+                                        return `<span>${data} - <small class="text-muted">${isInDhaka}</small></span>`;
+                                    }
+                                },
+                                {
+                                    data: "RegionId", "render": function (data, type, row, meta) {
+                                        return `<i data-id="${data}" data-location="${row.IsInDhaka}" data-value="${row.RegionName}" class="edit fas fa-edit"></i>`;
+                                    }
+                                },
+                                {
+                                    data: "RegionId", "render": function (data, type, row, meta) {
+                                        return `<i data-id="${data}" class="delete fas fa-trash"></i>`;
+                                    }
                                 }
-                            },
-                            {
-                                data: "RegionId", "render": function(data, type, row, meta) {
-                                    return `<i data-id="${data}" class="delete fas fa-trash"></i>`;
-                                }
-                            }
-                        ],
+                            ],
                         columnDefs: [
                             { 'searchable': false, 'targets': [1, 2] }
                         ]
                     });
                 },
-                getData: function() {
+                getData: function () {
                     dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
                 },
-                addSign: function(data) { return `${data}/-` }
+                addSign: function (data) { return `${data}/-` }
             }
 
             //get form data as object
-            const serializeForm = function(form) {
+            const serializeForm = function (form) {
                 const obj = {};
                 const formData = new FormData(form);
                 for (let key of formData.keys()) {
@@ -115,13 +147,25 @@
                 return obj;
             };
 
+            //radio selected
+            function selectedRadio(checked, form) {
+                const elements = form.querySelectorAll('input[name="IsInDhaka"]');
+                for (const radio of elements) {
+                    if (radio.value === checked) {
+                        radio.checked = true;
+                        break;
+                    }
+                }
+            }
+
+
             //form selector
             const formAdd = document.getElementById("formAdd");
             const formUpdate = document.getElementById("formUpdate");
             const tBody = document.getElementById("tBody");
 
             //form submit
-            formAdd.addEventListener("submit", function(evt) {
+            formAdd.addEventListener("submit", function (evt) {
                 evt.preventDefault();
 
                 const btn = this.btnAdd;
@@ -150,7 +194,7 @@
             });
 
             //on edit/delete
-            tBody.addEventListener("click", function(evt) {
+            tBody.addEventListener("click", function (evt) {
                 evt.preventDefault();
 
                 const element = evt.target;
@@ -160,8 +204,12 @@
 
                 if (onEdit) {
                     const value = element.getAttribute("data-value");
+                    const isDhaka = element.getAttribute("data-location");
+
                     formUpdate.inputUpdatedField.value = value;
                     formUpdate.hiddenId.value = id;
+
+                    selectedRadio(isDhaka, formUpdate);
 
                     $("#updateModal").modal("show");
                 }
@@ -191,7 +239,7 @@
             });
 
             //post update
-            formUpdate.addEventListener("submit", function(evt) {
+            formUpdate.addEventListener("submit", function (evt) {
                 evt.preventDefault();
 
                 const btn = this.btnUpdate;
