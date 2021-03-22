@@ -16,6 +16,7 @@ namespace eSuperShop.Repository
         bool IsRelatedDataExist(int id);
         ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId);
         ICollection<ProductUnpublishedModel> PublishedList(int vendorId);
+        ICollection<ProductPendingApprovalListModel> PendingApprovalList();
         ProductDetailsModel Details(int productId);
         ProductDetailsViewModel DetailsView(int productId);
         bool IsProductExist(int vendorId, int productId);

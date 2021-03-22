@@ -146,6 +146,11 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public List<ProductPendingApprovalListModel> PendingApprovalList()
+        {
+            return _db.Product.PendingApprovalList().ToList();
+        }
+
         public Task<ICollection<BrandModel>> SearchBrandAsync(int catalogId, string key)
         {
             return _db.Brand.SearchAsync(key, catalogId);

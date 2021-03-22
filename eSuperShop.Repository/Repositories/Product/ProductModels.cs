@@ -293,5 +293,22 @@ namespace eSuperShop.Repository
         public string SlugUrl { get; set; }
         public string ImageFileName { get; set; }
     }
+
+    public class ProductPendingApprovalListModel
+    {
+        public int ProductId { get; set; }
+        public int VendorId { get; set; }
+        public string AuthorizedPerson { get; set; }
+        public string VerifiedPhone { get; set; }
+        public string Email { get; set; }
+        public string StoreName { get; set; }
+        public string ProductName { get; set; }
+        public string ProductSlugUrl { get; set; }
+        public string ImageFileName { get; set; }
+        public string ShortDescription { get; set; }
+        public int CatalogId { get; set; }
+        public string CatalogName { get; set; }
+        public DateTime CreatedOnUtc { get; set; }
+    }
 }
 

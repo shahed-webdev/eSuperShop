@@ -67,6 +67,15 @@ namespace eSuperShop.Repository
                 .ToList();
         }
 
+        public ICollection<ProductPendingApprovalListModel> PendingApprovalList()
+        {
+            return Db.Product
+                .Where(p =>  !p.Published && !p.IsDeleted)
+                .ProjectTo<ProductPendingApprovalListModel>(_mapper.ConfigurationProvider)
+                .OrderBy(p => p.CreatedOnUtc)
+                .ToList();
+        }
+
         public ProductDetailsModel Details(int productId)
         {
             return Db.Product

@@ -137,6 +137,19 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.CustomerUserName, opt => opt.MapFrom(c => c.Customer.Registration.UserName))
                 .ReverseMap();
 
+
+            //Product Lsit
+            CreateMap<Product, ProductPendingApprovalListModel>()
+                .ForMember(d => d.ImageFileName, opt => opt.MapFrom(c => c.ProductBlob.FirstOrDefault().BlobFileName))
+                .ForMember(d => d.AuthorizedPerson, opt => opt.MapFrom(c => c.Vendor.AuthorizedPerson))
+                .ForMember(d => d.Email, opt => opt.MapFrom(c => c.Vendor.Email))
+                .ForMember(d => d.StoreName, opt => opt.MapFrom(c => c.Vendor.StoreName))
+                .ForMember(d => d.VerifiedPhone, opt => opt.MapFrom(c => c.Vendor.VerifiedPhone))
+                .ForMember(d => d.ProductName, opt => opt.MapFrom(c => c.Name))
+                .ForMember(d => d.ProductSlugUrl, opt => opt.MapFrom(c => c.SlugUrl))
+                .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
+
+                ;
         }
     }
 }
