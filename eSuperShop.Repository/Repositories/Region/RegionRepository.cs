@@ -28,6 +28,7 @@ namespace eSuperShop.Repository.Repositories
         {
             var region = Db.Region.Find(model.RegionId);
             region.RegionName = model.RegionName;
+            region.IsInDhaka = model.IsInDhaka;
             Db.Region.Update(region);
             Db.SaveChanges();
             return new DbResponse(true, $"{region.RegionName} Updated Successfully");

@@ -37,6 +37,8 @@ namespace eSuperShop.Data
         public bool Published { get; set; }
         public DateTime UpdatedOnUtc { get; set; }
         public DateTime CreatedOnUtc { get; set; }
+        public bool IsDeleted { get; set; }
+        public string DeleteReason { get; set; }
 
         public virtual AllBrand Brand { get; set; }
         public virtual Catalog Catalog { get; set; }

@@ -42,6 +42,9 @@ namespace eSuperShop.Data
             builder.Property(e => e.UpdatedOnUtc)
                 .HasColumnType("datetime");
 
+            builder.Property(e => e.DeleteReason)
+                .HasMaxLength(512);
+
             builder.HasOne(d => d.Brand)
                 .WithMany(p => p.Product)
                 .HasForeignKey(d => d.BrandId)

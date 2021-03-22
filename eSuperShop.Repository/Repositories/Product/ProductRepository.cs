@@ -52,7 +52,7 @@ namespace eSuperShop.Repository
         public ICollection<ProductUnpublishedModel> UnpublishedList(int vendorId)
         {
             return Db.Product
-                .Where(p => p.VendorId == vendorId && !p.Published)
+                .Where(p => p.VendorId == vendorId && !p.Published && !p.IsDeleted)
                 .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
                 .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
                 .ToList();
@@ -61,7 +61,7 @@ namespace eSuperShop.Repository
         public ICollection<ProductUnpublishedModel> PublishedList(int vendorId)
         {
             return Db.Product
-                .Where(p => p.VendorId == vendorId && p.Published)
+                .Where(p => p.VendorId == vendorId && p.Published && !p.IsDeleted)
                 .ProjectTo<ProductUnpublishedModel>(_mapper.ConfigurationProvider)
                 .OrderBy(p => p.CatalogName).ThenBy(p => p.Name)
                 .ToList();
@@ -129,7 +129,7 @@ namespace eSuperShop.Repository
         {
             var setList = Db.ProductQuantitySet
                 .Include(p => p.ProductQuantitySetAttribute)
-                .ThenInclude(a=> a.ProductAttributeValue.ProductAttribute.Attribute)
+                .ThenInclude(a => a.ProductAttributeValue.ProductAttribute.Attribute)
                 .Where(p =>
                  p.ProductId == model.ProductId &&
                  p.ProductQuantitySetAttribute.Count == model.ProductAttributeValueIds.Length)
@@ -203,7 +203,7 @@ namespace eSuperShop.Repository
         public PagedResult<ProductListViewModel> GetFlashDeals(ProductFilterRequest request)
         {
             var products = Db.Product
-                .Where(p => p.Published)
+                .Where(p => p.Published && !p.IsDeleted)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
@@ -213,7 +213,7 @@ namespace eSuperShop.Repository
         public PagedResult<ProductListViewModel> GetTopRated(ProductFilterRequest request)
         {
             var products = Db.Product
-                .Where(p => p.Published)
+                .Where(p => p.Published && !p.IsDeleted)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
@@ -223,7 +223,7 @@ namespace eSuperShop.Repository
         public PagedResult<ProductListViewModel> GetMoreToLove(ProductFilterRequest request)
         {
             var products = Db.Product
-                .Where(p => p.Published)
+                .Where(p => p.Published && !p.IsDeleted)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
@@ -233,7 +233,7 @@ namespace eSuperShop.Repository
         public PagedResult<ProductListViewModel> GetCatalogWiseList(List<int> catalogIds, ProductFilterRequest request)
         {
             var products = Db.Product
-                .Where(p => p.Published && catalogIds.Contains(p.CatalogId))
+                .Where(p => p.Published && !p.IsDeleted && catalogIds.Contains(p.CatalogId))
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
@@ -243,7 +243,7 @@ namespace eSuperShop.Repository
         public PagedResult<ProductListViewModel> GetVendorWiseList(int vendorId, ProductFilterRequest request)
         {
             var products = Db.Product
-                .Where(p => p.Published && p.VendorId == vendorId)
+                .Where(p => p.Published && !p.IsDeleted && p.VendorId == vendorId)
                 .ProjectTo<ProductListViewModel>(_mapper.ConfigurationProvider)
                 .OrderBy(s => s.Rating).ThenBy(s => s.RatingBy)
                 .GetPaged(request.Page, request.PageSize);
