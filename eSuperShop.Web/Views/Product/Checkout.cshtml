@@ -110,27 +110,59 @@
             </div>
             <div class="modal-body mx-3">
                 <form id="formAdd">
-                    <div class="md-form">
-                        <input type="text" id="inputName" class="form-control validate" required>
-                        <label for="inputName">Your name</label>
-                    </div>
-                    <div class="md-form">
-                        <input type="text" id="inputPhone" class="form-control validate" required>
-                        <label for="inputPhone">Phone</label>
-                    </div>
-                    <div class="md-form">
-                        <input type="text" id="inputAlternativePhone" class="form-control validate">
-                        <label for="inputAlternativePhone">Alternative Phone</label>
-                    </div>
-                    <div class="md-form">
-                        <input type="email" id="inputEmail" class="form-control validate">
-                        <label for="inputEmail">Email</label>
-                    </div>
-                    <div class="md-form">
-                        <textarea type="text" id="inputAddress" class="md-textarea form-control" rows="1" required></textarea>
-                        <label for="inputAddress">Address</label>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputName">Your name</label>
+                                <input type="text" id="inputName" name="Name" class="form-control validate" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputEmail">Email</label>
+                                <input type="email" id="inputEmail" name="Email" class="form-control validate">
+                            </div>
+                        </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputPhone">Phone</label>
+                                <input type="text" id="inputPhone" name="Phone" class="form-control validate" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputAlternativePhone">Alternative Phone</label>
+                                <input type="text" id="inputAlternativePhone" name="AlternativePhone" class="form-control validate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="text-muted">Region</label>
+                                <select asp-items="ViewBag.Regions" id="selectRegion" class="form-control" required>
+                                    <option value="">[ SELECT ]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="text-muted">Area</label>
+                                <select id="selectArea" name="CustomerAreaId" class="form-control" required>
+                                    <option value="">[ SELECT ]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <textarea type="text" id="inputAddress" name="Address" class="md-textarea form-control" rows="1" required></textarea>
+                    </div>
+                    
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-danger">Add Address <i class="fas fa-paper-plane-o ml-1"></i></button>
                     </div>
@@ -158,99 +190,136 @@
         });
 
 
-        //add address
-        const formAdd = document.getElementById("formAdd");
-        formAdd.addEventListener("submit", function (evt) {
-            evt.preventDefault();
+        (function () {
+            //get form data as object
+            const serializeForm = function (form) {
+                const obj = {};
+                const formData = new FormData(form);
+                for (let key of formData.keys()) {
+                    obj[key] = formData.get(key);
+                }
+                return obj;
+            };
 
-            const model = {
-                Name: this.inputName.value,
-                Phone: this.inputPhone.value,
-                AlternativePhone: this.inputAlternativePhone.value,
-                Email: this.inputEmail.value,
-                Address: this.inputAddress.value
+
+            //on change region
+            const selectRegion = document.getElementById("selectRegion");
+            const selectArea = document.getElementById("selectArea");
+
+            selectRegion.addEventListener("change", function (evt) {
+                selectArea.innerHTML = "";
+                selectArea.appendChild(createOptions({ AreaId: "", AreaName: "[ SELECT ]" }));
+
+                $.ajax({
+                    url: "/Product/GetAreaByRegion",
+                    data: { id: this.value },
+                    success: response => {
+                        response.forEach(item => {
+                            selectArea.appendChild(createOptions(item));
+                        });
+                    },
+                    error: error => {
+                        console.log(error);
+                    }
+                });
+            });
+
+            //create option
+            function createOptions(item) {
+                const option = document.createElement("option");
+                option.innerText = item.AreaName;
+                option.value = item.AreaId;
+
+                return option;
             }
 
-            $.ajax({
-                url: "/Product/PostShippingAddress",
-                type: "POST",
-                data: model,
-                success: function (response) {
-                    if (response.IsSuccess) {
-                        $.notify("Address added successfully!", "success", { position: "right" });
-                        location.reload();
-                    } else {
+
+            //add address
+            const formAdd = document.getElementById("formAdd");
+            formAdd.addEventListener("submit", function (evt) {
+                evt.preventDefault();
+
+                $.ajax({
+                    url: "/Product/PostShippingAddress",
+                    type: "POST",
+                    data: serializeForm(this),
+                    success: function (response) {
+                        if (response.IsSuccess) {
+                            location.reload();
+                            return;
+                        }
+
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            });
+
+            //place order
+            const purchaseError = document.getElementById("purchaseError");
+            const formPurchase = document.getElementById("formPurchase");
+            formPurchase.addEventListener("submit", function (evt) {
+                evt.preventDefault();
+                purchaseError.textContent = "";
+
+                let address = null;
+                $(".address-check").each(function () {
+                    if ($(this).prop('checked') === true) {
+                        address = {
+                            Name: $(this).data("name"),
+                            Phone: $(this).data("phone"),
+                            AlternativePhone: $(this).data("altp"),
+                            Email: $(this).data("email"),
+                            Address: $(this).data("address")
+                        }
+                    }
+                });
+
+                const { shoppingList, cartTotal } = shoppingCart.getCart();
+                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+                if (!shoppingList.length) {
+                    purchaseError.textContent = "Add product to purchase";
+                    return;
+                }
+
+                if (!address) {
+                    purchaseError.textContent = "Select Shipping Address";
+                    return;
+                }
+
+                const model = {
+                    PaymentMethod: paymentMethod,
+                    OrderShippingAddress: address,
+                    TotalAmount: cartTotal,
+                    OrderList: shoppingList,
+                    ShippingCost: 0
+                }
+
+                this.btnPurchase.disabled = true;
+
+                $.ajax({
+                    url: "/Product/PlaceOrder",
+                    type: "POST",
+                    data: model,
+                    success: response => {
+                        this.btnPurchase.disabled = false;
+
+                        if (response.IsSuccess) {
+                            shoppingCart.clearCart();
+                            location.href = `/Product/OrderSuccess/${response.Data}`;
+                            return;
+                        }
                         $.notify(response.Message, "error", { position: "right" });
+                    },
+                    error: err => {
+                        console.log(err);
+                        this.btnPurchase.disabled = false;
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        });
-
-        //place order
-        const purchaseError = document.getElementById("purchaseError");
-        const formPurchase = document.getElementById("formPurchase");
-        formPurchase.addEventListener("submit", function (evt) {
-            evt.preventDefault();
-            purchaseError.textContent = "";
-
-            let address = null;
-            $(".address-check").each(function () {
-                if ($(this).prop('checked') === true) {
-                    address = {
-                        Name: $(this).data("name"),
-                        Phone: $(this).data("phone"),
-                        AlternativePhone: $(this).data("altp"),
-                        Email: $(this).data("email"),
-                        Address: $(this).data("address")
-                    }
-                }
-            });
-
-            const { shoppingList, cartTotal } = shoppingCart.getCart();
-            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-
-            if (!shoppingList.length) {
-                purchaseError.textContent = "Add product to purchase";
-                return;
-            }
-
-            if (!address) {
-                purchaseError.textContent = "Select Shipping Address";
-                return;
-            }
-
-            const model = {
-                PaymentMethod: paymentMethod,
-                OrderShippingAddress: address,
-                TotalAmount: cartTotal,
-                OrderList: shoppingList,
-                ShippingCost: 0
-            }
-
-            this.btnPurchase.disabled = true;
-
-            $.ajax({
-                url: "/Product/PlaceOrder",
-                type: "POST",
-                data: model,
-                success: response => {
-                    this.btnPurchase.disabled = false;
-
-                    if (response.IsSuccess) {
-                        shoppingCart.clearCart();
-                        location.href = `/Product/OrderSuccess/${response.Data}`;
-                        return;
-                    }
-                    $.notify(response.Message, "error", { position: "right" });
-                },
-                error: err => {
-                    console.log(err);
-                    this.btnPurchase.disabled = false;
-                }
-            });
-        })
+                });
+            })
+        })();
     </script>
 }

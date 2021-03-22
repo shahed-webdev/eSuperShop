@@ -2,6 +2,7 @@
 using eSuperShop.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -10,12 +11,16 @@ namespace eSuperShop.Web.Controllers
         private readonly IProductCore _product;
         private readonly IOrderCore _order;
         private readonly ICustomerCore _customer;
+        private readonly IRegionCore _region;
+        private readonly IAreaCore _area;
 
-        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer)
+        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer, IRegionCore region, IAreaCore area)
         {
             _product = product;
             _order = order;
             _customer = customer;
+            _region = region;
+            _area = area;
         }
 
         public IActionResult FlashDeals()
@@ -34,8 +39,6 @@ namespace eSuperShop.Web.Controllers
         }
 
         //product details
-        //[Route("[controller]/[action]")]
-        //[Route("[controller]/[action]/{slugUrl}")]
         public IActionResult Item(string slugUrl)
         {
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("Index", "Home");
@@ -61,7 +64,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-        //get available quantity
+        //get available quantity from cart
         public IActionResult GetAvailableQuantity(int quantitySetId)
         {
             var response = _product.GetQuantityBySetId(quantitySetId);
@@ -78,9 +81,17 @@ namespace eSuperShop.Web.Controllers
             if (!User.IsInRole("Customer"))
                 return Redirect("/Home/Index");
 
+            ViewBag.Regions = new SelectList(_region.ListDdl(), "value", "label");
             var response = _customer.AddressList(User.Identity.Name);
 
             return View(response.Data);
+        }
+
+        //get area by region
+        public IActionResult GetAreaByRegion(int id)
+        {
+            var response = _area.GetRegionWiseArea(id);
+            return Json(response);
         }
 
         //add shipping address

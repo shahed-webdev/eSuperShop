@@ -18,7 +18,11 @@ namespace eSuperShop.Web.Controllers
         private readonly IVendorSliderCore _vendorSlider;
         private readonly ICloudStorage _cloudStorage;
 
-        public ApprovalInfoController(IVendorCore vendor, ICloudStorage cloudStorage, IVendorSliderCore vendorSlider, IVendorProductCategoryCore vendorCategory)
+        public ApprovalInfoController(
+            IVendorCore vendor,
+            ICloudStorage cloudStorage,
+            IVendorSliderCore vendorSlider,
+            IVendorProductCategoryCore vendorCategory)
         {
             _vendor = vendor;
             _cloudStorage = cloudStorage;
@@ -26,8 +30,8 @@ namespace eSuperShop.Web.Controllers
             _vendorCategory = vendorCategory;
         }
 
-        // **** Pending profile info ****
-        #region Pending Profile Info
+        // *** profile info ***
+        #region Profile Info
         public IActionResult PendingProfileInfo()
         {
             return View();
@@ -57,8 +61,8 @@ namespace eSuperShop.Web.Controllers
         #endregion
 
         
-        // **** Pending image Slider ****
-        #region Pending Image Slider
+        // *** image Slider ***
+        #region Image Slider
         public IActionResult PendingSlider()
         {
             return View();
@@ -88,8 +92,8 @@ namespace eSuperShop.Web.Controllers
         #endregion
 
 
-        // **** Pending Category ****
-        #region Pending Category
+        // *** category ***
+        #region Category
         public IActionResult PendingCategory()
         {
             return View();
@@ -116,6 +120,38 @@ namespace eSuperShop.Web.Controllers
             var response = _vendorCategory.Reject(id, _cloudStorage);
             return Json(response);
         }
+        #endregion
+
+
+        // *** product info ***
+        #region Product Info
+        public IActionResult PendingProductInfo()
+        {
+            return View();
+        }
+
+        //get data-table
+        public IActionResult GetPendingProduct(DataRequest request)
+        {
+            var response = _vendorSlider.SliderUnapprovedList(request);
+            return Json(response);
+        }
+
+        //Approve (ajax)
+        [HttpPost]
+        public IActionResult ApproveProduct(int id)
+        {
+            var response = _vendorSlider.Approved(id);
+            return Json(response);
+        }
+
+        //Reject (ajax)
+        public IActionResult RejectProduct(int id)
+        {
+            var response = _vendorSlider.Delete(id);
+            return Json(response);
+        }
+
         #endregion
     }
 }
