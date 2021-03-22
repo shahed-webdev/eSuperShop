@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using eSuperShop.Data;
+using JqueryDataTables.LoopsIT;
 using Microsoft.EntityFrameworkCore;
 using Paging.Infrastructure;
 using System.Collections.Generic;
@@ -67,13 +68,13 @@ namespace eSuperShop.Repository
                 .ToList();
         }
 
-        public ICollection<ProductPendingApprovalListModel> PendingApprovalList()
+        public DataResult<ProductPendingApprovalListModel> PendingApprovalList(DataRequest request)
         {
             return Db.Product
-                .Where(p =>  !p.Published && !p.IsDeleted)
+                .Where(p => !p.Published && !p.IsDeleted)
                 .ProjectTo<ProductPendingApprovalListModel>(_mapper.ConfigurationProvider)
                 .OrderBy(p => p.CreatedOnUtc)
-                .ToList();
+                .ToDataResult(request);
         }
 
         public ProductDetailsModel Details(int productId)

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CloudStorage;
 using eSuperShop.Repository;
+using JqueryDataTables.LoopsIT;
 using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -146,9 +147,9 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public List<ProductPendingApprovalListModel> PendingApprovalList()
+        public DataResult<ProductPendingApprovalListModel> PendingApprovalList(DataRequest request)
         {
-            return _db.Product.PendingApprovalList().ToList();
+            return _db.Product.PendingApprovalList(request);
         }
 
         public Task<ICollection<BrandModel>> SearchBrandAsync(int catalogId, string key)

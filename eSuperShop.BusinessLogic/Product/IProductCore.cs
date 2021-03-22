@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Repository;
+using JqueryDataTables.LoopsIT;
 using Paging.Infrastructure;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<List<ICatalogVendorModel>> VendorWiseCatalogList(string vendorUserName);
         DbResponse<List<ProductUnpublishedModel>> UnpublishedList(string vendorUserName);
         DbResponse<List<ProductUnpublishedModel>> PublishedList(string vendorUserName);
-        List<ProductPendingApprovalListModel> PendingApprovalList();
+        DataResult<ProductPendingApprovalListModel> PendingApprovalList(DataRequest request);
         Task<ICollection<BrandModel>> SearchBrandAsync(int catalogId, string key);
         Task<ICollection<AttributeModel>> SearchAttributeAsync(int catalogId, string key);
         Task<ICollection<SpecificationModel>> SearchSpecificationAsync(int catalogId, string key);
