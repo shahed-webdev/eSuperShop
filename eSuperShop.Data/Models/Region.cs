@@ -11,6 +11,7 @@ namespace eSuperShop.Data
 
         public int RegionId { get; set; }
         public string RegionName { get; set; }
+        public bool IsInDhaka { get; set; }
         public virtual ICollection<Area> Areas { get; set; }
     }
 }
