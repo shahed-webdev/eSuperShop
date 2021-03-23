@@ -1,5 +1,6 @@
 ﻿using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Http;
 using Paging.Infrastructure;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,6 +12,9 @@ namespace eSuperShop.BusinessLogic
         ISeoCore Seo { get; set; }
         DbResponse<CatalogDisplayModel> CatalogDetails(int catalogId);
         Task<DbResponse<int>> AddProductAsync(ProductAddModel model, string vendorUserName);
+        Task<DbResponse<string>> BlobFileAddAsync(ProductBlobFileChangeModel model, IFormFile file);
+        Task<DbResponse> BlobFileDeleteAsync(ProductBlobFileChangeModel model);
+
         DbResponse<List<ICatalogVendorModel>> VendorWiseCatalogList(string vendorUserName);
         DbResponse<List<ProductUnpublishedModel>> UnpublishedList(string vendorUserName);
         DbResponse<List<ProductUnpublishedModel>> PublishedList(string vendorUserName);

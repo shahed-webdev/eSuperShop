@@ -25,9 +25,28 @@ namespace eSuperShop.Repository
             Db.Product.Add(Product);
         }
 
+        public void BlobAddFile(ProductBlobFileChangeModel model)
+        {
+            var blob = _mapper.Map<ProductBlob>(model);
+            Db.ProductBlob.Add(blob);
+            Db.SaveChanges();
+        }
+
+        public void BlobDeleteFile(ProductBlobFileChangeModel model)
+        {
+            var blob = Db.ProductBlob.FirstOrDefault(c => c.ProductId == model.ProductId && string.Equals(c.BlobFileName, model.BlobFileName, StringComparison.CurrentCultureIgnoreCase));
+            Db.ProductBlob.Remove(blob);
+            Db.SaveChanges();
+        }
+
         public bool IsExistSlugUrl(string slugUrl)
         {
             return Db.Product.Any(c => c.SlugUrl == slugUrl);
+        }
+
+        public bool IsExistBlobFile(int productId, string fileName)
+        {
+            return Db.ProductBlob.Any(c => c.ProductId == productId && string.Equals(c.BlobFileName, fileName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public int ProductIdBySlugUrl(string slugUrl)

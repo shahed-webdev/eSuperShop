@@ -10,7 +10,10 @@ namespace eSuperShop.Repository
         Product Product { get; set; }
         ProductQuantitySet ProductQuantitySet { get; set; }
         void Add(ProductAddModel model);
+        void BlobAddFile(ProductBlobFileChangeModel model);
+        void BlobDeleteFile(ProductBlobFileChangeModel model);
         bool IsExistSlugUrl(string slugUrl);
+        bool IsExistBlobFile(int productId, string fileName);
         int ProductIdBySlugUrl(string slugUrl);
         bool IsExistSlugUrl(string slugUrl, int updateId);
         bool IsNull(int id);

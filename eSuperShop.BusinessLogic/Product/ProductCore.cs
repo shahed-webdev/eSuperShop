@@ -2,6 +2,7 @@
 using CloudStorage;
 using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
+using Microsoft.AspNetCore.Http;
 using Paging.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -100,6 +101,46 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse<int>(false, e.Message);
+            }
+        }
+
+        public async Task<DbResponse<string>> BlobFileAddAsync(ProductBlobFileChangeModel model, IFormFile file)
+        {
+            try
+            {
+                if (!_db.Product.IsNull(model.ProductId))
+                    return new DbResponse<string>(false, "Product Not Found");
+
+                var fileName = FileBuilder.FileNameImage("product-image", file.FileName);
+
+                model.BlobFileName = await _cloudStorage.UploadFileAsync(file, fileName);
+
+                _db.Product.BlobAddFile(model);
+
+                return new DbResponse<string>(true, "Success", model.BlobFileName);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<string>(false, e.Message);
+            }
+        }
+
+        public async Task<DbResponse> BlobFileDeleteAsync(ProductBlobFileChangeModel model)
+        {
+            try
+            {
+                if (!_db.Product.IsExistBlobFile(model.ProductId, model.BlobFileName))
+                    return new DbResponse(false, "Product Not Found");
+
+                await _cloudStorage.DeleteFileAsync(model.BlobFileName);
+
+                _db.Product.BlobDeleteFile(model);
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
             }
         }
 

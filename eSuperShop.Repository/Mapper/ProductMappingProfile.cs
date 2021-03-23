@@ -14,6 +14,7 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.Blobs, opt => opt.MapFrom(c => c.ProductBlob))
                 .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
                 .ReverseMap();
+            CreateMap<ProductBlob, ProductBlobFileChangeModel>().ReverseMap();
             CreateMap<ProductBlob, ProductBlobAddModel>().ReverseMap();
             CreateMap<ProductSpecification, ProductSpecificationAddModel>().ReverseMap();
             CreateMap<ProductAttributeValue, ProductAttributeValueAddModel>().ReverseMap();

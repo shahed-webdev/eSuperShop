@@ -321,5 +321,12 @@ namespace eSuperShop.Repository
         public string FullDescription { get; set; }
         public string AdminComment { get; set; }
     }
+
+
+    public class ProductBlobFileChangeModel
+    {
+        public int ProductId { get; set; }
+        public string BlobFileName { get; set; }
+    }
 }
 
