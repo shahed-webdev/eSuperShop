@@ -99,9 +99,140 @@ namespace eSuperShop.Repository
 
         public ProductDetailsModel Details(int productId)
         {
+            //return Db.Product
+            //    .Where(p => p.ProductId == productId)
+            //    .ProjectTo<ProductDetailsModel>(_mapper.ConfigurationProvider)
+            //    .FirstOrDefault();
+            var product = Db.Product
+                  .Where(p => p.ProductId == productId)
+                  .Select(p =>
+                      new ProductDetailsModel
+                      {
+                          ProductId = p.ProductId,
+                          VendorInfo = new VendorInfoModel
+                          {
+                              VendorId = p.VendorId,
+                              AuthorizedPerson = p.Vendor.AuthorizedPerson,
+                              VerifiedPhone = p.Vendor.VerifiedPhone,
+                              StoreName = p.Vendor.StoreName,
+                              StoreSlugUrl = p.Vendor.StoreSlugUrl,
+                              StoreLogoFileName = p.Vendor.StoreLogoFileName,
+                              StoreBannerFileName = p.Vendor.StoreBannerFileName,
+                              StoreTagLine = p.Vendor.StoreTagLine,
+                              Email = p.Vendor.Email,
+                              StoreAddress = p.Vendor.StoreAddress,
+                              IsApproved = p.Vendor.IsApproved,
+                              GrossSale = p.Vendor.GrossSale,
+                              Discount = p.Vendor.Discount,
+                              Refund = p.Vendor.Refund,
+                              NetSale = p.Vendor.NetSale,
+                              Commission = p.Vendor.Commission,
+                              Withdraw = p.Vendor.Withdraw,
+                              Balance = p.Vendor.Balance,
+                              CreatedOnUtc = p.Vendor.CreatedOnUtc,
+                              StoreTheme = p.Vendor.StoreTheme,
+                              StorePostcode = p.Vendor.StorePostcode,
+                              StoreRegionId = p.Vendor.StoreArea.RegionId,
+                              StoreAreaId = p.Vendor.StoreAreaId.Value,
+                              StoreRegion = p.Vendor.StoreArea.Region.RegionName,
+                              StoreArea = p.Vendor.StoreArea.AreaName,
+                              NId = p.Vendor.NId,
+                              NIdImageFrontFileName = p.Vendor.NIdImageFrontFileName,
+                              NIdImageBackFileName = p.Vendor.NIdImageBackFileName,
+                              TradeLicenseImageFileName = p.Vendor.TradeLicenseImageFileName,
+                              BankAccountTitle = p.Vendor.BankAccountTitle,
+                              BankAccountNumber = p.Vendor.BankAccountNumber,
+                              BankName = p.Vendor.BankName,
+                              BranchName = p.Vendor.BranchName,
+                              RoutingNumber = p.Vendor.RoutingNumber,
+                              ChequeImageFileName = p.Vendor.ChequeImageFileName,
+                              VendorCertificateFileNames = p.Vendor.VendorCertificate.Select(c => c.CertificateImageFileName).ToArray(),
+                              MobileBankingType = p.Vendor.MobileBankingType,
+                              MobileBankingNumber = p.Vendor.MobileBankingNumber,
+                              WarehouseAddress = p.Vendor.WarehouseAddress,
+                              WarehousePostcode = p.Vendor.WarehousePostcode,
+                              WarehouseAreaId = p.Vendor.WarehouseAreaId.Value,
+                              WarehouseRegion = p.Vendor.WarehouseArea.Region.RegionName,
+                              WarehouseRegionId = p.Vendor.WarehouseArea.RegionId,
+                              WarehouseArea = p.Vendor.WarehouseArea.AreaName,
+                              ReturnAddress = p.Vendor.ReturnAddress,
+                              ReturnPostcode = p.Vendor.ReturnPostcode,
+                              ReturnAreaId = p.Vendor.ReturnAreaId.Value,
+                              ReturnRegion = p.Vendor.ReturnArea.Region.RegionName,
+                              ReturnRegionId = p.Vendor.ReturnArea.RegionId,
+                              ReturnArea = p.Vendor.ReturnArea.AreaName,
+                              ReturnPhone = p.Vendor.ReturnPhone,
+                              WarehousePhone = p.Vendor.WarehousePhone,
+                              ChangedStoreBannerFileName = p.Vendor.ChangedStoreBannerFileName,
+                              ChangedStoreLogoFileName = p.Vendor.ChangedStoreLogoFileName,
+                              ChangedStoreTagLine = p.Vendor.ChangedStoreTagLine,
+                              IsChangedApproved = p.Vendor.IsChangedApproved
+                          },
+                          CatalogInfo = new CatalogDisplayModel
+                          {
+                              CatalogId = p.CatalogId,
+                              CatalogName = p.Catalog.CatalogName,
+                              SlugUrl = p.Catalog.SlugUrl,
+                              ImageFileName = p.Catalog.ImageFileName,
+                              DisplayOrder = p.Catalog.DisplayOrder
+                          },
+                          BrandInfo = new BrandModel
+                          {
+                              BrandId = p.BrandId.Value,
+                              Name = p.Brand.Name,
+                              LogoFileName = p.Brand.LogoFileName,
+                              CreatedBy = p.Brand.CreatedByRegistration.Name
+                          },
+                          Name = p.Name,
+                          SlugUrl = p.SlugUrl,
+                          ShortDescription = p.ShortDescription,
+                          FullDescription = p.FullDescription,
+                          Price = p.Price,
+                          OldPrice = p.OldPrice,
+                          StockQuantity = p.StockQuantity,
+                          Published = p.Published,
+                          QuantitySets = p.ProductQuantitySet.Select(q => new ProductQuantitySetViewModel
+                          {
+                              ProductQuantitySetId = q.ProductQuantitySetId,
+                              Quantity = q.Quantity,
+                              PriceAdjustment = q.PriceAdjustment,
+                              AttributesWithValue = q.ProductQuantitySetAttribute
+                                  .Select(a => new ProductQuantitySetAttributeViewModel
+                                  {
+                                      ProductQuantitySetAttributeId = a.ProductQuantitySetAttributeId,
+                                      AttributeId = a.ProductAttributeValue.ProductAttribute.AttributeId,
+                                      KeyName = a.ProductAttributeValue.ProductAttribute.Attribute.KeyName,
+                                      ProductAttributeValueId = a.ProductAttributeValueId,
+                                      Value = a.ProductAttributeValue.Value
+                                  }
+
+                          ).ToList()
+                          }).ToList(),
+                          Blobs = p.ProductBlob.Select(b => new ProductBlobViewModel
+                          {
+                              ProductBlobId = b.ProductBlobId,
+                              ProductId = b.ProductId,
+                              BlobFileName = b.BlobFileName,
+                              DisplayOrder = b.DisplayOrder
+                          }).ToList(),
+                          Specifications = p.ProductSpecification.Select(s => new ProductSpecificationViewModel
+                          {
+                              ProductSpecificationId = s.ProductSpecificationId,
+                              ProductId = s.ProductId,
+                              SpecificationId = s.SpecificationId,
+                              KeyName = s.Specification.KeyName,
+                              Value = s.Value
+                          }).ToList()
+                      }).FirstOrDefault();
+
+            return product;
+        }
+
+        public ProductDetailsForSellerModel DetailsForSeller(int productId)
+        {
             return Db.Product
                 .Where(p => p.ProductId == productId)
-                .ProjectTo<ProductDetailsModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<ProductDetailsForSellerModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefault();
         }
 

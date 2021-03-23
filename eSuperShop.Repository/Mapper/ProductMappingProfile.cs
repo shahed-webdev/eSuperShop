@@ -57,7 +57,21 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.QuantitySets, opt => opt.MapFrom(c => c.ProductQuantitySet));
 
 
+            CreateMap<Product, ProductDetailsForSellerModel>()
+                .ForMember(d => d.BlobFileNames, opt => opt.MapFrom(c => c.ProductBlob.Select(b => b.BlobFileName).ToArray()))
+                .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
+                .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
+                .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
+                .ForMember(d => d.QuantitySets, opt => opt.MapFrom(c => c.ProductQuantitySet));
 
+            CreateMap<ProductSpecification, ProductSpecificationForSellerModel>()
+                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName));
+
+            CreateMap<ProductQuantitySet, ProductQuantitySetSellerModel>()
+                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute));
+            CreateMap<ProductQuantitySetAttribute, ProductQuantitySetValueSellerModel>()
+                .ForMember(d => d.Value, opt => opt.MapFrom(c => c.ProductAttributeValue.Value))
+                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.Attribute.KeyName));
 
             CreateMap<Product, ProductDetailsViewModel>()
                 .ForMember(d => d.Attributes,

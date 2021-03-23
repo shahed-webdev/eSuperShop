@@ -243,6 +243,23 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse<ProductDetailsForSellerModel> DetailsForSeller(int productId)
+        {
+            try
+            {
+                if (_db.Product.IsNull(productId))
+                    return new DbResponse<ProductDetailsForSellerModel>(false, "Product Not Found");
+
+
+                var data = _db.Product.DetailsForSeller(productId);
+                return new DbResponse<ProductDetailsForSellerModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<ProductDetailsForSellerModel>(false, e.Message);
+            }
+        }
+
         public DbResponse<ProductDetailsViewModel> DetailsBySlugUrl(string slugUrl)
         {
             try
