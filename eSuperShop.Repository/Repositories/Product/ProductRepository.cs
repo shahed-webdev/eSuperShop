@@ -4,6 +4,7 @@ using eSuperShop.Data;
 using JqueryDataTables.LoopsIT;
 using Microsoft.EntityFrameworkCore;
 using Paging.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -185,6 +186,22 @@ namespace eSuperShop.Repository
                 .Where(p => p.ProductQuantitySetId == productQuantitySetId)
                 .ProjectTo<ProductQuantitySetViewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefault();
+        }
+
+        public void ApprovedByAdmin(ProductApprovedModel model)
+        {
+            var product = Db.Product.Find(model.ProductId);
+
+            product.BrandId = model.BrandId;
+            product.Name = model.Name;
+            product.SlugUrl = model.SlugUrl;
+            product.ShortDescription = model.ShortDescription;
+            product.FullDescription = model.FullDescription;
+            product.AdminComment = model.AdminComment;
+            product.Published = true;
+            product.UpdatedOnUtc = DateTime.UtcNow;
+
+            Db.Product.Update(product);
         }
 
         public void PublishedUpdate(int productId, bool published)

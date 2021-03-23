@@ -324,6 +324,29 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse ApprovedByAdmin(ProductApprovedModel model)
+        {
+            try
+            {
+                if (!_db.Product.IsNull(model.ProductId))
+                    return new DbResponse(false, "Product Not Found");
+
+                if (string.IsNullOrEmpty(model.Name))
+                    return new DbResponse(false, "Invalid Data");
+
+                if (_db.Product.IsExistSlugUrl(model.SlugUrl, model.ProductId))
+                    return new DbResponse(false, "SlugUrl already Exist");
+                _db.Product.ApprovedByAdmin(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
         public DbResponse<ProductQuantitySetViewModel> GetQuantitySet(ProductQuantityCheckModel model)
         {
             try

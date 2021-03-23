@@ -310,5 +310,16 @@ namespace eSuperShop.Repository
         public string CatalogName { get; set; }
         public DateTime CreatedOnUtc { get; set; }
     }
+
+    public class ProductApprovedModel
+    {
+        public int ProductId { get; set; }
+        public int? BrandId { get; set; }
+        public string Name { get; set; }
+        public string SlugUrl { get; set; }
+        public string ShortDescription { get; set; }
+        public string FullDescription { get; set; }
+        public string AdminComment { get; set; }
+    }
 }
 

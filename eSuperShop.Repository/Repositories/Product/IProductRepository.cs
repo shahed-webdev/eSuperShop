@@ -33,6 +33,7 @@ namespace eSuperShop.Repository
         ProductQuantitySetViewModel GetQuantitySetDetailsById(int productQuantitySetId);
 
 
+        void ApprovedByAdmin(ProductApprovedModel model);
         void PublishedUpdate(int productId, bool published);
         void UpdateMainQuantity(int productId);
         int GetStock(int productId);
