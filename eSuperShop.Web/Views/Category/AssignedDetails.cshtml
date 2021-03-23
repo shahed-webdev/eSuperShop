@@ -8,14 +8,14 @@
 
 @section Styles{
     <style>
-        .list-group i{cursor: pointer}
-        .list-group .fa-spin { pointer-events: none}
-    </style> 
+        .list-group i { cursor: pointer }
+        .list-group .fa-spin { pointer-events: none }
+    </style>
 }
 
 <div class="container">
     <h4 class="page-header">
-        Category: <small class="text-lowercase">@Model.CatalogInfo.CatalogName</small> 
+        Category: <small class="text-lowercase">@Model.CatalogInfo.CatalogName</small>
     </h4>
     <a href="/Category/Index"><i class="far fa-long-arrow-alt-left mr-1 mb-4"></i>Back to List</a>
 
@@ -90,68 +90,70 @@
 
 @section Scripts{
     <script>
-        const assignList = document.getElementById('assignList');
-        assignList.addEventListener('click', function(evt) {
-            const element = evt.target;
+        (function() {
+            const assignList = document.getElementById('assignList');
+            assignList.addEventListener('click', function(evt) {
+                const element = evt.target;
 
-            const onBrand = element.classList.contains("brand-delete");
-            const onAttribute = element.classList.contains("attribute-delete");
-            const onSpecification = element.classList.contains("specification-delete");
+                const onBrand = element.classList.contains("brand-delete");
+                const onAttribute = element.classList.contains("attribute-delete");
+                const onSpecification = element.classList.contains("specification-delete");
 
-            if (onBrand) {
-                const id = +element.getAttribute('data-id');
-                showSpinner(element, true);
+                if (onBrand) {
+                    const id = +element.getAttribute('data-id');
+                    showSpinner(element, true);
 
-                unAssignCatalog(id, "brand", function(response) {
-                    showSpinner(element, false);
-                    element.parentElement.remove();
-                    console.log(response)
-                });
-            }
+                    unAssignCatalog(id, "brand", function(response) {
+                        showSpinner(element, false);
+                        element.parentElement.remove();
+                        console.log(response)
+                    });
+                }
 
-            if (onAttribute) {
-                const id = +element.getAttribute('data-id');
-                showSpinner(element, true);
+                if (onAttribute) {
+                    const id = +element.getAttribute('data-id');
+                    showSpinner(element, true);
 
-                unAssignCatalog(id, "attribute", function(response) {
-                    showSpinner(element, false);
-                    element.parentElement.remove();
-                    console.log(response)
-                });
-            }
+                    unAssignCatalog(id, "attribute", function(response) {
+                        showSpinner(element, false);
+                        element.parentElement.remove();
+                        console.log(response)
+                    });
+                }
 
-            if (onSpecification) {
-                const id = +element.getAttribute('data-id');
-                showSpinner(element, true);
+                if (onSpecification) {
+                    const id = +element.getAttribute('data-id');
+                    showSpinner(element, true);
 
-                unAssignCatalog(id, "specification", function(response) {
-                    showSpinner(element, false);
-                    element.parentElement.remove();
-                    console.log(response)
-                });
-            }
-        });
-
-        //show spinner
-        function showSpinner(element, isShow) {
-            if (isShow) {
-                element.classList.remove("fa-trash");
-                element.classList.add("fa-spinner", "fa-spin");
-            } else {
-                element.classList.remove("fa-spinner", "fa-spin");
-                element.classList.add("fa-trash");
-            }
-        }
-
-        //un assign post
-        function unAssignCatalog(id, type, cb) {
-            const data = { id, catalogId: @Model.CatalogInfo.CatalogId, type }
-            $.ajax({
-                url: "/Category/UnAssignCatalog",
-                data,
-                success: cb,
-                error: function(err) { console.log(err.responseText) }
+                    unAssignCatalog(id, "specification", function(response) {
+                        showSpinner(element, false);
+                        element.parentElement.remove();
+                        console.log(response)
+                    });
+                }
             });
-        }
+
+            //show spinner
+            function showSpinner(element, isShow) {
+                if (isShow) {
+                    element.classList.remove("fa-trash");
+                    element.classList.add("fa-spinner", "fa-spin");
+                } else {
+                    element.classList.remove("fa-spinner", "fa-spin");
+                    element.classList.add("fa-trash");
+                }
+            }
+
+            //un assign post
+            function unAssignCatalog(id, type, cb) {
+                const data = { id, catalogId: @Model.CatalogInfo.CatalogId, type }
+                $.ajax({
+                    url: "/Category/UnAssignCatalog",
+                    data,
+                    success: cb,
+                    error: function(err) { console.log(err.responseText) }
+                });
+            }
+        })();
     </script>
 }

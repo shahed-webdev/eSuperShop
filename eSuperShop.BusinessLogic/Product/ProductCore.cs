@@ -108,7 +108,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_db.Product.IsNull(model.ProductId))
+                if (_db.Product.IsNull(model.ProductId))
                     return new DbResponse<string>(false, "Product Not Found");
 
                 var fileName = FileBuilder.FileNameImage("product-image", file.FileName);
@@ -369,7 +369,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_db.Product.IsNull(model.ProductId))
+                if (_db.Product.IsNull(model.ProductId))
                     return new DbResponse(false, "Product Not Found");
 
                 if (string.IsNullOrEmpty(model.Name))

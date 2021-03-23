@@ -33,6 +33,7 @@ namespace eSuperShop.Web.Controllers
 
 
         //**** Region *****
+        #region Region
         public IActionResult Region()
         {
             return View();
@@ -68,10 +69,11 @@ namespace eSuperShop.Web.Controllers
             var response = _region.Delete(id);
             return Json(response);
         }
-
-
-
+        #endregion
+ 
+        
         //**** Area *****
+        #region Area
         public IActionResult Area()
         {
             ViewBag.Regions =  new SelectList(_region.ListDdl(), "value", "label");
@@ -108,6 +110,7 @@ namespace eSuperShop.Web.Controllers
             var response = _area.Delete(id);
             return Json(response);
         }
+        #endregion Area
 
 
         // ****Courier Service ****
@@ -118,6 +121,7 @@ namespace eSuperShop.Web.Controllers
 
 
         // **** Home Page Slider ****
+        #region Home Page Slider
         public IActionResult HomeSlider()
         {
             ViewBag.DisplayPlace = new SelectList(_slider.DisplayPlaceDdl(), "value", "label");
@@ -145,5 +149,6 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
+        #endregion
     }
 }

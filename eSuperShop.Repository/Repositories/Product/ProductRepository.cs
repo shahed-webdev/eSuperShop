@@ -34,7 +34,7 @@ namespace eSuperShop.Repository
 
         public void BlobDeleteFile(ProductBlobFileChangeModel model)
         {
-            var blob = Db.ProductBlob.FirstOrDefault(c => c.ProductId == model.ProductId && string.Equals(c.BlobFileName, model.BlobFileName, StringComparison.CurrentCultureIgnoreCase));
+            var blob = Db.ProductBlob.FirstOrDefault(c => c.ProductId == model.ProductId && c.BlobFileName.ToLower() == model.BlobFileName.ToLower());
             Db.ProductBlob.Remove(blob);
             Db.SaveChanges();
         }
@@ -46,7 +46,7 @@ namespace eSuperShop.Repository
 
         public bool IsExistBlobFile(int productId, string fileName)
         {
-            return Db.ProductBlob.Any(c => c.ProductId == productId && string.Equals(c.BlobFileName, fileName, StringComparison.CurrentCultureIgnoreCase));
+            return Db.ProductBlob.Any(c => c.ProductId == productId && c.BlobFileName.ToLower()==fileName.ToLower());
         }
 
         public int ProductIdBySlugUrl(string slugUrl)

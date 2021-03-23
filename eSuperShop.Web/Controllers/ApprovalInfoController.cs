@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CloudStorage;
 using eSuperShop.BusinessLogic;
+using eSuperShop.Repository;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -159,28 +160,27 @@ namespace eSuperShop.Web.Controllers
 
         //Approve (ajax)
         [HttpPost]
-        public IActionResult UpdateProductInfo(int id)
+        public IActionResult UpdateProductInfo(ProductApprovedModel model)
         {
-            var response = _vendorSlider.Approved(id);
+            var response = _product.ApprovedByAdmin(model);
+            return Json(response);
+        }
+
+        //add new image
+        [HttpPost]
+        public async Task<IActionResult> AddProductImage(ProductBlobFileChangeModel model, IFormFile fileImage)
+        {
+            var response = await _product.BlobFileAddAsync(model, fileImage);
             return Json(response);
         }
 
         //delete image (ajax)
-        //[HttpPost]
-        //public IActionResult DeleteProductImage(string fileName)
-        //{
-        //    var response = _product.Delete(fileName);
-        //    return Json(response);
-        //}
-
-
-        //add new image
-        //[HttpPost]
-        //public IActionResult AddProductImage(IFormFile fileImage)
-        //{
-        //    var response = _vendorSlider.Approved(id);
-        //    return Json(response);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> DeleteProductImage(ProductBlobFileChangeModel model)
+        {
+            var response = await _product.BlobFileDeleteAsync(model);
+            return Json(response);
+        }
         #endregion
     }
 }

@@ -19,29 +19,27 @@
     <div class="row">
         <div class="col-xl-7 mb-3">
             <div class="card card-body">
-                <form id="updateProduct">
+                <form id="approveProduct">
+                    <input type="hidden" name="ProductId" value="@Model.ProductId">
                     <div class="md-form">
                         <label for="inputProductName">Product Name</label>
                         <input id="inputProductName" value="@Model.Name" type="text" name="Name" class="form-control" required>
                     </div>
-                    <div class="form-row">
-                        <div class="col-lg-6">
-                            <div class="md-form">
-                                <label for="inputShortDescription">Short Description</label>
-                                <input id="inputShortDescription" value="@Model.ShortDescription" type="text" name="ShortDescription" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="md-form">
-                                <label for="inputSlugUrl">Slug Url (allow: a-z, 0-9, -, %)</label>
-                                <input id="inputSlugUrl" value="@Model.SlugUrl" type="text" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" name="SlugUrl" class="form-control" required>
-                            </div>
-                        </div>
+
+                    <div class="md-form">
+                        <label for="inputShortDescription">Short Description</label>
+                        <input id="inputShortDescription" value="@Model.ShortDescription" type="text" name="ShortDescription" class="form-control" required>
                     </div>
+
+                    <div class="md-form">
+                        <label for="inputSlugUrl">Slug Url (allow: a-z, 0-9, -, %)</label>
+                        <input id="inputSlugUrl" value="@Model.SlugUrl" type="text" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" name="SlugUrl" class="form-control" required>
+                    </div>
+
                     <div class="form-row">
                         <div class="col-lg-4">
                             <div class="md-form">
-                                <select searchable="Find Product Brand" asp-for="BrandInfo.BrandId" asp-items="ViewBag.Brands" class="mdb-select">
+                                <select searchable="Find Product Brand" name="BrandId" asp-for="BrandInfo.BrandId" asp-items="ViewBag.Brands" class="mdb-select">
                                     <option value="">[ Select Product Brand ]</option>
                                 </select>
                             </div>
@@ -59,12 +57,18 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="md-form">
                         <p class="mb-1 text-muted">Product Description</p>
                         <textarea id="inputFullDescription" name="FullDescription">@Model.FullDescription</textarea>
                     </div>
 
-                    <input type="submit" value="Update Info" class="btn btn-danger">
+                    <div class="md-form mt-4">
+                        <label>Comment</label>
+                        <input type="text" name="AdminComment" class="form-control">
+                    </div>
+
+                    <input name="btnSubmit" type="submit" value="Update and Approve Info" class="btn btn-danger">
                 </form>
             </div>
         </div>
@@ -124,6 +128,7 @@
                                     <div class="btn btn-outline-danger btn-rounded waves-effect float-left btn-sm">
                                         <span>Choose file<i class="fas fa-upload ml-3"></i></span>
                                         <input name="fileImage" type="file" required>
+                                        <input name="ProductId" type="hidden" value="@Model.ProductId">
                                     </div>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text" placeholder="Upload your file">
@@ -132,17 +137,23 @@
                             </div>
                         </div>
                         <div class="col">
-                            <input type="submit" value="Upload" class="btn btn-danger btn-md">
+                            <input name="btnSubmit" type="submit" value="Upload" class="btn btn-danger btn-md">
                         </div>
                     </div>
                 </form>
 
+                @{
+                    var lastItem = Model.Blobs.Count;
+                }
                 <ul id="product-image" class="pl-0 list-groupp list-group-flush">
                     @foreach (var img in Model.Blobs)
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <img src="@baseUrl/thumb_@img.BlobFileName" alt="product image">
-                            <i id="@img.BlobFileName" class="deleteImg fas fa-trash-alt"></i>
+                            @if (lastItem > 1)
+                            {
+                                <i title="this delete is permanent" id="@img.BlobFileName" class="deleteImg fas fa-trash"></i>
+                            }
                         </li>
                     }
                 </ul>
@@ -153,17 +164,13 @@
 
 
 @section Scripts{
-    <script defer src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
     <script>
-        $(function () {
+        $(function() {
             $('.mdb-select').materialSelect();
 
-            //rich text editor
-            const textArea = document.querySelector('#inputFullDescription');
-            ClassicEditor.create(textArea).catch(error => console.error(error));
-
             //set image file
-            $('input[type="file"]').change(function (e) {
+            $('input[type="file"]').change(function(e) {
                 const pathInput = e.target.parentElement.parentElement.querySelector(".file-path");
                 const size = e.target.files[0].size / 1024 / 1024;
                 const allowSize = 2;
@@ -192,11 +199,25 @@
 
                 pathInput.value = fileName;
             });
-
         });
 
+
+        //rich text editor
+        const textArea = document.querySelector('#inputFullDescription');
+        ClassicEditor.create(textArea).catch(error => console.error(error));
+
+
         (function () {
-            const serializeForm = function (form) {
+            /**SLUG URL**/
+            const inputSlugUrl = document.getElementById("inputSlugUrl");
+
+            //on input slug url
+            inputSlugUrl.addEventListener("change", function () {
+                this.value = slugUrl.create(this.value);
+            });
+
+
+            const serializeForm = function(form) {
                 const obj = {}, formData = new FormData(form);
                 for (let key of formData.keys()) {
                     obj[key] = formData.get(key);
@@ -204,32 +225,42 @@
                 return obj;
             };
 
-            //update info
-            const updateProduct = document.getElementById("updateProduct");
-            updateProduct.addEventListener("submit", function (evt) {
+            //update and approve info
+            const approveProduct = document.getElementById("approveProduct");
+            approveProduct.addEventListener("submit", function(evt) {
                 evt.preventDefault();
+
+                const btn = this.btnSubmit;
+                disabledBtn(btn, true);
 
                 $.ajax({
                     type: "POST",
                     url: `/ApprovalInfo/UpdateProductInfo`,
                     data: serializeForm(this),
-                    success: function (response) {
+                    success: function(response) {
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
-                        if (!response.IsSuccess)
-                            location.reload();
+                        if (response.IsSuccess) {
+                            location.href = "/ApprovalInfo/PendingProductInfo";
+                            return;
+                        }
+
+                        disabledBtn(btn, false);
                     },
-                    error: function (err) {
+                    error: function(err) {
+                        disabledBtn(btn, false);
                         console.log(err);
                     }
                 });
             });
 
-
             //add new image
             const updateImage = document.getElementById("updateImage");
-            updateImage.addEventListener("submit", function (evt) {
+            updateImage.addEventListener("submit", function(evt) {
                 evt.preventDefault();
+
+                const btn = this.btnSubmit;
+                disabledBtn(btn, true);
 
                 $.ajax({
                     url: "/ApprovalInfo/AddProductImage",
@@ -237,43 +268,76 @@
                     type: 'POST',
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: response=> {
+                        disabledBtn(btn, false);
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
-                        if (response.IsSuccess)
-                            location.reload();
+                        if (response.IsSuccess) {
+                            addImageToList(response.Data);
+                            this.reset();
+                        }
                     },
-                    error: function (err) {
+                    error: function(err) {
+                        disabledBtn(btn, false);
                         console.log(err);
                     }
                 });
             });
 
+            function addImageToList(file) {
+                const productImageContainer = document.getElementById("product-image");
+                const li = document.createElement("li");
+
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `<img src="@baseUrl/${file}" alt="product image"><i title="this delete is permanent" id="${file}" class="deleteImg fas fa-trash"></i>`
+
+                productImageContainer.appendChild(li);
+            }
 
             //delete image
             const productImage = document.getElementById("product-image");
-            productImage.addEventListener("click", function (evt) {
+            productImage.addEventListener("click", function(evt) {
                 const element = evt.target;
 
                 const onDelete = element.classList.contains("deleteImg");
                 if (!onDelete) return;
 
-                const fileName = element.id;
+                showSpinner(element, true);
+
+                const body = { ProductId: @Model.ProductId, BlobFileName: element.id };
                 $.ajax({
                     type: "POST",
                     url: `/ApprovalInfo/DeleteProductImage`,
-                    data: { fileName },
+                    data: body,
                     success: function (response) {
+                        showSpinner(element, false);
                         $.notify(response.Message, response.IsSuccess ? "success" : "error");
 
-                        if (!response.IsSuccess)
-                            location.reload();
+                        if (response.IsSuccess)
+                            element.parentElement.remove();
+
                     },
-                    error: function (err) {
+                    error: function(err) {
                         console.log(err);
                     }
                 });
             });
+
+            //btn disabled
+            function disabledBtn(btn, isLoading) {
+                btn.disabled = isLoading;
+            }
+
+            //show spinner
+            function showSpinner(element, isShow) {
+                if (isShow) {
+                    element.classList.remove("fa-trash");
+                    element.classList.add("fa-spinner", "fa-spin");
+                } else {
+                    element.classList.remove("fa-spinner", "fa-spin");
+                    element.classList.add("fa-trash");
+                }
+            }
         })();
     </script>
 }

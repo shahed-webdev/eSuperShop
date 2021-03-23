@@ -59,7 +59,8 @@ namespace eSuperShop.Web.Controllers
             return Json(model);
         }
 
-        //Category list
+
+        #region Category
         public IActionResult Index()
         {
             var model = _catalog.List();
@@ -67,7 +68,8 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        //*** Add Catalog ***
+        //***Add Catalog ***
+        
         public IActionResult Add()
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
@@ -88,7 +90,6 @@ namespace eSuperShop.Web.Controllers
 
             return RedirectToAction("Index");
         }
-
 
         //**** Update***
         public IActionResult Update(int? id)
@@ -124,7 +125,10 @@ namespace eSuperShop.Web.Controllers
             var response = await _catalog.DeleteAsync(id, _cloudStorage);
             return Json(response);
         }
+        #endregion
 
+
+        #region Assigned in Category Brand, Spacification, Attibute
         //Assigned Details
         public IActionResult AssignedDetails(int? id)
         {
@@ -149,9 +153,10 @@ namespace eSuperShop.Web.Controllers
                     return UnprocessableEntity("unable to delete");
             }
         }
+        #endregion
 
 
-
+        #region Category Placement
         //Post Show placement
         public IActionResult Placement()
         {
@@ -180,8 +185,10 @@ namespace eSuperShop.Web.Controllers
             var response = _catalog.DeletePlace(categoryId, place);
             return Json(response);
         }
+        #endregion
 
 
+        #region SEO
         //*****SEO******
         public IActionResult GetSeo(int id)
         {
@@ -206,5 +213,17 @@ namespace eSuperShop.Web.Controllers
 
             return Json(response);
         }
+        #endregion
+
+
+        #region Shipping Cost
+
+        public IActionResult ShippingCost(int? id)
+        {
+            if (!id.HasValue) return RedirectToAction("Index");
+            return View();
+        }
+
+        #endregion
     }
 }

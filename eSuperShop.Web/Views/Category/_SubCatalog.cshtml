@@ -22,14 +22,16 @@
                 </span>
             </div>
             <div>
-                <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mr-2"><i class="far fa-search-location"></i> SEO</a>
+                <a class="text-dark" href="/Category/ShippingCost/@catalog.CatalogId" title="add shipping cost"><i class="fas fa-shipping-fast"></i></a>
+                <a data-name="@catalog.CatalogName" data-id="@catalog.CatalogId" class="addSeo pink-text mx-4"><i class="far fa-search-location"></i> SEO</a>
+
                 @if (isNoCategory)
                 {
-                    <i data-id="@catalog.CatalogId" class="delete fal fa-trash-alt mr-3"></i>
+                    <i data-id="@catalog.CatalogId" class="delete fal fa-trash-alt mr-4"></i>
                 }
                 else
                 {
-                    <i data-id="0" class="muted fal fa-trash-alt mr-3"></i>
+                    <i data-id="0" class="muted fal fa-trash-alt mr-4"></i>
                 }
 
                 <a class="black-text" href="/Category/Update/@catalog.CatalogId">
