@@ -22,6 +22,7 @@ namespace eSuperShop.Repository
         ICollection<ProductUnpublishedModel> PublishedList(int vendorId);
         DataResult<ProductPendingApprovalListModel> PendingApprovalList(DataRequest request);
         ProductDetailsModel Details(int productId);
+        ProductDetailsForSellerModel DetailsForSeller(int productId);
         ProductDetailsViewModel DetailsView(int productId);
         bool IsProductExist(int vendorId, int productId);
         void QuantityAdd(ProductQuantityAddModel model);
