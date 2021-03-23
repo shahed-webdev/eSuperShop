@@ -7,6 +7,8 @@ using CloudStorage;
 using eSuperShop.BusinessLogic;
 using JqueryDataTables.LoopsIT;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eSuperShop.Web.Controllers
 {
@@ -16,18 +18,23 @@ namespace eSuperShop.Web.Controllers
         private readonly IVendorCore _vendor;
         private readonly IVendorProductCategoryCore _vendorCategory;
         private readonly IVendorSliderCore _vendorSlider;
+        private readonly IProductCore _product;
+        private readonly IBrandCore _brand;
         private readonly ICloudStorage _cloudStorage;
 
         public ApprovalInfoController(
             IVendorCore vendor,
             ICloudStorage cloudStorage,
             IVendorSliderCore vendorSlider,
-            IVendorProductCategoryCore vendorCategory)
+            IVendorProductCategoryCore vendorCategory, 
+            IProductCore product, IBrandCore brand)
         {
             _vendor = vendor;
             _cloudStorage = cloudStorage;
             _vendorSlider = vendorSlider;
             _vendorCategory = vendorCategory;
+            _product = product;
+            _brand = brand;
         }
 
         // *** profile info ***
@@ -133,25 +140,47 @@ namespace eSuperShop.Web.Controllers
         //get data-table
         public IActionResult GetPendingProduct(DataRequest request)
         {
-            var response = _vendorSlider.SliderUnapprovedList(request);
+            var response = _product.PendingApprovalList(request);
             return Json(response);
         }
 
+        //details
+        public IActionResult PendingProductDetails(int? id)
+        {
+            if (id == null) return RedirectToAction("PendingProductInfo");
+
+            var response = _product.Details(id.GetValueOrDefault());
+
+            ViewBag.Brands = new SelectList(_brand.CatalogWiseDdl(response.Data.CatalogInfo.CatalogId).Data, "value", "label");
+
+            return View(response.Data);
+        }
+
+
         //Approve (ajax)
         [HttpPost]
-        public IActionResult ApproveProduct(int id)
+        public IActionResult UpdateProductInfo(int id)
         {
             var response = _vendorSlider.Approved(id);
             return Json(response);
         }
 
-        //Reject (ajax)
-        public IActionResult RejectProduct(int id)
-        {
-            var response = _vendorSlider.Delete(id);
-            return Json(response);
-        }
+        //delete image (ajax)
+        //[HttpPost]
+        //public IActionResult DeleteProductImage(string fileName)
+        //{
+        //    var response = _product.Delete(fileName);
+        //    return Json(response);
+        //}
 
+
+        //add new image
+        //[HttpPost]
+        //public IActionResult AddProductImage(IFormFile fileImage)
+        //{
+        //    var response = _vendorSlider.Approved(id);
+        //    return Json(response);
+        //}
         #endregion
     }
 }

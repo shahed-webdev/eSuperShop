@@ -189,7 +189,7 @@ namespace eSuperShop.BusinessLogic
         {
             try
             {
-                if (!_db.Product.IsNull(productId))
+                if (_db.Product.IsNull(productId))
                     return new DbResponse<ProductDetailsModel>(false, "Product Not Found");
 
 
