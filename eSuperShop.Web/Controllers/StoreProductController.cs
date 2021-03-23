@@ -39,6 +39,7 @@ namespace eSuperShop.Web.Controllers
         }
 
         //Add product
+        #region Add Product
         public IActionResult AddProduct(int? id)
         {
             if (!id.HasValue) return RedirectToAction("ProductCategory");
@@ -65,13 +66,16 @@ namespace eSuperShop.Web.Controllers
             var response = _product.UnpublishedList(User.Identity.Name);
             return View(response.Data);
         }
+        #endregion
+
 
         //Add stock
+        #region Add Stock
         public IActionResult AddProductStock(int? id)
         {
             if (id == null) return RedirectToAction("UnPublishedProduct");
 
-            var response = _product.Details(User.Identity.Name, id.GetValueOrDefault());
+            var response = _product.DetailsForSeller(id.GetValueOrDefault());
             return View(response.Data);
         }
 
@@ -100,6 +104,8 @@ namespace eSuperShop.Web.Controllers
             if (!response.IsSuccess) return UnprocessableEntity(response.Message);
             return Json(response);
         }
+        #endregion
+
 
         //update published status
         [HttpPost]
@@ -118,6 +124,7 @@ namespace eSuperShop.Web.Controllers
 
 
         //*****SEO******
+        #region Product SEO
         public IActionResult GetSeo(int id)
         {
             var response = _product.Seo.Get(id);
@@ -142,6 +149,7 @@ namespace eSuperShop.Web.Controllers
             if (!response.IsSuccess) return UnprocessableEntity(response.Message);
 
             return Json(response);
-        }
+        } 
+        #endregion
     }
 }

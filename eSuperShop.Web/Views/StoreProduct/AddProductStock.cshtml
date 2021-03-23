@@ -1,5 +1,5 @@
 ﻿@using CloudStorage
-@model ProductDetailsModel
+@model ProductDetailsForSellerModel
 
 @{
     ViewData["Title"] = "Add Product Stock";
@@ -39,11 +39,11 @@
                 </div>
                 <hr />
                 <p>
-                    <strong>Category: </strong>@Model.CatalogInfo.CatalogName,
-                    @if (Model.BrandInfo != null)
+                    <strong>Category: </strong>@Model.CatalogName,
+                    @if (!string.IsNullOrEmpty(Model.BrandName))
                     {
                         <strong>Brand: </strong>
-                        <span>@Model.BrandInfo.Name,</span>
+                        <span>@Model.BrandName,</span>
                     }
                     <strong>Slug Url: </strong>@Model.SlugUrl
                 </p>
@@ -51,9 +51,9 @@
                 <div class="mt-3">@Html.Raw(Model.FullDescription)</div>
 
                 <div class="productImage mt-3">
-                    @foreach (var img in Model.Blobs)
+                    @foreach (var img in Model.BlobFileNames)
                     {
-                        <img src="@baseUrl/thumb_@img.BlobFileName" alt="@img.DisplayOrder">
+                        <img src="@baseUrl/thumb_@img" alt="">
                     }
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     <h5 class="font-weight-bold mt-3 mb-0">PRODUCT STOCK <small id="totalStock">(@Model.StockQuantity)</small></h5>
                     <em class="mb-3 d-block">Select Attribute And Add Product Quantity</em>
 
-                    @foreach (var value in Model.Attributes)
+                    @*@foreach (var value in Model.Attributes)
                     {
                         <div class="form-group">
                             <label>@value.KeyName</label>
@@ -77,7 +77,7 @@
                                 }
                             </select>
                         </div>
-                    }
+                    }*@
 
                     <div class="form-group">
                         <label>Product Quantity</label>
@@ -98,10 +98,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            @foreach (var val in Model.Attributes)
+                            @*@foreach (var val in Model.Attributes)
                             {
                                 <th><strong>@val.KeyName</strong></th>
-                            }
+                            }*@
                             <th><strong>Quantity</strong></th>
                             <th><strong>Additional Price</strong></th>
                         </tr>
@@ -109,8 +109,8 @@
                     <tbody id="tBody">
                         @foreach (var head in Model.QuantitySets)
                         {
-                            <tr data-id="@head.ProductQuantitySetId">
-                                @foreach (var val in head.AttributesWithValue)
+                            <tr @*data-id="@head.ProductQuantitySetId"*@>
+                                @foreach (var val in head.Values)
                                 {
                                     <td>@val.Value</td>
                                 }
