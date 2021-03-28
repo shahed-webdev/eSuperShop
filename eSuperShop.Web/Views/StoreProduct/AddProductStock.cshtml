@@ -9,7 +9,7 @@
 
 @section Styles{
     <style>
-        .productImage img { height: 120px; margin: 5px; border-radius: 3px; }
+        .productImage img { height: 120px; margin-right: 10px; border-radius: 3px; }
         .row-updated { background-color: #ddd; }
 
         #full-details img { width: 100%}
@@ -25,32 +25,32 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="w-75">
                         <h4 class="font-weight-bold mb-0">
-                            @Model.Name
-                            <small class="text-muted" style="text-decoration: line-through">৳@Model.OldPrice</small>
-                            <small>৳@Model.Price</small>
+                            @Model.ProductInfo.Name
+                            <small class="text-muted" style="text-decoration: line-through">৳@Model.ProductInfo.OldPrice</small>
+                            <small>৳@Model.ProductInfo.Price</small>
                         </h4>
-                        <p class="mb-0">@Model.ShortDescription</p>
+                        <p class="mb-0">@Model.ProductInfo.ShortDescription</p>
                     </div>
 
                     <div>
-                        <button id="btnPublish" data-publish="@Model.Published" type="button" class="btn btn-outline-@(Model.Published ? "success" : "danger") btn-rounded">
-                            <i class="fas mr-1 fa-@(Model.Published ? "check" : "ban")"></i>
-                            @(Model.Published ? "Published" : "Un-Published")
+                        <button id="btnPublish" data-publish="@Model.ProductInfo.Published" type="button" class="btn btn-outline-@(Model.ProductInfo.Published ? "success" : "danger") btn-rounded">
+                            <i class="fas mr-1 fa-@(Model.ProductInfo.Published ? "check" : "ban")"></i>
+                            @(Model.ProductInfo.Published ? "Published" : "Un-Published")
                         </button>
                     </div>
                 </div>
                 <hr />
                 <p>
-                    <strong>Category: </strong>@Model.CatalogName,
-                    @if (!string.IsNullOrEmpty(Model.BrandName))
+                    <strong>Category: </strong>@Model.ProductInfo.CatalogName,
+                    @if (!string.IsNullOrEmpty(Model.ProductInfo.BrandName))
                     {
                         <strong>Brand: </strong>
-                        <span>@Model.BrandName,</span>
+                        <span>@Model.ProductInfo.BrandName,</span>
                     }
-                    <strong>Slug Url: </strong>@Model.SlugUrl
+                    <strong>Slug Url: </strong>@Model.ProductInfo.SlugUrl
                 </p>
 
-                <div id="full-details" class="mt-3">@Html.Raw(Model.FullDescription)</div>
+                <div id="full-details" class="mt-3">@Html.Raw(Model.ProductInfo.FullDescription)</div>
             </div>
             
             <div class="card card-body">
@@ -67,10 +67,10 @@
         <div class="col-xl-5 mb-3">
             <div id="attributeCard" class="card card-body mb-4">
                 <form id="formAdd">
-                    <h5 class="font-weight-bold mt-3 mb-0">PRODUCT STOCK <small id="totalStock">(@Model.StockQuantity)</small></h5>
+                    <h5 class="font-weight-bold mt-3 mb-0">PRODUCT STOCK <small id="totalStock">(@Model.ProductInfo.StockQuantity)</small></h5>
                     <em class="mb-3 d-block">Select Attribute And Add Product Quantity</em>
 
-                    @*@foreach (var value in Model.Attributes)
+                    @foreach (var value in Model.Attributes)
                     {
                         <div class="form-group">
                             <label>@value.KeyName</label>
@@ -82,7 +82,7 @@
                                 }
                             </select>
                         </div>
-                    }*@
+                    }
 
                     <div class="form-group">
                         <label>Product Quantity</label>
@@ -96,17 +96,17 @@
 
                     <div class="form-group">
                         <input id="inputSubmit" type="submit" data-id="" value="Add Stock" class="btn btn-danger btn-md">
-                        <input type="hidden" name="ProductId" value="@Model.ProductId">
+                        <input type="hidden" name="ProductId" value="@Model.ProductInfo.ProductId">
                     </div>
                 </form>
 
                 <table class="table">
                     <thead>
                         <tr>
-                            @*@foreach (var val in Model.Attributes)
+                            @foreach (var val in Model.Attributes)
                             {
                                 <th><strong>@val.KeyName</strong></th>
-                            }*@
+                            }
                             <th><strong>Quantity</strong></th>
                             <th><strong>Additional Price</strong></th>
                         </tr>
@@ -114,7 +114,7 @@
                     <tbody id="tBody">
                         @foreach (var head in Model.QuantitySets)
                         {
-                            <tr @*data-id="@head.ProductQuantitySetId"*@>
+                            <tr data-id="@head.ProductQuantitySetId">
                                 @foreach (var val in head.Values)
                                 {
                                     <td>@val.Value</td>
@@ -165,7 +165,7 @@
             if (valueIds.length !== Ids.length) return;
 
             const model = {
-                ProductId: @Model.ProductId,
+                ProductId: @Model.ProductInfo.ProductId,
                 ProductAttributeValueIds: attributeIds(true)
             }
 
@@ -205,7 +205,7 @@
 
             if (id) {
                 const updateModel = {
-                    ProductId: @Model.ProductId,
+                    ProductId: @Model.ProductInfo.ProductId,
                     ProductQuantitySetId: +id,
                     Quantity: +formAdd.Quantity.value,
                     PriceAdjustment: +formAdd.PriceAdjustment.value
@@ -232,7 +232,7 @@
 
 
             const model = {
-                ProductId: @Model.ProductId,
+                ProductId: @Model.ProductInfo.ProductId,
                 Quantity: +formAdd.Quantity.value,
                 PriceAdjustment: +formAdd.PriceAdjustment.value,
                 ProductQuantitySetAttribute: attributeIds(false)
@@ -268,7 +268,7 @@
             $.ajax({
                 url: "/StoreProduct/PublishedUpdate",
                 type: "POST",
-                data: { productId: @Model.ProductId, isPublished: !isPublished },
+                data: { productId: @Model.ProductInfo.ProductId, isPublished: !isPublished },
                 success: response => {
                     this.disabled = false;
 
