@@ -56,13 +56,26 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.VendorInfo, opt => opt.MapFrom(c => c.Vendor))
                 .ForMember(d => d.QuantitySets, opt => opt.MapFrom(c => c.ProductQuantitySet));
 
+            CreateMap<Product, ProductInfoSeller>()
+                .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name));
+            CreateMap<ProductSpecification, ProductSpecificationForSellerModel>()
+                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName))
+                ;
 
-            CreateMap<Product, ProductDetailsForSellerModel>()
-                .ForMember(d => d.BlobFileNames, opt => opt.MapFrom(c => c.ProductBlob.Select(b => b.BlobFileName).ToArray()))
-                .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
-                .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
-                .ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification))
-                .ForMember(d => d.QuantitySets, opt => opt.MapFrom(c => c.ProductQuantitySet));
+            CreateMap<ProductAttribute, ProductAttributeSellerViewModel>()
+                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Attribute.KeyName))
+                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductAttributeValue.Select(v => new ProductAttributeSellerValueViewModel
+                {
+                    ProductAttributeValueId = v.ProductAttributeValueId,
+                    Value = v.Value
+                })));
+
+            CreateMap<ProductQuantitySet, ProductQuantitySetSellerModel>()
+                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute.Select(v => new ProductQuantitySetValueSellerModel
+                {
+                    KeyName = v.ProductAttributeValue.ProductAttribute.Attribute.KeyName,
+                    Value = v.ProductAttributeValue.Value
+                })));
 
             CreateMap<ProductSpecification, ProductSpecificationForSellerModel>()
                 .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName));

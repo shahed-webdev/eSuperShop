@@ -46,7 +46,7 @@ namespace eSuperShop.Repository
 
         public bool IsExistBlobFile(int productId, string fileName)
         {
-            return Db.ProductBlob.Any(c => c.ProductId == productId && c.BlobFileName.ToLower()==fileName.ToLower());
+            return Db.ProductBlob.Any(c => c.ProductId == productId && c.BlobFileName.ToLower() == fileName.ToLower());
         }
 
         public int ProductIdBySlugUrl(string slugUrl)
@@ -230,10 +230,29 @@ namespace eSuperShop.Repository
 
         public ProductDetailsForSellerModel DetailsForSeller(int productId)
         {
-            return Db.Product
-                .Where(p => p.ProductId == productId)
-                .ProjectTo<ProductDetailsForSellerModel>(_mapper.ConfigurationProvider)
-                .FirstOrDefault();
+            var product = new ProductDetailsForSellerModel
+            {
+                ProductInfo = Db.Product
+                    .Where(p => p.ProductId == productId)
+                    .ProjectTo<ProductInfoSeller>(_mapper.ConfigurationProvider)
+                    .FirstOrDefault(),
+                BlobFileNames = Db.ProductBlob.Where(p => p.ProductId == productId).Select(b => b.BlobFileName)
+                    .ToArray(),
+                Specifications = Db.ProductSpecification
+                    .Where(p => p.ProductId == productId)
+                    .ProjectTo<ProductSpecificationForSellerModel>(_mapper.ConfigurationProvider)
+                    .ToList(),
+                Attributes = Db.ProductSpecification
+                    .Where(p => p.ProductId == productId)
+                    .ProjectTo<ProductAttributeSellerViewModel>(_mapper.ConfigurationProvider)
+                    .ToList(),
+                QuantitySets = Db.ProductSpecification
+                    .Where(p => p.ProductId == productId)
+                    .ProjectTo<ProductQuantitySetSellerModel>(_mapper.ConfigurationProvider)
+                    .ToList()
+            };
+
+            return product;
         }
 
         public ProductDetailsViewModel DetailsView(int productId)
