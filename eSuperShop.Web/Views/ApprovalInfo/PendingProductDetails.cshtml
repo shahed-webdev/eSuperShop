@@ -1,5 +1,5 @@
 ﻿@using CloudStorage
-@model ProductDetailsModel
+@model ProductDetailsApprovedModel
 @{
     ViewData["Title"] = "Pending Product Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -18,8 +18,9 @@
     <h4 class="page-header mb-3">Pending Product Details</h4>
     <div class="row">
         <div class="col-xl-7 mb-3">
-            <div class="card card-body">
-                <form id="approveProduct">
+            <form id="approveProduct">
+                <div class="card card-body">
+
                     <input type="hidden" name="ProductId" value="@Model.ProductId">
                     <div class="md-form">
                         <label for="inputProductName">Product Name</label>
@@ -39,7 +40,7 @@
                     <div class="form-row">
                         <div class="col-lg-4">
                             <div class="md-form">
-                                <select searchable="Find Product Brand" name="BrandId" asp-for="BrandInfo.BrandId" asp-items="ViewBag.Brands" class="mdb-select">
+                                <select searchable="Find Product Brand" name="BrandId" asp-for="@Model.BrandId" asp-items="ViewBag.Brands" class="mdb-select">
                                     <option value="">[ Select Product Brand ]</option>
                                 </select>
                             </div>
@@ -67,56 +68,16 @@
                         <label>Comment</label>
                         <input type="text" name="AdminComment" class="form-control">
                     </div>
+                </div>
 
+                <div class="mt-3">
                     <input name="btnSubmit" type="submit" value="Update and Approve Info" class="btn btn-danger">
-                </form>
-            </div>
+                    <input data-toggle="modal" data-target="#modalReject" type="button" value="Reject" class="btn btn-outline-danger">
+                </div>
+            </form>
         </div>
 
         <div class="col-xl-5 mb-3">
-            <div id="attributeCard" class="card card-body mb-4">
-                <h5 class="font-weight-bold mt-3 mb-0">PRODUCT STOCK <small id="totalStock">(@Model.StockQuantity)</small></h5>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            @foreach (var val in Model.Attributes)
-                            {
-                                <th><strong>@val.KeyName</strong></th>
-                            }
-                            <th><strong>Quantity</strong></th>
-                            <th><strong>Additional Price</strong></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tBody">
-                        @foreach (var head in Model.QuantitySets)
-                        {
-                            <tr data-id="@head.ProductQuantitySetId">
-                                @foreach (var val in head.AttributesWithValue)
-                                {
-                                    <td>@val.Value</td>
-                                }
-                                <td class="quantity">@head.Quantity</td>
-                                <td class="adjustPrice">৳@head.PriceAdjustment</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card card-body mb-4">
-                <h5 class="font-weight-bold mt-3">PRODUCT SPECIFICATION</h5>
-
-                <div class="list-group-flush mt-3">
-                    @foreach (var item in Model.Specifications)
-                    {
-                        <div class="list-group-item d-flex flex-wrap justify-content-between align-items-center">
-                            <strong class="flex-grow-1">@item.KeyName</strong>
-                            <label>@item.Value</label>
-                        </div>
-                    }
-                </div>
-            </div>
-
             <div class="card card-body">
                 <h5 class="font-weight-bold mt-3">PRODUCT IMAGE</h5>
 
@@ -143,20 +104,50 @@
                 </form>
 
                 @{
-                    var lastItem = Model.Blobs.Count;
+                    var lastItem = Model.BlobFileNames.Length;
                 }
                 <ul id="product-image" class="pl-0 list-groupp list-group-flush">
-                    @foreach (var img in Model.Blobs)
+                    @foreach (var img in Model.BlobFileNames)
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <img src="@baseUrl/thumb_@img.BlobFileName" alt="product image">
+                            <img src="@baseUrl/thumb_@img" alt="product image">
                             @if (lastItem > 1)
                             {
-                                <i title="this delete is permanent" id="@img.BlobFileName" class="deleteImg fas fa-trash"></i>
+                                <i title="this delete is permanent" id="@img" class="deleteImg fas fa-trash"></i>
                             }
                         </li>
                     }
                 </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal: reject-->
+<div class="modal fade" id="modalReject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true" data-backdrop="true">
+    <div class="modal-dialog modal-notify modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="heading">Reject Product</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formReject">
+                    <div class="md-form mb-5">
+                        <input type="hidden" name="ProductId" value="@Model.ProductId">
+                        <label for="inputDeleteReason">Reject Reason</label>
+                        <textarea id="inputDeleteReason" class="md-textarea form-control" rows="1" name="DeleteReason" required></textarea>
+                    </div>
+
+                    <div class="text-center mb-3">
+                        <button name="btnSubmit" type="submit" class="btn btn-danger">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -253,6 +244,36 @@
                     }
                 });
             });
+
+            //reject click
+            const formReject = document.getElementById("formReject");
+            formReject.addEventListener("submit", function (evt) {
+                evt.preventDefault();
+
+                const btn = this.btnSubmit;
+                disabledBtn(btn, true);
+
+                $.ajax({
+                    type: "POST",
+                    url: `/ApprovalInfo/RejectProductInfo`,
+                    data: serializeForm(this),
+                    success: function(response) {
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+
+                        if (response.IsSuccess) {
+                            location.href = "/ApprovalInfo/PendingProductInfo";
+                            return;
+                        }
+
+                        disabledBtn(btn, false);
+                    },
+                    error: function(err) {
+                        disabledBtn(btn, false);
+                        console.log(err);
+                    }
+                });
+            });
+
 
             //add new image
             const updateImage = document.getElementById("updateImage");
