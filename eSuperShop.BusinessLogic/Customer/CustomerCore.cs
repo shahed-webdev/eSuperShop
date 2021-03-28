@@ -70,22 +70,22 @@ namespace eSuperShop.BusinessLogic
         }
 
 
-        public DbResponse<List<CustomerAddressBookModel>> AddressList(string userName)
+        public DbResponse<List<CustomerAddressViewBookModel>> AddressList(string userName)
         {
             try
             {
                 var customerId = _db.Registration.CustomerIdByUserName(userName);
 
                 if (customerId == 0)
-                    return new DbResponse<List<CustomerAddressBookModel>>(false, "Invalid User");
+                    return new DbResponse<List<CustomerAddressViewBookModel>>(false, "Invalid User");
 
                 var data = _db.Customer.AddressList(customerId);
 
-                return new DbResponse<List<CustomerAddressBookModel>>(true, "Success", data);
+                return new DbResponse<List<CustomerAddressViewBookModel>>(true, "Success", data);
             }
             catch (Exception e)
             {
-                return new DbResponse<List<CustomerAddressBookModel>>(false, e.Message);
+                return new DbResponse<List<CustomerAddressViewBookModel>>(false, e.Message);
             }
         }
 

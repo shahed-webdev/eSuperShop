@@ -35,5 +35,23 @@ namespace eSuperShop.Repository
         public string Address { get; set; }
         public bool IsDefault { get; set; }
         public DateTime CreatedOnUtc { get; set; }
+        public int AreaId { get; set; }
+    }
+
+    public class CustomerAddressViewBookModel
+    {
+        public int CustomerAddressBookId { get; set; }
+        public int CustomerId { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public string AlternativePhone { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public bool IsDefault { get; set; }
+        public DateTime CreatedOnUtc { get; set; }
+        public int AreaId { get; set; }
+        public string AreaName { get; set; }
+        public int RegionId { get; set; }
+        public string RegionName { get; set; }
     }
 }

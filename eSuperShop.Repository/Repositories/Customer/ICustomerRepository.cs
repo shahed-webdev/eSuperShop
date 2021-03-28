@@ -9,6 +9,6 @@ namespace eSuperShop.Repository
         CustomerDashboardModel Dashboard(int customerId);
         void AddressAdd(CustomerAddressBookModel model);
         bool IsThreeAddressSaved(int customerId);
-        List<CustomerAddressBookModel> AddressList(int customerId);
+        List<CustomerAddressViewBookModel> AddressList(int customerId);
     }
 }

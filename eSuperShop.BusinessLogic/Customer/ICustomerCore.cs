@@ -8,7 +8,7 @@ namespace eSuperShop.BusinessLogic
     {
         DbResponse Add(CustomerAddModel model);
         DbResponse AddressAdd(CustomerAddressBookModel model, string userName);
-        DbResponse<List<CustomerAddressBookModel>> AddressList(string userName);
+        DbResponse<List<CustomerAddressViewBookModel>> AddressList(string userName);
 
         DbResponse SendCode(string mobileNumber, int codeValidSecond);
         Task<DbResponse> MobileSignUpAsync(CustomerMobileSignUpModel model);

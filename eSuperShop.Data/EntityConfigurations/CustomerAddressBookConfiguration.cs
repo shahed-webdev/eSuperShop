@@ -28,6 +28,12 @@ namespace eSuperShop.Data
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_CustomerAddressBook_Customer");
 
+            builder.HasOne(s => s.Area)
+                .WithMany(c => c.CustomerAddress)
+                .HasForeignKey(s => s.AreaId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_CustomerAddressBook_Area");
+
         }
     }
 }

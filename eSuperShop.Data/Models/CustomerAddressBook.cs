@@ -14,5 +14,7 @@ namespace eSuperShop.Data
         public bool IsDefault { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public virtual Customer Customer { get; set; }
+        public int AreaId { get; set; }
+        public Area Area { get; set; }
     }
 }

@@ -51,11 +51,11 @@ namespace eSuperShop.Repository
         }
 
 
-        public List<CustomerAddressBookModel> AddressList(int customerId)
+        public List<CustomerAddressViewBookModel> AddressList(int customerId)
         {
             var list = Db.CustomerAddressBook
                 .Where(a => a.CustomerId == customerId)
-                .ProjectTo<CustomerAddressBookModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<CustomerAddressViewBookModel>(_mapper.ConfigurationProvider)
                 .ToList();
             return list;
         }
