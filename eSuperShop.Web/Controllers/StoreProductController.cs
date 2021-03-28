@@ -107,14 +107,6 @@ namespace eSuperShop.Web.Controllers
         #endregion
 
 
-        //update published status
-        [HttpPost]
-        public IActionResult PublishedUpdate(int productId, bool isPublished)
-        {
-            var response = _product.PublishedUpdate(productId, isPublished, User.Identity.Name);
-            return Json(response);
-        }
-
         //Published Product
         public IActionResult PublishedProduct()
         {

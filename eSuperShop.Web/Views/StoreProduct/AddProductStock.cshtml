@@ -31,13 +31,6 @@
                         </h4>
                         <p class="mb-0">@Model.ProductInfo.ShortDescription</p>
                     </div>
-
-                    <div>
-                        <button id="btnPublish" data-publish="@Model.ProductInfo.Published" type="button" class="btn btn-outline-@(Model.ProductInfo.Published ? "success" : "danger") btn-rounded">
-                            <i class="fas mr-1 fa-@(Model.ProductInfo.Published ? "check" : "ban")"></i>
-                            @(Model.ProductInfo.Published ? "Published" : "Un-Published")
-                        </button>
-                    </div>
                 </div>
                 <hr />
                 <p>
@@ -151,8 +144,7 @@
         const valueIds = document.getElementsByName("AttributeValueId");
         const attributeCard = document.getElementById("attributeCard");
         const formAdd = document.getElementById("formAdd");
-        const btnPublish = document.getElementById("btnPublish");
-
+  
         //on change attribute
         attributeCard.addEventListener("change", function(evt) {
             const element = evt.target;
@@ -255,39 +247,6 @@
                 error: function(err) {
                     console.log(err);
                     disabledButton(false);
-                }
-            });
-        });
-
-        //publish/un-publish
-        btnPublish.addEventListener("click", function() {
-            const isPublished = this.getAttribute("data-publish").toLocaleLowerCase() === "true" ? true : false;
-            const content = !isPublished ? `<i class="fas mr-1 fa-check"></i>Published` : `<i class="fas mr-1 fa-ban"></i>Un-Published`;
-            this.disabled = true;
-
-            $.ajax({
-                url: "/StoreProduct/PublishedUpdate",
-                type: "POST",
-                data: { productId: @Model.ProductInfo.ProductId, isPublished: !isPublished },
-                success: response => {
-                    this.disabled = false;
-
-                    if (!response.IsSuccess) return;
-
-                    this.innerHTML = content;
-                    this.setAttribute("data-publish", !isPublished);
-
-                    if (!isPublished) {
-                        this.classList.remove("btn-outline-danger");
-                        this.classList.add("btn-outline-success");
-                    } else {
-                        this.classList.remove("btn-outline-success");
-                        this.classList.add("btn-outline-danger");
-                    }
-                },
-                error: err => {
-                    console.log(err);
-                    this.disabled = false;
                 }
             });
         });

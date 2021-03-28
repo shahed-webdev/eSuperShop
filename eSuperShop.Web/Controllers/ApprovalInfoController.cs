@@ -150,9 +150,9 @@ namespace eSuperShop.Web.Controllers
         {
             if (id == null) return RedirectToAction("PendingProductInfo");
 
-            var response = _product.Details(id.GetValueOrDefault());
+            var response = _product.DetailsForApproved(id.GetValueOrDefault());
 
-            ViewBag.Brands = new SelectList(_brand.CatalogWiseDdl(response.Data.CatalogInfo.CatalogId).Data, "value", "label");
+            ViewBag.Brands = new SelectList(_brand.CatalogWiseDdl(response.Data.CatalogId).Data, "value", "label");
 
             return View(response.Data);
         }
@@ -165,6 +165,16 @@ namespace eSuperShop.Web.Controllers
             var response = _product.ApprovedByAdmin(model);
             return Json(response);
         }
+  
+        
+        //reject (ajax)
+        [HttpPost]
+        public IActionResult RejectProductInfo(ProductRejectModel model)
+        {
+            var response = _product.RejectByAdmin(model);
+            return Json(response);
+        }
+
 
         //add new image
         [HttpPost]
