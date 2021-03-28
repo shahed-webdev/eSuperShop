@@ -422,6 +422,24 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
+        public DbResponse RejectByAdmin(ProductRejectModel model)
+        {
+            try
+            {
+                if (_db.Product.IsNull(model.ProductId))
+                    return new DbResponse(false, "Product Not Found");
+
+                _db.Product.RejectByAdmin(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
+
         public DbResponse<ProductQuantitySetViewModel> GetQuantitySet(ProductQuantityCheckModel model)
         {
             try

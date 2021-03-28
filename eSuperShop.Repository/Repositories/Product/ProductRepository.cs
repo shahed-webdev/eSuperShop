@@ -381,6 +381,15 @@ namespace eSuperShop.Repository
             Db.Product.Update(product);
         }
 
+        public void RejectByAdmin(ProductRejectModel model)
+        {
+            var product = Db.Product.Find(model.ProductId);
+            product.DeleteReason = model.DeleteReason;
+            product.IsDeleted = true;
+
+            Db.Product.Update(product);
+        }
+
         public void PublishedUpdate(int productId, bool published)
         {
             var product = Db.Product.Find(productId);

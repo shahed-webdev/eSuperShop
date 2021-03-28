@@ -39,6 +39,7 @@ namespace eSuperShop.Repository
 
 
         void ApprovedByAdmin(ProductApprovedModel model);
+        void RejectByAdmin(ProductRejectModel model);
         void PublishedUpdate(int productId, bool published);
         void UpdateMainQuantity(int productId);
         int GetStock(int productId);
