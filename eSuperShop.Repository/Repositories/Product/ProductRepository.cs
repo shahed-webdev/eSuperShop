@@ -242,11 +242,11 @@ namespace eSuperShop.Repository
                     .Where(p => p.ProductId == productId)
                     .ProjectTo<ProductSpecificationForSellerModel>(_mapper.ConfigurationProvider)
                     .ToList(),
-                Attributes = Db.ProductSpecification
+                Attributes = Db.ProductAttribute
                     .Where(p => p.ProductId == productId)
                     .ProjectTo<ProductAttributeSellerViewModel>(_mapper.ConfigurationProvider)
                     .ToList(),
-                QuantitySets = Db.ProductSpecification
+                QuantitySets = Db.ProductQuantitySet
                     .Where(p => p.ProductId == productId)
                     .ProjectTo<ProductQuantitySetSellerModel>(_mapper.ConfigurationProvider)
                     .ToList()

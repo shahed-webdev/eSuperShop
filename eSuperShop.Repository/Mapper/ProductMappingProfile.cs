@@ -58,10 +58,10 @@ namespace eSuperShop.Repository
 
             CreateMap<Product, ProductInfoSeller>()
                 .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
-                .ReverseMap();
+                ;
             CreateMap<ProductSpecification, ProductSpecificationForSellerModel>()
                 .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName))
-                .ReverseMap();
+                ;
 
             CreateMap<ProductAttribute, ProductAttributeSellerViewModel>()
                 .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Attribute.KeyName))
@@ -69,25 +69,14 @@ namespace eSuperShop.Repository
                 {
                     ProductAttributeValueId = v.ProductAttributeValueId,
                     Value = v.Value
-                })))
-                .ReverseMap();
+                })));
 
             CreateMap<ProductQuantitySet, ProductQuantitySetSellerModel>()
                 .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute.Select(v => new ProductQuantitySetValueSellerModel
                 {
                     KeyName = v.ProductAttributeValue.ProductAttribute.Attribute.KeyName,
                     Value = v.ProductAttributeValue.Value
-                })))
-                .ReverseMap();
-
-            CreateMap<ProductSpecification, ProductSpecificationForSellerModel>()
-                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName));
-
-            CreateMap<ProductQuantitySet, ProductQuantitySetSellerModel>()
-                .ForMember(d => d.Values, opt => opt.MapFrom(c => c.ProductQuantitySetAttribute));
-            CreateMap<ProductQuantitySetAttribute, ProductQuantitySetValueSellerModel>()
-                .ForMember(d => d.Value, opt => opt.MapFrom(c => c.ProductAttributeValue.Value))
-                .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.ProductAttributeValue.ProductAttribute.Attribute.KeyName));
+                })));
 
             CreateMap<Product, ProductDetailsViewModel>()
                 .ForMember(d => d.Attributes,
