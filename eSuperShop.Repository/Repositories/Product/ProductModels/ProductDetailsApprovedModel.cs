@@ -3,6 +3,7 @@
     public class ProductDetailsApprovedModel
     {
         public int ProductId { get; set; }
+        public int CatalogId { get; set; }
         public string Name { get; set; }
         public string SlugUrl { get; set; }
         public string ShortDescription { get; set; }
