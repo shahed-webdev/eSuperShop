@@ -23,6 +23,7 @@ namespace eSuperShop.Repository
         DataResult<ProductPendingApprovalListModel> PendingApprovalList(DataRequest request);
         ProductDetailsModel Details(int productId);
         ProductDetailsForSellerModel DetailsForSeller(int productId);
+        ProductDetailsApprovedModel DetailsForApproved(int productId);
         ProductDetailsViewModel DetailsView(int productId);
         bool IsProductExist(int vendorId, int productId);
         void QuantityAdd(ProductQuantityAddModel model);

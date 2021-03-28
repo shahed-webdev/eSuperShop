@@ -255,6 +255,14 @@ namespace eSuperShop.Repository
             return product;
         }
 
+        public ProductDetailsApprovedModel DetailsForApproved(int productId)
+        {
+            return Db.Product
+                .Where(p => p.ProductId == productId)
+                .ProjectTo<ProductDetailsApprovedModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault();
+        }
+
         public ProductDetailsViewModel DetailsView(int productId)
         {
             return Db.Product

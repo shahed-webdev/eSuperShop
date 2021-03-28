@@ -58,6 +58,7 @@ namespace eSuperShop.Repository
 
             CreateMap<Product, ProductInfoSeller>()
                 .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
+                .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
                 ;
             CreateMap<ProductSpecification, ProductSpecificationForSellerModel>()
                 .ForMember(d => d.KeyName, opt => opt.MapFrom(c => c.Specification.KeyName))
@@ -168,7 +169,12 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.ProductName, opt => opt.MapFrom(c => c.Name))
                 .ForMember(d => d.ProductSlugUrl, opt => opt.MapFrom(c => c.SlugUrl))
                 .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
+                ;
 
+            CreateMap<Product, ProductDetailsApprovedModel>()
+                .ForMember(d => d.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
+                .ForMember(d => d.CatalogName, opt => opt.MapFrom(c => c.Catalog.CatalogName))
+                .ForMember(d => d.BlobFileNames, opt => opt.MapFrom(c => c.ProductBlob.Select(b => b.BlobFileName).ToArray()))
                 ;
         }
     }
