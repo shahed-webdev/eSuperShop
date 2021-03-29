@@ -69,7 +69,7 @@ namespace eSuperShop.Web.Controllers
 
 
         //***Add Catalog ***
-        
+
         public IActionResult Add()
         {
             ViewBag.ParentCatalog = new SelectList(_catalog.ListDdl().Data, "value", "label");
@@ -217,13 +217,26 @@ namespace eSuperShop.Web.Controllers
 
 
         #region Shipping Cost
-
         public IActionResult ShippingCost(int? id)
         {
             if (!id.HasValue) return RedirectToAction("Index");
-            return View();
+
+            var model = _catalog.GetShippingCost(id.GetValueOrDefault());
+            return View(model.Data);
         }
 
+        [HttpPost]
+        public IActionResult ShippingCost(CatalogShippingCostViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var response = _catalog.ShippingCostChanged(model);
+
+            if (!response.IsSuccess)
+                return View(model);
+
+            return RedirectToAction("Index");
+        }
         #endregion
     }
 }

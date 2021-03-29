@@ -274,8 +274,13 @@ namespace eSuperShop.Repository
             var cat = Db.Catalog.Find(model.CatalogId);
             cat.BasicChargeInDhaka = model.BasicChargeInDhaka;
             cat.BasicChargeOutDhaka = model.BasicChargeOutDhaka;
+
             cat.BasicMaxQuantityInDhaka = model.BasicMaxQuantityInDhaka;
+            cat.AdditionalFeePercentageInDhaka = model.AdditionalFeePercentageInDhaka;
+
             cat.BasicMaxQuantityOutDhaka = model.BasicMaxQuantityOutDhaka;
+            cat.AdditionalFeePercentageOutDhaka = model.AdditionalFeePercentageOutDhaka;
+
             cat.DeliveryWithin = model.DeliveryWithin;
             cat.ReturnWithin = model.ReturnWithin;
 
