@@ -30,7 +30,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse<CatalogProductListViewModel> ProductListPageData(string slugUrl, int pageSize);
         DbResponse<PagedResult<ProductListViewModel>> GetCatalogWiseList(string slugUrl, ProductFilterRequest request);
         DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace);
-
+        DbResponse<CatalogShippingCostViewModel> GetShippingCost(int catalogId);
+        DbResponse ShippingCostChanged(CatalogShippingCostViewModel model);
 
     }
 

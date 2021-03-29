@@ -169,4 +169,20 @@ namespace eSuperShop.Repository
         public ICollection<SpecificationFilterModel> Specifications { get; set; }
         public ICollection<ProductListViewModel> Products { get; set; }
     }
+    public class CatalogShippingCostViewModel
+    {
+
+        public int CatalogId { get; set; }
+        public string CatalogName { get; set; }
+        public string SlugUrl { get; set; }
+        public decimal BasicChargeInDhaka { get; set; }
+        public int BasicMaxQuantityInDhaka { get; set; }
+        public decimal AdditionalFeePercentageInDhaka { get; set; }
+        public decimal BasicChargeOutDhaka { get; set; }
+        public int BasicMaxQuantityOutDhaka { get; set; }
+        public decimal AdditionalFeePercentageOutDhaka { get; set; }
+        public int DeliveryWithin { get; set; }
+        public int ReturnWithin { get; set; }
+
+    }
 }

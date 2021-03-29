@@ -360,5 +360,37 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse(false, e.Message);
             }
         }
+
+        public DbResponse<CatalogShippingCostViewModel> GetShippingCost(int catalogId)
+        {
+            try
+            {
+                if (_db.Catalog.IsNull(catalogId))
+                    return new DbResponse<CatalogShippingCostViewModel>(false, "Data not found");
+                var data = _db.Catalog.GetShippingCost(catalogId);
+                return new DbResponse<CatalogShippingCostViewModel>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<CatalogShippingCostViewModel>(false, e.Message);
+            }
+        }
+
+        public DbResponse ShippingCostChanged(CatalogShippingCostViewModel model)
+        {
+            try
+            {
+                if (_db.Catalog.IsNull(model.CatalogId))
+                    return new DbResponse(false, "Data not found");
+                _db.Catalog.ShippingCostChanged(model);
+                _db.SaveChanges();
+
+                return new DbResponse(true, "Success");
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, e.Message);
+            }
+        }
     }
 }

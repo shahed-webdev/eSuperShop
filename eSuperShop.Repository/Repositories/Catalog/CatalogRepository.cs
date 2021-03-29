@@ -262,6 +262,26 @@ namespace eSuperShop.Repository
             Db.CatalogShownPlace.Remove(catalogShownPlace);
         }
 
+        public CatalogShippingCostViewModel GetShippingCost(int catalogId)
+        {
+            return Db.Catalog
+                .ProjectTo<CatalogShippingCostViewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefault(c => c.CatalogId == catalogId);
+        }
+
+        public void ShippingCostChanged(CatalogShippingCostViewModel model)
+        {
+            var cat = Db.Catalog.Find(model.CatalogId);
+            cat.BasicChargeInDhaka = model.BasicChargeInDhaka;
+            cat.BasicChargeOutDhaka = model.BasicChargeOutDhaka;
+            cat.BasicMaxQuantityInDhaka = model.BasicMaxQuantityInDhaka;
+            cat.BasicMaxQuantityOutDhaka = model.BasicMaxQuantityOutDhaka;
+            cat.DeliveryWithin = model.DeliveryWithin;
+            cat.ReturnWithin = model.ReturnWithin;
+
+            Db.Catalog.Update(cat);
+        }
+
         public SeoModel GetSeo(int id)
         {
             return Db.Catalog

@@ -38,5 +38,15 @@ namespace eSuperShop.Data
         public virtual ICollection<Catalog> SubCatalog { get; set; }
         public virtual ICollection<Product> Product { get; set; }
         public virtual ICollection<VendorCatalog> VendorCatalog { get; set; }
+
+        public decimal BasicChargeInDhaka { get; set; }
+        public int BasicMaxQuantityInDhaka { get; set; }
+        public decimal AdditionalFeePercentageInDhaka { get; set; }
+        public decimal BasicChargeOutDhaka { get; set; }
+        public int BasicMaxQuantityOutDhaka { get; set; }
+        public decimal AdditionalFeePercentageOutDhaka { get; set; }
+        public int DeliveryWithin { get; set; }
+        public int ReturnWithin { get; set; }
+
     }
 }

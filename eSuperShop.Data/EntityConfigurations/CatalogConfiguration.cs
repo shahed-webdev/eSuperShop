@@ -45,6 +45,31 @@ namespace eSuperShop.Data
                 .HasForeignKey(d => d.ParentCatalogId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK_Catalog_Catalog");
+
+
+
+            builder.Property(e => e.BasicChargeInDhaka)
+                .HasColumnType("decimal(18, 2)");
+
+            builder.Property(e => e.BasicChargeOutDhaka)
+                .HasColumnType("decimal(18, 2)");
+
+            builder.Property(e => e.BasicMaxQuantityInDhaka)
+                .HasDefaultValueSql("3");
+            builder.Property(e => e.BasicMaxQuantityOutDhaka)
+                .HasDefaultValueSql("3");
+
+            builder.Property(e => e.AdditionalFeePercentageInDhaka)
+                .HasColumnType("decimal(18, 2)");
+
+            builder.Property(e => e.AdditionalFeePercentageOutDhaka)
+                .HasColumnType("decimal(18, 2)");
+
+            builder.Property(e => e.DeliveryWithin)
+                .HasDefaultValueSql("5");
+
+            builder.Property(e => e.ReturnWithin)
+                .HasDefaultValueSql("5");
         }
     }
 }

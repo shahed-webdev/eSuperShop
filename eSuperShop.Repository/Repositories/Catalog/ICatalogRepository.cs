@@ -35,5 +35,9 @@ namespace eSuperShop.Repository
         void PlaceAssign(CatalogAssignModel model);
         bool IsPlaceAssign(int catalogId, CatalogDisplayPlace shownPlace);
         void PlaceDelete(int catalogId, CatalogDisplayPlace shownPlace);
+        CatalogShippingCostViewModel GetShippingCost(int catalogId);
+        void ShippingCostChanged(CatalogShippingCostViewModel model);
     }
+
+
 }

@@ -19,6 +19,8 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.ImageFileName, opt => opt.MapFrom(c => c.Catalog.ImageFileName))
                 .ForMember(d => d.SlugUrl, opt => opt.MapFrom(c => c.Catalog.SlugUrl));
 
+
+            CreateMap<Catalog, CatalogShippingCostViewModel>();
         }
     }
 }
