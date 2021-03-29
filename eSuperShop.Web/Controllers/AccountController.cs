@@ -53,6 +53,7 @@ namespace eSuperShop.Web.Controllers
                     UserType.Admin => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Index")),
                     UserType.Seller => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Seller")),
                     UserType.SubAdmin => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Index")),
+                    UserType.Customer => LocalRedirect(returnUrl ??= Url.Content("~/Customer/Dashboard")),
                     _ => LocalRedirect(returnUrl ??= Url.Content("~/Account/Login"))
                 };
             }
