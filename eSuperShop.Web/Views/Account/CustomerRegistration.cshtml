@@ -116,12 +116,19 @@
                 Password: this.inputPassword.value
             }
 
+            const returnUrl = @Context.Request.Query["ReturnUrl"].ToString()
+
             $.ajax({
                 type: "POST",
                 url: "/Customer/CustomerRegistration",
                 data,
                 success: response => {
                     if (response.IsSuccess) {
+                        if (returnUrl) {
+                            location.href = returnUrl;
+                            return;
+                        }
+
                         location.href = "/Customer/Dashboard";
                         return;
                     }
@@ -134,34 +141,34 @@
                     btnDisabled(this.btnSignUp, "Signup", false);
                 }
             });
-        });
+    });
 
-        //count down
-        function startTimer(duration, btn) {
-            let time = duration;
-            let seconds = 0;
+    //count down
+    function startTimer(duration, btn) {
+        let time = duration;
+        let seconds = 0;
 
-            btnDisabled(formRegistration.btnSignUp, "Signup", false);
-            btnSendCode.disabled = true;
+        btnDisabled(formRegistration.btnSignUp, "Signup", false);
+        btnSendCode.disabled = true;
 
-            const interval = setInterval(function () {
-                seconds = parseInt(time % 60, 10);
-                seconds = seconds < 10 ? `0${seconds}` : seconds;
+        const interval = setInterval(function () {
+            seconds = parseInt(time % 60, 10);
+            seconds = seconds < 10 ? `0${seconds}` : seconds;
 
-                btnSendCode.textContent = `Resend after ${seconds}s`;
+            btnSendCode.textContent = `Resend after ${seconds}s`;
 
-                if (--time < 0) {
-                    clearInterval(interval);
-                    btnDisabled(btn, "Resend Code", false);
-                }
+            if (--time < 0) {
+                clearInterval(interval);
+                btnDisabled(btn, "Resend Code", false);
+            }
 
-            }, 1000);
-        }
+        }, 1000);
+    }
 
-        //button enable/disable
-        function btnDisabled(btn, text, isDisable) {
-            btn.disabled = isDisable;
-            btn.textContent = text;
-        }
+    //button enable/disable
+    function btnDisabled(btn, text, isDisable) {
+        btn.disabled = isDisable;
+        btn.textContent = text;
+    }
     </script>
 }
