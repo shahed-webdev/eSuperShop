@@ -31,7 +31,12 @@
                         </div>
 
                         <button class="btn btn-block btn-rounded btn-danger z-depth-1a mb-3" type="submit">Sign in</button>
-                        <div asp-validation-summary="ModelOnly"></div>
+
+                        <div asp-validation-summary="All" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     </form>
                     <div class="mt-5">
                         <p class="mb-0 font-small grey-text d-flex justify-content-end">Not have account? <a href="/Seller/Registration" class="blue-text ml-1">Signup</a></p>

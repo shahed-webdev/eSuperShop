@@ -53,7 +53,6 @@ namespace eSuperShop.Web.Controllers
                     UserType.Admin => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Index")),
                     UserType.Seller => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Seller")),
                     UserType.SubAdmin => LocalRedirect(returnUrl ??= Url.Content("~/Dashboard/Index")),
-                    UserType.Customer => LocalRedirect(returnUrl ??= Url.Content("~/Customer/Dashboard")),
                     _ => LocalRedirect(returnUrl ??= Url.Content("~/Account/Login"))
                 };
             }
@@ -99,7 +98,7 @@ namespace eSuperShop.Web.Controllers
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
             if (result.Succeeded)
-                LocalRedirect(returnUrl ??= Url.Content("~/Customer/Dashboard"));
+               return LocalRedirect(returnUrl ??= Url.Content("~/Customer/Dashboard"));
 
             if (result.RequiresTwoFactor)
                 return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, model.RememberMe });
@@ -197,52 +196,56 @@ namespace eSuperShop.Web.Controllers
             {
                 return RedirectToAction("Lockout");
             }
-            else
+
+            // Get the email claim value
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+            if (email != null)
             {
-                // Get the email claim value
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                // Create a new user without password if we do not have a user already
+                var user = await _userManager.FindByEmailAsync(email);
 
-                if (email != null)
+                if (user == null)
                 {
-                    // Create a new user without password if we do not have a user already
-                    var user = await _userManager.FindByEmailAsync(email);
-
-                    if (user == null)
+                    var customerModel = new CustomerAddModel
                     {
-                        var customerModel = new CustomerAddModel
-                        {
-                            UserName = email,
-                            Name = info.ProviderDisplayName,
-                            Email = email
-                        };
-                        var response = _customer.Add(customerModel);
-                        if (!response.IsSuccess)
-                            return RedirectToAction("CustomerLogin", new { ReturnUrl = returnUrl });
+                        UserName = email,
+                        Name = info.ProviderDisplayName,
+                        Email = email
+                    };
+                    var response = _customer.Add(customerModel);
+                    if (!response.IsSuccess)
+                        return RedirectToAction("CustomerLogin", new { ReturnUrl = returnUrl });
 
-                        user = new IdentityUser
-                        {
-                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
-                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-                        };
+                    user = new IdentityUser
+                    {
+                        UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                    };
 
-                        await _userManager.CreateAsync(user);
-                        await _userManager.AddToRoleAsync(user, UserType.Customer.ToString()).ConfigureAwait(false);
+                    await _userManager.CreateAsync(user);
+                    await _userManager.AddToRoleAsync(user, UserType.Customer.ToString()).ConfigureAwait(false);
 
-                    }
-
-                    // Add a login (i.e insert a row for the user in AspNetUserLogins table)
-                    await _userManager.AddLoginAsync(user, info);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    return LocalRedirect(returnUrl);
                 }
 
-                // If we cannot find the user email we cannot continue
-                ViewBag.ErrorTitle = $"Email claim not received from: {info.LoginProvider}";
-                ViewBag.ErrorMessage = "Please contact support on info@esupershop.com";
+                // Add a login (i.e insert a row for the user in AspNetUserLogins table)
+                await _userManager.AddLoginAsync(user, info);
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return View("Error");
+                return LocalRedirect(returnUrl);
             }
+
+            // If we cannot find the user email we cannot continue
+            ViewBag.ErrorTitle = $"Email claim not received from: {info.LoginProvider}";
+            ViewBag.ErrorMessage = "Please contact support on info@esupershop.com";
+
+            return View("Error");
+        }
+
+        //access denied user
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

@@ -1,32 +1,33 @@
-﻿
+﻿@model CatalogShippingCostViewModel
 @{
     ViewData["Title"] = "Shipping Cost";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container">
-    <h4 class="page-header mb-3">Shipping Cost</h4>
+    <h4 class="page-header mb-3">Shipping Cost <small>@Model.CatalogName</small></h4>
 
-    <form id="formAdd">
+    <form asp-action="ShippingCost">
+        <input type="hidden" name="CatalogId" value="@Model.CatalogId" />
         <div class="card card-body mb-4">
-           Inside Dhaka
+            <h5 class="font-weight-bold mb-3"> Inside Dhaka</h5>
             <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Basic Cost</label>
-                        <input type="number" name="" class="form-control" required>
+                        <input type="number" step="0.01" asp-for="BasicChargeInDhaka" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Basic Delivery Cost Quantity</label>
-                        <input type="number" name="" class="form-control" required>
+                        <input type="number" asp-for="BasicMaxQuantityInDhaka" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Additional Delivery Cost Per Product</label>
-                        <input type="number" name="" class="form-control" required>
+                        <label>Additional Delivery Cost(%) Per Product</label>
+                        <input type="number" step="0.01" asp-for="AdditionalFeePercentageInDhaka" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -38,19 +39,19 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Basic Cost</label>
-                        <input type="number" name="" class="form-control" required>
+                        <input type="number" step="0.01" asp-for="BasicChargeOutDhaka" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Basic Delivery Cost Quantity</label>
-                        <input type="number" name="" class="form-control" required>
+                        <input type="number" asp-for="BasicMaxQuantityOutDhaka" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Additional Delivery Cost Per Product</label>
-                        <input type="number" name="" class="form-control" required>
+                        <label>Additional Delivery Cost(%) Per Product</label>
+                        <input type="number" step="0.01" asp-for="AdditionalFeePercentageOutDhaka" class="form-control" required>
                     </div>
                 </div>
             </div>
@@ -61,13 +62,13 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Return Within (days)</label>
-                        <input type="number" name="" class="form-control" required>
+                        <input type="number" asp-for="ReturnWithin" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Delivery Within (days)</label>
-                        <input type="number" name="" class="form-control" required>
+                        <input type="number" asp-for="DeliveryWithin" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -79,42 +80,3 @@
         </div>
     </form>
 </div>
-
-@section Scripts{
-    <script>
-        (function() {
-            const serializeForm = function(form) {
-                const obj = {}, formData = new FormData(form);
-                for (let key of formData.keys()) {
-                    obj[key] = formData.get(key);
-                }
-                return obj;
-            };
-
-            $.ajax({
-                type: "POST",
-                url: `/`,
-                data: serializeForm(this),
-                success: function(response) {
-                    $.notify(response.Message, response.IsSuccess ? "success" : "error");
-
-                    if (response.IsSuccess) {
-
-                        return;
-                    }
-
-                    disabledBtn(btn, false);
-                },
-                error: function(err) {
-                    disabledBtn(btn, false);
-                    console.log(err);
-                }
-            });
-
-            //btn disabled
-            function disabledBtn(btn, isLoading) {
-                btn.disabled = isLoading;
-            }
-        })()
-    </script>
-}
