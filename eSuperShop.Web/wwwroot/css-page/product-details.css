@@ -10,7 +10,7 @@
 .attribute-img [type=radio]:checked + img { border: 1px solid #ff5722; }
 
 .attribute-text { margin-right: 10px; }
-.attribute-text [type=radio] + label { cursor: pointer; padding: 2px 15px; border: 1px solid #ddd; border-radius: 5px; }
+.attribute-text [type=radio] + label { cursor: pointer; padding: 2px 5px; border: 1px solid #ddd; border-radius: 5px; text-align: center; font-size: .95rem; white-space: nowrap; }
 .attribute-text [type=radio]:checked + label { border: 1px solid #ff5722; }
 
 .input-quantity { border: 1px solid #ddd; width: 72px; border-radius: 5px; text-align: center; }
