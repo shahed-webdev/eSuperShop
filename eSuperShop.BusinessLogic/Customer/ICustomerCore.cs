@@ -1,4 +1,5 @@
 ﻿using eSuperShop.Repository;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse<List<CustomerAddressViewBookModel>> AddressList(string userName);
 
         DbResponse SendCode(string mobileNumber, int codeValidSecond);
-        Task<DbResponse> MobileSignUpAsync(CustomerMobileSignUpModel model);
+        Task<DbResponse<IdentityUser>> MobileSignUpAsync(CustomerMobileSignUpModel model);
     }
 
     public class CustomerMobileSignUpModel
