@@ -1,6 +1,6 @@
-﻿@using eSuperShop.Data
-@using CloudStorage
-@model eSuperShop.Repository.ProductDetailsViewModel
+﻿@using CloudStorage
+@using eSuperShop.Data
+@model ProductDetailsViewModel
 
 @{
     ViewData["Title"] = Model.Name;
@@ -27,7 +27,7 @@
     </ol>
 
     <div class="row my-4">
-        <div class="col-lg-9 col-md-7">
+        <div class="col-lg-9 col-md-7 mb-3">
             <div class="card card-body">
                 <div class="row">
                     <div class="col-xl-5 col-lg-6 mb-3">
@@ -78,8 +78,8 @@
                                     @if (att.DisplayType == ProductAttributeDisplay.Image)
                                     {
                                         <div>
-                                            <p class="mb-1 key-name">@att.KeyName<span class="att-value"></span></p>
-                                            <div class="d-flex align-items-center mb-3">
+                                            <p class="mb-1 key-name font">@att.KeyName<span class="att-value"></span></p>
+                                            <div class="d-flex flex-wrap align-items-center mb-3">
                                                 @foreach (var val in att.Values)
                                                 {
                                                     <label class="attribute-img">
@@ -94,7 +94,7 @@
                                     {
                                         <div>
                                             <p class="mb-1 key-name">@att.KeyName<span class="att-value"></span></p>
-                                            <div class="d-flex align-items-center mb-3">
+                                            <div class="d-flex flex-wrap align-items-center mb-3">
                                                 @foreach (var val in att.Values)
                                                 {
                                                     <div class="attribute-text">
@@ -128,14 +128,26 @@
         </div>
 
         <div class="col-lg-3 col-md-5">
-            <div class="card card-body text-center mb-3">
-                <h6 class="font-weight-bold deep-orange-text"><i class="far fa-truck mr-1"></i>DELIVERY</h6>
-
-                <p class="mb-0">Inside Dhaka 2 days</p>
-                <p class="mb-0">Outside Dhaka 5 days</p>
+            @{
+                var shipping = Model.ShippingDetails;
+            }
+            <div class="card card-body mb-3 text-center">
+                <h6 class="font-weight-bold deep-orange-text"><i class="far fa-truck mr-1"></i>Delivery Inside Dhaka</h6>
+                <p><strong>৳@shipping.BasicChargeInDhaka</strong> Upto <strong>@shipping.BasicMaxQuantityInDhaka</strong> Products</p>
+                <p><strong>@shipping.AdditionalFeePercentageInDhaka%</strong> charge added for additional product</p>
+                <p class="mb-1"><strong>@shipping.DeliveryWithin</strong> Days Delivery</p>
+                <p class="mb-0"><strong>@shipping.ReturnWithin</strong> Days Returns</p>
             </div>
 
-            <div class="card card-body text-center">
+            <div class="card card-body mb-3 text-center">
+                <h6 class="font-weight-bold deep-orange-text"><i class="far fa-truck mr-1"></i>Delivery Outside Dhaka</h6>
+                <p><strong>৳@shipping.BasicChargeOutDhaka</strong> Upto <strong>@shipping.BasicMaxQuantityOutDhaka</strong> Products</p>
+                <p><strong>@shipping.AdditionalFeePercentageOutDhaka%</strong> charge added for additional product</p>
+                <p class="mb-1"><strong>@shipping.DeliveryWithin</strong> Days Delivery</p>
+                <p class="mb-0"><strong>@shipping.ReturnWithin</strong> Days Returns</p>
+            </div>
+
+            @*<div class="card card-body text-center">
                 <p class="mb-0">Recommended For You</p>
 
                 @foreach (var rp in Model.RecommendedProducts)
@@ -147,7 +159,7 @@
                         </a>
                     </div>
                 }
-            </div>
+            </div>*@
         </div>
     </div>
 
@@ -287,7 +299,7 @@
         }
     </div>
 
-   
+
     <div class="card card-body mt-3" id="faq">
         <div class="my-4 border-bottom pb-2">
             <h4 class="font-weight-bold mb-1">QUESTIONS ABOUT THIS PRODUCT (@Model.TotalFaqs)</h4>
