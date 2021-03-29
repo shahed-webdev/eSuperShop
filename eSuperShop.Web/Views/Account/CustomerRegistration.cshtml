@@ -118,7 +118,7 @@
                 Password: this.inputPassword.value
             }
 
-            const returnUrl = @Context.Request.Query["ReturnUrl"].ToString()
+            const returnUrl = "@Context.Request.Query["ReturnUrl"]";
 
             $.ajax({
                 type: "POST",
