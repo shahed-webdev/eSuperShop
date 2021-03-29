@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eSuperShop.BusinessLogic;
+﻿using eSuperShop.BusinessLogic;
 using eSuperShop.Data;
 using eSuperShop.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
 
 namespace eSuperShop.Web.Controllers
 {

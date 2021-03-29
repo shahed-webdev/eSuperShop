@@ -50,7 +50,7 @@ namespace eSuperShop.Repository
 
             //vendor VendorProductCategory Mapping
             CreateMap<VendorProductCategory, StoreProductViewModel>()
-                 .ForMember(d => d.Products, opt => opt.MapFrom(c => c.VendorProductCategoryList.Select(p => p.Product)))
+                 .ForMember(d => d.Products, opt => opt.MapFrom(c => c.VendorProductCategoryList.Select(vp => vp.Product).Where(p=> !p.IsDeleted && p.Published)))
                 .ReverseMap();
 
             //Vendor Slider Mapping
