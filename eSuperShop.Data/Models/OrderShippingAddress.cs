@@ -13,5 +13,7 @@ namespace eSuperShop.Data
         public string Address { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public virtual Order Order { get; set; }
+        public int AreaId { get; set; }
+        public Area Area { get; set; }
     }
 }

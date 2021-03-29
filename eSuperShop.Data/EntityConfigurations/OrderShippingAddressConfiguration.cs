@@ -27,6 +27,13 @@ namespace eSuperShop.Data
                 .HasForeignKey<OrderShippingAddress>(s => s.OrderId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_OrderShippingAddress_Order");
+
+
+            builder.HasOne(s => s.Area)
+                .WithMany(c => c.OrderShippingAddress)
+                .HasForeignKey(s => s.AreaId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName("FK_OrderShippingAddress_Area");
         }
     }
 }

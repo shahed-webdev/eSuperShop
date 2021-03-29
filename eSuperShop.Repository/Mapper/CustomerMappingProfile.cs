@@ -11,6 +11,7 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.AreaName, opt => opt.MapFrom(c => c.Area.AreaName))
                 .ForMember(d => d.RegionId, opt => opt.MapFrom(c => c.Area.RegionId))
                 .ForMember(d => d.RegionName, opt => opt.MapFrom(c => c.Area.Region.RegionName))
+                .ForMember(d => d.IsInDhaka, opt => opt.MapFrom(c => c.Area.Region.IsInDhaka))
                 .ReverseMap();
 
             CreateMap<Customer, CustomerInfoModel>()
