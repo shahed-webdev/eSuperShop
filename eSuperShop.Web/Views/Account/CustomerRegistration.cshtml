@@ -1,6 +1,8 @@
 ﻿@model LoginViewModel
 @{
     ViewData["Title"] = "Customer Registration";
+    var queryUrl = Context.Request.Query["ReturnUrl"].ToString();
+    var returnUrl = string.IsNullOrEmpty(queryUrl) ? "" : "?ReturnUrl=" + queryUrl;
 }
 
 @section Styles {
@@ -58,7 +60,7 @@
                     </form>
 
                     <div class="mt-5">
-                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Account/CustomerLogin" class="blue-text ml-1">Sign In</a></p>
+                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Account/CustomerLogin@(returnUrl)" class="blue-text ml-1">Sign In</a></p>
                     </div>
                 </div>
             </div>

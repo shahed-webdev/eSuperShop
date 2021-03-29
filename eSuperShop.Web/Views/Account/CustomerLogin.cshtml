@@ -1,6 +1,8 @@
 ﻿@model LoginViewModel
 @{
     ViewData["Title"] = "Customer Login";
+    var queryUrl = Context.Request.Query["ReturnUrl"].ToString();
+    var returnUrl = string.IsNullOrEmpty(queryUrl) ? "" : "?ReturnUrl=" + queryUrl;
 }
 
 
@@ -45,7 +47,7 @@
                     </form>
                     
                     <div class="mt-5">
-                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Not have account? <a href="/Account/CustomerRegistration" class="blue-text ml-1">Register</a></p>
+                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Not have account? <a href="/Account/CustomerRegistration@(returnUrl)" class="blue-text ml-1">Register</a></p>
                     </div>
                 </div>
             </div>
