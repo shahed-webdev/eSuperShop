@@ -9,18 +9,20 @@ namespace eSuperShop.Web.Controllers
     public class ProductController : Controller
     {
         private readonly IProductCore _product;
+        private readonly ICatalogCore _catalog;
         private readonly IOrderCore _order;
         private readonly ICustomerCore _customer;
         private readonly IRegionCore _region;
         private readonly IAreaCore _area;
 
-        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer, IRegionCore region, IAreaCore area)
+        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer, IRegionCore region, IAreaCore area, ICatalogCore catalog)
         {
             _product = product;
             _order = order;
             _customer = customer;
             _region = region;
             _area = area;
+            _catalog = catalog;
         }
 
         public IActionResult FlashDeals()
@@ -37,6 +39,7 @@ namespace eSuperShop.Web.Controllers
         {
             return View();
         }
+
 
         //product details
         public IActionResult Item(string slugUrl)
@@ -72,6 +75,7 @@ namespace eSuperShop.Web.Controllers
         }
 
 
+        #region Checkout
         //cart product List
         public IActionResult Checkout()
         {
@@ -87,18 +91,26 @@ namespace eSuperShop.Web.Controllers
             return View(response.Data);
         }
 
-        //get area by region
+        //add shipping address
+        [HttpPost]
+        public IActionResult PostShippingAddress(CustomerAddressBookModel model)
+        {
+            var response = _customer.AddressAdd(model, User.Identity.Name);
+            return Json(response);
+        }
+
+        //get area by region in shipping address
         public IActionResult GetAreaByRegion(int id)
         {
             var response = _area.GetRegionWiseArea(id);
             return Json(response);
         }
 
-        //add shipping address
+        //get shipping cost from shipping area address
         [HttpPost]
-        public IActionResult PostShippingAddress(CustomerAddressBookModel model)
+        public IActionResult GetShippingCost(ShippingCostCalculateModel model)
         {
-            var response = _customer.AddressAdd(model, User.Identity.Name);
+            var response = _catalog.ShippingCostCalculate(model);
             return Json(response);
         }
 
@@ -119,5 +131,6 @@ namespace eSuperShop.Web.Controllers
 
             return View();
         }
+        #endregion
     }
 }

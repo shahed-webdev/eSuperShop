@@ -37,6 +37,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response.Data);
         }
 
+        #region Customer Registration
         //Send Code To Mobile
         [HttpPost]
         [AllowAnonymous]
@@ -57,5 +58,6 @@ namespace eSuperShop.Web.Controllers
                 await _signInManager.SignInAsync(response.Data, false);
             return Json(response);
         }
+        #endregion
     }
 }

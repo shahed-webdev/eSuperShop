@@ -94,7 +94,7 @@ const shoppingCart = (function () {
         saveCart();
     }
 
-    // Count cart 
+    // Count product Quantity
     obj.totalCount = function () {
         var totalCount = 0;
         for (let item in cart) {
@@ -142,6 +142,16 @@ const shoppingCart = (function () {
         return null;
     };
 
+
+    // get Catalog Items for shipping cost calculation
+    obj.catalogItems = function () {
+        const list = [];
+        for (let i in cart) {
+            list.push({ CatalogId: cart[i].CatalogId, Quantity: cart[i].Quantity });
+        }
+        return list;
+    };
+
     return obj;
 })();
 
@@ -174,6 +184,7 @@ function displayCart() {
     }
 
     $('.total-cart-count').html(shoppingCart.totalCount());
+
     //total amount
     $('.grand-total-amount').html(shoppingCart.totalCart());
     $('#orderTotal').html(shoppingCart.totalCart());

@@ -13,7 +13,7 @@
     <form id="formPurchase">
         <div class="row">
             <div class="col-xl-8 col-lg-8 mt-4">
-                <div class="card card-body mb-4">
+                <div id="shipping-address" class="card card-body mb-4">
                     <div class="border-bottom pb-2 mb-3">
                         <h4 class="font-weight-bold mb-1">Shipping Address</h4>
                         @if (Model.Count() < 3)
@@ -28,7 +28,7 @@
                     {
                         <fieldset class="border rounded px-3 mb-3 @(item.IsDefault ? "border-primary" : "")">
                             <legend class="w-auto mb-0">
-                                <input type="checkbox" data-name="@item.Name" data-phone="@item.Phone" data-altp="@item.AlternativePhone" data-address="@item.Address" data-email="@item.Email" data-area="@item.AreaId" class="form-check-input address-check" id="@item.CustomerAddressBookId">
+                                <input type="checkbox" data-name="@item.Name" data-phone="@item.Phone" data-altp="@item.AlternativePhone" data-address="@item.Address" data-email="@item.Email" data-area="@item.AreaId" data-inside="@item.IsInDhaka" class="form-check-input address-check" id="@item.CustomerAddressBookId">
                                 <label class="form-check-label pl-3" for="@item.CustomerAddressBookId"></label>
                             </legend>
 
@@ -86,7 +86,7 @@
                         </li>
                         <li class="d-flex justify-content-between align-items-center border-bottom my-2 pb-3">
                             <div>Shipping Cost</div>
-                            <div>৳<span class="shipping-amount">0</span></div>
+                            <div>৳<span id="shipping-amount">0</span></div>
                         </li>
                         <li class="d-flex justify-content-between align-items-center">
                             <h5 class="font-weight-bold">Order Total</h5>
@@ -181,11 +181,11 @@
 
 @section Scripts{
     <script>
-        $(function () {
-            $(".address-check").change(function () {
+        $(function() {
+            $(".address-check").change(function() {
                 $(".address-check").not(this).prop('checked', false);
 
-                $(".address-check").each(function () {
+                $(".address-check").each(function() {
                     if ($(this).prop('checked') === true)
                         $(this).parent().parent().addClass('border-primary');
                     else
@@ -195,9 +195,9 @@
         });
 
 
-        (function () {
+        (function() {
             //get form data as object
-            const serializeForm = function (form) {
+            const serializeForm = function(form) {
                 const obj = {};
                 const formData = new FormData(form);
                 for (let key of formData.keys()) {
@@ -211,7 +211,7 @@
             const selectRegion = document.getElementById("selectRegion");
             const selectArea = document.getElementById("selectArea");
 
-            selectRegion.addEventListener("change", function (evt) {
+            selectRegion.addEventListener("change", function(evt) {
                 selectArea.innerHTML = "";
                 selectArea.appendChild(createOptions({ AreaId: "", AreaName: "[ SELECT ]" }));
 
@@ -241,7 +241,7 @@
 
             //add address
             const formAdd = document.getElementById("formAdd");
-            formAdd.addEventListener("submit", function (evt) {
+            formAdd.addEventListener("submit", function(evt) {
                 evt.preventDefault();
                 this.btnAddress.disabled = true;
 
@@ -265,15 +265,58 @@
                 });
             });
 
+            //on check shipping address
+            const addressContainer = document.getElementById("shipping-address");
+            const shippingCostShow = document.getElementById("shipping-amount");
+
+            addressContainer.addEventListener("click", function(evt) {
+                const element = evt.target;
+                const onChecked = element.classList.contains("address-check");
+
+                if (!onChecked) return;
+
+                const body = { IsInDhaka: element.getAttribute("data-inside"), CatalogItems: shoppingCart.catalogItems() }
+                const orderTotal = document.getElementById("orderTotal");
+
+                if (!element.checked) {
+                    shippingCostShow.textContent = 0;
+                    orderTotal.textContent = shoppingCart.totalCart();
+                    return;
+                }
+
+                $.ajax({
+                    url: "/Product/GetShippingCost",
+                    type: "POST",
+                    data: body,
+                    success: response => {
+                        if (response.IsSuccess) {
+                            const shippingCost = response.Data;
+                            const totalAmount = (shoppingCart.totalCart() + shippingCost).toFixed(2);
+
+                            shippingCostShow.textContent = shippingCost.toFixed(2);
+                            orderTotal.textContent = totalAmount;
+                            return;
+                        }
+
+                        shippingCostShow.textContent = 0;
+                        orderTotal.textContent = shoppingCart.totalCart();
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                });
+            });
+
+
             //place order
             const purchaseError = document.getElementById("purchaseError");
             const formPurchase = document.getElementById("formPurchase");
-            formPurchase.addEventListener("submit", function (evt) {
+            formPurchase.addEventListener("submit", function(evt) {
                 evt.preventDefault();
                 purchaseError.textContent = "";
 
                 let address = null;
-                $(".address-check").each(function () {
+                $(".address-check").each(function() {
                     if ($(this).prop('checked') === true) {
                         address = {
                             Name: $(this).data("name"),
@@ -304,7 +347,7 @@
                     OrderShippingAddress: address,
                     TotalAmount: cartTotal,
                     OrderList: shoppingList,
-                    ShippingCost: 0
+                    ShippingCost: +shippingCostShow.textContent
                 }
 
                 this.btnPurchase.disabled = true;

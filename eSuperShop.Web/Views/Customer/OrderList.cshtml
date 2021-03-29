@@ -14,6 +14,7 @@
                     <th><strong>Order No.</strong></th>
                     <th><strong>Amount</strong></th>
                     <th><strong>Discount</strong></th>
+                    <th><strong>Shipping Cost</strong></th>
                     <th><strong>Net Amount</strong></th>
                     <th><strong>Details</strong></th>
                 </tr>
@@ -24,7 +25,7 @@
 
 @section Scripts{
     <script>
-        $(function() {
+        $(function () {
             //dataTable.filter.push({ Field: "IsConfirmed", Value: false, Operand: dataTable.operand.Equal });
             dataTable.getData();
         });
@@ -33,33 +34,35 @@
         var dataTable = {
             table: null,
             filter: [],
-            init: function() {
+            init: function () {
                 dataTable.table = $("#data-table").DataTable({
                     processing: true,
                     serverSide: true,
                     ajax: {
                         url: "/Customer/GetOrderListData",
                         type: "POST",
-                        data: function(d) {
+                        data: function (d) {
                             d.filters = dataTable.filter;
                         }
                     },
                     columns:
-                    [
-                        { data: "OrderSn" },
-                        { data: "TotalAmount" },
-                        { data: "Discount" },
-                        { data: "NetAmount" },
-                        {
-                            data: "OrderId", "render": function(data, type, row, meta) {
-                                return `<a href="/Customer/OrderDetails/${data}" class="blue-text">Details</a>`;
+                        [
+                            { data: "OrderSn" },
+                            { data: "TotalAmount" },
+                            { data: "Discount" },
+                            { data: "ShippingCost" },
+                            { data: "NetAmount" },
+                            {
+                                data: "OrderId", "render": function (data, type, row, meta) {
+                                    return `<a href="/Customer/OrderDetails/${data}" class="blue-text">Details</a>`;
+                                }
                             }
-                        }
-                    ],
+                        ],
                     columnDefs: [
                         //{ 'searchable': false, 'targets': [1, 2] },
                         //{ 'sortable': false, 'targets': [1, 2] },
-                        { 'className': "text-right", "targets": [4] }
+                        { 'className': "text-center", "targets": [0,5] },
+                        { 'className': "text-right", "targets": [1,2,3,4] }
                     ]
                 });
             },
@@ -74,10 +77,10 @@
                 StartsWith: 7,
                 EndsWith: 8
             },
-            getData: function() {
+            getData: function () {
                 dataTable.table ? dataTable.table.ajax.reload() : dataTable.init();
             },
-            addSign: function(data) { return `${data}/-` }
+            addSign: function (data) { return `${data}/-` }
         }
     </script>
 }
