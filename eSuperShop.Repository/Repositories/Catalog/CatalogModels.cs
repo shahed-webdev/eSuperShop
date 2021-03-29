@@ -185,4 +185,17 @@ namespace eSuperShop.Repository
         public int ReturnWithin { get; set; }
 
     }
+
+    public class ShippingCostCalculateModel
+    {
+        public bool IsInDhaka { get; set; }
+
+        public List<ShippingCatalogItem> CatalogItems { get; set; }
+    }
+
+    public class ShippingCatalogItem
+    {
+        public int CatalogId { get; set; }
+        public int Quantity { get; set; }
+    }
 }

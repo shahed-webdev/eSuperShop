@@ -32,6 +32,7 @@ namespace eSuperShop.BusinessLogic
         DbResponse DeletePlace(int catalogId, CatalogDisplayPlace shownPlace);
         DbResponse<CatalogShippingCostViewModel> GetShippingCost(int catalogId);
         DbResponse ShippingCostChanged(CatalogShippingCostViewModel model);
+        DbResponse<decimal> ShippingCostCalculate(ShippingCostCalculateModel model);
 
     }
 

@@ -282,6 +282,48 @@ namespace eSuperShop.Repository
             Db.Catalog.Update(cat);
         }
 
+        public decimal ShippingCostCalculate(ShippingCostCalculateModel model)
+        {
+            decimal cost = 0;
+
+
+            var catalogs = Db.Catalog
+                .Where(c => model.CatalogItems.Select(i => i.CatalogId).Contains(c.CatalogId))
+                .ProjectTo<CatalogShippingCostViewModel>(_mapper.ConfigurationProvider)
+               .ToList();
+
+            foreach (var item in model.CatalogItems)
+            {
+                var cat = catalogs.Find(c => c.CatalogId == item.CatalogId);
+                if (cat != null)
+                {
+                    if (model.IsInDhaka)
+                    {
+                        cost += cat.BasicChargeInDhaka;
+
+                        if (item.Quantity > cat.BasicMaxQuantityInDhaka)
+                        {
+                            cost += (cat.BasicChargeInDhaka * (cat.AdditionalFeePercentageInDhaka / 100)) *
+                                    (item.Quantity - cat.BasicMaxQuantityInDhaka);
+                        }
+
+                    }
+                    else
+                    {
+                        cost += cat.BasicChargeOutDhaka;
+
+                        if (item.Quantity > cat.BasicMaxQuantityOutDhaka)
+                        {
+                            cost += (cat.BasicChargeOutDhaka * (cat.AdditionalFeePercentageOutDhaka / 100)) *
+                                    (item.Quantity - cat.BasicMaxQuantityOutDhaka);
+                        }
+                    }
+                }
+
+            }
+            return cost;
+        }
+
         public SeoModel GetSeo(int id)
         {
             return Db.Catalog

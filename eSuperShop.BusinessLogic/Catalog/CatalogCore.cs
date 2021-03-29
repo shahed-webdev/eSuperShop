@@ -392,5 +392,19 @@ namespace eSuperShop.BusinessLogic
                 return new DbResponse(false, e.Message);
             }
         }
+
+        public DbResponse<decimal> ShippingCostCalculate(ShippingCostCalculateModel model)
+        {
+            try
+            {
+
+                var data = _db.Catalog.ShippingCostCalculate(model);
+                return new DbResponse<decimal>(true, "Success", data);
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<decimal>(false, e.Message);
+            }
+        }
     }
 }

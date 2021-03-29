@@ -34,6 +34,7 @@ namespace eSuperShop.Repository
         public ICollection<FaqProductWiseViewModel> Faqs { get; set; }
         public ICollection<ProductListViewModel> RecommendedProducts { get; set; }
         public ICollection<ProductListViewModel> VendorMoreProducts { get; set; }
+        public ICollection<CatalogShippingCostViewModel> ShippingDetails { get; set; }
 
     }
 }

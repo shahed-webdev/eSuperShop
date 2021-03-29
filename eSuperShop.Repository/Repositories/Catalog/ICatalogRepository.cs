@@ -37,6 +37,7 @@ namespace eSuperShop.Repository
         void PlaceDelete(int catalogId, CatalogDisplayPlace shownPlace);
         CatalogShippingCostViewModel GetShippingCost(int catalogId);
         void ShippingCostChanged(CatalogShippingCostViewModel model);
+        decimal ShippingCostCalculate(ShippingCostCalculateModel model);
     }
 
 

@@ -90,7 +90,9 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.Reviews,
                     opt => opt.MapFrom(c => c.ProductReview.OrderByDescending(r => r.ReviewedOnUtc)))
                 .ForMember(d => d.StoreName, opt => opt.MapFrom(c => c.Vendor.StoreName))
-                .ForMember(d => d.StoreSlugUrl, opt => opt.MapFrom(c => c.Vendor.StoreSlugUrl));
+                .ForMember(d => d.StoreSlugUrl, opt => opt.MapFrom(c => c.Vendor.StoreSlugUrl))
+                .ForMember(d => d.ShippingDetails, opt => opt.MapFrom(c => c.Catalog))
+                ;
             //.ForMember(d => d.Specifications, opt => opt.MapFrom(c => c.ProductSpecification));
 
 
