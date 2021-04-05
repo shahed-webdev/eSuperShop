@@ -57,7 +57,11 @@ span.p-discount { color: #8F8F8F; font-size: 14px; text-decoration: line-through
 #flash-deals .card-img-top,
 #top-rated .card-img-top,
 #top-store .card-img-top,
-#more-products .card-img-top { max-height: 200px }
+#more-products .card-img-top {
+    max-height: 200px;
+    -webkit-object-fit: cover;
+    object-fit: cover;
+}
 
 /*reset row col into 5*/
 .row > [class*='col-'] { padding-right: 10px; padding-left: 10px; }

@@ -13,10 +13,12 @@
                             </a>
                         </div>
 
-                        <div class="product-name">
-                            <p class="mb-0">{{product.Name}}</p>
-                            <strong>৳{{product.Price}}</strong>
-                            <span v-if="product.OldPrice" class="p-discount">৳{{product.OldPrice}}</span>
+                        <div class="card-body product-info">
+                            <p class="product-name">{{product.Name}}</p>
+                            <div class="font-weight-500 mt-2">
+                                <span>৳{{product.Price}}</span>
+                                <span v-if="product.OldPrice" class="p-discount">৳{{product.OldPrice}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

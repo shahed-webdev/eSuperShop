@@ -5,18 +5,20 @@
 
             <div class="row">
                 <div class="col-lg-3 col-6 mb-4" v-for="product in category.Products" :key="product.ProductId">
-                    <div class="card hoverable h-100">
+                    <div class="card hoverable h-100 z-depth-0">
                         <div class="view overlay">
-                            <img class="card-img-top" :src="baseUrl+'/thumb_'+product.ImageFileName" :alt="product.Name">
+                            <img class="card-img-top image-border" :src="baseUrl+'/thumb_'+product.ImageFileName" :alt="product.Name">
                             <a :href="'/item/'+product.SlugUrl">
                                 <div class="mask rgba-white-slight"></div>
                             </a>
                         </div>
 
-                        <div class="product-name">
-                            <p class="mb-0">{{product.Name}}</p>
-                            <strong>৳{{product.Price}}</strong>
-                            <span v-if="product.OldPrice" class="p-discount">৳{{product.OldPrice}}</span>
+                          <div class="card-body product-info px-0">
+                            <p class="product-name">{{product.Name}}</p>
+                            <div class="font-weight-500 mt-2">
+                                <span>৳{{product.Price}}</span>
+                                <span v-if="product.OldPrice" class="p-discount">৳{{product.OldPrice}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

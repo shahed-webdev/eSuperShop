@@ -12,24 +12,25 @@
                                 <div class="mask rgba-white-slight"></div>
                             </a>
                         </div>
-
-                        <div class="product-name">
-                            <p class="mb-0">{{product.Name}}</p>
-                            <strong>৳{{product.Price}}</strong>
-                            <span v-if="product.OldPrice" class="p-discount">৳{{product.OldPrice}}</span>
+                        <div class="card-body product-info">
+                            <p class="product-name">{{product.Name}}</p>
+                            <div class="font-weight-500 mt-2">
+                                <span>৳{{product.Price}}</span>
+                                <span v-if="product.OldPrice" class="p-discount">৳{{product.OldPrice}}</span>
+                            </div> 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="loader-style" v-if="isLoading">
-            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+            <div class="loader-style" v-if="isLoading">
+                <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+            </div>
+            <div v-if="!isLastPage" class="d-flex justify-content-center mt-4">
+                <button @click="loadMore" :disabled="isLoading" class="btn btn-danger">{{isLoading? "loading..":" Load More"}}</button>
+            </div>
         </div>
-        <div v-if="!isLastPage" class="d-flex justify-content-center mt-4">
-            <button @click="loadMore" :disabled="isLoading" class="btn btn-danger">{{isLoading? "loading..":" Load More"}}</button>
-        </div>
-    </div>
+    </div>   
 </template>
 
 <script>
