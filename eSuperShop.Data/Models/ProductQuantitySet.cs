@@ -8,6 +8,7 @@ namespace eSuperShop.Data
         public ProductQuantitySet()
         {
             ProductQuantitySetAttribute = new HashSet<ProductQuantitySetAttribute>();
+            OrderCart = new HashSet<OrderCart>();
         }
 
         public int ProductQuantitySetId { get; set; }
@@ -19,5 +20,6 @@ namespace eSuperShop.Data
         public virtual Product Product { get; set; }
         public virtual ICollection<ProductQuantitySetAttribute> ProductQuantitySetAttribute { get; set; }
         public virtual ICollection<OrderList> OrderList { get; set; }
+        public virtual ICollection<OrderCart> OrderCart { get; set; }
     }
 }

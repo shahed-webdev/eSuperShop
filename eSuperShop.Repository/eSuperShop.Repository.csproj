@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="OrderCart\OrderCartModels\" />
     <Folder Include="Repositories\CatalogAttribute\" />
     <Folder Include="Repositories\CatalogBrand\" />
     <Folder Include="Repositories\CatalogShownPlace\" />

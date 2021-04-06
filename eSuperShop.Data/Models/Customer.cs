@@ -12,6 +12,7 @@ namespace eSuperShop.Data
             VendorReview = new HashSet<VendorReview>();
             Order = new HashSet<Order>();
             CustomerAddressBook = new HashSet<CustomerAddressBook>();
+            OrderCart = new HashSet<OrderCart>();
         }
 
         public int CustomerId { get; set; }
@@ -25,5 +26,6 @@ namespace eSuperShop.Data
         public virtual ICollection<VendorReview> VendorReview { get; set; }
         public virtual ICollection<Order> Order { get; set; }
         public virtual ICollection<CustomerAddressBook> CustomerAddressBook { get; set; }
+        public virtual ICollection<OrderCart> OrderCart { get; set; }
     }
 }

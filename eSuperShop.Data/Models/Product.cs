@@ -15,6 +15,7 @@ namespace eSuperShop.Data
             ProductSpecification = new HashSet<ProductSpecification>();
             VendorProductCategoryList = new HashSet<VendorProductCategoryList>();
             OrderList = new HashSet<OrderList>();
+            OrderCart = new HashSet<OrderCart>();
         }
 
         public int ProductId { get; set; }
@@ -52,5 +53,6 @@ namespace eSuperShop.Data
         public virtual ICollection<ProductFaq> ProductFaq { get; set; }
         public virtual ICollection<VendorProductCategoryList> VendorProductCategoryList { get; set; }
         public virtual ICollection<OrderList> OrderList { get; set; }
+        public virtual ICollection<OrderCart> OrderCart { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace eSuperShop.Repository
         ICustomerRepository Customer { get; }
         IGeneralSettingRepository GeneralSetting { get; }
         IOrderRepository Order { get; }
+        IOrderCartRepository OrderCart { get; }
         IOrderShippingAddressRepository OrderShippingAddress { get; }
         IProductRepository Product { get; }
         IProductReviewRepository ProductReview { get; }
