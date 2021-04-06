@@ -1,4 +1,4 @@
-﻿
+﻿@model int
 @{
     ViewData["Title"] = "Order Settings";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -9,14 +9,13 @@
     <h4 class="page-header mb-3">Order Settings</h4>
     
     <div class="card card-body">
-        <form>
+        <form asp-action="OrderSettings">
             <div class="form-group">
                 <label>Max Order Quantity</label>
-                <input type="number" name="" class="form-control" required>
+                <input type="number" name="quantity" class="form-control" min="0" value="@Model" required>
             </div>
             
             <input type="submit" value="Submit" class="btn btn-danger"/>
         </form>
     </div>
-
 </div>

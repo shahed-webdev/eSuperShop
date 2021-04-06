@@ -13,10 +13,12 @@ namespace eSuperShop.Web.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderCore _order;
+        private readonly IGeneralSettingCore _setting;
 
-        public OrderController(IOrderCore order)
+        public OrderController(IOrderCore order, IGeneralSettingCore setting)
         {
             _order = order;
+            _setting = setting;
         }
 
         //***Admin***//
@@ -70,10 +72,26 @@ namespace eSuperShop.Web.Controllers
             return Json(response.Data);
         }
 
+        #region Order Setting
         //order setting
         public IActionResult OrderSettings()
         {
-            return View();
+            var model = _setting.GetOrderQuantityLimit();
+            return View(model.Data);
         }
+
+        [HttpPost]
+        public IActionResult OrderSettings(int quantity)
+        {
+            var model = _setting.ChangeOrderQuantityLimit(quantity);
+
+            if (model.IsSuccess)
+                return RedirectToAction("OrderSettings");
+
+            ViewBag.ErrorMessage = model.Message;
+            return View(quantity);
+        }
+
+        #endregion
     }
 }
