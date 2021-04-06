@@ -184,6 +184,14 @@ let linkData = [
                 "LinkID": 6,
                 "SN": 2,
                 "Controller": "Order",
+                "Action": "OrderSettings",
+                "Title": "Settings",
+                "IconClass": null
+            },
+            {
+                "LinkID": 6,
+                "SN": 2,
+                "Controller": "Order",
                 "Action": "PendingList",
                 "Title": "Pending List",
                 "IconClass": null

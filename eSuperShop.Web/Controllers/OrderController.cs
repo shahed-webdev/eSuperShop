@@ -9,38 +9,37 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace eSuperShop.Web.Controllers
 {
+    [Authorize(Roles = "admin, sub-admin")]
     public class OrderController : Controller
     {
         private readonly IOrderCore _order;
+        private readonly IGeneralSettingCore _setting;
 
-        public OrderController(IOrderCore order)
+        public OrderController(IOrderCore order, IGeneralSettingCore setting)
         {
             _order = order;
+            _setting = setting;
         }
 
         //***Admin***//
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult PendingList()
         {
             return View();
         }
 
 
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult ConfirmedList()
         {
             return View();
         }
 
 
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult DeliveredList()
         {
             return View();
         }
 
         //order details
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult OrderDetails(int? id)
         {
             if (!id.HasValue) return RedirectToAction("PendingList");
@@ -50,7 +49,6 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        [Authorize(Roles = "admin, sub-admin")]
         [HttpPost]
         public IActionResult ConfirmOrder(int? id)
         {
@@ -58,7 +56,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-        [Authorize(Roles = "admin, sub-admin")]
+
         [HttpPost]
         public IActionResult DeleteOrder(int? id)
         {
@@ -68,11 +66,32 @@ namespace eSuperShop.Web.Controllers
 
 
         //data-table
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult GetOrderListData(DataRequest request)
         {
             var response = _order.AdminWiseList(request);
             return Json(response.Data);
         }
+
+        #region Order Setting
+        //order setting
+        public IActionResult OrderSettings()
+        {
+            var model = _setting.GetOrderQuantityLimit();
+            return View(model.Data);
+        }
+
+        [HttpPost]
+        public IActionResult OrderSettings(int quantity)
+        {
+            var model = _setting.ChangeOrderQuantityLimit(quantity);
+
+            if (model.IsSuccess)
+                return RedirectToAction("OrderSettings");
+
+            ViewBag.ErrorMessage = model.Message;
+            return View(quantity);
+        }
+
+        #endregion
     }
 }
