@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace eSuperShop.Web.Controllers
 {
+    [Authorize(Roles = "admin, sub-admin")]
     public class OrderController : Controller
     {
         private readonly IOrderCore _order;
@@ -19,28 +20,24 @@ namespace eSuperShop.Web.Controllers
         }
 
         //***Admin***//
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult PendingList()
         {
             return View();
         }
 
 
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult ConfirmedList()
         {
             return View();
         }
 
 
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult DeliveredList()
         {
             return View();
         }
 
         //order details
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult OrderDetails(int? id)
         {
             if (!id.HasValue) return RedirectToAction("PendingList");
@@ -50,7 +47,6 @@ namespace eSuperShop.Web.Controllers
         }
 
 
-        [Authorize(Roles = "admin, sub-admin")]
         [HttpPost]
         public IActionResult ConfirmOrder(int? id)
         {
@@ -58,7 +54,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
-        [Authorize(Roles = "admin, sub-admin")]
+
         [HttpPost]
         public IActionResult DeleteOrder(int? id)
         {
@@ -68,11 +64,16 @@ namespace eSuperShop.Web.Controllers
 
 
         //data-table
-        [Authorize(Roles = "admin, sub-admin")]
         public IActionResult GetOrderListData(DataRequest request)
         {
             var response = _order.AdminWiseList(request);
             return Json(response.Data);
+        }
+
+        //order setting
+        public IActionResult OrderSettings()
+        {
+            return View();
         }
     }
 }

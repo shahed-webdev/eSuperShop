@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<div class="container mb-5">
+    <form id="formCart">
+        <div class="row">
+            <div class="col-xl-8 col-lg-8 mt-4">
+                <div class="card card-body">
+                    <table class="show-cart table product-table">
+                        <thead>
+                            <tr>
+                                <th class="text-left"><strong>Product</strong></th>
+                                <th><strong>Price</strong></th>
+                                <th class="text-center"><strong>Quantity</strong></th>
+                                <th><strong>Line Total</strong></th>
+                                <th class="text-right"><strong>Remove</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 mt-4">
+                <div class="card card-body">
+                    <h4 class="font-weight-bold border-bottom pb-3 mb-3">Order Summary</h4>
+                    <ul class="list-group mb-3">
+                        <li class="d-flex justify-content-between align-items-center border-bottom my-2 pb-3">
+                            <div>Cart Subtotal</div>
+                            <div>৳<span class="grand-total-amount">0</span></div>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center">
+                            <h5 class="font-weight-bold">Order Total</h5>
+                            <h5 class="font-weight-bold">৳<span id="orderTotal"></span></h5>
+                        </li>
+                    </ul>
+
+                    <button id="btnSubmit" type="submit" class="btn btn-danger btn-rounded mt-2">Process To Checkout <i class="fas fa-angle-right right"></i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

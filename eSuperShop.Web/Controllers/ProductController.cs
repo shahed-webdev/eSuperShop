@@ -40,7 +40,7 @@ namespace eSuperShop.Web.Controllers
             return View();
         }
 
-
+        #region Product Details(item)
         //product details
         public IActionResult Item(string slugUrl)
         {
@@ -73,7 +73,16 @@ namespace eSuperShop.Web.Controllers
             var response = _product.GetQuantityBySetId(quantitySetId);
             return Json(response);
         }
+        #endregion
 
+        #region Cart list
+        public IActionResult Cart()
+        {
+            return View();
+        }
+
+
+        #endregion
 
         #region Checkout
         //cart product List
