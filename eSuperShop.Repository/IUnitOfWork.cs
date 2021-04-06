@@ -9,6 +9,7 @@ namespace eSuperShop.Repository
         IAttributeRepository Attribute { get; }
         IBrandRepository Brand { get; }
         ICustomerRepository Customer { get; }
+        IGeneralSettingRepository GeneralSetting { get; }
         IOrderRepository Order { get; }
         IOrderShippingAddressRepository OrderShippingAddress { get; }
         IProductRepository Product { get; }
