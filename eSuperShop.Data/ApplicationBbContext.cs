@@ -23,6 +23,7 @@ namespace eSuperShop.Data
         public virtual DbSet<CustomerAddressBook> CustomerAddressBook { get; set; }
         public virtual DbSet<GeneralSetting> GeneralSetting { get; set; }
         public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<OrderCart> OrderCart { get; set; }
         public virtual DbSet<OrderList> OrderList { get; set; }
         public virtual DbSet<OrderShippingAddress> OrderShippingAddress { get; set; }
         public virtual DbSet<Product> Product { get; set; }
@@ -64,6 +65,7 @@ namespace eSuperShop.Data
             builder.ApplyConfiguration(new CustomerAddressBookConfiguration());
             builder.ApplyConfiguration(new GeneralSettingConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new OrderCartConfiguration());
             builder.ApplyConfiguration(new OrderListConfiguration());
             builder.ApplyConfiguration(new OrderShippingAddressConfiguration());
             builder.ApplyConfiguration(new ProductAttributeConfiguration());

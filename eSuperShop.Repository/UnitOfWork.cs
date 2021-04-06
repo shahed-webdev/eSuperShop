@@ -19,6 +19,7 @@ namespace eSuperShop.Repository
             Customer = new CustomerRepository(_db, _mapper);
             GeneralSetting = new GeneralSettingRepository(_db, _mapper);
             Order = new OrderRepository(_db, _mapper);
+            OrderCart = new OrderCartRepository(_db, _mapper);
             OrderShippingAddress = new OrderShippingAddressRepository(_db, _mapper);
             Product = new ProductRepository(_db, _mapper);
             ProductReview = new ProductReviewRepository(_db, _mapper);
@@ -40,6 +41,7 @@ namespace eSuperShop.Repository
         public ICustomerRepository Customer { get; }
         public IGeneralSettingRepository GeneralSetting { get; }
         public IOrderRepository Order { get; }
+        public IOrderCartRepository OrderCart { get; }
         public IOrderShippingAddressRepository OrderShippingAddress { get; }
         public IProductRepository Product { get; }
         public IProductReviewRepository ProductReview { get; }
