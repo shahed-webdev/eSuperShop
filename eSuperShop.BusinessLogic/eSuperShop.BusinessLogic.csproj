@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Service.SMS\Service.SMS.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GeneralSetting\" />
+  </ItemGroup>
+
 </Project>
