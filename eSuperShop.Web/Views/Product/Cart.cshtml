@@ -2,24 +2,84 @@
 @{
     ViewData["Title"] = "Cart";
 }
+@section Styles{
+    <style>
+        /*shopping cart*/
+        #formCart img { max-height: 100px; margin-right: 5px; min-width: 50px; border-radius: 5px }
+      
+        /*shopping cart quantity input*/
+        .item-quantity {display: block; max-width:52px; border: 1px solid #ddd; border-radius: 5px; text-align: center; padding: 3px 0;margin: 5px 0 }
 
+        .delete-item{ color: red; cursor: pointer}
+    </style>
+}
 <div class="container mb-5">
     <form id="formCart">
         <div class="row">
-            <div class="col-xl-8 col-lg-8 mt-4">
+            <div id="all-store" class="col-xl-8 col-lg-8 mt-4">
                 <div class="card card-body">
-                    <table class="show-cart table product-table">
-                        <thead>
-                            <tr>
-                                <th class="text-left"><strong>Product</strong></th>
-                                <th><strong>Price</strong></th>
-                                <th class="text-center"><strong>Quantity</strong></th>
-                                <th><strong>Line Total</strong></th>
-                                <th class="text-right"><strong>Remove</strong></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <input id="btnDelete" type="button" value="Delete" class="btn btn-danger btn-md">
+                        <h4 class="font-weight-bold mb-0">Cart Items</h4>
+
+                        <input type="checkbox" onclick="checkAll(this)" class="form-check-input" id="allCheck">
+                        <label class="form-check-label" for="allCheck">SELECT ALL</label>
+                    </div>
+                </div> 
+
+                <div id="sore1" class="card card-body mt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="font-weight-bold mb-0">Name of store</h6>
+                        <div class="form-check">
+                            <input onclick="checkAll(this)" type="checkbox" class="form-check-input" id="storeAllCheck">
+                            <label class="form-check-label" for="storeAllCheck"></label>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center">
+                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
+                            <div>
+                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
+                                <h5 class="mb-0">
+                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
+                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <strong class="d-block">৳500</strong>
+                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
+                            <i id="" class="fas fa-trash delete-item"></i>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="storeCheck">
+                            <label class="form-check-label" for="storeCheck"></label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
+                            <div>
+                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
+                                <h5 class="mb-0">
+                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
+                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <strong class="d-block">৳500</strong>
+                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
+                            <i id="" class="fas fa-trash delete-item"></i>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="storeCheck1">
+                            <label class="form-check-label" for="storeCheck1"></label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -40,6 +100,15 @@
                     <button id="btnSubmit" type="submit" class="btn btn-danger btn-rounded mt-2">Process To Checkout <i class="fas fa-angle-right right"></i></button>
                 </div>
             </div>
-        </div>
+        </div> 
     </form>
 </div>
+
+@section Scripts{
+    <script>
+        function checkAll(self) {
+            const childCheckboxId = $(self).parent().parent().parent().attr('id');
+            $(`#${childCheckboxId}`).find("input").prop("checked", self.checked);
+        }
+    </script>
+}

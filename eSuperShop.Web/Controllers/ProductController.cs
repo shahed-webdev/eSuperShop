@@ -14,8 +14,9 @@ namespace eSuperShop.Web.Controllers
         private readonly ICustomerCore _customer;
         private readonly IRegionCore _region;
         private readonly IAreaCore _area;
+        private readonly IGeneralSettingCore _setting;
 
-        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer, IRegionCore region, IAreaCore area, ICatalogCore catalog)
+        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer, IRegionCore region, IAreaCore area, ICatalogCore catalog, IGeneralSettingCore setting)
         {
             _product = product;
             _order = order;
@@ -23,6 +24,7 @@ namespace eSuperShop.Web.Controllers
             _region = region;
             _area = area;
             _catalog = catalog;
+            _setting = setting;
         }
 
         public IActionResult FlashDeals()
@@ -47,6 +49,8 @@ namespace eSuperShop.Web.Controllers
             if (string.IsNullOrEmpty(slugUrl)) return RedirectToAction("Index", "Home");
 
             var model = _product.DetailsBySlugUrl(slugUrl);
+            ViewBag.MaxQuantityLimit = _setting.GetOrderQuantityLimit().Data;
+
             return View(model.Data);
         }
 
