@@ -9,5 +9,8 @@ namespace eSuperShop.BusinessLogic
         DbResponse<int> Delete(int orderCartId);
         DbResponse<int> QuantityChange(int orderCartId, int quantity);
         List<OrderCartViewModel> List(string customerUserName);
+        DbResponse DeleteAll(string customerUserName);
+        DbResponse SelectedChange(OrderCartSelectChangeModel model);
+        DbResponse SelectedAll(string customerUserName);
     }
 }

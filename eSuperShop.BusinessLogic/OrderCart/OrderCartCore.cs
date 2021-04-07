@@ -74,5 +74,54 @@ namespace eSuperShop.BusinessLogic
             var customerId = _db.Registration.CustomerIdByUserName(customerUserName);
             return _db.OrderCart.List(customerId);
         }
+
+        public DbResponse DeleteAll(string customerUserName)
+        {
+            try
+            {
+                var customerId = _db.Registration.CustomerIdByUserName(customerUserName);
+
+                if (customerId == 0)
+                    return new DbResponse(false, "Invalid User");
+
+
+                return _db.OrderCart.DeleteAll(customerId);
+
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, $"{e.Message}. {e.InnerException?.Message ?? ""}");
+            }
+        }
+
+        public DbResponse SelectedChange(OrderCartSelectChangeModel model)
+        {
+            try
+            {
+                return _db.OrderCart.SelectedChange(model);
+
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, $"{e.Message}. {e.InnerException?.Message ?? ""}");
+            }
+        }
+
+        public DbResponse SelectedAll(string customerUserName)
+        {
+            try
+            {
+                var customerId = _db.Registration.CustomerIdByUserName(customerUserName);
+
+                if (customerId == 0)
+                    return new DbResponse(false, "Invalid User");
+                return _db.OrderCart.SelectedAll(customerId);
+
+            }
+            catch (Exception e)
+            {
+                return new DbResponse(false, $"{e.Message}. {e.InnerException?.Message ?? ""}");
+            }
+        }
     }
 }
