@@ -1,7 +1,13 @@
-﻿namespace eSuperShop.BusinessLogic
+﻿using eSuperShop.Repository;
+using System.Collections.Generic;
+
+namespace eSuperShop.BusinessLogic
 {
     public interface IOrderCartCore
     {
-
+        DbResponse<int> Add(OrderCartAddModel model, string customerUserName);
+        DbResponse<int> Delete(int orderCartId);
+        DbResponse<int> QuantityChange(int orderCartId, int quantity);
+        List<OrderCartViewModel> List(string customerUserName);
     }
 }

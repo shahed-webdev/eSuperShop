@@ -1,4 +1,4 @@
-﻿namespace eSuperShop.Repository.Repositories
+﻿namespace eSuperShop.Repository
 {
     public class AreaAddEditModel
     {

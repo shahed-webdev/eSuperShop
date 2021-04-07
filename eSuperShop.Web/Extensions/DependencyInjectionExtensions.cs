@@ -20,6 +20,7 @@ namespace eSuperShop.Web
             services.AddTransient<ICatalogCore, CatalogCore>();
             services.AddTransient<ICustomerCore, CustomerCore>();
             services.AddTransient<IOrderCore, OrderCore>();
+            services.AddTransient<IOrderCartCore, OrderCartCore>();
             services.AddTransient<IProductCore, ProductCore>();
             services.AddTransient<IRegionCore, RegionCore>();
             services.AddTransient<ISpecificationCore, SpecificationCore>();
