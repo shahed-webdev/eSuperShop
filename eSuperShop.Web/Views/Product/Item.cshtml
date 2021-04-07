@@ -396,76 +396,78 @@
         const attribute = document.getElementById("attribute");
 
         // attribute change event
-        attribute.addEventListener("change", function(evt) {
-            const element = evt.target;
+        if (attribute) {
+            attribute.addEventListener("change",
+                function(evt) {
+                    const element = evt.target;
 
-            const onAttribute = element.classList.contains("radio-attribute");
-            if (!onAttribute) return;
+                    const onAttribute = element.classList.contains("radio-attribute");
+                    if (!onAttribute) return;
 
-            //set selected value
-            const setValue = element.parentElement.parentElement.parentElement.querySelector(".att-value");
-            setValue.textContent = `: ${element.getAttribute("att-val")}`
+                    //set selected value
+                    const setValue = element.parentElement.parentElement.parentElement.querySelector(".att-value");
+                    setValue.textContent = `: ${element.getAttribute("att-val")}`
 
-            //set selected image in big image
-            const image = element.nextElementSibling;
-            const showImg = document.getElementById("show-img");
-            const bigImg = document.getElementById("big-img");
+                    //set selected image in big image
+                    const image = element.nextElementSibling;
+                    const showImg = document.getElementById("show-img");
+                    const bigImg = document.getElementById("big-img");
 
-            if (image.tagName === "IMG") {
-                const isFile = image.getAttribute("data-file");
-                if (!isFile) return;
+                    if (image.tagName === "IMG") {
+                        const isFile = image.getAttribute("data-file");
+                        if (!isFile) return;
 
-                const imgSrc = image.getAttribute("src");
-                showImg.setAttribute("src", imgSrc);
-                bigImg.setAttribute("src", imgSrc);
-            }
+                        const imgSrc = image.getAttribute("src");
+                        showImg.setAttribute("src", imgSrc);
+                        bigImg.setAttribute("src", imgSrc);
+                    }
 
-            const valueIds = document.querySelectorAll('input[type="radio"]:checked');
-            const keyNames = document.querySelectorAll(".key-name");
-            const attributeValueId = [];
+                    const valueIds = document.querySelectorAll('input[type="radio"]:checked');
+                    const keyNames = document.querySelectorAll(".key-name");
+                    const attributeValueId = [];
 
-            valueIds.forEach(id => {
-                if (id.value) attributeValueId.push(+id.value);
-            });
+                    valueIds.forEach(id => {
+                        if (id.value) attributeValueId.push(+id.value);
+                    });
 
-            if (keyNames.length !== attributeValueId.length) return;
+                    if (keyNames.length !== attributeValueId.length) return;
 
-            const model = {
-                ProductId: @Model.ProductId,
-                ProductAttributeValueIds: attributeValueId
-            }
+                    const model = {
+                        ProductId: @Model.ProductId,
+                        ProductAttributeValueIds: attributeValueId
+                    }
 
-            const availableQty = document.getElementById("availableQty");
+                    const availableQty = document.getElementById("availableQty");
 
-            showLoader(true);
+                    showLoader(true);
 
-            $.ajax({
-                url: "/Product/GetInsertedStock",
-                type: "POST",
-                data: model,
-                success: function(response) {
-                    if (response.IsSuccess) {
-                        const { Quantity, ProductQuantitySetId, PriceAdjustment, AttributesWithValue } = response.Data;
-                        //global variable
-                        attributesValue = AttributesWithValue;
+                    $.ajax({
+                        url: "/Product/GetInsertedStock",
+                        type: "POST",
+                        data: model,
+                        success: function(response) {
+                            if (response.IsSuccess) {
+                                const { Quantity, ProductQuantitySetId, PriceAdjustment, AttributesWithValue } = response.Data;
+                                //global variable
+                                attributesValue = AttributesWithValue;
 
-                        const isAdded = shoppingCart.getProduct(ProductQuantitySetId);
-                        const newQuantity = isAdded ? (Quantity - isAdded.Quantity) : Quantity;
+                                //const isAdded = shoppingCart.getProduct(ProductQuantitySetId);
+                                //const newQuantity = isAdded ? (Quantity - isAdded.Quantity) : Quantity;
 
-                        if (isAdded) {
-                            $.notify("Product Already added", "error", { position: "right" });
-                        }
+                                //if (isAdded) {
+                                //    $.notify("Product Already added", "error", { position: "right" });
+                                //}
 
-                        availableQty.textContent = `${newQuantity} pieces available`;
-                        availableQty.style.color = "#212529";
+                                availableQty.textContent = `${Quantity} pieces available`;
+                                availableQty.style.color = "#212529";
 
-                        inputQuantity.value = isAdded ? isAdded.Quantity : 1;
-                        //inputQuantity.setAttribute("max", Quantity);
+                                //inputQuantity.value = isAdded ? isAdded.Quantity : 1;
+                                //inputQuantity.setAttribute("max", Quantity);
 
-                        productPrice.textContent = @Model.Price + PriceAdjustment;
-                        hiddenQuantitySetId.value = ProductQuantitySetId;
-                        hiddenPriceAdjustment.value = PriceAdjustment;
-                    } @*else {
+                                productPrice.textContent = @Model.Price + PriceAdjustment;
+                                hiddenQuantitySetId.value = ProductQuantitySetId;
+                                hiddenPriceAdjustment.value = PriceAdjustment;
+                            } @*else {
                         availableQty.textContent = `Product not available`;
                         availableQty.style.color = "red";
 
@@ -476,76 +478,78 @@
                         hiddenPriceAdjustment.value = 0;
                     }*@
 
-                    showLoader(false);
-                },
-                error: function(err) {
-                    console.log(err);
-                    showLoader(false);
-                }
-            });
-        });
+                            showLoader(false);
+                        },
+                        error: function(err) {
+                            console.log(err);
+                            showLoader(false);
+                        }
+                    });
+                });
+        }
 
         //add to cart
-        cartForm.addEventListener("submit", function(evt) {
-            evt.preventDefault();
+        cartForm.addEventListener("submit",
+            function(evt) {
+                evt.preventDefault();
 
-            const extraPrice = +hiddenPriceAdjustment.value;
-            const url = document.getElementById("show-img").src;
+                const extraPrice = +hiddenPriceAdjustment.value;
+                const url = document.getElementById("show-img").src;
 
-            const obj = {
-                ProductId: @Model.ProductId,
-                CatalogId: @Model.CatalogId,
-                ProductUrl: url,
-                Name: "@Model.Name",
-                UnitPrice: @Model.Price + extraPrice,
-                Quantity: +inputQuantity.value,
-                ProductQuantitySetId: +hiddenQuantitySetId.value,
-                attributesValue
-            }
+                const obj = {
+                    ProductId: @Model.ProductId,
+                    CatalogId: @Model.CatalogId,
+                    ProductUrl: url,
+                    Name: "@Model.Name",
+                    UnitPrice: @Model.Price + extraPrice,
+                    Quantity: +inputQuantity.value,
+                    ProductQuantitySetId: +hiddenQuantitySetId.value,
+                    attributesValue
+                }
 
-            shoppingCart.addItemToCart(obj);
-            displayCart();
+                //shoppingCart.addItemToCart(obj);
+                //displayCart();
 
-            if (document.activeElement.id === "btnBuyNow") {
-                location.href = "/Product/Checkout";
-                return;
-            }
+                if (document.activeElement.id === "btnBuyNow") {
+                    location.href = "/Product/Checkout";
+                    return;
+                }
 
-            $.notify("Product added to Shopping Cart", "success", { position: "right" });
-        });
-
+                $.notify("Product added to Shopping Cart", "success", { position: "right" });
+            });
 
         //post faq
         const formFaq = document.getElementById("formFaq");
         if (formFaq) {
-            formFaq.addEventListener("submit", function(evt) {
-                evt.preventDefault();
-                this.btnAskQuestion.disabled = true;
+            formFaq.addEventListener("submit",
+                function(evt) {
+                    evt.preventDefault();
+                    this.btnAskQuestion.disabled = true;
 
-                const body = {
-                    ProductId: @Model.ProductId,
-                    Question: this.inputQuestion.value
-                }
-
-                $.ajax({
-                    url: "/Product/PostFaq",
-                    type: "POST",
-                    data: body,
-                    success: response => {
-                        console.log(response)
-                        if (response.IsSuccess) {
-                            $.notify("Question sent, seller will answer you soon", "success", { position: "right" });
-                        }
-
-                        this.inputQuestion.value = "";
-                        this.btnAskQuestion.disabled = false;
-                    },
-                    error: err => {
-                        console.log(err);
-                        this.btnAskQuestion.disabled = false;
+                    const body = {
+                        ProductId: @Model.ProductId,
+                        Question: this.inputQuestion.value
                     }
+
+                    $.ajax({
+                        url: "/Product/PostFaq",
+                        type: "POST",
+                        data: body,
+                        success: response => {
+                            console.log(response)
+                            if (response.IsSuccess) {
+                                $.notify("Question sent, seller will answer you soon", "success", { position: "right" });
+                            }
+
+                            this.inputQuestion.value = "";
+                            this.btnAskQuestion.disabled = false;
+                        },
+                        error: err => {
+                            console.log(err);
+                            this.btnAskQuestion.disabled = false;
+                        }
+                    });
                 });
-            });
         }
 
         //loader
