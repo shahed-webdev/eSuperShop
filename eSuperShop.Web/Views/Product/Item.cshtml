@@ -113,7 +113,7 @@
                             </div>
 
                             <div class="my-5">
-                                QTY: <input id="inputQuantity" min="1" type="number" class="input-quantity mr-2" required value="1">
+                                QTY: <input id="inputQuantity" min="1" max="@ViewBag.MaxQuantityLimit" value="1" type="number" class="input-quantity mr-2" required>
                                 <span id="availableQty"></span>
                             </div>
 
@@ -456,17 +456,16 @@
                             $.notify("Product Already added", "error", { position: "right" });
                         }
 
-
                         availableQty.textContent = `${newQuantity} pieces available`;
                         availableQty.style.color = "#212529";
 
                         inputQuantity.value = isAdded ? isAdded.Quantity : 1;
-                        inputQuantity.setAttribute("max", Quantity);
+                        //inputQuantity.setAttribute("max", Quantity);
 
                         productPrice.textContent = @Model.Price + PriceAdjustment;
                         hiddenQuantitySetId.value = ProductQuantitySetId;
                         hiddenPriceAdjustment.value = PriceAdjustment;
-                    } else {
+                    } @*else {
                         availableQty.textContent = `Product not available`;
                         availableQty.style.color = "red";
 
@@ -475,7 +474,7 @@
                         productPrice.textContent = @Model.Price;
                         hiddenQuantitySetId.value = "";
                         hiddenPriceAdjustment.value = 0;
-                    }
+                    }*@
 
                     showLoader(false);
                 },
