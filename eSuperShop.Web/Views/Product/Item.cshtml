@@ -492,30 +492,42 @@
         cartForm.addEventListener("submit",
             function(evt) {
                 evt.preventDefault();
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    if (!User.IsInRole("Customer"))
+                    {
+                        @:location.href = "/Home/Index";
+                    }
 
-                const extraPrice = +hiddenPriceAdjustment.value;
-                const url = document.getElementById("show-img").src;
-
-                const obj = {
-                    ProductId: @Model.ProductId,
-                    CatalogId: @Model.CatalogId,
-                    ProductUrl: url,
-                    Name: "@Model.Name",
-                    UnitPrice: @Model.Price + extraPrice,
-                    Quantity: +inputQuantity.value,
-                    ProductQuantitySetId: +hiddenQuantitySetId.value,
-                    attributesValue
+                    @:location.href = "/Account/CustomerLogin/?returnUrl=/Item/@ViewContext.RouteData.Values["slugUrl"]";
                 }
 
-                //shoppingCart.addItemToCart(obj);
-                //displayCart();
+                const model = {
+                    ProductId: @Model.ProductId,
+                    ProductQuantitySetId: +hiddenQuantitySetId.value,
+                    Quantity: +inputQuantity.value
+                }
+
+                showLoader(true);
+
+                $.ajax({
+                    url: "/Product/AddToCart",
+                    type: "POST",
+                    data: model,
+                    success: function(response) {
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                        showLoader(false);
+                    },
+                    error: function (err) {
+                        showLoader(false);
+                        console.log(err);
+                    }
+                });
 
                 if (document.activeElement.id === "btnBuyNow") {
                     location.href = "/Product/Checkout";
                     return;
                 }
-
-                $.notify("Product added to Shopping Cart", "success", { position: "right" });
             });
 
         //post faq

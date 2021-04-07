@@ -15,8 +15,9 @@ namespace eSuperShop.Web.Controllers
         private readonly IRegionCore _region;
         private readonly IAreaCore _area;
         private readonly IGeneralSettingCore _setting;
+        private readonly IOrderCartCore _orderCartCore;
 
-        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer, IRegionCore region, IAreaCore area, ICatalogCore catalog, IGeneralSettingCore setting)
+        public ProductController(IProductCore product, IOrderCore order, ICustomerCore customer, IRegionCore region, IAreaCore area, ICatalogCore catalog, IGeneralSettingCore setting, IOrderCartCore orderCartCore)
         {
             _product = product;
             _order = order;
@@ -25,6 +26,7 @@ namespace eSuperShop.Web.Controllers
             _area = area;
             _catalog = catalog;
             _setting = setting;
+            _orderCartCore = orderCartCore;
         }
 
         public IActionResult FlashDeals()
@@ -52,6 +54,15 @@ namespace eSuperShop.Web.Controllers
             ViewBag.MaxQuantityLimit = _setting.GetOrderQuantityLimit().Data;
 
             return View(model.Data);
+        }
+
+        //post add to cart
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult AddToCart(OrderCartAddModel model)
+        {
+            var response = _orderCartCore.Add(model, User.Identity.Name);
+            return Json(response);
         }
 
         //post FAQ
@@ -84,8 +95,6 @@ namespace eSuperShop.Web.Controllers
         {
             return View();
         }
-
-
         #endregion
 
         #region Checkout
