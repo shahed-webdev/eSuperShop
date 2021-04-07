@@ -44,7 +44,15 @@ namespace eSuperShop.Repository
             Db.OrderCart.Remove(cart);
             Db.SaveChanges();
             var quantity = this.OrderProductCount(cart.CustomerId);
-            return new DbResponse<int>(true, "message", quantity);
+            return new DbResponse<int>(true, "Item deleted from the cart", quantity);
+        }
+
+        public DbResponse DeleteAll(int customerId)
+        {
+            var carts = Db.OrderCart.Where(o => o.CustomerId == customerId).ToList();
+            Db.OrderCart.RemoveRange(carts);
+            Db.SaveChanges();
+            return new DbResponse(true, "All items deleted from the cart");
         }
 
         public bool IsExistProduct(int productId, int productQuantitySetId, int customerId)
@@ -59,7 +67,33 @@ namespace eSuperShop.Repository
             Db.OrderCart.Update(cart);
             Db.SaveChanges();
             var items = this.OrderProductCount(cart.CustomerId);
-            return new DbResponse<int>(true, "message", items);
+            return new DbResponse<int>(true, "Item quantity changed successfully", items);
+        }
+
+        public DbResponse SelectedChange(OrderCartSelectChangeModel model)
+        {
+            var carts = Db.OrderCart.Where(o => model.OrderCartIds.Contains(o.CustomerId)).ToList();
+            foreach (var cart in carts)
+            {
+                cart.IsSelected = model.IsSelected;
+            }
+
+            Db.OrderCart.UpdateRange(carts);
+            Db.SaveChanges();
+            return new DbResponse(true, "Item selection changed successfully");
+        }
+
+        public DbResponse SelectedAll(int customerId)
+        {
+            var carts = Db.OrderCart.Where(o => o.CustomerId == customerId).ToList();
+
+            foreach (var cart in carts)
+            {
+                cart.IsSelected = true;
+            }
+            Db.OrderCart.UpdateRange(carts);
+            Db.SaveChanges();
+            return new DbResponse(true, "All items selected");
         }
 
         public bool IsNull(int orderCartId)
