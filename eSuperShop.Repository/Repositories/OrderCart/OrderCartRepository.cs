@@ -14,7 +14,7 @@ namespace eSuperShop.Repository
 
         public DbResponse<int> Add(OrderCartAddModel model)
         {
-            var cart = new OrderCart();
+            OrderCart cart;
             var message = "";
             if (IsExistProduct(model.ProductId, model.ProductQuantitySetId, model.CustomerId))
             {
@@ -22,7 +22,8 @@ namespace eSuperShop.Repository
                    o.ProductId == model.ProductId && o.ProductQuantitySetId == model.ProductQuantitySetId &&
                    o.CustomerId == model.CustomerId);
 
-                cart.Quantity += model.Quantity;
+                if (cart != null) cart.Quantity += model.Quantity;
+
                 message = "An item's quantity has been updated";
             }
             else

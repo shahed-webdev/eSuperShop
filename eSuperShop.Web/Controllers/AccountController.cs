@@ -225,7 +225,6 @@ namespace eSuperShop.Web.Controllers
 
                     await _userManager.CreateAsync(user);
                     await _userManager.AddToRoleAsync(user, UserType.Customer.ToString()).ConfigureAwait(false);
-
                 }
 
                 // Add a login (i.e insert a row for the user in AspNetUserLogins table)

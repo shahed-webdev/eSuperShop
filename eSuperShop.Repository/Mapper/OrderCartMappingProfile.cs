@@ -14,8 +14,8 @@ namespace eSuperShop.Repository
                 .ForMember(d => d.AttributesWithValue, opt => opt.MapFrom(c =>
                     c.ProductQuantitySet.ProductQuantitySetAttribute.Select(s => new OrderCartAttributesSetModel
                     {
-                        KeyName = s.ProductAttributeValue.Value,
-                        Value = s.ProductAttributeValue.ProductAttribute.Attribute.KeyName
+                        Value = s.ProductAttributeValue.Value,
+                        KeyName = s.ProductAttributeValue.ProductAttribute.Attribute.KeyName
                     })))
                 .ForMember(d => d.Price, opt => opt.MapFrom(c => c.Product.Price))
                 .ForMember(d => d.ProductName, opt => opt.MapFrom(c => c.Product.Name))

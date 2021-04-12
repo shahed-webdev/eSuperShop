@@ -91,9 +91,37 @@ namespace eSuperShop.Web.Controllers
         #endregion
 
         #region Cart list
+        [Authorize(Roles = "Customer")]
         public IActionResult Cart()
         {
-            return View();
+            var model = _orderCartCore.List(User.Identity.Name);
+            return View(model);
+        }
+
+        //set quantity
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult PostQuantity(int orderCartId, int quantity)
+        {
+            var model = _orderCartCore.QuantityChange(orderCartId, quantity);
+            return Json(model);
+        }
+
+        //set quantity
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult SetSelectedProduct(OrderCartSelectChangeModel model)
+        {
+            var response = _orderCartCore.SelectedChange(model);
+            return Json(response);
+        }
+
+        //get total cart items
+        [Authorize(Roles = "Customer")]
+        public IActionResult CartProductCount()
+        {
+            var model = _orderCartCore.OrderProductCount(User.Identity.Name);
+            return Json(model.Data);
         }
         #endregion
 

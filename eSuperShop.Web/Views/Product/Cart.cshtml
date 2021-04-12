@@ -1,6 +1,8 @@
-﻿
+﻿@using CloudStorage
+@model IEnumerable<OrderCartStoreWiseModel>  
 @{
     ViewData["Title"] = "Cart";
+    var baseUrl = FileBuilder.BaseUrl();
 }
 @section Styles{
     <style>
@@ -8,11 +10,12 @@
         #formCart img { max-height: 100px; margin-right: 5px; min-width: 50px; border-radius: 5px }
       
         /*shopping cart quantity input*/
-        .item-quantity {display: block; max-width:52px; border: 1px solid #ddd; border-radius: 5px; text-align: center; padding: 3px 0;margin: 5px 0 }
+        .item-quantity {display: block; max-width:120px; border: 1px solid #ddd; border-radius: 5px; text-align: center; padding: 3px 0;margin: 5px 0 }
 
         .delete-item{ color: red; cursor: pointer}
     </style>
 }
+
 <div class="container mb-5">
     <form id="formCart">
         <div class="row">
@@ -26,173 +29,57 @@
                         <label class="form-check-label" for="allCheck">SELECT ALL</label>
                     </div>
                 </div>
-
-                <div id="sore1" class="card card-body mt-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="font-weight-bold mb-0">Name of store</h6>
-                        <div class="form-check">
-                            <input onclick="checkAll(this)" type="checkbox" class="form-check-input" id="storeAllCheck">
-                            <label class="form-check-label" for="storeAllCheck"></label>
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
-                            <div>
-                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
-                                <h5 class="mb-0">
-                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
-                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
-                                </h5>
+                
+                @{ var index = 1;}
+                @foreach (var item in Model)
+                {
+                    <div id="store-@index" class="card card-body mt-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="font-weight-bold mb-0">@item.StoreName</h6>
+                            <div class="form-check">
+                                <input onclick="checkAll(this)" type="checkbox" class="form-check-input" id="storeAllCheck-@index">
+                                <label class="form-check-label" for="storeAllCheck-@index"></label>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <strong class="d-block">৳500</strong>
-                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
-                            <i id="" class="fas fa-trash delete-item"></i>
-                        </div>
-                        <div class="form-check">
-                            <input onclick="checkSingle(this)" type="checkbox" class="form-check-input" id="storeCheck">
-                            <label class="form-check-label" for="storeCheck"></label>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
-                            <div>
-                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
-                                <h5 class="mb-0">
-                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
-                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
-                                </h5>
+                        <hr/>
+                        @foreach (var product in item.Products)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="d-flex align-items-center">
+                                    <img src="@baseUrl/@product.ImageFileName" alt=""/>
+                                    <div>
+                                        <p>@product.ProductName</p>
+                                        <h5 class="mb-0">
+                                            @foreach (var att in product.AttributesWithValue)
+                                            {
+                                                <span class="badge badge-pill grey darken-3 mr-2">@att.KeyName: @att.Value</span>
+                                            }
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <strong class="d-block">৳@product.Price</strong>
+                                    <input id="@product.OrderCartId" class="item-quantity" data-price="@product.Price" value="@product.Quantity" min="1" type="number">
+                                    <i id="@product.OrderCartId" class="fas fa-trash delete-item"></i>
+                                </div>
+                                <div class="form-check">
+                                    <input name="productCheckbox" onclick="checkSingle(this)" id="product-check-@product.OrderCartId" data-id="@product.OrderCartId" type="checkbox" class="form-check-input" @(product.IsSelected?"checked":"")>
+                                    <label class="form-check-label" for="product-check-@product.OrderCartId"></label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-center">
-                            <strong class="d-block">৳500</strong>
-                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
-                            <i id="" class="fas fa-trash delete-item"></i>
-                        </div>
-                        <div class="form-check">
-                            <input onclick="checkSingle(this)" type="checkbox" class="form-check-input" id="storeCheck1">
-                            <label class="form-check-label" for="storeCheck1"></label>
-                        </div>
+                        }
                     </div>
-
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
-                            <div>
-                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
-                                <h5 class="mb-0">
-                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
-                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <strong class="d-block">৳500</strong>
-                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
-                            <i id="" class="fas fa-trash delete-item"></i>
-                        </div>
-                        <div class="form-check">
-                            <input onclick="checkSingle(this)" type="checkbox" class="form-check-input" id="storeCheck12">
-                            <label class="form-check-label" for="storeCheck12"></label>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sore2" class="card card-body mt-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="font-weight-bold mb-0">Name of store</h6>
-                        <div class="form-check">
-                            <input onclick="checkAll(this)" type="checkbox" class="form-check-input" id="storeAllCheck22">
-                            <label class="form-check-label" for="storeAllCheck22"></label>
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
-                            <div>
-                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
-                                <h5 class="mb-0">
-                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
-                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <strong class="d-block">৳500</strong>
-                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
-                            <i id="" class="fas fa-trash delete-item"></i>
-                        </div>
-                        <div class="form-check">
-                            <input onclick="checkSingle(this)" type="checkbox" class="form-check-input" id="storeCheck121">
-                            <label class="form-check-label" for="storeCheck121"></label>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
-                            <div>
-                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
-                                <h5 class="mb-0">
-                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
-                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <strong class="d-block">৳500</strong>
-                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
-                            <i id="" class="fas fa-trash delete-item"></i>
-                        </div>
-                        <div class="form-check">
-                            <input onclick="checkSingle(this)" type="checkbox" class="form-check-input" id="storeCheck123">
-                            <label class="form-check-label" for="storeCheck123"></label>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <img src="https://static.aadi.com.bd/__sized__/products/IMG-20201111-WA0000-crop-c0-5__0-5-400x500-70.jpg" alt="" />
-                            <div>
-                                <p>Lorem Ipsum is simply dummy text of Lorem Ipsum has been</p>
-                                <h5 class="mb-0">
-                                    <span class="badge badge-pill grey darken-3 mr-2">Color: Red</span>
-                                    <span class="badge badge-pill grey darken-3 mr-2">Size: M</span>
-                                </h5>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <strong class="d-block">৳500</strong>
-                            <input class="item-quantity" data-id="" value="2" min="1" type="number">
-                            <i id="" class="fas fa-trash delete-item"></i>
-                        </div>
-                        <div class="form-check">
-                            <input onclick="checkSingle(this)" type="checkbox" class="form-check-input" id="storeCheck122">
-                            <label class="form-check-label" for="storeCheck122"></label>
-                        </div>
-                    </div>
-                </div>
+                    index++;
+                }
             </div>
 
             <div class="col-xl-4 col-lg-4 mt-4">
                 <div class="card card-body">
                     <h4 class="font-weight-bold border-bottom pb-3 mb-3">Order Summary</h4>
                     <ul class="list-group mb-3">
-                        <li class="d-flex justify-content-between align-items-center border-bottom my-2 pb-3">
-                            <div>Cart Subtotal</div>
-                            <div>৳<span class="grand-total-amount">0</span></div>
-                        </li>
                         <li class="d-flex justify-content-between align-items-center">
-                            <h5 class="font-weight-bold">Order Total</h5>
-                            <h5 class="font-weight-bold">৳<span id="orderTotal"></span></h5>
+                            <h5>Product Total</h5>
+                            <h5>৳<span id="selectedCartTotal">0</span></h5>
                         </li>
                     </ul>
 
@@ -205,17 +92,71 @@
 
 @section Scripts{
     <script>
+        //select all
         function checkAll(self) {
             const parentCheckboxId = $(self).parent().parent().parent().attr('id');
             $(`#${parentCheckboxId}`).find('input[type="checkbox"]').prop("checked", self.checked);
+
+            //set total checked product price
+            getCheckedTotalPrice();
+
+            //set checkbox checked
+            methods.productSelectedSet();
         }
 
+        //select single
         function checkSingle(self) {
             const parentCheckboxId = $(self).parent().parent().parent().attr('id');
             const allCheckboxes = $(`#${parentCheckboxId}`).find('input[type="checkbox"]').not(":eq(0)");
 
             const isAllChecked = (allCheckboxes.length === allCheckboxes.filter(":checked").length);
             $(`#${parentCheckboxId}`).find('input[type="checkbox"]:first').prop("checked", isAllChecked);
+
+            //set total checked product price
+            getCheckedTotalPrice();
+
+            //set checkbox checked
+            methods.productSelectedSet();
         }
+
+        //calculate total
+        function getCheckedTotalPrice() {
+            const selectedCartTotal = document.getElementById("selectedCartTotal");
+            const checkboxes = document.getElementsByName("productCheckbox");
+
+            let total = 0;
+       
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    const input = checkboxes[i].parentElement.parentElement.querySelector(".item-quantity");
+                    const quantity = +input.value;
+                    const price = +input.getAttribute("data-price");
+
+                    total += price * quantity;
+                }
+
+                //update total amount
+                selectedCartTotal.textContent = total;
+            }
+        }
+
+        //on page loaded
+        getCheckedTotalPrice();
+
+        //private method
+        (function() {
+            const formCart = document.getElementById("formCart");
+
+            //on change quantity
+            formCart.addEventListener("change",
+                function(evt) {
+                    const element = evt.target;
+                    const onQuantity = element.classList.contains("item-quantity");
+                    if (onQuantity) {
+                        methods.setProductQuantity(element);
+                        getCheckedTotalPrice();
+                    }
+                });
+        })();
     </script>
 }

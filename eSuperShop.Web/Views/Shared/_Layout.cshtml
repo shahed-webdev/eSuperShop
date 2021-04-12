@@ -19,245 +19,214 @@
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
-<div class="home-discount">
-    <img src="~/images/home-discount.png" class="w-100" alt=""/>
-</div>
-<header>
-    <nav class="navbar navbar-expand-sm top-bar">
-        <div class="container">
-            <ul class="nav navbar-nav nav-flex-icons ml-auto">
-                @*<li class="nav-item">
+    <div class="home-discount">
+        <img src="~/images/home-discount.png" class="w-100" alt="" />
+    </div>
+    <header>
+        <nav class="navbar navbar-expand-sm top-bar">
+            <div class="container">
+                <ul class="nav navbar-nav nav-flex-icons ml-auto">
+                    @*<li class="nav-item">
                             <a class="nav-link" href=""><i class="fal fa-user-headset mr-1"></i>Help</a>
                         </li>*@
-                <partial name="_LoginPartial"/>
-            </ul>
-        </div>
-    </nav>
-    <div class="bottom-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-3 col-sm-12">
-                    <a class="navbar-brand" href="/Home/Index">
-                        <img src="~/images/logo.png" alt="logo">
-                    </a>
-                </div>
-                <div class="col-lg-6 col-sm-9">
-                    <div class="serach-container">
-                        <input id="inputSearch" type="text" placeholder="search products" class="input-home-search">
-                        <button id="btn-find"><i class="fal fa-search"></i></button>
-                        @*<select class="mdb-select category-select">
+                    <partial name="_LoginPartial" />
+                </ul>
+            </div>
+        </nav>
+        <div class="bottom-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-sm-12">
+                        <a class="navbar-brand" href="/Home/Index">
+                            <img src="~/images/logo.png" alt="logo">
+                        </a>
+                    </div>
+                    <div class="col-lg-6 col-sm-9">
+                        <div class="serach-container">
+                            <input id="inputSearch" type="text" placeholder="search products" class="input-home-search">
+                            <button id="btn-find"><i class="fal fa-search"></i></button>
+                            @*<select class="mdb-select category-select">
                                     <option value="" disabled selected>All Categories</option>
                                     <option value="2">category1</option>
                                     <option value="2">category2</option>
                                     <option value="2">category3</option>
                                     <option value="2">category4</option>
                                 </select>*@
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-sm-3">
-                    <div class="cart-area mt-4 mt-sm-0">
-                        <div><i class="fal fa-heart"></i></div>
-                        <div data-toggle="modal" data-target="#cartModal" style="cursor: pointer">
-                            <i class="fal fa-shopping-bag"></i>
-                            <span class="cart-product-count">
-                                <span class="total-cart-count"></span>
-                            </span>
+                    <div class="col-lg-3 col-sm-3">
+                        <div class="cart-area mt-4 mt-sm-0">
+                            <div><i class="fal fa-heart"></i></div>
+                            <a href="/Product/Cart">
+                                <i class="fal fa-shopping-bag"></i>
+                                <span class="cart-product-count">
+                                    <span class="total-cart-count">0</span>
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<main style="min-height: 822px" class="mb-4">
-    @RenderBody()
-</main>
+    <main style="min-height: 822px" class="mb-4">
+        @RenderBody()
+    </main>
 
-<footer class="page-footer font-small mt-4 footer-bg">
-    <div class="footer-top">
-        <div class="container d-flex align-items-center justify-content-between">
-            <div>
-                <form class="input-group">
-                    <input type="email" class="form-control form-control-sm z-depth-1 red lighten-4" placeholder="Enter your email">
-                    <div class="input-group-append">
-                        <button class="btn btn-sm red m-0" type="button">Sign up</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="payment-options">
-                <i class="fab fa-cc-mastercard fa-3x mr-2"></i>
-                <i class="fab fa-cc-visa fa-3x"></i>
-                <i class="fab fa-cc-paypal fa-3x mx-2"></i>
-                <i class="fab fa-cc-amex fa-3x"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="container text-center text-md-left py-3">
-        <div class="row">
-            <div class="col-md-3 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
-                <h5 class="font-weight-bold text-uppercase mb-4">About</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <p>
-                            <a href="#!">Safe Payment</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">Careers</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">E-super shop Blog</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">Amar Esuper shop</a>
-                        </p>
-                    </li>
-                </ul>
-            </div>
-
-            <hr class="clearfix w-100 d-md-none">
-
-            <div class="col-md-3 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
-                <h5 class="font-weight-bold text-uppercase mb-4">Buyer Protection</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <p>
-                            <a href="#!">Returns & Refunds</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!"> Collaborate with us</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">Partnerships</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">Affiliate program</a>
-                        </p>
-                    </li>
-                </ul>
-            </div>
-
-            <hr class="clearfix w-100 d-md-none">
-
-            <div class="col-md-3 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
-                <h5 class="font-weight-bold text-uppercase mb-4">Terms & Conditions</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <p>
-                            <a href="#!">Privacy Policy</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">Shopping with us</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">Making payments</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <a href="#!">Delivery options</a>
-                        </p>
-                    </li>
-                </ul>
-
-            </div>
-
-            <hr class="clearfix w-100 d-md-none">
-
-            <div class="col-md-3 col-lg-3 text-center mx-auto my-4">
-                <h5 class="font-weight-bold text-uppercase mb-4">Follow Us</h5>
-
-                <a class="btn-floating btn-fb"><i class="fab fa-facebook-f"></i></a>
-                <a class="btn-floating btn-tw"><i class="fab fa-twitter"></i></a>
-                <a class="btn-floating btn-li"><i class="fab fa-linkedin-in"></i></a>
-                <a class="btn-floating btn-ins"><i class="fab fa-instagram"></i></a>
-                <a class="btn-floating btn-pin"><i class="fab fa-pinterest"></i></a>
-                <a class="btn-floating btn-yt"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer-copyright text-center py-3">
-        © 2020 Copyright:
-        <a> esupershop.com</a>
-    </div>
-</footer>
-
-<!-- cart Modal -->
-<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-notify modal-danger modal-lg" role="document">
-        <div class="modal-content text-center">
-            <div class="modal-header">
-                <p class="heading mb-0"><strong>Shopping Cart</strong></p>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="white-text">&times;</span>
-                </button>
-            </div>
-            <form asp-action="Checkout" asp-controller="Product">
-                <div class="modal-body">
-                    <table class="show-cart table product-table">
-                        <thead>
-                        <tr>
-                            <th class="text-left"><strong>Product</strong></th>
-                            <th><strong>Price</strong></th>
-                            <th class="text-center"><strong>Quantity</strong></th>
-                            <th><strong>Line Total</strong></th>
-                            <th class="text-right"><strong>Remove</strong></th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+    <footer class="page-footer font-small mt-4 footer-bg">
+        <div class="footer-top">
+            <div class="container d-flex align-items-center justify-content-between">
+                <div>
+                    <form class="input-group">
+                        <input type="email" class="form-control form-control-sm z-depth-1 red lighten-4" placeholder="Enter your email">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm red m-0" type="button">Sign up</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer flex-end">
-                    <h5 class="mb-0 font-weight-bold">Total: ৳<strong class="grand-total-amount">0</strong></h5>
-                    <button type="submit" class="btn btn-danger btn-rounded">Checkout <i class="fas fa-angle-right right"></i></button>
+
+                <div class="payment-options">
+                    <i class="fab fa-cc-mastercard fa-3x mr-2"></i>
+                    <i class="fab fa-cc-visa fa-3x"></i>
+                    <i class="fab fa-cc-paypal fa-3x mx-2"></i>
+                    <i class="fab fa-cc-amex fa-3x"></i>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
+
+        <div class="container text-center text-md-left py-3">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">About</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <a href="#!">Safe Payment</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">Careers</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">E-super shop Blog</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">Amar Esuper shop</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <div class="col-md-3 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">Buyer Protection</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <a href="#!">Returns & Refunds</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!"> Collaborate with us</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">Partnerships</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">Affiliate program</a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <div class="col-md-3 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">Terms & Conditions</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <a href="#!">Privacy Policy</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">Shopping with us</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">Making payments</a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a href="#!">Delivery options</a>
+                            </p>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <hr class="clearfix w-100 d-md-none">
+
+                <div class="col-md-3 col-lg-3 text-center mx-auto my-4">
+                    <h5 class="font-weight-bold text-uppercase mb-4">Follow Us</h5>
+
+                    <a class="btn-floating btn-fb"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn-floating btn-tw"><i class="fab fa-twitter"></i></a>
+                    <a class="btn-floating btn-li"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn-floating btn-ins"><i class="fab fa-instagram"></i></a>
+                    <a class="btn-floating btn-pin"><i class="fab fa-pinterest"></i></a>
+                    <a class="btn-floating btn-yt"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-copyright text-center py-3">
+            © 2020 Copyright:
+            <a> esupershop.com</a>
+        </div>
+    </footer>
 
 
-<!-- JQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<!-- MDB core JavaScript -->
-<script src="~/mdb/js/mdb-admin.min.js"></script>
-<!-- axios -->
-<script src="~/lib/api.axios.min.js"></script>
-<!--notify js-->
-<script src="~/js/notify.min.js"></script>
-<!-- VUE JS -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script src="~/mdb/js/mdb-admin.min.js"></script>
+    <!-- axios -->
+    <script src="~/lib/api.axios.min.js"></script>
+    <!--notify js-->
+    <script src="~/js/notify.min.js"></script>
+    <!-- VUE JS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- slug url generator -->
+    <script src="~/lib/slug-url-generator.js"></script>
+    <!-- global-methods -->
+    <script src="~/js-page/customer/global-methods.js"></script>
 
-<!-- shopping cart -->
-@*<script src="~/js/shopping-cart.js?v=1.0.0"></script>*@
-
-<!-- slug url generator -->
-<script src="~/lib/slug-url-generator.js"></script>
-
-@await RenderSectionAsync("Scripts", false)
+    @await RenderSectionAsync("Scripts", false)
 
 <script>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
+    {
+        @:methods.getTotalCartCount();
+    }
+
     $(() => {
         new WOW().init();
     });

@@ -21,7 +21,7 @@ namespace eSuperShop.Data
 
             builder.HasOne(e => e.ProductQuantitySet)
                 .WithMany(c => c.OrderCart)
-                .HasForeignKey(e => e.ProductId)
+                .HasForeignKey(e => e.ProductQuantitySetId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_ProductQuantitySet_OrderCart");
         }
