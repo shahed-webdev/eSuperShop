@@ -107,7 +107,8 @@ namespace eSuperShop.Web.Controllers
             return Json(model);
         }
 
-        //set quantity
+     
+        //Set Selected Product
         [Authorize(Roles = "Customer")]
         [HttpPost]
         public IActionResult SetSelectedProduct(OrderCartSelectChangeModel model)
@@ -116,6 +117,7 @@ namespace eSuperShop.Web.Controllers
             return Json(response);
         }
 
+
         //get total cart items
         [Authorize(Roles = "Customer")]
         public IActionResult CartProductCount()
@@ -123,6 +125,25 @@ namespace eSuperShop.Web.Controllers
             var model = _orderCartCore.OrderProductCount(User.Identity.Name);
             return Json(model.Data);
         }
+
+        //delete cart
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult DeleteCartItem(int orderCartId)
+        {
+            var model = _orderCartCore.Delete(orderCartId);
+            return Json(model);
+        }
+
+        //delete all
+        [Authorize(Roles = "Customer")]
+        [HttpPost]
+        public IActionResult DeleteAll()
+        {
+            var response = _orderCartCore.DeleteAll(User.Identity.Name);
+            return Json(response);
+        }
+
         #endregion
 
         #region Checkout

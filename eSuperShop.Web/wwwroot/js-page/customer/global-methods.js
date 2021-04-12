@@ -39,16 +39,15 @@ const methods = (function () {
     }
 
     //set selected product
-    methodObj.productSelectedSet = function() {
+    methodObj.allProductSelectedSet = function() {
         const checkboxes = document.getElementsByName("productCheckbox");
         const model = { OrderCartIds: [], IsSelected: true };
 
         for (let i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                //push id for checked product
-                const orderCartId = checkboxes[i].getAttribute("data-id");
-                model.OrderCartIds.push(orderCartId);
-            }
+            //push id for checked product
+            const orderCartId = checkboxes[i].getAttribute("data-id");
+            model.OrderCartIds.push(orderCartId);
+            model.IsSelected = checkboxes[i].checked;
         }
 
         if (!model.OrderCartIds.length) return;
@@ -61,6 +60,26 @@ const methods = (function () {
                 $.notify(response.Message, response.IsSuccess ? "success" : "error");
             },
             error: function(err) {
+                console.log(err);
+            }
+        });
+    }
+
+    //set selected product
+    methodObj.signleProductSelectedSet = function (self) {
+        const model = { OrderCartIds: [], IsSelected: self.checked };
+        model.OrderCartIds.push(self.getAttribute("data-id"));
+
+        if (!model.OrderCartIds.length) return;
+
+        $.ajax({
+            url: "/Product/SetSelectedProduct",
+            type: "POST",
+            data: model,
+            success: function (response) {
+                $.notify(response.Message, response.IsSuccess ? "success" : "error");
+            },
+            error: function (err) {
                 console.log(err);
             }
         });

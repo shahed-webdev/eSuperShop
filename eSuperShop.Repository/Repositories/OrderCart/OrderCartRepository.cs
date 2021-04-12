@@ -73,7 +73,7 @@ namespace eSuperShop.Repository
 
         public DbResponse SelectedChange(OrderCartSelectChangeModel model)
         {
-            var carts = Db.OrderCart.Where(o => model.OrderCartIds.Contains(o.CustomerId)).ToList();
+            var carts = Db.OrderCart.Where(o => model.OrderCartIds.Contains(o.OrderCartId)).ToList();
             foreach (var cart in carts)
             {
                 cart.IsSelected = model.IsSelected;

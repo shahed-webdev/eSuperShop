@@ -22,7 +22,7 @@
             <div id="all-store" class="col-xl-8 col-lg-8 mt-4">
                 <div class="card card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <input id="btnDelete" type="button" value="Delete" class="btn btn-danger btn-md">
+                        <input id="btnDeleteAll" type="button" value="Delete" class="btn btn-danger btn-md">
                         <h4 class="font-weight-bold mb-0">Cart Items</h4>
 
                         <input type="checkbox" onclick="checkAll(this)" class="form-check-input" id="allCheck">
@@ -101,7 +101,7 @@
             getCheckedTotalPrice();
 
             //set checkbox checked
-            methods.productSelectedSet();
+            methods.allProductSelectedSet();
         }
 
         //select single
@@ -116,7 +116,7 @@
             getCheckedTotalPrice();
 
             //set checkbox checked
-            methods.productSelectedSet();
+            methods.signleProductSelectedSet(self);
         }
 
         //calculate total
@@ -157,6 +157,54 @@
                         getCheckedTotalPrice();
                     }
                 });
+
+            //delete cart
+            formCart.addEventListener("click",
+                function (evt) {
+                    const element = evt.target;
+                    const onDelete = element.classList.contains("delete-item");
+                    if (onDelete) {
+                        $.ajax({
+                            url: "/Product/DeleteCartItem",
+                            type: "POST",
+                            data: { orderCartId: element.id },
+                            success: function (response) {
+                                if (response.IsSuccess) {
+                                    element.parentElement.parentElement.remove();
+                                    getCheckedTotalPrice();
+                                    return;
+                                }
+
+                                $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                            },
+                            error: function(err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+                });
+
+            //delete all cart
+            const btnDeleteAll = document.getElementById("btnDeleteAll");
+            btnDeleteAll.addEventListener("click", function () {
+                this.disabled = true;
+
+                $.ajax({
+                    url: "/Product/DeleteAll",
+                    type: "POST",
+                    success: response=> {
+                        if (response.IsSuccess) {
+                            location.reload();
+                            return;
+                        }
+                        this.disabled = false;
+                        $.notify(response.Message, response.IsSuccess ? "success" : "error");
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            });
         })();
     </script>
 }
