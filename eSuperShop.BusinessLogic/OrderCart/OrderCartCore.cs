@@ -69,7 +69,7 @@ namespace eSuperShop.BusinessLogic
             }
         }
 
-        public List<OrderCartViewModel> List(string customerUserName)
+        public List<OrderCartStoreWiseModel> List(string customerUserName)
         {
             var customerId = _db.Registration.CustomerIdByUserName(customerUserName);
             return _db.OrderCart.List(customerId);
@@ -104,6 +104,24 @@ namespace eSuperShop.BusinessLogic
             catch (Exception e)
             {
                 return new DbResponse(false, $"{e.Message}. {e.InnerException?.Message ?? ""}");
+            }
+        }
+
+        public DbResponse<int> OrderProductCount(string customerUserName)
+        {
+            try
+            {
+                var customerId = _db.Registration.CustomerIdByUserName(customerUserName);
+
+                if (customerId == 0)
+                    return new DbResponse<int>(false, "Invalid User");
+                var data = _db.OrderCart.OrderProductCount(customerId);
+                return new DbResponse<int>(true, "Success", data);
+
+            }
+            catch (Exception e)
+            {
+                return new DbResponse<int>(false, $"{e.Message}. {e.InnerException?.Message ?? ""}");
             }
         }
 

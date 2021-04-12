@@ -101,11 +101,43 @@ namespace eSuperShop.Repository
             return !Db.OrderCart.Any(o => o.OrderCartId == orderCartId);
         }
 
-        public List<OrderCartViewModel> List(int customerId)
+        public List<OrderCartStoreWiseModel> List(int customerId)
         {
-            return Db.OrderCart.Where(o => o.CustomerId == customerId)
+            var carts = Db.OrderCart.Where(o => o.CustomerId == customerId)
                 .ProjectTo<OrderCartViewModel>(_mapper.ConfigurationProvider)
                 .ToList();
+            var storeWiseCarts = new List<OrderCartStoreWiseModel>();
+
+            foreach (var item in carts.OrderBy(c => c.VendorId))
+            {
+                var cart = new OrderCartStoreWiseProductModel
+                {
+                    OrderCartId = item.OrderCartId,
+                    IsSelected = item.IsSelected,
+                    ImageFileName = item.ImageFileName,
+                    ProductId = item.ProductId,
+                    ProductQuantitySetId = item.ProductQuantitySetId,
+                    ProductName = item.ProductName,
+                    ProductSlugUrl = item.ProductSlugUrl,
+                    Price = item.Price,
+                    Quantity = item.Quantity,
+                    CustomerId = item.CustomerId,
+                    AttributesWithValue = item.AttributesWithValue
+                };
+                var store = storeWiseCarts.Find(s => s.VendorId == item.VendorId);
+                if (store == null)
+                {
+                    store = new OrderCartStoreWiseModel
+                    {
+                        VendorId = item.VendorId,
+                        StoreName = item.StoreName,
+                        StoreSlugUrl = item.StoreSlugUrl
+                    };
+                    storeWiseCarts.Add(store);
+                }
+                store.Products.Add(cart);
+            }
+            return storeWiseCarts;
         }
 
         public int OrderProductCount(int customerId)

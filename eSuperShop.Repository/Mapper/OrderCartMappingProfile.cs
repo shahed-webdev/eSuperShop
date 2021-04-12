@@ -10,6 +10,7 @@ namespace eSuperShop.Repository
         {
             CreateMap<OrderCartAddModel, OrderCart>();
             CreateMap<OrderCart, OrderCartViewModel>()
+                .ForMember(d => d.ImageFileName, opt => opt.MapFrom(c => c.Product.ProductBlob.FirstOrDefault().BlobFileName))
                 .ForMember(d => d.AttributesWithValue, opt => opt.MapFrom(c =>
                     c.ProductQuantitySet.ProductQuantitySetAttribute.Select(s => new OrderCartAttributesSetModel
                     {

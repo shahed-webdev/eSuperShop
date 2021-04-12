@@ -13,7 +13,7 @@ namespace eSuperShop.Repository
         DbResponse SelectedAll(int customerId);
 
         bool IsNull(int orderCartId);
-        List<OrderCartViewModel> List(int customerId);
+        List<OrderCartStoreWiseModel> List(int customerId);
         int OrderProductCount(int customerId);
     }
 }

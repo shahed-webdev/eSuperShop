@@ -2,17 +2,27 @@
 
 namespace eSuperShop.Repository
 {
-    public class OrderCartViewModel
+    public class OrderCartStoreWiseModel
     {
-        public OrderCartViewModel()
+        public OrderCartStoreWiseModel()
+        {
+            Products = new List<OrderCartStoreWiseProductModel>();
+        }
+        public int VendorId { get; set; }
+        public string StoreName { get; set; }
+        public string StoreSlugUrl { get; set; }
+
+        public List<OrderCartStoreWiseProductModel> Products { get; set; }
+    }
+
+    public class OrderCartStoreWiseProductModel
+    {
+        public OrderCartStoreWiseProductModel()
         {
             AttributesWithValue = new List<OrderCartAttributesSetModel>();
         }
         public int OrderCartId { get; set; }
         public bool IsSelected { get; set; }
-        public int VendorId { get; set; }
-        public string StoreName { get; set; }
-        public string StoreSlugUrl { get; set; }
         public string ImageFileName { get; set; }
         public int ProductId { get; set; }
         public int ProductQuantitySetId { get; set; }
@@ -22,11 +32,5 @@ namespace eSuperShop.Repository
         public int Quantity { get; set; }
         public int CustomerId { get; set; }
         public List<OrderCartAttributesSetModel> AttributesWithValue { get; set; }
-    }
-
-    public class OrderCartAttributesSetModel
-    {
-        public string KeyName { get; set; }
-        public string Value { get; set; }
     }
 }
