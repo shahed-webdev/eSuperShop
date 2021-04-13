@@ -91,9 +91,15 @@ namespace eSuperShop.Web.Controllers
         #endregion
 
         #region Cart list
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         public IActionResult Cart()
         {
+            if (!User.Identity.IsAuthenticated)
+                return Redirect("/Account/CustomerLogin/?returnUrl=/Product/Cart");
+
+            if (!User.IsInRole("Customer"))
+                return Redirect("/Home/Index");
+
             var model = _orderCartCore.List(User.Identity.Name);
             return View(model);
         }

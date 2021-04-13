@@ -1,6 +1,8 @@
 ﻿@model LoginViewModel
 @{
     ViewBag.Title = "Seller Registration";
+    var queryUrl = Context.Request.Query["ReturnUrl"].ToString();
+    var returnUrl = string.IsNullOrEmpty(queryUrl) ? "" : "?ReturnUrl=" + queryUrl;
 }
 
 @section Styles {
@@ -74,7 +76,7 @@
                     </form>
 
                     <div class="mt-5">
-                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Account/Login" class="blue-text ml-1">Sign In</a></p>
+                        <p class="mb-0 font-small grey-text d-flex justify-content-end">Already have account? <a href="/Account/Login@(returnUrl)" class="blue-text ml-1">Sign In</a></p>
                     </div>
                 </div>
             </div>

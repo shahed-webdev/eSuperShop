@@ -1,7 +1,7 @@
 ﻿
 const methods = (function () {
 
-    const methodObj = {}
+    const methodObj = {};
 
     //get total cart count
     const setCount = document.querySelector(".total-cart-count");
@@ -15,6 +15,11 @@ const methods = (function () {
                 console.log(err)
             }
         });
+    }
+
+    //set from add to cart page
+    methodObj.setCountAddToCart = function(count) {
+        setCount.textContent = count;
     }
 
     //set quantity

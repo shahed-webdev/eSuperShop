@@ -222,6 +222,7 @@
     @await RenderSectionAsync("Scripts", false)
 
 <script>
+    //set cart item count
     @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
     {
         @:methods.getTotalCartCount();
