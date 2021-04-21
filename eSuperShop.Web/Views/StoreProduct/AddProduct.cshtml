@@ -32,40 +32,40 @@
                     <h5 class="font-weight-bold mt-3">PRODUCT INFORMATION</h5>
 
                     <div class="form-row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="md-form">
                                 <label for="inputProductName">Product Name</label>
                                 <input id="inputProductName" type="text" name="Name" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="md-form">
                                 <label for="inputShortDescription">Short Description</label>
                                 <input id="inputShortDescription" type="text" name="ShortDescription" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-6">
                             <div class="md-form">
                                 <label for="inputSlugUrl">Slug Url (allow: a-z, 0-9, -, %)</label>
                                 <input id="inputSlugUrl" type="text" pattern="^[a-z0-9]+(?:-[a-z0-9%]+)*$" name="SlugUrl" class="form-control" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="md-form">
                                 <select searchable="Find Product Brand" name="BrandId" asp-items="ViewBag.Brands" class="mdb-select">
                                     <option value="">[ Select Product Brand ]</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="md-form">
                                 <label for="inputOldPrice">Regular Price</label>
                                 <input id="inputOldPrice" type="number" name="OldPrice" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="md-form">
                                 <label for="inputPrice">Sale Price</label>
                                 <input id="inputPrice" type="number" name="Price" class="form-control" required>

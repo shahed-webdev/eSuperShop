@@ -510,12 +510,6 @@
 
                 showLoader(true);
 
-                if (document.activeElement.id === "btnBuyNow") {
-                    //location.href = "/Product/Checkout";
-                    console.log("buy")
-                    return;
-                }
-
                 $.ajax({
                     url: "/Product/AddToCart",
                     type: "POST",
@@ -525,6 +519,11 @@
 
                         if (response.IsSuccess) {
                             methods.setCountAddToCart(response.Data);
+
+                            if (document.activeElement.id === "btnBuyNow") {
+                                location.href = "/Product/Checkout";
+                                return;
+                            }
                         }
 
                         showLoader(false);
@@ -532,6 +531,10 @@
                     error: function(err) {
                         showLoader(false);
                         console.log(err);
+
+                        if (err.status === 403) {
+                            $.notify("Add to cart allow only customers", "error");
+                        }
                     }
                 });
             });
