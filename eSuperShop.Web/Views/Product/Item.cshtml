@@ -106,15 +106,10 @@
                                         </div>
                                     }
                                 }
-
-                                <strong class="text-primary" id="additionalPrice"></strong>
-                                <input id="hiddenQuantitySetId" type="hidden">
-                                <input id="hiddenPriceAdjustment" type="hidden">
                             </div>
 
                             <div class="my-5">
-                                QTY: <input id="inputQuantity" min="1" max="@ViewBag.MaxQuantityLimit" value="1" type="number" class="input-quantity mr-2" required>
-                                <span id="availableQty"></span>
+                                QTY: <input name="Quantity" min="1" max="@ViewBag.MaxQuantityLimit" value="1" type="number" class="input-quantity mr-2" required>
                             </div>
 
                             <div>
@@ -134,7 +129,7 @@
             <div class="card card-body mb-3 text-center">
                 <h6 class="font-weight-bold deep-orange-text"><i class="far fa-truck mr-1"></i>Delivery Inside Dhaka</h6>
                 <p><strong>৳@shipping.BasicChargeInDhaka</strong> Upto <strong>@shipping.BasicMaxQuantityInDhaka</strong> Products</p>
-                <p><strong>@shipping.AdditionalFeePercentageInDhaka%</strong> charge added for additional product</p>
+               
                 <p class="mb-1"><strong>@shipping.DeliveryWithin</strong> Days Delivery</p>
                 <p class="mb-0"><strong>@shipping.ReturnWithin</strong> Days Returns</p>
             </div>
@@ -142,7 +137,7 @@
             <div class="card card-body mb-3 text-center">
                 <h6 class="font-weight-bold deep-orange-text"><i class="far fa-truck mr-1"></i>Delivery Outside Dhaka</h6>
                 <p><strong>৳@shipping.BasicChargeOutDhaka</strong> Upto <strong>@shipping.BasicMaxQuantityOutDhaka</strong> Products</p>
-                <p><strong>@shipping.AdditionalFeePercentageOutDhaka%</strong> charge added for additional product</p>
+      
                 <p class="mb-1"><strong>@shipping.DeliveryWithin</strong> Days Delivery</p>
                 <p class="mb-0"><strong>@shipping.ReturnWithin</strong> Days Returns</p>
             </div>
@@ -386,13 +381,10 @@
 
         //selectors
         const cartForm = document.getElementById("cartForm");
-        const productPrice = cartForm.querySelector("#productPrice");
-        const hiddenPriceAdjustment = cartForm.hiddenPriceAdjustment;
-        const inputQuantity = cartForm.inputQuantity;
-        const hiddenQuantitySetId = cartForm.hiddenQuantitySetId;
+
         const btnAddToCart = cartForm.btnAddToCart;
         const btnBuyNow = cartForm.btnBuyNow;
-        let attributesValue = null;
+
         const attribute = document.getElementById("attribute");
 
         // attribute change event
@@ -421,70 +413,6 @@
                         showImg.setAttribute("src", imgSrc);
                         bigImg.setAttribute("src", imgSrc);
                     }
-
-                    const valueIds = document.querySelectorAll('input[type="radio"]:checked');
-                    const keyNames = document.querySelectorAll(".key-name");
-                    const attributeValueId = [];
-
-                    valueIds.forEach(id => {
-                        if (id.value) attributeValueId.push(+id.value);
-                    });
-
-                    if (keyNames.length !== attributeValueId.length) return;
-
-                    const model = {
-                        ProductId: @Model.ProductId,
-                        ProductAttributeValueIds: attributeValueId
-                    }
-
-                    const availableQty = document.getElementById("availableQty");
-
-                    showLoader(true);
-
-                    $.ajax({
-                        url: "/Product/GetInsertedStock",
-                        type: "POST",
-                        data: model,
-                        success: function(response) {
-                            if (response.IsSuccess) {
-                                const { Quantity, ProductQuantitySetId, PriceAdjustment, AttributesWithValue } = response.Data;
-                                //global variable
-                                attributesValue = AttributesWithValue;
-
-                                //const isAdded = shoppingCart.getProduct(ProductQuantitySetId);
-                                //const newQuantity = isAdded ? (Quantity - isAdded.Quantity) : Quantity;
-
-                                //if (isAdded) {
-                                //    $.notify("Product Already added", "error", { position: "right" });
-                                //}
-
-                                availableQty.textContent = `${Quantity} pieces available`;
-                                availableQty.style.color = "#212529";
-
-                                //inputQuantity.value = isAdded ? isAdded.Quantity : 1;
-                                //inputQuantity.setAttribute("max", Quantity);
-
-                                productPrice.textContent = @Model.Price + PriceAdjustment;
-                                hiddenQuantitySetId.value = ProductQuantitySetId;
-                                hiddenPriceAdjustment.value = PriceAdjustment;
-                            } @*else {
-                        availableQty.textContent = `Product not available`;
-                        availableQty.style.color = "red";
-
-                        inputQuantity.setAttribute("max", 0);
-
-                        productPrice.textContent = @Model.Price;
-                        hiddenQuantitySetId.value = "";
-                        hiddenPriceAdjustment.value = 0;
-                    }*@
-
-                            showLoader(false);
-                        },
-                        error: function(err) {
-                            console.log(err);
-                            showLoader(false);
-                        }
-                    });
                 });
         }
 
@@ -504,7 +432,7 @@
 
                 const model = {
                     ProductId: @Model.ProductId,
-                    ProductQuantitySetId: +hiddenQuantitySetId.value,
+                    //ProductQuantitySetId: +hiddenQuantitySetId.value,
                     Quantity: +inputQuantity.value
                 }
 

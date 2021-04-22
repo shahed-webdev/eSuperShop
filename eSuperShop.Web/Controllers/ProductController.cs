@@ -75,12 +75,12 @@ namespace eSuperShop.Web.Controllers
         }
 
         //get stock
-        [HttpPost]
-        public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
-        {
-            var response = _product.GetQuantitySet(model);
-            return Json(response);
-        }
+        //[HttpPost]
+        //public IActionResult GetInsertedStock(ProductQuantityCheckModel model)
+        //{
+        //    var response = _product.GetQuantitySet(model);
+        //    return Json(response);
+        //}
 
         //get available quantity from cart
         public IActionResult GetAvailableQuantity(int quantitySetId)
